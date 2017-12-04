@@ -112,6 +112,11 @@ public class AcrolinxSidebarPlugin
 
     }
 
+    public synchronized void requestGlobalCheck()
+    {
+        requestGlobalCheck(null);
+    }
+
     public synchronized void runCheck(boolean selectionEnabled)
     {
         final CheckOptions checkOptions = getCheckSettingsFromClient(selectionEnabled);
