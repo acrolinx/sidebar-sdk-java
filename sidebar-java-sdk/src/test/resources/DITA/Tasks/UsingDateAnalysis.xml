@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!-- Created with XMetaL (http://www.xmetal.com) -->
+<task id="usingdateanalysis"> 
+  <title>Using the 
+	 <term>Date Analysis Engine</term></title> 
+  <shortdesc>This topic describes how to use the 
+	 <term>Date Analysis Engine</term> to calculate what day of the week a
+	 specific date is.
+  </shortdesc> 
+  <prolog> 
+	 <author type="creator">Heather Wymer</author>
+	 <critdates> 
+		<created date="5 Oct 2008"/> </critdates>
+	 <metadata> 
+		<keywords> 
+		  <keyword>calendar pane</keyword> 
+		  <keyword>Date Analysis Engine</keyword> 
+		  <keyword>Date Analysis Engine window</keyword> 
+		  <keyword>date</keyword> 
+		  <keyword>day</keyword> 
+		  <keyword>month</keyword> 
+		  <keyword>year</keyword> 
+		  <keyword>Gregorian calendar</keyword> 
+		</keywords> 
+		<prodinfo> 
+		  <prodname>World Time Pro</prodname> 
+		  <vrmlist> 
+			 <vrm version="2 trial"/> 
+		  </vrmlist> 
+		</prodinfo> </metadata>
+  </prolog> 
+  <taskbody> 
+	 <context id="context_C84BE51FBBF241F7B97FB605F852C89F">The 
+		<term>Date Analysis Engine</term> calculates the day of the week for any
+		date in the range 1 January 1583-31 December 3000. Due to the introduction of
+		the 
+		<term>Gregorian calendar</term> in 1582, dates cannot be correlated to
+		days of the week prior to this time. The 
+		<term>Date Analysis Engine</term> has hundreds of handy uses - for
+		example, you can plan your next year's holidays, or work out the day of the
+		week on which you were born.
+		<note type="note">To calculate days of the week for dates prior to 1
+		  January 1970, you must buy the Deluxe Edition of 
+		  <term>World Time Pro</term>.
+		</note>
+	 </context> 
+	 <steps id="steps_412C87FA13914E1B8CB7967FD29818EE"> 
+		<step id="step_74D06F08A76047FB9F52052EE0EB4F39"> 
+		  <cmd>Select 
+			 <menucascade> 
+				<uicontrol>Options</uicontrol> 
+				<uicontrol>Date Analysis Engine.</uicontrol> 
+			 </menucascade>
+		  </cmd> 
+		  <stepresult>The 
+			 <wintitle>Date Analysis Engine window 
+			 </wintitle>opens.
+		  </stepresult> 
+		</step> 
+		<step id="step_00CF7826AC5D41609B6AF8A7A2A681AC"> 
+		  <cmd>Select the date from the 
+			 <uicontrol>Day</uicontrol> drop-down box, and the month from the 
+			 <uicontrol>Month</uicontrol> drop-down box.
+		  </cmd> 
+		</step> 
+		<step id="step_1B799CA38D8F4E139DE97A2034DBD842"> 
+		  <cmd>Type the year in the 
+			 <uicontrol>Year</uicontrol> field.
+		  </cmd> 
+		</step> 
+		<step id="step_BC3B222928954E9FAD2B4E07B715F1C7"> 
+		  <cmd>(Optional) Uncheck 
+			 <uicontrol>Display Calendar</uicontrol>.
+		  </cmd> 
+		  <stepresult>The 
+			 <wintitle>calendar pane</wintitle> will not display the calendar for
+			 the month and year you enter.
+		  </stepresult> 
+		</step> 
+		<step id="step_EEACED14E32A4AD6ABC7E25AE0B90DAF"> 
+		  <cmd>Click 
+			 <uicontrol>Analyze</uicontrol>.
+		  </cmd> 
+		</step> 
+	 </steps> 
+	 <result id="result_E719290783764488861ECDD364E21C10">The day of the week
+		appears in the 
+		<uicontrol>Day Of The Week</uicontrol> field and, if 
+		<uicontrol>Display Calendar</uicontrol> is selected, the calendar for the
+		month and year you entered appears in the 
+		<wintitle>calendar pane</wintitle>.
+	 </result> 
+	 <example id="example_063C8F67E7784AAB8F7A9EF2CB2838B5">For example, to
+		calculate the day of the week that 2 February 2000 fell on, open the 
+		<term>Date Analysis Engine</term>. Select 
+		<userinput>2</userinput> from the 
+		<uicontrol>Day</uicontrol> drop-down box, select 
+		<userinput>February</userinput> from the 
+		<uicontrol>Month</uicontrol> drop-down box, and type 
+		<userinput>2000</userinput> in the 
+		<uicontrol>Year</uicontrol> field. Click 
+		<uicontrol>Enter</uicontrol>. The result of 
+		<systemoutput>Thursday</systemoutput> appears in the 
+		<uicontrol>Day Of The Week</uicontrol> field, and the calendar for
+		February 2000 appears in the 
+		<wintitle>calendar pane</wintitle>.
+	 </example> 
+  </taskbody>
+</task> 

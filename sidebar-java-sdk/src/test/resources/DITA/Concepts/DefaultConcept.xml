@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+"http://docs.oasis-open.org/dita/v1.1/OS/dtd/concept.dtd">
+<concept id="defaultconcept">
+  <title>Default Concept</title>
+
+  <shortdesc>This topic describes...</shortdesc>
+
+  <prolog>
+    <author type="creator">Heather Wymer</author>
+
+    <copyright>
+      <copyryear year="2008"/>
+
+      <copyrholder>M-Azlan Software</copyrholder>
+    </copyright>
+
+    <critdates>
+      <created date="X Oct 2008"/>
+    </critdates>
+
+    <metadata>
+      <keywords>
+        <keyword/>
+      </keywords>
+
+      <prodinfo>
+        <prodname/>
+
+        <vrmlist>
+          <vrm version="2 trial"/>
+        </vrmlist>
+      </prodinfo>
+    </metadata>
+  </prolog>
+
+  <conbody>
+    <p/>
+  </conbody>
+</concept>

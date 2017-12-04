@@ -1,0 +1,76 @@
+task generateThirdPartyLibraryReport(type: Copy, dependsOn: dependencyLicenseReport) {
+
+	def folder = new File('../sidebar-java-sdk-build/build/dependency-licenses')
+	if (!folder.exists()) {
+		folder.mkdirs()
+	}
+	from('build/reports/dependency-license') {
+		include '*.html'
+	}
+	into('../dependency-licenses')
+}
+
+task copyServerSelectorRessources(type: Copy, dependsOn: npm_install) {
+
+	doFirst {
+		def mainDir = new File('src/main/resources')
+		def subDir = new File(mainDir, 'server-selector')
+		if (subDir.exists()) {
+			def result = subDir.deleteDir()
+			assert result
+		}
+		subDir.mkdirs()
+		assert subDir.exists()
+	}
+
+	from('node_modules/acrolinx-sidebar-startpage/dist/dist-offline')
+	into('src/main/resources/server-selector')
+}
+
+task convertLocalizationEncoding() {
+
+	def dir = new File("$projectDir/src/main/resources/localization_iso-8859-1/")
+	if (!dir.exists()) {
+		dir.mkdirs()
+	}
+	def sourceDir = new File("$projectDir/src/main/resources/localization")
+	sourceDir.eachFile {
+		pFile ->
+			if (pFile.name.endsWith(".properties")) {
+				def f = pFile.getText('utf-8')
+				def pFileName = pFile.name
+				if (!pFileName.contains("_ja")){
+					def write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + pFileName)
+					write.createNewFile();
+					write.write(f, 'ISO-8859-1')
+				} else {
+					def write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + pFileName)
+					write.createNewFile();
+					StringBuilder b = new StringBuilder();
+					for (char c : f.toCharArray()) {
+						//noinspection GroovyAssignabilityCheck
+						if (c >= 128)
+						//noinspection GroovyAssignabilityCheck
+							b.append("\\u").append(String.format("%04X", (int) c));
+						else
+							b.append(c);
+					}
+					def string = b.toString();
+					write.write(string, 'ISO-8859-1')
+				}
+
+			}
+	}
+}
+
+task generateJavaDocs(type: Javadoc) {
+	source = sourceSets.main.allJava
+	destinationDir = new File(rootProject.projectDir, "docs/")
+}
+
+//npm_install.dependsOn npm_cache_clean
+
+//noinspection GroovyAssignabilityCheck,GroovyAssignabilityCheck
+processResources.dependsOn copyServerSelectorRessources
+processResources.dependsOn convertLocalizationEncoding
+processResources.dependsOn  generateThirdPartyLibraryReport

@@ -1,0 +1,1585 @@
+﻿<?xml version="1.0"?><!DOCTYPE task [
+  <!ATTLIST abbreviated-form
+    class CDATA "+ topic/term abbrev-d/abbreviated-form "
+  >
+  <!ATTLIST abstract
+    class CDATA "- topic/abstract "
+  >
+  <!ATTLIST alt
+    class CDATA "- topic/alt "
+  >
+  <!ATTLIST apiname
+    class CDATA "+ topic/keyword pr-d/apiname "
+  >
+  <!ATTLIST area
+    class CDATA "+ topic/figgroup ut-d/area "
+  >
+  <!ATTLIST audience
+    class CDATA "- topic/audience "
+  >
+  <!ATTLIST author
+    class CDATA "- topic/author "
+  >
+  <!ATTLIST b
+    class CDATA "+ topic/ph hi-d/b "
+  >
+  <!ATTLIST body
+    class CDATA "- topic/body "
+  >
+  <!ATTLIST bodydiv
+    class CDATA "- topic/bodydiv "
+  >
+  <!ATTLIST boolean
+    class CDATA "- topic/boolean "
+  >
+  <!ATTLIST brand
+    class CDATA "- topic/brand "
+  >
+  <!ATTLIST category
+    class CDATA "- topic/category "
+  >
+  <!ATTLIST change-completed
+    name CDATA "change-completed"
+    class CDATA "+ topic/data relmgmt-d/change-completed "
+  >
+  <!ATTLIST change-historylist
+    class CDATA "+ topic/metadata relmgmt-d/change-historylist "
+  >
+  <!ATTLIST change-item
+    name CDATA "change-item"
+    class CDATA "+ topic/data relmgmt-d/change-item "
+  >
+  <!ATTLIST change-organization
+    name CDATA "change-organization"
+    class CDATA "+ topic/data relmgmt-d/change-organization "
+  >
+  <!ATTLIST change-person
+    name CDATA "change-person"
+    class CDATA "+ topic/data relmgmt-d/change-person "
+  >
+  <!ATTLIST change-request-id
+    name CDATA "change-request-id"
+    class CDATA "+ topic/data relmgmt-d/change-request-id "
+  >
+  <!ATTLIST change-request-reference
+    name CDATA "change-request-reference"
+    class CDATA "+ topic/data relmgmt-d/change-request-reference "
+  >
+  <!ATTLIST change-request-system
+    name CDATA "change-request-system"
+    class CDATA "+ topic/data relmgmt-d/change-request-system "
+  >
+  <!ATTLIST change-revisionid
+    name CDATA "change-revisionid"
+    class CDATA "+ topic/data relmgmt-d/change-revisionid "
+  >
+  <!ATTLIST change-started
+    name CDATA "change-started"
+    class CDATA "+ topic/data relmgmt-d/change-started "
+  >
+  <!ATTLIST change-summary
+    name CDATA "change-summary"
+    class CDATA "+ topic/data relmgmt-d/change-summary "
+  >
+  <!ATTLIST chdesc
+    class CDATA "- topic/stentry task/chdesc "
+  >
+  <!ATTLIST chdeschd
+    class CDATA "- topic/stentry task/chdeschd "
+  >
+  <!ATTLIST chhead
+    class CDATA "- topic/sthead task/chhead "
+  >
+  <!ATTLIST choice
+    class CDATA "- topic/li task/choice "
+  >
+  <!ATTLIST choices
+    class CDATA "- topic/ul task/choices "
+  >
+  <!ATTLIST choicetable
+    keycol CDATA "1"
+    class CDATA "- topic/simpletable task/choicetable "
+  >
+  <!ATTLIST choption
+    class CDATA "- topic/stentry task/choption "
+  >
+  <!ATTLIST choptionhd
+    class CDATA "- topic/stentry task/choptionhd "
+  >
+  <!ATTLIST chrow
+    class CDATA "- topic/strow task/chrow "
+  >
+  <!ATTLIST cite
+    class CDATA "- topic/cite "
+  >
+  <!ATTLIST cmd
+    class CDATA "- topic/ph task/cmd "
+  >
+  <!ATTLIST cmdname
+    class CDATA "+ topic/keyword sw-d/cmdname "
+  >
+  <!ATTLIST codeblock
+    xml:space (default|preserve) "preserve"
+    class CDATA "+ topic/pre pr-d/codeblock "
+  >
+  <!ATTLIST codeph
+    class CDATA "+ topic/ph pr-d/codeph "
+  >
+  <!ATTLIST coderef
+    class CDATA "+ topic/xref pr-d/coderef "
+  >
+  <!ATTLIST colspec
+    rowheader CDATA "headers"
+    class CDATA "- topic/colspec "
+  >
+  <!ATTLIST component
+    class CDATA "- topic/component "
+  >
+  <!ATTLIST consequence
+    class CDATA "+ topic/li hazard-d/consequence "
+  >
+  <!ATTLIST context
+    class CDATA "- topic/section task/context "
+  >
+  <!ATTLIST coords
+    translate CDATA "no"
+    class CDATA "+ topic/ph ut-d/coords "
+  >
+  <!ATTLIST copyrholder
+    class CDATA "- topic/copyrholder "
+  >
+  <!ATTLIST copyright
+    class CDATA "- topic/copyright "
+  >
+  <!ATTLIST copyryear
+    class CDATA "- topic/copyryear "
+  >
+  <!ATTLIST created
+    class CDATA "- topic/created "
+  >
+  <!ATTLIST critdates
+    class CDATA "- topic/critdates "
+  >
+  <!ATTLIST data
+    class CDATA "- topic/data "
+  >
+  <!ATTLIST data-about
+    class CDATA "- topic/data-about "
+  >
+  <!ATTLIST dd
+    class CDATA "- topic/dd "
+  >
+  <!ATTLIST ddhd
+    class CDATA "- topic/ddhd "
+  >
+  <!ATTLIST delim
+    class CDATA "+ topic/ph pr-d/delim "
+  >
+  <!ATTLIST desc
+    class CDATA "- topic/desc "
+  >
+  <!ATTLIST div
+    class CDATA "- topic/div "
+  >
+  <!ATTLIST dl
+    class CDATA "- topic/dl "
+  >
+  <!ATTLIST dlentry
+    class CDATA "- topic/dlentry "
+  >
+  <!ATTLIST dlhead
+    class CDATA "- topic/dlhead "
+  >
+  <!ATTLIST draft-comment
+    translate CDATA "no"
+    class CDATA "- topic/draft-comment "
+  >
+  <!ATTLIST dt
+    class CDATA "- topic/dt "
+  >
+  <!ATTLIST dthd
+    class CDATA "- topic/dthd "
+  >
+  <!ATTLIST entry
+    class CDATA "- topic/entry "
+  >
+  <!ATTLIST equation-block
+    class CDATA "+ topic/div equation-d/equation-block "
+  >
+  <!ATTLIST equation-figure
+    class CDATA "+ topic/fig equation-d/equation-figure "
+  >
+  <!ATTLIST equation-inline
+    class CDATA "+ topic/ph equation-d/equation-inline "
+  >
+  <!ATTLIST equation-number
+    class CDATA "+ topic/ph equation-d/equation-number "
+  >
+  <!ATTLIST example
+    class CDATA "- topic/example "
+  >
+  <!ATTLIST featnum
+    class CDATA "- topic/featnum "
+  >
+  <!ATTLIST fig
+    class CDATA "- topic/fig "
+  >
+  <!ATTLIST figgroup
+    class CDATA "- topic/figgroup "
+  >
+  <!ATTLIST filepath
+    class CDATA "+ topic/ph sw-d/filepath "
+  >
+  <!ATTLIST fn
+    class CDATA "- topic/fn "
+  >
+  <!ATTLIST foreign
+    class CDATA "- topic/foreign "
+  >
+  <!ATTLIST fragment
+    class CDATA "+ topic/figgroup pr-d/fragment "
+  >
+  <!ATTLIST fragref
+    class CDATA "+ topic/xref pr-d/fragref "
+  >
+  <!ATTLIST groupchoice
+    class CDATA "+ topic/figgroup pr-d/groupchoice "
+  >
+  <!ATTLIST groupcomp
+    class CDATA "+ topic/figgroup pr-d/groupcomp "
+  >
+  <!ATTLIST groupseq
+    class CDATA "+ topic/figgroup pr-d/groupseq "
+  >
+  <!ATTLIST hazardstatement
+    class CDATA "+ topic/note hazard-d/hazardstatement "
+  >
+  <!ATTLIST hazardsymbol
+    placement CDATA "inline"
+    class CDATA "+ topic/image hazard-d/hazardsymbol "
+  >
+  <!ATTLIST howtoavoid
+    class CDATA "+ topic/li hazard-d/howtoavoid "
+  >
+  <!ATTLIST i
+    class CDATA "+ topic/ph hi-d/i "
+  >
+  <!ATTLIST image
+    placement CDATA "inline"
+    class CDATA "- topic/image "
+  >
+  <!ATTLIST imagemap
+    class CDATA "+ topic/fig ut-d/imagemap "
+  >
+  <!ATTLIST index-base
+    class CDATA "- topic/index-base "
+  >
+  <!ATTLIST index-see
+    class CDATA "+ topic/index-base indexing-d/index-see "
+  >
+  <!ATTLIST index-see-also
+    class CDATA "+ topic/index-base indexing-d/index-see-also "
+  >
+  <!ATTLIST index-sort-as
+    class CDATA "+ topic/index-base indexing-d/index-sort-as "
+  >
+  <!ATTLIST indexterm
+    class CDATA "- topic/indexterm "
+  >
+  <!ATTLIST indextermref
+    class CDATA "- topic/indextermref "
+  >
+  <!ATTLIST info
+    class CDATA "- topic/itemgroup task/info "
+  >
+  <!ATTLIST itemgroup
+    class CDATA "- topic/itemgroup "
+  >
+  <!ATTLIST keyword
+    class CDATA "- topic/keyword "
+  >
+  <!ATTLIST keywords
+    class CDATA "- topic/keywords "
+  >
+  <!ATTLIST kwd
+    class CDATA "+ topic/keyword pr-d/kwd "
+  >
+  <!ATTLIST li
+    class CDATA "- topic/li "
+  >
+  <!ATTLIST line-through
+    class CDATA "+ topic/ph hi-d/line-through "
+  >
+  <!ATTLIST lines
+    xml:space (default|preserve) "preserve"
+    class CDATA "- topic/lines "
+  >
+  <!ATTLIST link
+    class CDATA "- topic/link "
+  >
+  <!ATTLIST linkinfo
+    class CDATA "- topic/linkinfo "
+  >
+  <!ATTLIST linklist
+    class CDATA "- topic/linklist "
+  >
+  <!ATTLIST linkpool
+    class CDATA "- topic/linkpool "
+  >
+  <!ATTLIST linktext
+    class CDATA "- topic/linktext "
+  >
+  <!ATTLIST longdescref
+    class CDATA "- topic/longdescref "
+  >
+  <!ATTLIST longquoteref
+    class CDATA "- topic/longquoteref "
+  >
+  <!ATTLIST lq
+    class CDATA "- topic/lq "
+  >
+  <!ATTLIST m:abs
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:and
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:annotation
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:annotation-xml
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:apply
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:approx
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arccos
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arccosh
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arccot
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arccoth
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arccsc
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arccsch
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arcsec
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arcsech
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arcsin
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arcsinh
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arctan
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arctanh
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:arg
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:bind
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:card
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:cartesianproduct
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:cbytes
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:ceiling
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:cerror
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:ci
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:cn
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:codomain
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:complexes
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:compose
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:conjugate
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:cos
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:cosh
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:cot
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:coth
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:cs
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:csc
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:csch
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:csymbol
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:curl
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:determinant
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:diff
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:divergence
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:divide
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:domain
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:emptyset
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:eq
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:equivalent
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:eulergamma
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:exists
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:exp
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:exponentiale
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:factorial
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:factorof
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:false
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:floor
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:forall
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:gcd
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:geq
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:grad
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:gt
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:ident
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:image
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:imaginary
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:imaginaryi
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:implies
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:in
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:infinity
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:int
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:integers
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:intersect
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:interval
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:inverse
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:lambda
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:laplacian
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:lcm
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:leq
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:limit
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:list
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:ln
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:log
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:lt
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:maction
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:maligngroup
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:malignmark
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:math
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:matrix
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:matrixrow
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:max
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mean
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:median
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:menclose
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:merror
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mfenced
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mfrac
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mglyph
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mi
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:min
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:minus
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mlabeledtr
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mlongdiv
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mmultiscripts
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mn
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mo
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mode
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:moment
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mover
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mpadded
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mphantom
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mprescripts
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mroot
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mrow
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:ms
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mscarries
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mscarry
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:msgroup
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:msline
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mspace
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:msqrt
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:msrow
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mstack
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mstyle
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:msub
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:msubsup
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:msup
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mtable
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mtd
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mtext
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:mtr
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:munder
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:munderover
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:naturalnumbers
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:neq
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:none
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:not
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:notanumber
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:notin
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:notprsubset
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:notsubset
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:or
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:otherwise
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:outerproduct
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:partialdiff
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:pi
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:piece
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:piecewise
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:plus
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:power
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:primes
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:product
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:prsubset
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:quotient
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:rationals
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:real
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:reals
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:rem
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:root
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:scalarproduct
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:sdev
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:sec
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:sech
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:selector
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:semantics
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:set
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:setdiff
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:share
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:sin
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:sinh
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:subset
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:sum
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:tan
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:tanh
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:tendsto
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:times
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:transpose
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:true
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:union
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:variance
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:vector
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:vectorproduct
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST m:xor
+    xmlns:m CDATA "http://www.w3.org/1998/Math/MathML"
+  >
+  <!ATTLIST markupname
+    class CDATA "+ topic/keyword markup-d/markupname "
+  >
+  <!ATTLIST mathml
+    class CDATA "+ topic/foreign mathml-d/mathml "
+  >
+  <!ATTLIST mathmlref
+    format CDATA "mml"
+    class CDATA "+ topic/xref mathml-d/mathmlref "
+  >
+  <!ATTLIST menucascade
+    class CDATA "+ topic/ph ui-d/menucascade "
+  >
+  <!ATTLIST messagepanel
+    class CDATA "+ topic/ul hazard-d/messagepanel "
+  >
+  <!ATTLIST metadata
+    class CDATA "- topic/metadata "
+  >
+  <!ATTLIST msgblock
+    xml:space (default|preserve) "preserve"
+    class CDATA "+ topic/pre sw-d/msgblock "
+  >
+  <!ATTLIST msgnum
+    class CDATA "+ topic/keyword sw-d/msgnum "
+  >
+  <!ATTLIST msgph
+    class CDATA "+ topic/ph sw-d/msgph "
+  >
+  <!ATTLIST navtitle
+    class CDATA "- topic/navtitle "
+  >
+  <!ATTLIST no-topic-nesting
+    class CDATA "- topic/no-topic-nesting "
+  >
+  <!ATTLIST note
+    class CDATA "- topic/note "
+  >
+  <!ATTLIST numcharref
+    class CDATA "+ topic/keyword markup-d/markupname xml-d/numcharref "
+  >
+  <!ATTLIST object
+    class CDATA "- topic/object "
+  >
+  <!ATTLIST ol
+    class CDATA "- topic/ol "
+  >
+  <!ATTLIST oper
+    class CDATA "+ topic/ph pr-d/oper "
+  >
+  <!ATTLIST option
+    class CDATA "+ topic/keyword pr-d/option "
+  >
+  <!ATTLIST othermeta
+    class CDATA "- topic/othermeta "
+  >
+  <!ATTLIST overline
+    class CDATA "+ topic/ph hi-d/overline "
+  >
+  <!ATTLIST p
+    class CDATA "- topic/p "
+  >
+  <!ATTLIST param
+    class CDATA "- topic/param "
+  >
+  <!ATTLIST parameterentity
+    class CDATA "+ topic/keyword markup-d/markupname xml-d/parameterentity "
+  >
+  <!ATTLIST parml
+    class CDATA "+ topic/dl pr-d/parml "
+  >
+  <!ATTLIST parmname
+    class CDATA "+ topic/keyword pr-d/parmname "
+  >
+  <!ATTLIST pd
+    class CDATA "+ topic/dd pr-d/pd "
+  >
+  <!ATTLIST permissions
+    class CDATA "- topic/permissions "
+  >
+  <!ATTLIST ph
+    class CDATA "- topic/ph "
+  >
+  <!ATTLIST platform
+    class CDATA "- topic/platform "
+  >
+  <!ATTLIST plentry
+    class CDATA "+ topic/dlentry pr-d/plentry "
+  >
+  <!ATTLIST postreq
+    class CDATA "- topic/section task/postreq "
+  >
+  <!ATTLIST pre
+    xml:space (default|preserve) "preserve"
+    class CDATA "- topic/pre "
+  >
+  <!ATTLIST prereq
+    class CDATA "- topic/section task/prereq "
+  >
+  <!ATTLIST prodinfo
+    class CDATA "- topic/prodinfo "
+  >
+  <!ATTLIST prodname
+    class CDATA "- topic/prodname "
+  >
+  <!ATTLIST prognum
+    class CDATA "- topic/prognum "
+  >
+  <!ATTLIST prolog
+    class CDATA "- topic/prolog "
+  >
+  <!ATTLIST pt
+    class CDATA "+ topic/dt pr-d/pt "
+  >
+  <!ATTLIST publisher
+    class CDATA "- topic/publisher "
+  >
+  <!ATTLIST q
+    class CDATA "- topic/q "
+  >
+  <!ATTLIST related-links
+    class CDATA "- topic/related-links "
+  >
+  <!ATTLIST repsep
+    class CDATA "+ topic/ph pr-d/repsep "
+  >
+  <!ATTLIST required-cleanup
+    translate CDATA "no"
+    class CDATA "- topic/required-cleanup "
+  >
+  <!ATTLIST resourceid
+    ux-source-priority CDATA "topic-and-map"
+    class CDATA "- topic/resourceid "
+  >
+  <!ATTLIST result
+    class CDATA "- topic/section task/result "
+  >
+  <!ATTLIST revised
+    class CDATA "- topic/revised "
+  >
+  <!ATTLIST row
+    class CDATA "- topic/row "
+  >
+  <!ATTLIST screen
+    xml:space (default|preserve) "preserve"
+    class CDATA "+ topic/pre ui-d/screen "
+  >
+  <!ATTLIST searchtitle
+    class CDATA "- topic/searchtitle "
+  >
+  <!ATTLIST section
+    class CDATA "- topic/section "
+  >
+  <!ATTLIST sectiondiv
+    class CDATA "- topic/sectiondiv "
+  >
+  <!ATTLIST sep
+    class CDATA "+ topic/ph pr-d/sep "
+  >
+  <!ATTLIST series
+    class CDATA "- topic/series "
+  >
+  <!ATTLIST shape
+    translate CDATA "no"
+    class CDATA "+ topic/keyword ut-d/shape "
+  >
+  <!ATTLIST shortcut
+    class CDATA "+ topic/keyword ui-d/shortcut "
+  >
+  <!ATTLIST shortdesc
+    class CDATA "- topic/shortdesc "
+  >
+  <!ATTLIST simpletable
+    class CDATA "- topic/simpletable "
+  >
+  <!ATTLIST sl
+    class CDATA "- topic/sl "
+  >
+  <!ATTLIST sli
+    class CDATA "- topic/sli "
+  >
+  <!ATTLIST sort-as
+    name CDATA "sort-as"
+    class CDATA "+ topic/data ut-d/sort-as "
+  >
+  <!ATTLIST source
+    class CDATA "- topic/source "
+  >
+  <!ATTLIST state
+    class CDATA "- topic/state "
+  >
+  <!ATTLIST stentry
+    class CDATA "- topic/stentry "
+  >
+  <!ATTLIST step
+    class CDATA "- topic/li task/step "
+  >
+  <!ATTLIST stepresult
+    class CDATA "- topic/itemgroup task/stepresult "
+  >
+  <!ATTLIST steps
+    class CDATA "- topic/ol task/steps "
+  >
+  <!ATTLIST steps-informal
+    class CDATA "- topic/section task/steps-informal "
+  >
+  <!ATTLIST steps-unordered
+    class CDATA "- topic/ul task/steps-unordered "
+  >
+  <!ATTLIST stepsection
+    class CDATA "- topic/li task/stepsection "
+  >
+  <!ATTLIST steptroubleshooting
+    class CDATA "- topic/itemgroup task/steptroubleshooting "
+  >
+  <!ATTLIST stepxmp
+    class CDATA "- topic/itemgroup task/stepxmp "
+  >
+  <!ATTLIST sthead
+    class CDATA "- topic/sthead "
+  >
+  <!ATTLIST strow
+    class CDATA "- topic/strow "
+  >
+  <!ATTLIST sub
+    class CDATA "+ topic/ph hi-d/sub "
+  >
+  <!ATTLIST substep
+    class CDATA "- topic/li task/substep "
+  >
+  <!ATTLIST substeps
+    class CDATA "- topic/ol task/substeps "
+  >
+  <!ATTLIST sup
+    class CDATA "+ topic/ph hi-d/sup "
+  >
+  <!ATTLIST svg-container
+    class CDATA "+ topic/foreign svg-d/svg-container "
+  >
+  <!ATTLIST svg:a
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "replace"
+    xlink:actuate CDATA "onRequest"
+  >
+  <!ATTLIST svg:altGlyph
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:animate
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+    restart CDATA "always"
+    fill CDATA "remove"
+    calcMode CDATA "linear"
+    additive CDATA "replace"
+    accumulate CDATA "none"
+  >
+  <!ATTLIST svg:animateColor
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+    restart CDATA "always"
+    fill CDATA "remove"
+    calcMode CDATA "linear"
+    additive CDATA "replace"
+    accumulate CDATA "none"
+  >
+  <!ATTLIST svg:animateMotion
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+    restart CDATA "always"
+    fill CDATA "remove"
+    additive CDATA "replace"
+    accumulate CDATA "none"
+    calcMode CDATA "paced"
+  >
+  <!ATTLIST svg:animateTransform
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+    restart CDATA "always"
+    fill CDATA "remove"
+    calcMode CDATA "linear"
+    additive CDATA "replace"
+    accumulate CDATA "none"
+    type CDATA "translate"
+  >
+  <!ATTLIST svg:color-profile
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+    rendering-intent CDATA "auto"
+  >
+  <!ATTLIST svg:cursor
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:feBlend
+    mode CDATA "normal"
+  >
+  <!ATTLIST svg:feColorMatrix
+    type CDATA "matrix"
+  >
+  <!ATTLIST svg:feComposite
+    operator CDATA "over"
+  >
+  <!ATTLIST svg:feConvolveMatrix
+    edgeMode CDATA "duplicate"
+  >
+  <!ATTLIST svg:feDisplacementMap
+    xChannelSelector CDATA "A"
+    yChannelSelector CDATA "A"
+  >
+  <!ATTLIST svg:feImage
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "embed"
+    xlink:actuate CDATA "onLoad"
+    preserveAspectRatio CDATA "xMidYMid meet"
+  >
+  <!ATTLIST svg:feMorphology
+    operator CDATA "erode"
+  >
+  <!ATTLIST svg:feTurbulence
+    stitchTiles CDATA "noStitch"
+    type CDATA "turbulence"
+  >
+  <!ATTLIST svg:filter
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:font-face-uri
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:glyphRef
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:image
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "embed"
+    xlink:actuate CDATA "onLoad"
+    preserveAspectRatio CDATA "xMidYMid meet"
+  >
+  <!ATTLIST svg:linearGradient
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:marker
+    preserveAspectRatio CDATA "xMidYMid meet"
+  >
+  <!ATTLIST svg:mpath
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:pattern
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+    preserveAspectRatio CDATA "xMidYMid meet"
+  >
+  <!ATTLIST svg:radialGradient
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:script
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:set
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+    restart CDATA "always"
+    fill CDATA "remove"
+  >
+  <!ATTLIST svg:style
+    xml:space (default|preserve) "preserve"
+  >
+  <!ATTLIST svg:svg
+    xmlns:svg CDATA "http://www.w3.org/2000/svg"
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    preserveAspectRatio CDATA "xMidYMid meet"
+    zoomAndPan CDATA "magnify"
+    version CDATA "1.1"
+    contentScriptType CDATA "application/ecmascript"
+    contentStyleType CDATA "text/css"
+  >
+  <!ATTLIST svg:symbol
+    preserveAspectRatio CDATA "xMidYMid meet"
+  >
+  <!ATTLIST svg:textPath
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:tref
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "other"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:use
+    xmlns:xlink CDATA "http://www.w3.org/1999/xlink"
+    xlink:type CDATA "simple"
+    xlink:show CDATA "embed"
+    xlink:actuate CDATA "onLoad"
+  >
+  <!ATTLIST svg:view
+    preserveAspectRatio CDATA "xMidYMid meet"
+    zoomAndPan CDATA "magnify"
+  >
+  <!ATTLIST svgref
+    format CDATA "svg"
+    class CDATA "+ topic/xref svg-d/svgref "
+  >
+  <!ATTLIST synblk
+    class CDATA "+ topic/figgroup pr-d/synblk "
+  >
+  <!ATTLIST synnote
+    class CDATA "+ topic/fn pr-d/synnote "
+  >
+  <!ATTLIST synnoteref
+    class CDATA "+ topic/xref pr-d/synnoteref "
+  >
+  <!ATTLIST synph
+    class CDATA "+ topic/ph pr-d/synph "
+  >
+  <!ATTLIST syntaxdiagram
+    class CDATA "+ topic/fig pr-d/syntaxdiagram "
+  >
+  <!ATTLIST systemoutput
+    class CDATA "+ topic/ph sw-d/systemoutput "
+  >
+  <!ATTLIST table
+    class CDATA "- topic/table "
+  >
+  <!ATTLIST task
+    xmlns:ditaarch CDATA "http://dita.oasis-open.org/architecture/2005/"
+    ditaarch:DITAArchVersion CDATA "1.3"
+    domains CDATA "(topic task)
+                           (topic abbrev-d)
+                           a(props deliveryTarget)
+                           (topic equation-d)
+                           (topic hazard-d)
+                           (topic hi-d)
+                           (topic indexing-d)
+                           (topic markup-d)
+                           (topic mathml-d)
+                           (topic pr-d)
+                           (topic relmgmt-d)
+                           (topic sw-d)
+                           (topic svg-d)
+                           (topic ui-d)
+                           (topic ut-d)
+                           (topic markup-d xml-d)
+                           (topic task strictTaskbody-c)
+  "
+    class CDATA "- topic/topic task/task "
+  >
+  <!ATTLIST taskbody
+    class CDATA "- topic/body task/taskbody "
+  >
+  <!ATTLIST tasktroubleshooting
+    class CDATA "- topic/section task/tasktroubleshooting "
+  >
+  <!ATTLIST tbody
+    class CDATA "- topic/tbody "
+  >
+  <!ATTLIST term
+    class CDATA "- topic/term "
+  >
+  <!ATTLIST text
+    class CDATA "- topic/text "
+  >
+  <!ATTLIST textentity
+    class CDATA "+ topic/keyword markup-d/markupname xml-d/textentity "
+  >
+  <!ATTLIST tgroup
+    class CDATA "- topic/tgroup "
+  >
+  <!ATTLIST thead
+    class CDATA "- topic/thead "
+  >
+  <!ATTLIST title
+    class CDATA "- topic/title "
+  >
+  <!ATTLIST titlealts
+    class CDATA "- topic/titlealts "
+  >
+  <!ATTLIST tm
+    class CDATA "- topic/tm "
+  >
+  <!ATTLIST topic
+    xmlns:ditaarch CDATA "http://dita.oasis-open.org/architecture/2005/"
+    ditaarch:DITAArchVersion CDATA "1.3"
+    domains CDATA "(topic task)
+                           (topic abbrev-d)
+                           a(props deliveryTarget)
+                           (topic equation-d)
+                           (topic hazard-d)
+                           (topic hi-d)
+                           (topic indexing-d)
+                           (topic markup-d)
+                           (topic mathml-d)
+                           (topic pr-d)
+                           (topic relmgmt-d)
+                           (topic sw-d)
+                           (topic svg-d)
+                           (topic ui-d)
+                           (topic ut-d)
+                           (topic markup-d xml-d)
+                           (topic task strictTaskbody-c)
+  "
+    class CDATA "- topic/topic "
+  >
+  <!ATTLIST tt
+    class CDATA "+ topic/ph hi-d/tt "
+  >
+  <!ATTLIST tutorialinfo
+    class CDATA "- topic/itemgroup task/tutorialinfo "
+  >
+  <!ATTLIST typeofhazard
+    class CDATA "+ topic/li hazard-d/typeofhazard "
+  >
+  <!ATTLIST u
+    class CDATA "+ topic/ph hi-d/u "
+  >
+  <!ATTLIST uicontrol
+    class CDATA "+ topic/ph ui-d/uicontrol "
+  >
+  <!ATTLIST ul
+    class CDATA "- topic/ul "
+  >
+  <!ATTLIST unknown
+    class CDATA "- topic/unknown "
+  >
+  <!ATTLIST userinput
+    class CDATA "+ topic/ph sw-d/userinput "
+  >
+  <!ATTLIST var
+    class CDATA "+ topic/ph pr-d/var "
+  >
+  <!ATTLIST varname
+    class CDATA "+ topic/keyword sw-d/varname "
+  >
+  <!ATTLIST vrm
+    class CDATA "- topic/vrm "
+  >
+  <!ATTLIST vrmlist
+    class CDATA "- topic/vrmlist "
+  >
+  <!ATTLIST wintitle
+    class CDATA "+ topic/keyword ui-d/wintitle "
+  >
+  <!ATTLIST xmlatt
+    class CDATA "+ topic/keyword markup-d/markupname xml-d/xmlatt "
+  >
+  <!ATTLIST xmlelement
+    class CDATA "+ topic/keyword markup-d/markupname xml-d/xmlelement "
+  >
+  <!ATTLIST xmlnsname
+    class CDATA "+ topic/keyword markup-d/markupname xml-d/xmlnsname "
+  >
+  <!ATTLIST xmlpi
+    class CDATA "+ topic/keyword markup-d/markupname xml-d/xmlpi "
+  >
+  <!ATTLIST xref
+    class CDATA "- topic/xref "
+  >
+]>
+<!-- Created with XMetaL (http://www.xmetal.com) -->
+<task id="calculatingtime"> 
+  <title>Calculating time</title> 
+  <shortdesc>This topic describes how to use the 
+	 <term>World Time Pro</term> to add, subtract, multiply and divide units of
+	 time.
+  </shortdesc> 
+  <prolog> 
+	 <author type="creator">Heather Wymer</author>
+	 <copyright> 
+		<copyryear year="2008"/> 
+		<copyrholder>M-Azlan Software</copyrholder> 
+	 </copyright> 
+	 <critdates> 
+		<created date="4 Oct 2008"/> </critdates>
+	 <metadata> 
+		<keywords> 
+		  <keyword>add</keyword> 
+		  <keyword>subtract</keyword> 
+		  <keyword>multiply</keyword> 
+		  <keyword>divide</keyword> 
+		  <keyword>hours</keyword> 
+		  <keyword>minutes</keyword> 
+		  <keyword>seconds</keyword> 
+		  <keyword>main calculation pane</keyword> 
+		</keywords> 
+		<prodinfo> 
+		  <prodname>World Time Pro</prodname> 
+		  <vrmlist> 
+			 <vrm version="2 trial"/> 
+		  </vrmlist> 
+		</prodinfo> </metadata>
+  </prolog> 
+  <taskbody> 
+	 <context id="context_BBCEFE74A8B549F8894E14BB217F1B13">This procedure
+		explains how to use the 
+		<term>World Time Pro</term> to perform simple calculations on units of
+		time. For example, you may be managing a two-day sporting event, and need to
+		add two times together to find a competitor's total time. Using the 
+		<term>World Time Pro</term> ensures you can quickly and accurately
+		calculate the competitor's total time.
+		<note type="note">If you need to use the result of a calculation in
+		  another calculation, click 
+		  <uicontrol>Pass Value</uicontrol>. This button copies the values in the
+		  
+		  <uicontrol>result fields</uicontrol> to the upper row of entry fields.
+		</note>
+	 </context> 
+	 <steps id="steps_FEC436F7E5284103AEFB402CE9C34C23"> 
+		<step id="step_BF62E1D0815D460B83D063FBCE9031ED"> 
+		  <cmd>In the 
+			 <wintitle>main calculation pane</wintitle>, type the first time in
+			 your equation in the upper row of entry fields.
+		  </cmd> 
+		</step> 
+		<step id="step_25AEA05E37EE41B18D487B01821F5563"> 
+		  <cmd>Click the appropriate 
+			 <uicontrol>operation button</uicontrol>.
+		  </cmd> 
+		  <stepresult>If you click muliply or divide, the lower row of entry
+			 fields are replaced with the 
+			 <uicontrol>Constant 
+			 </uicontrol>field.
+		  </stepresult> 
+		</step> 
+		<step id="step_20F3B9F2A52749ECBD2E32111E3DBABD"> 
+		  <cmd>Type the time to add or subtract, or the number to multiply or
+			 divide by, into the lower row of entry fields.
+		  </cmd> 
+		  <info>
+			 <note type="attention">You must click an 
+				<uicontrol>operation button</uicontrol> before typing numbers in
+				the lower row of entry fields. Clicking an 
+				<uicontrol>operation button</uicontrol> deletes all values in the
+				lower row of entry fields. 
+			 </note>
+		  </info> 
+		</step> 
+		<step id="step_A02D9B92F5A84A559882BD4B01FDAECA"> 
+		  <cmd>Click 
+			 <uicontrol>Equals</uicontrol>.
+		  </cmd> 
+		</step> 
+	 </steps> 
+	 <result id="result_16EFD7AED7EE44B28F03613811DABF50">The result of your
+		calculation appears in the 
+		<uicontrol>result fields</uicontrol>.
+	 </result> 
+	 <example id="example_AF5E421D610B42BDAFEC3333C8B1C4B7">For example, to add
+		3 hours 30 min 43 sec and 4 hours 38 min 13 sec, type 
+		<userinput>3 30 43</userinput> in the upper row of entry fields, click 
+		<uicontrol>Plus</uicontrol>, type 
+		<userinput>4 38 13</userinput> in the lower row of entry fields and click
+		
+		<uicontrol>Equals</uicontrol>. The result of 
+		<systemoutput>8 hours 8 min 56 sec</systemoutput> appears in the 
+		<uicontrol>result fields</uicontrol>.
+	 </example> 
+  </taskbody>
+</task>

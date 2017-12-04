@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!-- Created with XMetaL (http://www.xmetal.com) -->
+<task id="calculatingelapsedtime"> 
+  <title>Calculating 
+	 <term>elapsed time</term></title> 
+  <shortdesc>This topic describes how to calculate the 
+	 <term>elapsed time</term> between two different times of the day, such as
+	 the length of time between 11.50 am and 4.23 pm.
+  </shortdesc> 
+  <prolog> 
+	 <author type="creator">Heather Wymer</author>
+	 <critdates> 
+		<created date="4 Oct 2008"/> </critdates>
+	 <metadata> 
+		<keywords> 
+		  <keyword>military time</keyword> 
+		  <keyword>elapsed time</keyword> 
+		  <keyword>hours</keyword> 
+		  <keyword>minutes</keyword> 
+		  <keyword>seconds</keyword> 
+		  <keyword>main calculation pane</keyword> 
+		</keywords> 
+		<prodinfo> 
+		  <prodname>World Time Pro</prodname> 
+		  <vrmlist> 
+			 <vrm version="2"/> 
+		  </vrmlist> 
+		</prodinfo> </metadata>
+  </prolog> 
+  <taskbody> 
+	 <prereq id="prereq_B78E8A27727D40C9AD95A04F07B46EE8">Use the 
+		<wintitle>Standard/Military Time Converter</wintitle> to convert 
+		<term>standard times</term> to 
+		<term>military times</term> before beginning this procedure.
+	 </prereq> 
+	 <context id="context_D250057A362E4D38AE692930F555572A">It can be difficult
+		to work out how long has passed between two times of day, especially if one
+		time is in the morning and the other in the evening. This procedure explains
+		how to use the 
+		<term>World Time Pro</term> to easily calculate the 
+		<term>elapsed time</term> between two times of day.
+	 </context> 
+	 <steps id="steps_D330E6F1F99443E8B406413BA071E50C"> 
+		<step id="step_6575D6439896412DBA9F519BAF8B5A6C"> 
+		  <cmd>In the 
+			 <wintitle>main calculation pane</wintitle>, type the later time of
+			 day in the 
+			 <uicontrol>Hour</uicontrol> and 
+			 <uicontrol>Min</uicontrol> fields in the upper row of entry fields.
+		  </cmd> 
+		  <info>
+			 <note type="attention">The time must be in 
+				<term>military time</term>.
+			 </note>
+		  </info> 
+		</step> 
+		<step id="step_F1C87E68887647208B92722644F38944"> 
+		  <cmd>Click 
+			 <uicontrol>Minus</uicontrol>.
+		  </cmd> 
+		</step> 
+		<step id="step_E3719AD26CCB48C2B3D954E2E54D39C0"> 
+		  <cmd>Type the earlier time of day in the 
+			 <uicontrol>Hour 
+			 </uicontrol>and 
+			 <uicontrol>Min</uicontrol> fields in the lower row of entry fields.
+		  </cmd> 
+		  <info>
+			 <note type="attention">The time must be in 
+				<term>military time</term>.
+			 </note>
+		  </info> 
+		</step> 
+		<step id="step_73D750F72DE44939A99F0A6CF277D456"> 
+		  <cmd>Click 
+			 <uicontrol>Equals</uicontrol>.
+		  </cmd> 
+		</step> 
+	 </steps> 
+	 <result id="result_EA7F0BC713D84AADBF9D574B39779A06">The elapsed time
+		appears in the 
+		<uicontrol>result fields</uicontrol>.
+	 </result> 
+	 <example id="example_CD72F58DC23A4AEBB93AF0B1FD368E57">For example, to
+		calculate how much time has passed between 11.50 am and 4.23 pm, use the 
+		<wintitle>Standard/Military Time Converter</wintitle> to convert the
+		times to 
+		<term>military time</term>. 4.23 pm becomes 16.23, and 11.50 am becomes
+		11.50. Type 
+		<userinput>16 23</userinput> in the upper row of entry fields, click 
+		<uicontrol>Minus</uicontrol>, and type 
+		<userinput>11 50</userinput> in the lower row of entry fields. Click 
+		<uicontrol>Equals</uicontrol>. The result of 
+		<systemoutput>4 hours 33 min</systemoutput> appears in the 
+		<uicontrol>result fields</uicontrol>.
+	 </example> 
+  </taskbody>
+</task>

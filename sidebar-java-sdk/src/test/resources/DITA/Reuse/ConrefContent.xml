@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dita PUBLIC "-//OASIS//DTD DITA Composite//EN" "http://docs.oasis-open.org/dita/dtd/ditabase.dtd">
+<dita> 
+  <topic id="hyperlinks"> 
+	 <title>Hyperlinks</title> 
+	 <body> 
+		<p>This topic is not to be published. It is a container to hold
+		  hyperlinks. 
+		</p> 
+		<p><xref href="http://www.example.com/worldtimepro"
+		  id="wtpsoftwarewebsite" format="html" scope="external">WTP software
+			 website</xref><xref href="http://www.helpml.com/wtp/index.html"
+		  id="worldtimeprov2website" format="html" scope="external">World Time Pro
+			 website</xref><xref
+		  href="http://www.microsoft.com/downloads/details.aspx?FamilyID=ba9d7924-4122-44af-8ab4-7c039d9bf629&amp;displaylang=en"
+		  id="vb6.0website" scope="external" format="html">Visual Basic 6.0 run-time
+			 files</xref> 
+		</p> 
+	 </body> 
+  </topic> 
+  <task id="conreftasks"> 
+	 <title>Conref tasks</title> 
+	 <taskbody> 
+		<prereq id="FractionSectionPrereq">Before you begin, if you cannot see
+		  the 
+		  <wintitle>Fraction Creator pane</wintitle> and the 
+		  <wintitle>Fraction Converter pane</wintitle>, you have ticked 
+		  <uicontrol>Hide Fraction Section</uicontrol>. Select 
+		  <menucascade> 
+			 <uicontrol>Options</uicontrol> 
+			 <uicontrol>Hide Fraction Section</uicontrol> 
+		  </menucascade>. The tick next to 
+		  <uicontrol>Hide Fraction Section</uicontrol> disappears, and the 
+		  <wintitle>Fraction Converter pane</wintitle> and 
+		  <wintitle>Fraction Creator pane</wintitle> appear. 
+		</prereq> 
+		<context id="context_F01EAFAA96B6486FB3354E513C5F254F">This topic is not
+		  for publication. It is a container to hold task conrefs. 
+		</context> 
+		<steps id="steps_F0B8AA871D62449298BEAE01F4ADA861"> 
+		  <step id="supportstep"> 
+			 <cmd>Email WTP Software at support@example.com with 'Help and
+				Support' in the subject line of the email. 
+			 </cmd> 
+			 <info>We will be happy to help you resolve any problems you are
+				having with 
+				<term>World Time Pro</term>. Please provide as much information as
+				possible in your email to help us quickly diagnose the problem. 
+			 </info> 
+		  </step> 
+		</steps> 
+	 </taskbody> 
+  </task>
+</dita>

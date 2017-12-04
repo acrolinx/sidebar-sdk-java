@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<!-- Created with XMetaL (http://www.xmetal.com) -->
+<concept id="gregoriancalendar"> 
+  <title>About the Gregorian calendar</title> 
+  <shortdesc>This topic explains what the 
+	 <term>Gregorian calendar</term> is and why it was introduced.
+  </shortdesc> 
+  <prolog> 
+	 <author type="creator">Heather Wymer</author>
+	 <copyright> 
+		<copyryear year="2008"/> 
+		<copyrholder>M-Azlan Software</copyrholder> 
+	 </copyright> 
+	 <critdates> 
+		<created date="6 Oct 2008"/> </critdates>
+	 <metadata> 
+		<keywords> 
+		  <keyword>Gregorian calendar</keyword> 
+		  <keyword>Julian calendar</keyword> 
+		  <keyword>leap year</keyword> 
+		</keywords> 
+		<prodinfo> 
+		  <prodname>World Time Pro</prodname> 
+		  <vrmlist> 
+			 <vrm version="2 trial"/> 
+		  </vrmlist> 
+		</prodinfo> </metadata>
+  </prolog> 
+  <conbody> 
+	 <p>The 
+		<term>Gregorian calendar</term> is the calendar used by most societies
+		today. It is named after Pope Gregory XIII, who introduced the calendar in
+		1582.
+	 </p> 
+	 <p>The 
+		<term>Gregorian calendar</term> starts from 1 AD, the year that Jesus
+		Christ was born, although no firm historical evidence has been uncovered to
+		date the birth of Christ with certainty. The AD suffix stands for the Latin
+		phrase anno Domini, meaning "in the year of our Lord". The AD suffix is
+		sometimes replaced with CE (common era), although the numbering of the years
+		does not change if the suffix is changed.
+	 </p> 
+	 <p>Years prior to the birth of Christ take the suffix BC (before Christ) or
+		BCE (before common era), and are numbered backwards from 1 BC.
+	 </p> 
+	 <p>The 
+		<term>Gregorian calendar</term> replaced the 
+		<term>Julian calendar 
+		</term>used by Christian societies in 1582 AD. The 
+		<term>Julian calendar</term> mandated that a year was exactly 365.25 days
+		long, rather than the more accurate 365.2425 days long. The slight inaccuracy
+		in the 
+		<term>Julian calendar</term> caused the calendar to become increasingly
+		out of synch with the seasons. To correct the inaccuracy, Pope Gregory deleted
+		10 days from 1582, and changed the method that was used to calculate leap
+		years.
+	 </p> 
+	 <p>A leap year is a year that has one extra day added to February, making
+		the year 366 days long, rather than the usual 365. The 
+		<term>Julian calendar</term> mandated that a leap year should fall on
+		every year that is divisible by 4. The 
+		<term>Gregorian calendar</term> kept this rule, and further specified
+		that a leap year should not occur in years that are divisible by 100, unless
+		the year is also divisible by 400. For example, the year 1900 was not a leap
+		year, but the year 2000 was a leap year. This slight modification allows the 
+		<term>Gregorian calendar 
+		</term>to stay aligned with the seasons.
+	 </p> 
+  </conbody>
+</concept>

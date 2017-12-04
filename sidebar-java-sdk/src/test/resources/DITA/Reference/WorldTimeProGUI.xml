@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<!-- Created with XMetaL (http://www.xmetal.com) -->
+<reference id="worldtimeprogui"> 
+  <title>The<wintitle> World Time Pro window</wintitle></title> 
+  <shortdesc>This topic describes the buttons and fields in the 
+	 <wintitle>World Time Pro window</wintitle>. 
+  </shortdesc> 
+  <prolog> 
+	 <author type="creator">Heather Wymer</author>
+	 <copyright> 
+		<copyryear year="2008"/> 
+		<copyrholder>M-Azlan Software</copyrholder> 
+	 </copyright> 
+	 <critdates> 
+		<created date="5 Oct 2008"/> </critdates>
+	 <metadata> 
+		<keywords> 
+		  <keyword>World Time Pro window</keyword> 
+		  <keyword>interface</keyword> 
+		  <keyword>hours</keyword> 
+		  <keyword>minutes</keyword> 
+		  <keyword>seconds</keyword> 
+		  <keyword>Main calculation pane</keyword> 
+		  <keyword>Fraction Creator pane</keyword> 
+		  <keyword>Fraction Converter pane</keyword> 
+		</keywords> 
+		<prodinfo> 
+		  <prodname>World Time Pro</prodname> 
+		  <vrmlist> 
+			 <vrm version="2 trial"/> 
+		  </vrmlist> 
+		</prodinfo> </metadata>
+  </prolog> 
+  <refbody> 
+	 <section id="section_CE42C3FF9D494B11BBB1BED3FAC724A4"> 
+		<title>The World Time Pro window</title> 
+		<p platform="windowsxp windows2000"><image
+		  href="../Images/win/WorldTimeProGUI.png"
+		  id="image_22E3B8D7119E4F18ADB81029312D6405" width="813px"> 
+			 <alt>This graphic shows the fields and buttons in the main 
+				<wintitle>World Time Pro window</wintitle>. The window has a 
+				<wintitle>main calculation pane</wintitle>, a 
+				<wintitle>Fraction Creator pane</wintitle> and a 
+				<wintitle>Fraction Converter pane</wintitle>. 
+			 </alt> 
+		  </image> 
+		</p> 
+		<p platform="macosx"><image href="../Images/mac/WorldTimeProGUI.png"
+		  id="image_BEDAF307242F43A5891E9EBA9FDBCAC5" width="813px"> 
+			 <alt>This graphic shows the fields and buttons in the main 
+				<wintitle>World Time Pro window</wintitle>. The window has a 
+				<wintitle>main calculation pane</wintitle>, a 
+				<wintitle>Fraction Creator pane</wintitle> and a 
+				<wintitle>Fraction Converter pane</wintitle>. 
+			 </alt> 
+		  </image> 
+		</p> 
+	 </section> 
+	 <properties id="properties_EBCA9E6EE6E546AFBB834EC2879F4F36"> 
+		<prophead> 
+		  <proptypehd>Field or button</proptypehd> 
+		  <propdeschd>Function</propdeschd> 
+		</prophead> 
+		<property> 
+		  <proptype><wintitle>Main calculation pane</wintitle></proptype> 
+		  <propdesc>Contains the buttons and fields to perform addition,
+			 subtraction, multiplication and division of units of time.</propdesc> 
+		</property> 
+		<property> 
+		  <proptype>Upper row of entry fields</proptype> 
+		  <propdesc>Specifies the first period of time in the
+			 calculation.</propdesc> 
+		</property> 
+		<property> 
+		  <proptype>Lower row of entry fields</proptype> 
+		  <propdesc>Specifies the second period of time in the calculation. 
+			 <note type="note">If you click the 
+				<uicontrol>Multiply</uicontrol> or 
+				<uicontrol>Divide</uicontrol> buttons, the lower row of entry
+				fields are replaced by the 
+				<uicontrol>Constant</uicontrol> field. 
+			 </note></propdesc> 
+		</property> 
+		<property> 
+		  <proptype><uicontrol>Equals button</uicontrol></proptype> 
+		  <propdesc>Performs the calculation.</propdesc> 
+		</property> 
+		<property> 
+		  <proptype><uicontrol>Result fields</uicontrol></proptype> 
+		  <propdesc>Display the result of the calculation.</propdesc> 
+		</property> 
+		<property> 
+		  <proptype><uicontrol>Operation buttons</uicontrol></proptype> 
+		  <propdesc>Specifies if the calculation is addition (+), subtraction
+			 (-), multiplication (x) or division (/).</propdesc> 
+		</property> 
+		<property> 
+		  <proptype><uicontrol>Clear button</uicontrol></proptype> 
+		  <propdesc>Deletes all values from the pane.</propdesc> 
+		</property> 
+		<property> 
+		  <proptype><uicontrol>Pass Value button</uicontrol></proptype> 
+		  <propdesc>Moves the value in the 
+			 <uicontrol>result fields</uicontrol> to the upper row of entry
+			 fields.</propdesc> 
+		</property> 
+		<property> 
+		  <proptype><wintitle>Fraction Converter pane</wintitle></proptype> 
+		  <propdesc>Contains the buttons and fields to convert fractions into
+			 periods of time.</propdesc> 
+		</property> 
+		<property> 
+		  <proptype><uicontrol>Fraction Converter field</uicontrol></proptype> 
+		  <propdesc>Specifies the fraction to be converted into a period of time.
+			 
+			 <note type="note">You specify if the fraction is in hours or minutes
+				by selecting either 
+				<uicontrol>Hrs</uicontrol> or 
+				<uicontrol>Min</uicontrol> below this field. 
+			 </note></propdesc> 
+		</property> 
+		<property> 
+		  <proptype><uicontrol>Convert button</uicontrol></proptype> 
+		  <propdesc>In the 
+			 <wintitle>Fraction Converter pane</wintitle>, converts a fraction
+			 into a period of time.</propdesc> 
+		</property> 
+		<property> 
+		  <propdesc>In the 
+			 <wintitle>Fraction Creator pane</wintitle>, converts a period of time
+			 into a fraction.</propdesc> 
+		</property> 
+		<property> 
+		  <proptype><wintitle>Fraction Creator pane</wintitle></proptype> 
+		  <propdesc>Contains the buttons and fields to convert periods of time
+			 into fractions.</propdesc> 
+		</property> 
+		<property> 
+		  <proptype><uicontrol>Fraction Creator result
+				field</uicontrol></proptype> 
+		  <propdesc>Displays the period of time as a fraction of hours, minutes
+			 or seconds. 
+			 <note type="note">You specify if the fraction is in hours, minutes or
+				seconds by selecting either 
+				<uicontrol>Hrs</uicontrol>, 
+				<uicontrol>Min</uicontrol> or 
+				<uicontrol>Sec</uicontrol> below this field. 
+			 </note></propdesc> 
+		</property> 
+	 </properties> 
+  </refbody>
+</reference> 

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<!-- Created with XMetaL (http://www.xmetal.com) -->
+<concept id="wheretobuy"> 
+  <title>Where to buy 
+	 <term>World Time Pro</term></title> 
+  <shortdesc>This topic explains where to buy 
+	 <term>World Time Pro</term>. 
+  </shortdesc> 
+  <prolog> 
+	 <author type="creator">Heather Wymer</author>
+	 <copyright> 
+		<copyryear year="2008"/> 
+		<copyrholder>M-Azlan Software</copyrholder> 
+	 </copyright> 
+	 <critdates> 
+		<created date="21 Oct 2008"/> </critdates>
+	 <metadata> 
+		<keywords> 
+		  <keyword>v2</keyword> 
+		  <keyword>Deluxe Edition</keyword> 
+		  <keyword>buy</keyword> 
+		  <keyword>purchase</keyword> 
+		  <keyword>trial</keyword> 
+		</keywords> 
+		<prodinfo> 
+		  <prodname>World Time Pro</prodname> 
+		  <vrmlist> 
+			 <vrm version="2"/> 
+			 <vrm version="Deluxe"/> 
+		  </vrmlist> 
+		</prodinfo> </metadata>
+  </prolog> 
+  <conbody> 
+	 <p>There are two versions of 
+		<term>World Time Pro</term>: 
+	 </p> 
+	 <ul id="ul_90E9F7026BB64D379F0329B94B8D57A2"> 
+		<li id="li_921D3CEA66A342389DD0FB5A815F2FF0"><term>World Time Pro
+			 v2</term> 
+		</li> 
+		<li id="li_36B947CB195848989074470524595B61"><term>World Time Pro Deluxe
+			 Edition</term> 
+		</li> 
+	 </ul> 
+	 <p>You can download a free trial of both versions of 
+		<term>World Time Pro</term> from the 
+		<xref id="mazlansoftwarewebsite_cf" class="- topic/xref "
+		 conref="../Reuse/ConrefContent.xml#hyperlinks/wtpsoftwarewebsite">WTP software
+		  website</xref>, along with a copy of the price list. If you like the trial, you
+		can purchase a copy of either version of 
+		<term>World Time Pro</term> from the same, secure website. 
+	 </p> 
+	 <note type="note">You can only perform 10 calculations per session in the
+		trial versions of 
+		<term>World Time Pro</term>. 
+	 </note> 
+  </conbody>
+</concept>

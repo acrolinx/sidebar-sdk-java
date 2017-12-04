@@ -1,0 +1,14 @@
+<FindBugsFilter>
+    <Match>
+        <Package name="com.acrolinx.sidebar.pojo.document"/>
+        <Bug pattern="NP_UNWRITTEN_FIELD"/>
+    </Match>
+    <Match>
+        <Package name="com.acrolinx.sidebar.pojo.document"/>
+        <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+    </Match>
+    <Match>
+        <Package name="com.acrolinx.sidebar.pojo.settings"/>
+        <Bug pattern="URF_UNREAD_FIELD"/>
+    </Match>
+</FindBugsFilter>

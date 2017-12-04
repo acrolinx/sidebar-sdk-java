@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "http://docs.oasis-open.org/dita/v1.2/OS/dtd/map.dtd">
+<map id="map_usingworldtimepro" title="Using World Time Pro">
+	<title>
+    Using
+    <term>World Time Pro</term>
+	</title>
+	<topicmeta>
+		<shortdesc>
+      This documentation suite explains how to use the
+      <term>World Time Pro</term>.
+    </shortdesc>
+		<author type="creator">Heather Wymer</author>
+		<copyright>
+			<copyryear year="2008"/>
+			<copyrholder>M-Azlan Software</copyrholder>
+		</copyright>
+		<critdates>
+			<created date="8 Oct 2008"/>
+			<revised modified="25 Oct 2008"/>
+		</critdates>
+		<audience audience="all"/>
+		<keywords>
+			<keyword>World Time Pro</keyword>
+			<keyword>Date Analysis Engine</keyword>
+			<keyword>Standard/Military Time Converter</keyword>
+			<keyword>military time</keyword>
+			<keyword>Fraction Converter</keyword>
+			<keyword>Fraction Creator</keyword>
+			<keyword>standard time</keyword>
+			<keyword>hours</keyword>
+			<keyword>minutes</keyword>
+			<keyword>seconds</keyword>
+			<keyword>support</keyword>
+			<keyword>install</keyword>
+		</keywords>
+		<prodinfo>
+			<prodname>World Time Pro</prodname>
+			<vrmlist>
+				<vrm version="2"/>
+			</vrmlist>
+		</prodinfo>
+	</topicmeta>
+	<keydef keys="product_name" processing-role="resource-only">
+		<topicmeta>
+			<keywords>
+				<keyword>World Time Pro</keyword>
+			</keywords>
+		</topicmeta>
+	</keydef>
+	<keydef format="dita" href="AboutWorldTimePro.xml" keys="about_world_time_pro" navtitle="Introduction to World Time Pro" processing-role="resource-only" scope="local" type="concept"/>
+	<topicref format="dita" href="AboutWorldTimePro.xml" locktitle="yes" navtitle="About World Time Pro" scope="local" type="concept">
+	</topicref>
+	<topicref format="dita" href="Tasks/CalculatingTime.xml" locktitle="yes" navtitle="Calculating time" scope="local" type="task">
+		<topicref format="dita" href="Tasks/CalculatingHoursInMinutesSeconds.xml" locktitle="yes" navtitle="Calculating the hours in a large number of minutes or seconds" scope="local" type="task"/>
+		<topicref format="dita" href="Tasks/CalculatingElapsedTime.xml" locktitle="yes" navtitle="Calculating elapsed time" scope="local" type="task"/>
+		<topicref format="dita" href="Reference/WorldTimeProGUI.xml" locktitle="yes" navtitle="The World Time Pro window" scope="local" type="reference"/>
+	</topicref>
+	<topicref format="dita" href="Tasks/UsingFractionConverter.xml" locktitle="yes" navtitle="Using the fraction converter" scope="local" type="task"/>
+	<topicref format="dita" href="Tasks/UsingDateAnalysis.xml" locktitle="yes" navtitle="Using the Date Analysis Engine" scope="local" type="task">
+		<topicref format="dita" href="Concepts/GregorianCalendar.xml" locktitle="yes" navtitle="About the Gregorian calendar" scope="local" type="concept"/>
+		<topicref format="dita" href="Reference/DateAnalysisGUI.xml" locktitle="yes" navtitle="The Date Analysis Engine window" scope="local" type="reference"/>
+	</topicref><topicref format="dita" href="Tasks/UsingFractionCreator.xml" locktitle="yes" navtitle="Using the fraction creator" scope="local" type="task"/>
+	<topicref format="dita" href="Tasks/ConvertingMilitaryTime.xml" locktitle="yes" navtitle="Converting to or from military time" scope="local" type="task">
+		<topicref format="dita" href="Concepts/MilitaryTime.xml" locktitle="yes" navtitle="About military time" scope="local" type="concept"/>
+		<topicref format="dita" href="Reference/MilitaryTimeGUI.xml" locktitle="yes" navtitle="The Standard/Military Time Converter window" scope="local" type="reference"/>
+	</topicref>
+	<topicref format="dita" href="Tasks/Troubleshooting.xml" locktitle="yes" navtitle="Troubleshooting" scope="local" type="task"/>
+	<topicref format="dita" href="Concepts/WhereToBuy.xml" locktitle="yes" navtitle="Buying World Time Pro" scope="local" type="concept">
+		<topicref format="dita" href="Reference/FeatureComparisonTable.xml" locktitle="yes" navtitle="Features in different versions of World Time Pro" scope="local" type="reference"/>
+		<topicref format="html" href="http://www.example.com/worldtimepro" locktitle="yes" navtitle="About WTP Software" print="no" scope="external"/>
+	</topicref>
+	<reltable id="reltable_54566806CDAB40C5A73139B0F23CF657" toc="no">
+		<relheader>
+			<relcolspec type="concept"/>
+			<relcolspec type="task"/>
+			<relcolspec type="reference"/>
+		</relheader>
+		<relrow>
+			<relcell>
+				<topicref href="AboutWorldTimePro.xml" linking="sourceonly" navtitle="Introduction to World Time Pro"/>
+			</relcell>
+			<relcell>
+				<topicref href="Tasks/CalculatingTime.xml" navtitle="Calculating time"/>
+				<topicref href="Tasks/UsingFractionConverter.xml" navtitle="Using the Fraction Converter"/>
+				<topicref href="Tasks/UsingFractionCreator.xml" navtitle="Using the Fraction Creator"/>
+				<topicref href="Tasks/UsingDateAnalysis.xml" navtitle="Using the Date Analysis Engine"/>
+				<topicref href="Tasks/ConvertingMilitaryTime.xml" navtitle="Converting to or from military time"/>
+				<topicref href="Tasks/Troubleshooting.xml" navtitle="Troubleshooting"/>
+			</relcell>
+			<relcell/>
+		</relrow>
+		<relrow>
+			<relcell>
+				<topicgroup collection-type="family">
+					<topicref href="AboutWorldTimePro.xml" linking="sourceonly" navtitle="Introduction to World Time Pro"/>
+					<topicref href="Concepts/WhereToBuy.xml" locktitle="yes" navtitle="Buying World Time Pro"/>
+				</topicgroup>
+			</relcell>
+		</relrow>
+		<relrow>
+			<relcell/>
+			<relcell>
+				<topicgroup collection-type="family">
+					<topicref href="Tasks/CalculatingTime.xml" navtitle="Calculating time"/>
+					<topicref href="Tasks/CalculatingHoursInMinutesSeconds.xml" navtitle="Calculating the hours in a large number of minutes or seconds"/>
+					<topicref href="Tasks/CalculatingElapsedTime.xml" navtitle="Calculating elapsed time"/>
+				</topicgroup>
+			</relcell>
+			<relcell>
+				<topicref href="Reference/WorldTimeProGUI.xml" navtitle="The World Time Pro window"/>
+			</relcell>
+		</relrow>
+		<relrow>
+			<relcell/>
+			<relcell>
+				<topicgroup collection-type="family">
+					<topicref href="Tasks/UsingFractionConverter.xml" navtitle="Using the Fraction Converter"/>
+					<topicref href="Tasks/UsingFractionCreator.xml" navtitle="Using the Fraction Creator"/>
+				</topicgroup>
+			</relcell>
+			<relcell>
+				<topicref href="Reference/WorldTimeProGUI.xml" navtitle="The World Time Pro window">
+				</topicref>
+			</relcell>
+		</relrow>
+		<relrow>
+			<relcell>
+				<topicref href="Concepts/GregorianCalendar.xml" navtitle="About the Gregorian calendar"/>
+			</relcell>
+			<relcell>
+				<topicref href="Tasks/UsingDateAnalysis.xml" navtitle="Using the Date Analysis Engine"/>
+			</relcell>
+			<relcell>
+				<topicref href="Reference/DateAnalysisGUI.xml" navtitle="The Date Analysis Engine window"/>
+			</relcell>
+		</relrow>
+		<relrow>
+			<relcell>
+				<topicref href="Concepts/MilitaryTime.xml" navtitle="About military time"/>
+			</relcell>
+			<relcell>
+				<topicref href="Tasks/ConvertingMilitaryTime.xml" navtitle="Converting to or from military time"/>
+			</relcell>
+			<relcell>
+				<topicref href="Reference/MilitaryTimeGUI.xml" navtitle="The Standard/Military Time Converter window"/>
+			</relcell>
+		</relrow>
+		<relrow>
+			<relcell>
+				<topicref href="Concepts/WhereToBuy.xml" navtitle="Where to buy World Time Pro"/>
+			</relcell>
+			<relcell/>
+			<relcell>
+				<topicref href="Reference/FeatureComparisonTable.xml" navtitle="Features in different versions of World Time Pro"/>
+			</relcell>
+		</relrow>
+	</reltable>
+</map>

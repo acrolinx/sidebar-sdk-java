@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!-- Created with XMetaL (http://www.xmetal.com) -->
+<task id="convertingmilitarytime"> 
+  <title>Converting to or from 
+	 <term>military time</term></title> 
+  <shortdesc>This topic describes how to convert 
+	 <term>military time</term> to 
+	 <term>standard time</term>, or 
+	 <term>standard time</term> to 
+	 <term>military time</term>.
+  </shortdesc> 
+  <prolog> 
+	 <author type="creator">Heather Wymer</author>
+	 <critdates> 
+		<created date="5 Oct 2008"/> </critdates>
+	 <metadata> 
+		<keywords> 
+		  <keyword>standard time</keyword> 
+		  <keyword>military time</keyword> 
+		  <keyword>Standard/Military Time Converter</keyword> 
+		  <keyword>Standard/Military Time Converter window</keyword> 
+		</keywords> 
+		<prodinfo> 
+		  <prodname>World Time Pro</prodname> 
+		  <vrmlist> 
+			 <vrm version="2 trial"/> 
+		  </vrmlist> 
+		</prodinfo> </metadata>
+  </prolog> 
+  <taskbody> 
+	 <context id="context_6D3E7D805B284AEB9C7BC71846F05BC1"><term>Military
+		  time</term> is used by the armed forces to avoid confusion between the hours of
+		the morning and afternoon, and is also used in many European countries. This
+		procedure describes a quick way to accurately convert 
+		<term>military time</term> to 
+		<term>standard time</term>, or 
+		<term>standard time</term> to 
+		<term>military time</term>.
+	 </context> 
+	 <steps id="steps_716EF0F340B741B8BAAEFB58B0A70B8E"> 
+		<step id="step_9408A7177A3C418980F3C1B7C988E5A5"> 
+		  <cmd>Select 
+			 <menucascade> 
+				<uicontrol>Options</uicontrol> 
+				<uicontrol>Standard/Military Time Converter.</uicontrol> 
+			 </menucascade>
+		  </cmd> 
+		  <stepresult>The 
+			 <wintitle>Standard/Military Time Converter window</wintitle> opens.
+		  </stepresult> 
+		</step> 
+		<step id="step_4932CDD6BE124D598F4E186D8FD307AC"> 
+		  <cmd>Do one of the following:
+		  </cmd> 
+		  <choices id="choices_77415AEE544844629D1D8BBDD56728ED"> 
+			 <choice id="choice_C0EFC75249BC4695A40E471E853102B4">To convert from 
+				<term>military time</term> to 
+				<term>standard time</term>, ensure the 
+				<uicontrol>Standard time converter</uicontrol> is selected.
+			 </choice> 
+			 <choice id="choice_D1D88F1F17D04D3BA45C6F4B4CC267AD">To convert from 
+				<term>standard time</term> to 
+				<term>military time</term>, select the 
+				<uicontrol>Military time converter</uicontrol>.
+			 </choice> 
+		  </choices> 
+		</step> 
+		<step id="step_2BF9D35CB6344D1FA4B59EE231518AF4"> 
+		  <cmd>Do one of the following:
+		  </cmd> 
+		  <choices id="choices_F4E844972AF54C43834246E1AD4EE2E3"> 
+			 <choice id="choice_E2410DF24A2A407FBF58454AACE0C549">To convert from 
+				<term>military time</term> to 
+				<term>standard time</term>, type the time you want to convert in
+				the 
+				<uicontrol>Military Time</uicontrol> fields.
+			 </choice> 
+			 <choice id="choice_C64A80BBDDE24FC0B96C295B3CA4EA7B">To convert from 
+				<term>standard time</term> to 
+				<term>military time</term>, type the time you want to convert in
+				the 
+				<uicontrol>Standard Time</uicontrol> fields, and select AM or PM
+				from the 
+				<uicontrol>AM/PM selector</uicontrol>.
+			 </choice> 
+		  </choices> 
+		</step> 
+		<step id="step_D8C7D2D0F55249B7AB5274F5E745A2F4"> 
+		  <cmd>Click 
+			 <uicontrol>Convert</uicontrol>.
+		  </cmd> 
+		</step> 
+	 </steps> 
+	 <result id="result_BDCEE20012944BC2B4B0953D0B6133FE">The coverted time
+		appears in the appropriate fields.
+	 </result> 
+	 <example id="example_AC19B5DFE0AC47B9AA309A231F1CBEE7">For example, to
+		convert the 
+		<term>standard time</term> of 9.27 pm to 
+		<term>military time</term>, open the 
+		<wintitle>Standard/Military Time Converter</wintitle> and select the 
+		<uicontrol>Military time converter</uicontrol>. Type 
+		<userinput>9 27</userinput> in the 
+		<uicontrol>Standard Time</uicontrol> fields, select 
+		<userinput>PM</userinput> in the 
+		<uicontrol>AM/PM selector</uicontrol>, and click 
+		<uicontrol>Convert</uicontrol>. The result of 
+		<systemoutput>21.27</systemoutput> appears in the 
+		<uicontrol>Military Time</uicontrol> fields.
+	 </example> 
+  </taskbody>
+</task> 

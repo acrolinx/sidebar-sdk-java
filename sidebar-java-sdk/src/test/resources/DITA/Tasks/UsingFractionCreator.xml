@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!-- Created with XMetaL (http://www.xmetal.com) -->
+<task id="UsingFractionCreator"> 
+  <title>Using the 
+	 <term>Fraction Creator</term></title> 
+  <shortdesc>This topic describes how to use the 
+	 <term>Fraction Creator</term> to turn time expressed as hours, minutes and
+	 seconds into a length of time expressed as a decimal. 
+  </shortdesc> 
+  <prolog> 
+	 <author type="creator">Heather Wymer</author>
+	 <critdates> 
+		<created date="20 Oct 2008"/> </critdates>
+	 <metadata> 
+		<keywords> 
+		  <keyword>Fraction Creator</keyword> 
+		  <keyword>Fraction Creator pane</keyword> 
+		  <keyword>decimal time</keyword> 
+		  <keyword>hours</keyword> 
+		  <keyword>minutes</keyword> 
+		  <keyword>seconds</keyword> 
+		</keywords> 
+		<prodinfo> 
+		  <prodname>World Time Pro</prodname> 
+		  <vrmlist> 
+			 <vrm version="2"/> 
+		  </vrmlist> 
+		</prodinfo> </metadata>
+  </prolog> 
+  <taskbody> 
+	 <prereq
+	  conref="../Reuse/ConrefContent.xml#conreftasks/FractionSectionPrereq"
+	  id="prereq_D6F484A0BE5E4015B4C9C1DC0A8AEB53"/> 
+	 <context id="context_C4D816BAE6DE4EEF8A540F3C460206FE">It is tricky to
+		convert normal time into 
+		<term>decimal time</term>. This procedure explains how to use the 
+		<term>Fraction Creator</term> to calculate what fraction of time is
+		expressed in time written in hours, minutes and seconds. The fraction that you
+		create is expressed as a decimal, and the decimal can be expressed in hours or
+		minutes. 
+	 </context> 
+	 <steps id="steps_0E7191F36C8344FD87FBF10992885E91"> 
+		<step id="step_CBD0D24DB1374C03A914E064A24D60A0"> 
+		  <cmd>In the 
+			 <wintitle>Fraction Creator pane</wintitle>, type the time you want to
+			 convert in the 
+			 <uicontrol>Hrs</uicontrol>, 
+			 <uicontrol>Min</uicontrol> and 
+			 <uicontrol>Sec</uicontrol> fields. 
+		  </cmd> 
+		</step> 
+		<step id="step_7F9C41BB5D1F42C49F1635D6867ACAFD"> 
+		  <cmd>Do one of the following: 
+		  </cmd> 
+		  <choices id="choices_565FBF9DC155477A8DEE2841D0D95C83"> 
+			 <choice id="choice_C8C26592C1F24FA6A2283A0807B0CB8D">To calculate a
+				fraction in hours, select 
+				<uicontrol>Hrs</uicontrol> below the 
+				<uicontrol>Fraction Creator</uicontrol> result field. 
+			 </choice> 
+			 <choice id="choice_7B47CCA0866845C0BB7761C58B2337FF">To calculate a
+				fraction in minutes, select 
+				<uicontrol>Min</uicontrol> below the 
+				<uicontrol>Fraction Creator</uicontrol> result field. 
+			 </choice> 
+			 <choice id="choice_57939DBBD89D4BD88878306D0A7087F2">To calculate a
+				fraction in seconds, select 
+				<uicontrol>Sec</uicontrol> below the 
+				<uicontrol>Fraction Creator</uicontrol> result field. 
+			 </choice> 
+		  </choices> 
+		</step> 
+		<step id="step_A7F13431568F4DFF90811E8ABDA3E239"> 
+		  <cmd>Click 
+			 <uicontrol>Convert</uicontrol>. 
+		  </cmd> 
+		</step> 
+	 </steps> 
+	 <result id="result_585F6BFD00E745C69C7CBDB0AEA8AC26">The fraction you
+		calculated appears in the 
+		<uicontrol>Fraction Creator</uicontrol> result field. 
+	 </result> 
+	 <example id="example_0418E559B67E4762895805CD22C816D0">For example, to turn
+		2 hours 35 min 16 sec into a fraction expressed in hours, in the 
+		<wintitle>Fraction Creator pane</wintitle> type 
+		<userinput>2</userinput> in the 
+		<uicontrol>Hrs</uicontrol> field, 
+		<userinput>35</userinput> in the 
+		<uicontrol>Min</uicontrol> field and 
+		<userinput>16</userinput> in the 
+		<uicontrol>Sec</uicontrol> field. Select 
+		<uicontrol>Hrs</uicontrol> below the 
+		<uicontrol>Fraction Creator</uicontrol> result field, and click 
+		<uicontrol>Convert</uicontrol>. The result of 
+		<systemoutput>2.5877777</systemoutput> appears in the 
+		<uicontrol>Fraction Creator</uicontrol> result field. 
+	 </example> 
+  </taskbody>
+</task> 
