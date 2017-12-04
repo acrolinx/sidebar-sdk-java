@@ -11,9 +11,8 @@ public class AcrolinxMatchWithReplacementTest
     {
         AcrolinxMatchWithReplacement acrolinxMatchWithReplacement = new AcrolinxMatchWithReplacement("test",
                 new IntRange(1, 4), "lala");
-        AcrolinxMatchWithReplacement copy = acrolinxMatchWithReplacement.copy();
-        copy.setRange(new IntRange(5, 8));
+        AbstractMatch match = acrolinxMatchWithReplacement.setRange(new IntRange(5, 8));
         Assert.assertTrue(acrolinxMatchWithReplacement.getRange().getMaximumInteger() == 4);
-        Assert.assertTrue(copy.getRange().getMaximumInteger() == 8);
+        Assert.assertTrue(match.getRange().getMaximumInteger() == 8);
     }
 }

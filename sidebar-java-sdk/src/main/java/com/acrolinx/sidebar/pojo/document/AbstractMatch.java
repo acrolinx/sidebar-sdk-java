@@ -10,7 +10,7 @@ public abstract class AbstractMatch
 
     public abstract String getContent();
 
-    public abstract void setRange(IntRange range);
+    public abstract AbstractMatch setRange(IntRange range);
 
     public abstract AbstractMatch copy();
 }

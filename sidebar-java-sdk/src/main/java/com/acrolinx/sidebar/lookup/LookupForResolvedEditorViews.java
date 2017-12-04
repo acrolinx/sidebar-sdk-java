@@ -103,7 +103,9 @@ public class LookupForResolvedEditorViews
                 String replacement = ((AcrolinxMatchWithReplacement) match).getReplacement();
                 replacement = replacement.replaceAll("[\t\n\r]", " ");
                 replacement = replacement.replaceAll("\\s+", " ");
-                ((AcrolinxMatchWithReplacement) match).setReplacement(replacement);
+                AcrolinxMatchWithReplacement acrolinxMatchWithReplacement = ((AcrolinxMatchWithReplacement) match).setReplacement(
+                        replacement);
+                newRanges.set(newRanges.indexOf(match), acrolinxMatchWithReplacement);
             }
         });
 
@@ -129,8 +131,8 @@ public class LookupForResolvedEditorViews
                 String rangeContent = match.getContent();
                 if (StringUtils.countMatches(textContent, rangeContent) == 1) {
                     int i = textContent.indexOf(rangeContent);
-                    AbstractMatch copy = match.copy();
-                    copy.setRange(new IntRange(startOffset + i, startOffset + i + rangeContent.length()));
+                    AbstractMatch copy = match.setRange(
+                            new IntRange(startOffset + i, startOffset + i + rangeContent.length()));
                     logger.debug("Found range for content by matching Strings: " + match.getContent());
                     logger.debug("New range at: " + copy.getRange().toString());
                     newRanges.add(copy);
@@ -152,9 +154,9 @@ public class LookupForResolvedEditorViews
                         Optional<IntRange> finalMatch = Lookup.getCorrectedMatch(diffsNode, offsetMappingArray,
                                 range.getMinimumInteger(), range.getMaximumInteger());
                         finalMatch.ifPresent(rangeFinal -> {
-                            AbstractMatch copy = match.copy();
-                            copy.setRange(new IntRange(startOffset + rangeFinal.getMinimumInteger(),
-                                    startOffset + rangeFinal.getMaximumInteger()));
+                            AbstractMatch copy = match.setRange(
+                                    new IntRange(startOffset + rangeFinal.getMinimumInteger(),
+                                            startOffset + rangeFinal.getMaximumInteger()));
                             logger.debug("Found range for content by diffing content nodes: " + match.getContent());
                             logger.debug("New range at: " + copy.getRange().toString());
                             newRanges.add(copy);
@@ -175,8 +177,7 @@ public class LookupForResolvedEditorViews
             Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs, offsetMappingArray,
                     match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
             if (correctedMatch.isPresent()) {
-                AbstractMatch copy = match.copy();
-                copy.setRange(correctedMatch.get());
+                AbstractMatch copy = match.setRange(correctedMatch.get());
                 logger.debug("Found range for content by diffing content nodes: " + match.getContent());
                 logger.debug("New range at: " + copy.getRange().toString());
                 newRanges.add(copy);

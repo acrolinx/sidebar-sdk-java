@@ -25,9 +25,28 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
         return replacement;
     }
 
-    public void setReplacement(String replacement)
+    @Override
+    public AcrolinxMatch setRange(IntRange range)
     {
-        this.replacement = replacement;
+        if (getExtractedRange() != null) {
+            int minRange = super.getExtractedRange().getMinimumInteger();
+            int maxRange = super.getExtractedRange().getMaximumInteger();
+            return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(), replacement);
+        }
+        return new AcrolinxMatchWithReplacement(getContent(), range, replacement);
+    }
+
+    public AcrolinxMatchWithReplacement setReplacement(String replacement)
+    {
+        int rangeMin = getRange().getMinimumInteger();
+        int rangeMax = getRange().getMaximumInteger();
+        IntRange range = new IntRange(rangeMin, rangeMax);
+        if (getExtractedRange() != null) {
+            int minRange = super.getExtractedRange().getMinimumInteger();
+            int maxRange = super.getExtractedRange().getMaximumInteger();
+            return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(), replacement);
+        }
+        return new AcrolinxMatchWithReplacement(getContent(), range, replacement);
     }
 
     @Override

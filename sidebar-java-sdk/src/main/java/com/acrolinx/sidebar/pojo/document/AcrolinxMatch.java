@@ -24,20 +24,6 @@ public class AcrolinxMatch extends AbstractMatch
         this.content = content;
     }
 
-    public static AcrolinxMatch newInstance(AcrolinxMatch match)
-    {
-        String content = match.getContent();
-        IntRange intRange = match.getRange();
-        IntRange range = new IntRange(intRange.getMinimumInteger(), intRange.getMaximumInteger());
-        if (match.getExtractedRange() != null) {
-            IntRange extRange = match.getExtractedRange();
-            IntRange eRange = new IntRange(extRange.getMinimumInteger(), extRange.getMaximumInteger());
-            return new AcrolinxMatch(range, eRange, content);
-        } else {
-            return new AcrolinxMatch(range, content);
-        }
-    }
-
     public String getContent()
     {
         return content;
@@ -54,9 +40,16 @@ public class AcrolinxMatch extends AbstractMatch
     }
 
     @Override
-    public void setRange(IntRange range)
+    public AcrolinxMatch setRange(IntRange range)
     {
-        this.range = range;
+        if (this.extractedRange != null) {
+            int eRangeMin = this.extractedRange.getMinimumInteger();
+            int eRangeMax = this.extractedRange.getMaximumInteger();
+
+            return new AcrolinxMatch(range, new IntRange(eRangeMin, eRangeMax), content);
+        } else {
+            return new AcrolinxMatch(range, content);
+        }
     }
 
     @Override

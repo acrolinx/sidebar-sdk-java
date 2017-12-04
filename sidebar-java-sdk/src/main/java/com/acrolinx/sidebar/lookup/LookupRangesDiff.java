@@ -26,8 +26,7 @@ public class LookupRangesDiff extends LookupRanges
             Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs, offsetMappingArray,
                     match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
             if (correctedMatch.isPresent()) {
-                AbstractMatch copy = match.copy();
-                copy.setRange(correctedMatch.get());
+                AbstractMatch copy = match.setRange(correctedMatch.get());
                 returnValues.add(copy);
                 return false;
             } else {
