@@ -4,9 +4,11 @@
 
 package com.acrolinx.sidebar.swt.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Text;
 
 import com.acrolinx.sidebar.InputAdapterInterface;
@@ -34,6 +36,11 @@ public class TextAdapter implements InputAdapterInterface
         this.textWidget = textWidget;
         this.inputFormat = inputFormat;
         this.documentReference = documentReference;
+    }
+
+    public Text getTextWidget()
+    {
+        return textWidget;
     }
 
     @Override
@@ -91,6 +98,9 @@ public class TextAdapter implements InputAdapterInterface
     @Override
     public List<IntRange> getCurrentSelection()
     {
-        return null;
+        Point selection = this.textWidget.getSelection();
+        List<IntRange> ranges = new ArrayList<>();
+        ranges.add(new IntRange(selection.x, selection.y));
+        return ranges;
     }
 }

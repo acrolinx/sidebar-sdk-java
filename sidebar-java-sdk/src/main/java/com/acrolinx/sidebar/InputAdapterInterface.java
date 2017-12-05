@@ -41,6 +41,9 @@ public interface InputAdapterInterface
     /**
      * Is called by the Acrolinx Integration to highlight current issues in the text editor.
      *
+     * Note that the matches contain the ranges as found in the originally checked text.
+     * It might be necessary to implement some lookup algorithm here to map these ranges to the current document (which might have changed in the meantime).
+     *
      * @param checkId The current check id.
      * @param matches The ranges to be highlighted as sent by the AcrolinxServer.
      */
@@ -50,6 +53,9 @@ public interface InputAdapterInterface
     /**
      * Is called by the Acrolinx Integration to replace found issues with suggestions from the Acrolinx Sidebar.
      * If the Acrolinx Sidebar is configured as read only, this method won't be called.
+     *
+     * Note that the matches contain the ranges as found in the originally checked text.
+     * It might be necessary to implement some lookup algorithm here to map these ranges to the current document (which might have changed in the meantime).
      *
      * @param checkId The current check id.
      * @param matchesWithReplacement The ranges to be replaced.

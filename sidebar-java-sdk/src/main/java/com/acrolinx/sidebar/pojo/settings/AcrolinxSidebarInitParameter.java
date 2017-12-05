@@ -279,6 +279,8 @@ public class AcrolinxSidebarInitParameter
 
         /**
          * Add a parameter for integrations to enable check selection in the sidebar.
+         * Requires minimum sidebar version 14.5.0.
+         *
          * @param supported
          * @return
          */

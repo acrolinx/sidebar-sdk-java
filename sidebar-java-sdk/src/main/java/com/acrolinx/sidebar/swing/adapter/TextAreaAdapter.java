@@ -4,6 +4,7 @@
 
 package com.acrolinx.sidebar.swing.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -38,6 +39,11 @@ public class TextAreaAdapter implements InputAdapterInterface
         this.textArea = textArea;
         this.inputFormat = inputFormat;
         this.documentReference = documentReference;
+    }
+
+    public JTextArea getTextArea()
+    {
+        return textArea;
     }
 
     @Override
@@ -93,6 +99,10 @@ public class TextAreaAdapter implements InputAdapterInterface
     @Override
     public List<IntRange> getCurrentSelection()
     {
-        return null;
+        int selectionStart = this.textArea.getSelectionStart();
+        int selectionEnd = this.textArea.getSelectionEnd();
+        List<IntRange> ranges = new ArrayList<>();
+        ranges.add(new IntRange(selectionStart, selectionEnd));
+        return ranges;
     }
 }
