@@ -26,6 +26,7 @@ import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
+import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SecurityUtils;
@@ -97,7 +98,14 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                         jsobj.setMember("java", new JSConsole());
                         webEngine.executeScript(JSConsole.overwriteJSLogging());
                         webEngine.executeScript("console.log('JS Logging is overwritten.');");*/
-                        acrolinxSidebarPlugin = new AcrolinxSidebarPlugin(integration, jsobj);
+                        PluginSupportedParameters supported = integration.getInitParameters().getSupported();
+                        if (supported != null && supported.isCheckSelection()) {
+                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionSupport(integration,
+                                    jsobj);
+                        } else {
+                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionSupport(integration,
+                                    jsobj);
+                        }
                         logger.debug("Injecting Acrolinx Plugin.");
                         jsobj.setMember("acrolinxPlugin", acrolinxSidebarPlugin);
                     }

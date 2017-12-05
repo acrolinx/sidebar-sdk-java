@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
-import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.*;
 import com.acrolinx.sidebar.pojo.settings.*;
@@ -39,9 +38,9 @@ import netscape.javascript.JSObject;
  * For internal use.
  */
 @SuppressWarnings({"unused"})
-public class AcrolinxSidebarPlugin
+abstract class AcrolinxSidebarPlugin
 {
-    private final AcrolinxIntegration client;
+    final AcrolinxIntegration client;
     private final JSObject jsobj;
     private final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocument = new AtomicReference<>("");
@@ -51,9 +50,9 @@ public class AcrolinxSidebarPlugin
     private final AtomicReference<List<IntRange>> checkSelectionRange = new AtomicReference<>();
     private final AtomicReference<AcrolinxSidebarInitParameter> initParameters = new AtomicReference<>();
 
-    private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarPlugin.class);
+    final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarPlugin.class);
 
-    private Instant checkStartedTime;
+    protected Instant checkStartedTime;
 
     public AcrolinxSidebarPlugin(final AcrolinxIntegration client, final JSObject jsobj)
     {
@@ -90,31 +89,6 @@ public class AcrolinxSidebarPlugin
     {
         logger.debug("Configuring Sidebar: " + sidebarConfiguration.toString());
         Platform.runLater(() -> jsobj.eval("acrolinxSidebar.configure(" + sidebarConfiguration.toString() + ")"));
-    }
-
-    public synchronized void requestGlobalCheck(final JSObject o)
-    {
-        LogMessages.logCheckRequested(logger);
-        this.checkStartedTime = Instant.now();
-        boolean selection = false;
-        if (o != null) {
-            if (o.getMember("selection") != null) {
-                selection = Boolean.parseBoolean(o.getMember("selection").toString());
-            }
-        }
-        if (client.getEditorAdapter() != null && !(client.getEditorAdapter() instanceof NullEditorAdapter)
-                && client.getEditorAdapter().getContent() != null) {
-            runCheck(selection);
-        } else {
-            logger.warn("Current File Editor not supported for checking or no file present.");
-            onGlobalCheckRejected();
-        }
-
-    }
-
-    public synchronized void requestGlobalCheck()
-    {
-        requestGlobalCheck(null);
     }
 
     public synchronized void runCheck(boolean selectionEnabled)
