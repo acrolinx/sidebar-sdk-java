@@ -1,3 +1,50 @@
+plugins {
+	id "com.jfrog.artifactory" version "4.4.13"
+}
+
+def buildNumber = System.getenv('BUILD_NUMBER');
+
+def buildVersion = buildNumber != null ? buildNumber : 123
+
+def artifactName = "sidebar-sdk"
+def fullVersion = "${project.version}.${buildVersion}"
+
+def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
+
+group = 'com.acrolinx.client'
+
+
+task createVersionPropertiesFile {
+	doFirst {
+		def Properties versionProps = new Properties()
+		def versionPropsFile = file('versionJavaSDK.properties')
+		if (versionPropsFile.exists())
+			versionProps.load(new FileInputStream(versionPropsFile))
+		def code = "${fullVersion}"
+		versionProps['VERSION_JAVA_SDK'] = code.toString()
+		versionProps.store(versionPropsFile.newWriter(), null)
+	}
+}
+
+jar{
+	archiveName = "${artifactName}-${fullVersion}.jar"
+	manifest {
+		attributes(
+				"Implementation-Title": "${artifactName}",
+				"Implementation-Version": "${fullVersion}",
+				"Specification-Title": "${artifactName}",
+				"Specification-Version": project.version
+		)
+
+	}
+	from("$projectDir") {
+		include 'versionJavaSDK.properties'
+	}
+	from("$rootDir") {
+		include 'dependency-licenses/*.html'
+	}
+}
+
 task generateThirdPartyLibraryReport(type: Copy, dependsOn: dependencyLicenseReport) {
 
 	def folder = new File('../sidebar-java-sdk-build/build/dependency-licenses')
@@ -28,7 +75,6 @@ task copyServerSelectorRessources(type: Copy, dependsOn: npm_install) {
 }
 
 task convertLocalizationEncoding() {
-
 	def dir = new File("$projectDir/src/main/resources/localization_iso-8859-1/")
 	if (!dir.exists()) {
 		dir.mkdirs()
@@ -66,7 +112,170 @@ task convertLocalizationEncoding() {
 task generateJavaDocs(type: Javadoc) {
 	source = sourceSets.main.allJava
 	destinationDir = new File(rootProject.projectDir, "docs/")
+	failOnError = false
 }
+
+task javadocJar(type: Jar, dependsOn: 'generateJavaDocs') {
+	baseName = "${artifactName}"
+	version = "${fullVersion}"
+	classifier = 'javadoc'
+	from "${rootProject.projectDir}/docs"
+}
+
+task sourceJar(type: Jar) {
+	baseName = "${artifactName}"
+	version = "${fullVersion}"
+	classifier = 'sources'
+	from project.sourceSets.main.allSource
+}
+
+ext {
+	pomFilePath = "${project.projectDir}/tmp/pom.xml"
+	pomFile = file(pomFilePath)
+}
+// add configuration for pom signing
+configurations {
+	pom
+}
+
+artifacts {
+	archives jar
+	archives javadocJar
+	archives sourceJar
+	if (pomFile.exists()) {
+		pom pomFile
+	}
+}
+
+// sign all artifacts
+task signJars (type : Sign, dependsOn: [jar, javadocJar, sourceJar]) {
+	sign configurations.archives
+}
+// sign pom
+task signPom(type: Sign) {
+	sign configurations.pom
+}
+
+// defining which tasks should be called
+if (project.ext.pomFile.exists()) {
+	task preparePublication (dependsOn : [signJars, signPom])
+} else {
+	task preparePublication (dependsOn : signJars)
+}
+
+// extract signatures and add classifier and extension to them
+def getSignatureFiles = {
+	def allFiles = project.tasks.signJars.signatureFiles.collect { it }
+	def signedSources = allFiles.find { it.name.contains('-sources') }
+	def signedJavadoc = allFiles.find { it.name.contains('-javadoc') }
+	def signedJar = (allFiles - [signedSources, signedJavadoc])[0]
+	return [
+			[archive: signedSources, classifier: 'sources', extension: 'jar.asc'],
+			[archive: signedJavadoc, classifier: 'javadoc', extension: 'jar.asc'],
+			[archive: signedJar,     classifier: null,      extension: 'jar.asc']
+	]
+}
+// extract pom signature
+def getPomSignature = {
+	return project.tasks.signPom.signatureFiles.collect{it}[0]
+}
+
+def devId = "${developerId}"
+def devName = "${developerName}"
+def devEmail = "${developerEmail}"
+
+
+publishing {
+	publications {
+		gpgJars(MavenPublication) {
+			getSignatureFiles().each {signature ->
+				artifact (signature.archive) {
+					classifier = signature.classifier
+					extension  = signature.extension
+				}
+			}
+		}
+		if (project.ext.pomFile.exists()) {
+			gpgPom(MavenPublication) {
+				artifact (getPomSignature()) {
+					classifier = null
+					extension  = 'pom.asc'
+				}
+			}
+		}
+		jar(MavenPublication) {
+			from components.java
+			pom.withXml {
+				Node pomNode = asNode()
+				pomNode.dependencies.'*'.findAll() {
+					it.groupId.text() == 'eclipse-swt-deps'
+				}.each() {
+					it.parent().remove(it)
+				}
+				asNode().children().last() + {
+					resolveStrategy = Closure.DELEGATE_FIRST
+					name 'sidebar-sdk'
+					description 'Acrolinx Sidebar SDK to build Acrolinx integrations for Java FX, Swing or SWT based clients.'
+					url 'https://github.com/acrolinx/sidebar-sdk-java'
+					scm {
+						url 'https://github.com/acrolinx/sidebar-sdk-java'
+						connection 'scm:git@github.com:acrolinx/sidebar-sdk-java.git'
+						developerConnection 'scm:git@github.com:acrolinx/sidebar-sdk-java.git'
+					}
+					licenses {
+						license {
+							name 'The Apache Software License, Version 2.0'
+							url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+							distribution 'repo'
+						}
+					}
+					if (isReleaseBuild){
+					developers {
+							developer {
+								id devId
+								name devName
+								email devEmail
+								organization 'Acrolinx'
+								organizationUrl 'https://www.acrolinx.com/'
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	repositories {
+		if (isReleaseBuild && project.ext.pomFile.exists()) {
+			url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+			credentials {
+				username = sonatypeUsername
+				password = sonatypePassword
+			}
+		} else {
+			maven {
+				url "$buildDir/repo"
+			}
+		}
+	}
+}
+
+def repoKeyActual = (!fullVersion.contains('SNAPSHOT')) ? 'libs-release-local' : 'libs-snapshot-local'
+
+artifactory {
+	contextUrl = "http://artifactory.dune.acrolinx.local/artifactory"
+	publish {
+		repository {
+			repoKey = repoKeyActual
+			username = System.getenv('ARTIFACTORY_USERNAME');
+			password = System.getenv('ARTIFACTORY_PASSWORD');
+			maven = true
+		}
+		defaults {
+			publications('jar')
+		}
+	}
+}
+
 
 //npm_install.dependsOn npm_cache_clean
 
@@ -74,3 +283,4 @@ task generateJavaDocs(type: Javadoc) {
 processResources.dependsOn copyServerSelectorRessources
 processResources.dependsOn convertLocalizationEncoding
 processResources.dependsOn  generateThirdPartyLibraryReport
+jar.dependsOn createVersionPropertiesFile

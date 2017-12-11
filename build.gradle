@@ -37,6 +37,7 @@ allprojects {
 		}
 	}
 	project.version = currentVersion
+	group = 'com.acrolinx.client'
 }
 
 subprojects {
@@ -55,10 +56,6 @@ subprojects {
 
 	repositories {
 		mavenCentral()
-		jcenter()
-		maven {
-			url "http://maven-eclipse.github.io/maven"
-		}
 	}
 
 	dependencies {
@@ -86,25 +83,23 @@ subprojects {
 	}
 }
 
-project(':sidebar-java-sdk') {
+project(':sidebar-sdk') {
 
 	apply plugin: 'license-report'
 	apply plugin: 'com.moowork.node'
 	apply plugin: 'com.diffplug.gradle.swt.nativedeps'
+	apply plugin: 'maven-publish'
+	apply plugin: 'signing'
 
 
 	dependencies {
-		compile 'com.google.code.gson:gson:2.2.4'
-		compile 'commons-lang:commons-lang:2.6'
-		compile 'org.bitbucket.cowwoc:diff-match-patch:1.1'
+		compile group: 'com.google.code.gson', name:'gson', version: '2.2.4'
+		compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+		compile group: 'org.bitbucket.cowwoc', name: 'diff-match-patch', version: '1.1'
 		compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.1'
 		compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.1'
 		compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
 		compile group: 'commons-validator', name: 'commons-validator', version: '1.4.0'
 		compile group: 'commons-io', name: 'commons-io', version: '2.5'
 	}
-}
-
-project(':sidebar-java-sdk-build') {
-
 }
