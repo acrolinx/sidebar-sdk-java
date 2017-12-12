@@ -46,11 +46,6 @@ jar{
 }
 
 task generateThirdPartyLibraryReport(type: Copy, dependsOn: dependencyLicenseReport) {
-
-	def folder = new File('../sidebar-java-sdk-build/build/dependency-licenses')
-	if (!folder.exists()) {
-		folder.mkdirs()
-	}
 	from('build/reports/dependency-license') {
 		include '*.html'
 	}
@@ -130,7 +125,7 @@ task sourceJar(type: Jar) {
 }
 
 ext {
-	pomFilePath = "${project.projectDir}/tmp/pom.xml"
+	pomFilePath = "${project.projectDir}/build/repo/com/acrolinx/client/sidebar-sdk/${version}/sidebar-sdk-${version}.pom"
 	pomFile = file(pomFilePath)
 }
 // add configuration for pom signing
@@ -245,14 +240,15 @@ publishing {
 		}
 	}
 	repositories {
+		maven {
 		if (isReleaseBuild && project.ext.pomFile.exists()) {
-			url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+			url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 			credentials {
 				username = sonatypeUsername
 				password = sonatypePassword
 			}
-		} else {
-			maven {
+		}
+		else {
 				url "$buildDir/repo"
 			}
 		}
