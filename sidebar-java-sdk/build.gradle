@@ -200,6 +200,8 @@ publishing {
 		}
 		jar(MavenPublication) {
 			from components.java
+			artifact sourceJar
+			artifact javadocJar
 			pom.withXml {
 				Node pomNode = asNode()
 				pomNode.dependencies.'*'.findAll() {
