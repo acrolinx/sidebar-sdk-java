@@ -1,13 +1,18 @@
 
 package com.acrolinx.sidebar.utils;
 
+import static org.eclipse.swt.internal.Platform.lock;
+
 import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.channels.OverlappingFileLockException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.util.Properties;
 
+import org.eclipse.swt.internal.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,8 +69,15 @@ public class StartPageInstaller
                     }
                     asset = StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
                     if (asset != null && !Files.exists(assetFile)) {
-
-                        Files.copy(asset, assetFile);
+                        FileChannel fileChannel = (FileChannel) Files.newByteChannel(assetFile,
+                                StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+                        FileLock lock = fileChannel.lock();
+                        try {
+                            Files.copy(asset, assetFile);
+                            lock.release();
+                        } catch (FileAlreadyExistsException e) {
+                            lock.release();
+                        }
                     }
                 }
             }
