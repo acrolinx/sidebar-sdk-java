@@ -22,7 +22,11 @@ That will set up the project and dependencies.
 
 ## How to Use the Sidebar in Your Integration
 
+Check the [sidebar demo for java on GitHub](https://github.com/acrolinx/acrolinx-sidebar-demo-java).
 
+Check the [API Documentation](https://cdn.rawgit.com/acrolinx/sidebar-sdk-java/v1.0.1/docs/index.html).
+
+The sidebar sdk is available on [maven](https://mvnrepository.com/artifact/com.acrolinx.client/sidebar-sdk).
 
 ## Server Dependency
 
