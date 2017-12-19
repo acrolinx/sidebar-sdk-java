@@ -70,14 +70,11 @@ public class StartPageInstaller
                     asset = StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
                     if (asset != null && !Files.exists(assetFile)) {
                         FileChannel fileChannel = (FileChannel) Files.newByteChannel(assetFile,
-                                StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+                                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
+                                StandardOpenOption.WRITE, StandardOpenOption.READ);
                         FileLock lock = fileChannel.lock();
-                        try {
-                            Files.copy(asset, assetFile);
-                            lock.release();
-                        } catch (FileAlreadyExistsException e) {
-                            lock.release();
-                        }
+                        Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
+                        lock.release();
                     }
                 }
             }

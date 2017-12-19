@@ -4,12 +4,14 @@ package com.acrolinx.sidebar.utils;
 import static org.apache.commons.io.FileUtils.deleteDirectory;
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -66,6 +68,10 @@ public class StartPageInstallerTest
         runnable2.run();
         runnable3.run();
         Assert.assertTrue(Files.exists(path));
+        try (FileInputStream inputStream = new FileInputStream(path.toFile())) {
+            String everything = IOUtils.toString(inputStream);
+            Assert.assertTrue(everything.length() > 0);
+        }
         if (Files.exists(startpageDir)) {
             deleteDirectory(startpageDir.toFile());
         }
