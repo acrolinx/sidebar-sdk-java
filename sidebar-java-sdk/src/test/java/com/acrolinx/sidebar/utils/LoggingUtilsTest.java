@@ -24,7 +24,7 @@ public class LoggingUtilsTest
     {
         LoggingUtils.setupLogging("TEST");
         String logFileLocation = LoggingUtils.getLogFileLocation();
-        Assert.assertTrue(logFileLocation.contains("TEST.log"));
+        Assert.assertTrue(logFileLocation.contains("TEST"));
         Files.deleteIfExists(Paths.get(LoggingUtils.getLogFileLocation()));
     }
 

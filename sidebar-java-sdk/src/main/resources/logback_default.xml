@@ -9,7 +9,6 @@
         <!-- Support multiple-JVM writing to the same log file -->
         <prudent>true</prudent>
         <!-- can not be set for prudent-->
-        <file>${log-dir-path}/${application-name}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- rollover daily -->
             <fileNamePattern>${log-dir-path}/%d{yyyy-MM-dd}-${application-name}.%i.log</fileNamePattern>
