@@ -24,7 +24,7 @@ That will set up the project and dependencies.
 
 Check the [sidebar demo for java on GitHub](https://github.com/acrolinx/acrolinx-sidebar-demo-java).
 
-Check the [API Documentation](https://cdn.rawgit.com/acrolinx/sidebar-sdk-java/v1.0.1/docs/index.html).
+Check the [API Documentation](https://cdn.rawgit.com/acrolinx/sidebar-sdk-java/v1.0.2/docs/index.html).
 
 The sidebar sdk is available on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
 
