@@ -137,7 +137,7 @@ artifacts {
 	archives jar
 	archives javadocJar
 	archives sourceJar
-	if (pomFile.exists()) {
+	if (project.ext.pomFile.exists()) {
 		pom pomFile
 	}
 }
