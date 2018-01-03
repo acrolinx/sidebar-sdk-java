@@ -240,20 +240,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "canCheck") {
-            @Override
-            public Object function(final Object[] arguments)
-            {
-                boolean canCheck = client.getEditorAdapter() != null
-                        && !(client.getEditorAdapter() instanceof NullEditorAdapter)
-                        && client.getEditorAdapter().getContent() != null;
-                if (!canCheck) {
-                    logger.warn("Current File Editor not supported for checking or no file present.");
-                }
-                return canCheck;
-            }
-        };
-
         new BrowserFunction(browser, "getInputFormatP") {
             @Override
             public Object function(final Object[] arguments)
