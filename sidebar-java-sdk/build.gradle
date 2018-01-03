@@ -254,7 +254,7 @@ publishing {
 				url "$buildDir/repo"
 		}
 		else {
-				url "http://artifactory.dune.acrolinx.local/artifactory/ibs-snapshot-local"
+				url "http://artifactory.dune.acrolinx.local/artifactory/libs-snapshot-local/"
 				credentials{
 					username = System.getenv('ARTIFACTORY_USERNAME');
 					password = System.getenv('ARTIFACTORY_PASSWORD');
