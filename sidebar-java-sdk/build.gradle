@@ -252,10 +252,10 @@ publishing {
 				password = sonatypePassword
 			}
 		}
-		else if(System.getenv('ARTIFACTORY_USERNAME') == null){
+		else if(System.getenv('ARTIFACTORY_USERNAME') == null || (isReleaseBuild && !project.ext.pomFile.exists())){
 				url "$buildDir/repo"
 		}
-		else {
+		else if(!isReleaseBuild) {
 				url "http://artifactory.dune.acrolinx.local/artifactory/libs-snapshot-local/"
 				credentials{
 					username = System.getenv('ARTIFACTORY_USERNAME');
@@ -265,24 +265,6 @@ publishing {
 		}
 	}
 }
-
-/*def repoKeyActual = (!fullVersion.contains('SNAPSHOT')) ? 'libs-release-local' : 'libs-snapshot-local'
-
-artifactory {
-	contextUrl =
-	publish {
-		repository {
-			repoKey = repoKeyActual
-			username = System.getenv('ARTIFACTORY_USERNAME');
-			password = System.getenv('ARTIFACTORY_PASSWORD');
-			maven = true
-		}
-		defaults {
-			publications('jar')
-		}
-	}
-}*/
-
 
 //npm_install.dependsOn npm_cache_clean
 
