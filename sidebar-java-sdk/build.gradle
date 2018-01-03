@@ -144,10 +144,12 @@ artifacts {
 
 // sign all artifacts
 task signJars (type : Sign, dependsOn: [jar, javadocJar, sourceJar]) {
+	required {isReleaseBuild}
 	sign configurations.archives
 }
 // sign pom
 task signPom(type: Sign) {
+	required {isReleaseBuild}
 	sign configurations.pom
 }
 
