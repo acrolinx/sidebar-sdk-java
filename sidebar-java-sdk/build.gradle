@@ -1,6 +1,6 @@
-plugins {
+/*plugins {
 	id "com.jfrog.artifactory" version "4.4.13"
-}
+}*/
 
 def buildNumber = System.getenv('BUILD_NUMBER');
 
@@ -250,17 +250,24 @@ publishing {
 				password = sonatypePassword
 			}
 		}
-		else {
+		else if(System.getenv('ARTIFACTORY_USERNAME') == null){
 				url "$buildDir/repo"
+		}
+		else {
+				url "http://artifactory.dune.acrolinx.local/artifactory/ibs-snapshot-local"
+				credentials{
+					username = System.getenv('ARTIFACTORY_USERNAME');
+					password = System.getenv('ARTIFACTORY_PASSWORD');
+				}
 			}
 		}
 	}
 }
 
-def repoKeyActual = (!fullVersion.contains('SNAPSHOT')) ? 'libs-release-local' : 'libs-snapshot-local'
+/*def repoKeyActual = (!fullVersion.contains('SNAPSHOT')) ? 'libs-release-local' : 'libs-snapshot-local'
 
 artifactory {
-	contextUrl = "http://artifactory.dune.acrolinx.local/artifactory"
+	contextUrl =
 	publish {
 		repository {
 			repoKey = repoKeyActual
@@ -272,7 +279,7 @@ artifactory {
 			publications('jar')
 		}
 	}
-}
+}*/
 
 
 //npm_install.dependsOn npm_cache_clean
