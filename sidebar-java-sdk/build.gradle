@@ -182,11 +182,13 @@ def devEmail = "${developerEmail}"
 
 publishing {
 	publications {
-		gpgJars(MavenPublication) {
-			getSignatureFiles().each {signature ->
-				artifact (signature.archive) {
-					classifier = signature.classifier
-					extension  = signature.extension
+		if (isReleaseBuild){
+			gpgJars(MavenPublication) {
+				getSignatureFiles().each {signature ->
+					artifact (signature.archive) {
+						classifier = signature.classifier
+						extension  = signature.extension
+					}
 				}
 			}
 		}
