@@ -144,19 +144,17 @@ artifacts {
 
 // sign all artifacts
 task signJars (type : Sign, dependsOn: [jar, javadocJar, sourceJar]) {
-	required {isReleaseBuild}
 	sign configurations.archives
 }
 // sign pom
 task signPom(type: Sign) {
-	required {isReleaseBuild}
 	sign configurations.pom
 }
 
 // defining which tasks should be called
-if (project.ext.pomFile.exists()) {
+if (project.ext.pomFile.exists() && isReleaseBuild) {
 	task preparePublication (dependsOn : [signJars, signPom])
-} else {
+} else if (isReleaseBuild) {
 	task preparePublication (dependsOn : signJars)
 }
 
