@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.net.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.apache.commons.validator.routines.DomainValidator;
@@ -106,8 +107,20 @@ public class SidebarUtils
 
     /**
      * Opens the log file. For internal use.
+     * Attempts to open and preselect log file in systems file manager (only for mac os and windows).
+     * If that fails, it just shows the containing folder in the file manager.
+     *
      */
-    public static void openLogFileFolderInFileManger()
+    public static void openLogFile()
+    {
+
+        String logFile = new File(LoggingUtils.getLogFileLocation()).getPath();
+        if (openSystemSpecific(logFile))
+            return;
+        openLogFileFolderInFileManger();
+    }
+
+    private static void openLogFileFolderInFileManger()
     {
         String folder = new File(LoggingUtils.getLogFileLocation()).getParent();
         Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
@@ -209,6 +222,68 @@ public class SidebarUtils
     {
         return new SoftwareComponent("com.acrolinx.sidebar.java", "Java SDK", getCurrentSDKImplementationVersion(),
                 SoftwareComponentCategory.DETAIL);
+    }
+
+    /**
+     * Attempts to show file in system specific file manager. Works only for mac and windows.
+     * For internal use only.
+     * @param path to file
+     * @return
+     */
+
+    public static boolean openSystemSpecific(String path)
+    {
+
+        OSUtils.EnumOS os = OSUtils.getOS();
+
+        if (os.isMac()) {
+            if (runCommand("open", "-R", path))
+                return true;
+        }
+
+        if (os.isWindows()) {
+            if (runCommand("explorer", "/select", path))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static boolean runCommand(String command, String args, String file)
+    {
+
+        logger.info("Trying to exec:\n   cmd = " + command + "\n   args = " + args + "\n   %s = " + file);
+
+        ArrayList<String> parts = new ArrayList<>();
+        parts.add(command);
+
+        if (args != null) {
+            for (String s : args.split(" ")) {
+                parts.add(s.trim());
+            }
+        }
+        parts.add(args);
+        parts.add(file);
+
+        try {
+            Process p = Runtime.getRuntime().exec(parts.toArray(new String[parts.size()]));
+            try {
+                int retval = p.exitValue();
+                if (retval == 0) {
+                    logger.error("Process ended immediately.");
+                    return false;
+                } else {
+                    logger.error("Process crashed.");
+                    return false;
+                }
+            } catch (IllegalThreadStateException e) {
+                logger.debug("Process is running.", e);
+                return true;
+            }
+        } catch (IOException e) {
+            logger.error("Error running command.", e);
+            return false;
+        }
     }
 
 }

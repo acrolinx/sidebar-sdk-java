@@ -1,6 +1,6 @@
-plugins {
+/*plugins {
 	id "com.jfrog.artifactory" version "4.4.13"
-}
+}*/
 
 def buildNumber = System.getenv('BUILD_NUMBER');
 
@@ -152,9 +152,9 @@ task signPom(type: Sign) {
 }
 
 // defining which tasks should be called
-if (project.ext.pomFile.exists()) {
+if (project.ext.pomFile.exists() && isReleaseBuild) {
 	task preparePublication (dependsOn : [signJars, signPom])
-} else {
+} else if (isReleaseBuild) {
 	task preparePublication (dependsOn : signJars)
 }
 
@@ -182,11 +182,13 @@ def devEmail = "${developerEmail}"
 
 publishing {
 	publications {
-		gpgJars(MavenPublication) {
-			getSignatureFiles().each {signature ->
-				artifact (signature.archive) {
-					classifier = signature.classifier
-					extension  = signature.extension
+		if (isReleaseBuild){
+			gpgJars(MavenPublication) {
+				getSignatureFiles().each {signature ->
+					artifact (signature.archive) {
+						classifier = signature.classifier
+						extension  = signature.extension
+					}
 				}
 			}
 		}
@@ -250,30 +252,19 @@ publishing {
 				password = sonatypePassword
 			}
 		}
-		else {
+		else if(System.getenv('ARTIFACTORY_USERNAME') == null || (isReleaseBuild && !project.ext.pomFile.exists())){
 				url "$buildDir/repo"
+		}
+		else if(!isReleaseBuild) {
+				url "http://artifactory.dune.acrolinx.local/artifactory/libs-snapshot-local/"
+				credentials{
+					username = System.getenv('ARTIFACTORY_USERNAME');
+					password = System.getenv('ARTIFACTORY_PASSWORD');
+				}
 			}
 		}
 	}
 }
-
-def repoKeyActual = (!fullVersion.contains('SNAPSHOT')) ? 'libs-release-local' : 'libs-snapshot-local'
-
-artifactory {
-	contextUrl = "http://artifactory.dune.acrolinx.local/artifactory"
-	publish {
-		repository {
-			repoKey = repoKeyActual
-			username = System.getenv('ARTIFACTORY_USERNAME');
-			password = System.getenv('ARTIFACTORY_PASSWORD');
-			maven = true
-		}
-		defaults {
-			publications('jar')
-		}
-	}
-}
-
 
 //npm_install.dependsOn npm_cache_clean
 

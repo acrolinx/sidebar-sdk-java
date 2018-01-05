@@ -376,7 +376,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             @Override
             public Object function(final Object[] arguments)
             {
-                Program.launch(new File(LoggingUtils.getLogFileLocation()).getParent());
+                if (!SidebarUtils.openSystemSpecific(LoggingUtils.getLogFileLocation())) {
+                    Program.launch(new File(LoggingUtils.getLogFileLocation()).getParent());
+                }
                 return null;
             }
         };

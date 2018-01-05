@@ -162,7 +162,7 @@ abstract class AcrolinxSidebarPlugin
 
     public void openLogFile()
     {
-        SidebarUtils.openLogFileFolderInFileManger();
+        SidebarUtils.openLogFile();
     }
 
     private CheckOptions getCheckSettingsFromClient(boolean includeCheckSelectionRanges)
