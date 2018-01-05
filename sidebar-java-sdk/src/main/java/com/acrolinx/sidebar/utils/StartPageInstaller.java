@@ -51,6 +51,7 @@ public class StartPageInstaller
 
     /**
      * Extracts the Acrolinx start page to file system. Internal use only.
+     * 
      * @throws URISyntaxException
      * @throws IOException
      */
@@ -69,11 +70,11 @@ public class StartPageInstaller
                     if (parent != null && !Files.exists(parent)) {
                         Files.createDirectories(parent);
                     }
-					asset = StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
-					if (asset != null && !Files.exists(assetFile)) {
-						Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
-					}
-				}
+                    asset = StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
+                    if (asset != null && !Files.exists(assetFile)) {
+                        Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                }
             }
         }
     }
@@ -98,6 +99,7 @@ public class StartPageInstaller
 
     /**
      * Returns the URI to the extracted start page.
+     * 
      * @return Path to current start page.
      * @throws IOException
      * @throws URISyntaxException
