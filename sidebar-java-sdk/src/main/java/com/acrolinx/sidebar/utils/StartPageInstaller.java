@@ -69,16 +69,11 @@ public class StartPageInstaller
                     if (parent != null && !Files.exists(parent)) {
                         Files.createDirectories(parent);
                     }
-                    asset = StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
-                    if (asset != null && !Files.exists(assetFile)) {
-                        FileChannel fileChannel = (FileChannel) Files.newByteChannel(assetFile,
-                                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
-                                StandardOpenOption.WRITE, StandardOpenOption.READ);
-                        FileLock lock = fileChannel.lock();
-                        Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
-                        lock.release();
-                    }
-                }
+					asset = StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
+					if (asset != null && !Files.exists(assetFile)) {
+						Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
+					}
+				}
             }
         }
     }
