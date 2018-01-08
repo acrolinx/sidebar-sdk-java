@@ -242,7 +242,7 @@ public class SidebarUtils
         }
 
         if (os.isWindows()) {
-            if (runCommand("explorer", "/select", path))
+            if (runCommand("explorer", "/select,", "\"" + path + "\""))
                 return true;
         }
 
