@@ -2,7 +2,7 @@
 	id "com.jfrog.artifactory" version "4.4.13"
 }*/
 
-def buildNumber = System.getenv('BUILD_NUMBER');
+def buildNumber = System.getenv('TRAVIS_BUILD_NUMBER');
 
 def buildVersion = buildNumber != null ? buildNumber : 123
 
@@ -192,7 +192,7 @@ publishing {
 				}
 			}
 		}
-		if (project.ext.pomFile.exists()) {
+		if (project.ext.pomFile.exists() && isReleaseBuild) {
 			gpgPom(MavenPublication) {
 				artifact (getPomSignature()) {
 					classifier = null
@@ -248,18 +248,18 @@ publishing {
 		if (isReleaseBuild && project.ext.pomFile.exists()) {
 			url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 			credentials {
-				username = sonatypeUsername
-				password = sonatypePassword
+				username = System.getenv(sonatypeUsername)
+				password = System.getenv(sonatypePassword)
 			}
 		}
-		else if(System.getenv('ARTIFACTORY_USERNAME') == null || (isReleaseBuild && !project.ext.pomFile.exists())){
+		else if(System.getenv(sonatypeUsername) == null || (isReleaseBuild && !project.ext.pomFile.exists())){
 				url "$buildDir/repo"
 		}
 		else if(!isReleaseBuild) {
-				url "http://artifactory.dune.acrolinx.local/artifactory/libs-snapshot-local/"
-				credentials{
-					username = System.getenv('ARTIFACTORY_USERNAME');
-					password = System.getenv('ARTIFACTORY_PASSWORD');
+				url " https://oss.sonatype.org/content/repositories/snapshots"
+				credentials {
+				username = System.getenv(sonatypeUsername)
+				password = System.getenv(sonatypePassword)
 				}
 			}
 		}
