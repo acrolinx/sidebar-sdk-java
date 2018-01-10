@@ -4,9 +4,6 @@
 
 def buildNumber = System.getenv('TRAVIS_BUILD_NUMBER');
 
-def usernameSonatype = System.getenv(sonatypeUsername)
-def passwordSonatype = System.getenv(sonatypePassword)
-
 def buildVersion = buildNumber != null ? buildNumber : 123
 
 def artifactName = "sidebar-sdk"
@@ -251,18 +248,18 @@ publishing {
 		if (isReleaseBuild && project.ext.pomFile.exists()) {
 			url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 			credentials {
-				username = usernameSonatype
-				password = passwordSonatype
+				username = sonatypeUsername
+				password = sonatypePassword
 			}
 		}
-		else if(System.getenv(sonatypeUsername) == null || (isReleaseBuild && !project.ext.pomFile.exists())){
+		else if(sonatypeUsername == null || (isReleaseBuild && !project.ext.pomFile.exists())){
 				url "$buildDir/repo"
 		}
 		else if(!isReleaseBuild) {
 				url " https://oss.sonatype.org/content/repositories/snapshots"
 				credentials {
-					username = usernameSonatype
-					password = passwordSonatype
+					username = sonatypeUsername
+					password = sonatypePassword
 				}
 			}
 		}
