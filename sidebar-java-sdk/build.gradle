@@ -256,7 +256,7 @@ publishing {
 				url "$buildDir/repo"
 		}
 		else if(!isReleaseBuild) {
-				url " https://oss.sonatype.org/content/repositories/snapshots"
+				url "https://oss.sonatype.org/content/repositories/snapshots/"
 				credentials {
 					username = sonatypeUsername
 					password = sonatypePassword
