@@ -175,9 +175,9 @@ def getPomSignature = {
 	return project.tasks.signPom.signatureFiles.collect{it}[0]
 }
 
-def devId = "${developerId}"
-def devName = "${developerName}"
-def devEmail = "${developerEmail}"
+def devId = "Acrolinx Open Source"
+def devName = "Franziska Preiß"
+def devEmail = "opensource@acrolinx.com"
 
 
 publishing {
