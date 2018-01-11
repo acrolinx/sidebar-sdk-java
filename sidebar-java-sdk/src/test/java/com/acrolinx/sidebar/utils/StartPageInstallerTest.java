@@ -68,10 +68,7 @@ public class StartPageInstallerTest
         runnable2.run();
         runnable3.run();
         Assert.assertTrue(Files.exists(path));
-        try (FileInputStream inputStream = new FileInputStream(path.toFile())) {
-            String everything = IOUtils.toString(inputStream);
-            Assert.assertTrue(everything.length() > 0);
-        }
+        Assert.assertTrue(path.toFile().length() > 0);
         if (Files.exists(startpageDir)) {
             deleteDirectory(startpageDir.toFile());
         }
