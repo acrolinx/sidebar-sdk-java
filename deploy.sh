@@ -24,13 +24,14 @@ PROJECT_VERSION=$(getProperty "currentVersion")
 
 if [ "$STAGE" = "snapshot" ]; then
         ./gradlew pP publish
-        exit 1;
+        exit 0;
 fi
 
 if [ "$STAGE" = "release" ]; then
         ./gradlew pP publish
         if [ "$STAGE" = 'release' ] && is_not_substring "$SNAPSHOT" "$PROJECT_VERSION"; then
             ./gradlew pP publish publishDocsAndCreateGithubReleaseTag closeRepository
+            exit 0;
         fi
-        exit 1;
+        exit 0;
 fi
