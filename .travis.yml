@@ -9,6 +9,7 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
 deploy:
+  skip_cleanup: true
   # deploy develop to the staging environment
   - provider: script
     script: deploy.sh snapshot
