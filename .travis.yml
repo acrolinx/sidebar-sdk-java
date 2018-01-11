@@ -1,19 +1,25 @@
 language: java
 jdk:
-  - oraclejdk8          // tells Travis to use Java 8
-
-# taken from Gradle guide on travis-ci.org
-# https://docs.travis-ci.com/user/languages/java/#Caching
+- oraclejdk8          // tells Travis to use Java 8
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
+deploy:
+  # deploy develop to the staging environment
+  - provider: script
+    script: deploy.sh snapshot
+    on:
+      branch: develop
+  # deploy master to production
+  - provider: script
+    script: deploy.sh release
+    on:
+      branch: master
 
-after_success: "./gradlew pP publish"
-env:
-  global:
-  - secure: rutwoshaZEhMnmkqMv/IJsAu7Hv9NsjiWjpdTfUyO0N2SKeQua8jM7iobSp/fwxOBqaahV7LXbkOF18HpdBAVag3rt0uzH6wUKkovxqj/VyAJC99rt+9ayPl0Olyr04jeyH3ClQroDlh/bG9sz8nVdcLzD2Y2d82UHoVdu/BqUydD1h4CoazqO6ZgQEQneeKTRX6aKv6GxSRfxtsp/Kd4iksRsJDz7OJoLgKS8XXmZM/AM+el0C8+uOiyD78w0oI4+d/FTnRKYfB7j8Qsk8kH7oEtyxKFY0y+6wgBFcjwOY7Tf6URBVv5eNIsLK49mgOLgSjVrdfH72of3wN86Q3LRnLwMEbm8Hv5K5Ij9yj5xENn/s+gcsWmZsSsYz0xBDf5bMOzzl2D1tbbe59L8F+20ADm6RU+L8b8IFhtOqsywd8XkLe29jGlNHBRxp2X/BoNcoH5fVFuVrIOxvybYpE2Kh4SumWc2j06CwGW8vpnYRusXXJEObyqVP3drfMUFb9j9ujcukFNuWDd0ohu4Lnen4KNLVWmtHdtL+Aw2AwxyAEMdjCbjyOFoBCjuOFcr05af0Hk1CejDW3cm2qfhioLjxE5KMT5iLBYdk4d4jK86RDZkUgsiD9bm5KwuoTxDcsMw2VqFSWIiyzxvyhanuwcQP/luZOnAB5DEL8YSpYlxY=
-  - secure: nJNGTsUTqj5882GeVu3trLM0Poqd7C5Y904gVx9LANnIGmI2VJA9VR+wKFXkBM+FpSa2ofMCRFFjjGJFZj/fKCYZDy/UQf997lrwzdRIn8thN2uEjPWkCbEak8agOn1qiqSCZclHxnPrF5xN7TKwCPT15fmSxBmvcWMUXAYnlZIJSkKBo0jCvUQhdqTs8JU9VoqjI2LUUwer4Yd0G+04RQuX68vyKPXaU4rGoyLtBzymYui6rlqoXpOw7rkOVDlp5oRybg6f2l8UayUiN6Ot1C9W9Z0YMDg28N6RUntTRuNo27r5EYi+M1kriEP9KAeTnTWUddvPX/UxWCaxVjMEYMOyELNZEXErdRbt4lwUvh4+tMWC9/YHaTB9vCGDhz4kAaitNKabyvDNekb1eejptK4ICG14oYS1Un8ilHG+YteIVJwtnfTwfA4ZHSh85r/MRm0Q79Iy2llNfAFmS6656dBCct5KgggbrL9UnLbssHhGKOdv/1OFY46wazr8khE3A+XFeIuCS1jTsCwgIinHWEYDXaYbP1C5LD9ltxTEZ5HBvV7friVZDJ6ZHsyU8Xx+LqHa99fj2+l4cTvUj9NYZaPRCBbIs9TC/++O0SOLmiM+nBiEwi1g6O3xQub7BoWiCLfXJ/oMu/TR/WcVj9uwU1eCOLO3HFL+/MCG5lZ2Ixo=
+before_install:
+- openssl aes-256-cbc -K $encrypted_04827ca67184_key -iv $encrypted_04827ca67184_iv
+  -in encrypted.enc -out secring.gpg -d

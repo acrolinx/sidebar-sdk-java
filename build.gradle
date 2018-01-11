@@ -11,18 +11,21 @@ buildscript {
 		maven {
 			url "https://plugins.gradle.org/m2/"
 		}
-			jcenter()
+		jcenter()
+		mavenCentral()
 	}
 	dependencies {
 		classpath "com.diffplug.gradle:goomph:${VER_GOOMPH}"
 		classpath "org.ajoberstar:gradle-git:${VER_GRADLE_GIT}"
 		classpath "com.smokejumperit.gradle.license:Gradle-License-Report:+"
 		classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
+		classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.11.0"
 	}
 }
 
 apply plugin: 'org.ajoberstar.grgit'
 apply plugin: 'idea'
+apply plugin: 'io.codearte.nexus-staging'
 
 allprojects {
 

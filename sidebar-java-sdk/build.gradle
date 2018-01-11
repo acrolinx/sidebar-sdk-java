@@ -11,6 +11,21 @@ def fullVersion = "${project.version}.${buildVersion}"
 
 def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
 
+def isMasterBranch = false
+
+task getIsMasterBranch {
+	def branch = ""
+	def proc = "git rev-parse --abbrev-ref HEAD".execute()
+	proc.in.eachLine { line -> branch = line }
+	proc.err.eachLine { line -> println line }
+	proc.waitFor()
+	if(branch.startsWith('master')) {
+		isMasterBranch=true
+	} else {
+		isMasterBranch=false
+	}
+}
+
 group = 'com.acrolinx.client'
 
 
@@ -262,6 +277,21 @@ publishing {
 					password = sonatypePassword
 				}
 			}
+		}
+	}
+}
+
+task publishDocsAndCreateGithubReleaseTag(dependsOn: getIsMasterBranch){
+	doLast {
+		if(isMasterBranch && isReleaseBuild){
+		def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
+		if (!hasOldReleaseVersion) {
+			grgit.add(patterns: ['docs', 'dependency-licenses'])
+			grgit.commit(message: "Release version ${project.version}")
+			grgit.push(force: true)
+			grgit.tag.add(name: "release-${project.version}", message: "Releasing ${project.version}")
+			grgit.push(tags: true)
+		}
 		}
 	}
 }
