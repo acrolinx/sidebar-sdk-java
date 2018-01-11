@@ -8,16 +8,19 @@ cache:
   directories:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
+script:
+  - cd $TRAVIS_BUILD_DIR
+  - chmod +x ./deploy.sh
 deploy:
   # deploy develop to the staging environment
   - provider: script
-    script: deploy.sh snapshot
+    script: ./deploy.sh snapshot
     skip_cleanup: true
     on:
       branch: develop
   # deploy master to production
   - provider: script
-    script: deploy.sh release
+    script: ./deploy.sh release
     skip_cleanup: true
     on:
       branch: master
