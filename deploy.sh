@@ -23,12 +23,23 @@ getProperty()
 PROJECT_VERSION=$(getProperty "currentVersion")
 
 if [ "$STAGE" = "snapshot" ]; then
-        ./gradlew pP publish
+    if ./gradlew pP publish; then
+        exit 0
+    else
+        exit 1
 fi
 
 if [ "$STAGE" = "release" ]; then
-        ./gradlew pP publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"
-        if [ "$STAGE" = 'release' ] && is_not_substring "$SNAPSHOT" "$PROJECT_VERSION"; then
-            ./gradlew pP publish publishDocsAndCreateGithubReleaseTag closeRepository -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="./secring.gpg"
+        if ./gradlew pP publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
+            if [ "$STAGE" = 'release' ] && is_not_substring "$SNAPSHOT" "$PROJECT_VERSION"; then
+                if ./gradlew pP publish publishDocsAndCreateGithubReleaseTag closeRepository -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="./secring.gpg"; then
+                    exit 0
+                else
+                    exit 1
+            fi
+        else
+           exit 1
         fi
+    else
+        exit 1
 fi
