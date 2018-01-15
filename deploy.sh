@@ -27,6 +27,7 @@ if [ "$STAGE" = "snapshot" ]; then
         exit 0
     else
         exit 1
+    fi
 fi
 
 if [ "$STAGE" = "release" ]; then
