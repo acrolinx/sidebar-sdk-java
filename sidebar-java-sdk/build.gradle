@@ -281,11 +281,10 @@ publishing {
 	}
 }
 
-task publishDocsAndCreateGithubReleaseTag(dependsOn: getIsMasterBranch){
-	doLast {
+task publishDocsAndCreateGithubReleaseTag {
+	doLast{
 		println 'publishDocsAndCreateGithubReleaseTag'
-		println "is master branch: ${isMasterBranch}"
-		if(isMasterBranch && isReleaseBuild){
+		if(isReleaseBuild){
 			println 'starting push to github task'
 		def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
 		if (!hasOldReleaseVersion) {
@@ -298,6 +297,7 @@ task publishDocsAndCreateGithubReleaseTag(dependsOn: getIsMasterBranch){
 		}
 		}
 	}
+
 }
 
 //npm_install.dependsOn npm_cache_clean
