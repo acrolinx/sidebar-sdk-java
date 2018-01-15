@@ -38,7 +38,7 @@ if [ "$STAGE" = "release" ]; then
             echo "Done with first publish step."
             if is_not_substring "$PROJECT_VERSION" "SNAPSHOT"; then
                 echo "ready for release!"
-                if ./gradlew pP publish publishDocsAndCreateGithubReleaseTag closeRepository -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
+                if ./gradlew pP publish closeRepository -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
                     echo "Done with release"
                     exit 0
                 else
