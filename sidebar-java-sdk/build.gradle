@@ -283,6 +283,7 @@ publishing {
 
 task publishDocsAndCreateGithubReleaseTag(dependsOn: getIsMasterBranch){
 	doLast {
+		println 'publishDocsAndCreateGithubReleaseTag'
 		if(isMasterBranch && isReleaseBuild){
 			println 'starting push to github task'
 		def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
