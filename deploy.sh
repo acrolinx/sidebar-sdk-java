@@ -40,9 +40,11 @@ if [ "$STAGE" = "release" ]; then
                     echo "Done with release"
                     exit 0
                 else
+                    echo "Failed to release"
                     exit 1
                 fi
             else
+                echo "Failed because is no release version."
                 exit 1
             fi
         else
