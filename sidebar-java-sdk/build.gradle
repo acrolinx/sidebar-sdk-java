@@ -284,8 +284,10 @@ publishing {
 task publishDocsAndCreateGithubReleaseTag(dependsOn: getIsMasterBranch){
 	doLast {
 		if(isMasterBranch && isReleaseBuild){
+			println 'starting push to github task'
 		def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
 		if (!hasOldReleaseVersion) {
+			println 'is new release version'
 			grgit.add(patterns: ['docs', 'dependency-licenses'])
 			grgit.commit(message: "Release version ${project.version}")
 			grgit.push(force: true)
