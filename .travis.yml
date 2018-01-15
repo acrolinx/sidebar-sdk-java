@@ -9,22 +9,22 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
 script:
-  - cd $TRAVIS_BUILD_DIR
-  - chmod +x ./deploy.sh
+- cd $TRAVIS_BUILD_DIR
+- chmod +x ./deploy.sh
 deploy:
-  # deploy develop to the staging environment
-  - provider: script
-    script: ./deploy.sh snapshot
-    skip_cleanup: true
-    on:
-      branch: develop
-  # deploy master to production
-  - provider: script
-    script: ./deploy.sh release
-    skip_cleanup: true
-    on:
-      branch: master
-
+- provider: script
+  script: "./deploy.sh snapshot"
+  skip_cleanup: true
+  on:
+    branch: develop
+- provider: script
+  script: "./deploy.sh release"
+  skip_cleanup: true
+  on:
+    branch: master
 before_install:
 - openssl aes-256-cbc -K $encrypted_04827ca67184_key -iv $encrypted_04827ca67184_iv
   -in encrypted.enc -out secring.gpg -d
+env:
+  global:
+    secure: MG8InbknzeXejbwzxG+DKg6JaMXLA/fn2yx4G2fa4SIsjf4MEzEpFFIpmmvsc4sqGnw4X+DJfgyBqxjemAsoJIeaprEX48HURhBbwCwCJTQCNmWgm/VG5f7ePkcWgcyyKiiMGpIhqm0sQgtngLaQWboFlikJ3S/d4/1IJDgyJV4lG4ebJ02uX13UeGmw9d0iKz9VHMLRC50nG+ouB0NVcQervxS4/UoAGZqL8xIgnGYy9R7utxkpKKtbsfNoxTsOoeU/LGuEM4YEYYaXuqtuX/B9JGLw8v3brIVbLFpTgVEk7JEMn+X14uWP4M/0AYQ4Ht1MJIDCzOo2t52z93EIJAm+GOaYPhLX7KnbWKTtEXDiPjsmrGWiclaV0/2/TTpQ60eB+iapPTvOm2Q2WMs6m6SMOibw/8Mw3PUK7m7rQBMOw44WlC3Gsa5EWEK/U3KNBji9uCnleS7REoC4K/49/EeXtFkvw0A2WyHKkb3EKSenHzk7nTjnxrU3zfZEv3vq4nVYBwwcyh2vLq62ZQJa5lexee8jS61E+NexRT5z+AdLygvzc6/I1Z/YCg6aPLn9dQ1i6H3Q51k8AcHhQacM5Xop5MJPRKQLkdSTSzPQKXTe1LbSiGja6FnJUdOeAKemyirgIBbLmHyh/a1FPuBYiQgyCmXnTlVWXDc3NrWEb4c=
