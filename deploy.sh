@@ -27,7 +27,7 @@ if [ "$STAGE" = "snapshot" ]; then
 fi
 
 if [ "$STAGE" = "release" ]; then
-        ./gradlew pP publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="./secring.gpg"
+        ./gradlew pP publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="secring.gpg"
         if [ "$STAGE" = 'release' ] && is_not_substring "$SNAPSHOT" "$PROJECT_VERSION"; then
             ./gradlew pP publish publishDocsAndCreateGithubReleaseTag closeRepository -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="./secring.gpg"
         fi
