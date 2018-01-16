@@ -46,8 +46,8 @@ if [ "$STAGE" = "release" ]; then
                     exit 1
                 fi
             else
-                echo "Failed because is no release version on master, please move to develop branch. Published release version anyways."
-                exit 1
+                echo "Published SNAPHSOT Version to Maven REPO"
+                exit 0
             fi
         else
            exit 1

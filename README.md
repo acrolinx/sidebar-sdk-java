@@ -43,7 +43,7 @@ and replace specific parts of the text in the editor.
 
 Before you start check the [sidebar demo for java on GitHub](https://github.com/acrolinx/acrolinx-sidebar-demo-java).
 
-Check the [API Documentation](https://cdn.rawgit.com/acrolinx/sidebar-sdk-java/v1.0.2/docs/index.html).
+Check the [API Documentation](https://acrolinx.github.io/sidebar-sdk-java/).
 
 The sidebar sdk is available on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
 
@@ -102,6 +102,23 @@ For help check the Acrolinx Support on [how to enable CORS](https://support.acro
 
 To use the Acrolinx Sidebar, you need to connect to an Acrolinx server. If you've already received your Acrolinx server address,
 you’re good to go. If your company has installed an Acrolinx server, but you don't have an address yet, ask your server administrator first.
+
+
+## Information for internal developers on this project
+
+Please add new features using the develop branch. If your build on Travis was successful a new snapshot version will
+be automatically available via maven snapshot repository ("https://oss.sonatype.org/content/repositories/snapshots/").
+
+Once you tested your new features merge your changes into the master branch and remove the snapshot from the currentVersion
+property in the gradle.properties file.
+
+Commit and push your changes. If all goes right, you will can download the release version from the oss staging repository (https://oss.sonatype.org/content/groups/staging).
+
+Once you are sure and have tested, that everything works fine, ask your technical lead to release the artifact to maven central.
+
+Make sure to merge the stable master branch into the releases branch and create a version tag there.
+
+Once the release branch is pushed to GitHub, the api documentation on the gh-pages will automatically updated by TravisCI.
 
 ## License
 
