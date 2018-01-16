@@ -36,7 +36,7 @@ if [ "$STAGE" = "release" ]; then
         echo "Releasing..."
         if ./gradlew pP publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
             echo "Done with first publish step."
-            if is_not_substring "$PROJECT_VERSION" "SNAPSHOT"; then
+            if is_not_substring "SNAPSHOT" "$PROJECT_VERSION"; then
                 echo "ready for release!"
                 if ./gradlew pP publish closeRepository -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
                     echo "Done with release"
@@ -46,7 +46,7 @@ if [ "$STAGE" = "release" ]; then
                     exit 1
                 fi
             else
-                echo "Failed because is no release version."
+                echo "Failed because is no release version on master, please move to develop branch. Published release version anyways."
                 exit 1
             fi
         else
