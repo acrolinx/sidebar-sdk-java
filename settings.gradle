@@ -1,6 +1,0 @@
-rootProject.name = 'sidebar-sdk-java'
-
-include 'spotless'
-
-include ':sidebar-sdk'
-project(":sidebar-sdk").projectDir = file("./sidebar-java-sdk")
