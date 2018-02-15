@@ -55,6 +55,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         LogMessages.logJavaVersionAndUIFramework(logger, "Java Swing with Java FX Sidebar component");
         this.storage = storage;
         this.integration = integration;
+        Platform.setImplicitExit(false);
         Platform.runLater(this::createScene);
     }
 
