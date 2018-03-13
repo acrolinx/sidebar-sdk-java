@@ -97,7 +97,17 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                         JSConsole jsLog = new JSConsole();
                         jsobj.setMember("java", jsLog);
                         logger.debug("Overwriting JS logging.");
-                        webEngine.executeScript(JSConsole.overwriteJSLogging);
+                        webEngine.executeScript("var old = console.log;\n" + "    var oldError = console.error;\n"
+                                + "    console.log = function(){\n" + "      old.apply(this, arguments);\n"
+                                + "      var args = [].slice.apply(arguments);\n" + "      var msg = '';\n"
+                                + "      args.forEach(function(arg){\n" + "        msg += JSON.stringify(arg)\n"
+                                + "      })\n" + "      if(window.java) {\n" + "        java.log(msg);\n" + "      }\n"
+                                + "    }\n" + "    console.error = function(){\n"
+                                + "      oldError.apply(this, arguments);\n"
+                                + "      var args = [].slice.apply(arguments);\n" + "      var msg = '';\n"
+                                + "      args.forEach(function(arg){\n" + "        msg += JSON.stringify(arg)\n"
+                                + "      })\n" + "      if(window.java) {\n" + "        java.error(msg);\n"
+                                + "      }\n" + "  }");
                         webEngine.executeScript("console.log('JS Logging is overwritten.');");
                         PluginSupportedParameters supported = integration.getInitParameters().getSupported();
                         if (supported != null && supported.isCheckSelection()) {
