@@ -14,12 +14,12 @@ class JSConsole
 
     public void log(final String s)
     {
-        logger.debug("SidebarLogs: " + s);
+        logger.info("Java Script: " + s);
     }
 
     public void error(final String s)
     {
-        logger.debug("SidebarError: " + s);
+        logger.error("Java Script: " + s);
     }
 
     public static String overwriteJSLogging()

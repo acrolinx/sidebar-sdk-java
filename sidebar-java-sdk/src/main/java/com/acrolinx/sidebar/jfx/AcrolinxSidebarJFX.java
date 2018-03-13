@@ -94,10 +94,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                         }
                         logger.debug("Setting local storage");
                         jsobj.setMember("acrolinxStorage", storage);
-                        /*logger.debug("Overwriting JS logging.");
+                        logger.debug("Overwriting JS logging.");
                         jsobj.setMember("java", new JSConsole());
                         webEngine.executeScript(JSConsole.overwriteJSLogging());
-                        webEngine.executeScript("console.log('JS Logging is overwritten.');");*/
+                        webEngine.executeScript("console.log('JS Logging is overwritten.');");
                         PluginSupportedParameters supported = integration.getInitParameters().getSupported();
                         if (supported != null && supported.isCheckSelection()) {
                             acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionSupport(integration,
@@ -122,10 +122,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         webEngine.getLoadWorker().exceptionProperty().addListener((ov, t, t1) -> {
             logger.error("webEngine exception: " + t1.getMessage());
         });
-
-        com.sun.javafx.webkit.WebConsoleListener.setDefaultListener(
-                (webView, message, lineNumber, sourceId) -> logger.debug(
-                        "WebConsoleListener Console: [" + sourceId + ":" + lineNumber + "] " + message));
         if (sidebarUrl != null) {
             logger.info("Loading: " + sidebarUrl);
             webEngine.load(sidebarUrl);
