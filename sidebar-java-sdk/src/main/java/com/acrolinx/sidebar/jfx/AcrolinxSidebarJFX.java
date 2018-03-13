@@ -94,9 +94,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                         }
                         logger.debug("Setting local storage");
                         jsobj.setMember("acrolinxStorage", storage);
+                        JSConsole jsLog = new JSConsole();
+                        jsobj.setMember("java", jsLog);
                         logger.debug("Overwriting JS logging.");
-                        jsobj.setMember("java", new JSConsole());
-                        webEngine.executeScript(JSConsole.overwriteJSLogging());
+                        webEngine.executeScript(JSConsole.overwriteJSLogging);
                         webEngine.executeScript("console.log('JS Logging is overwritten.');");
                         PluginSupportedParameters supported = integration.getInitParameters().getSupported();
                         if (supported != null && supported.isCheckSelection()) {

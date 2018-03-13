@@ -22,9 +22,7 @@ class JSConsole
         logger.error("Java Script: " + s);
     }
 
-    public static String overwriteJSLogging()
-    {
-        return "(function(){\n" + "  if(window.console && console.log){\n" + "    var old = console.log;\n"
+    public static String overwriteJSLogging = "if(window.console && console.log){\n" + "    var old = console.log;\n"
                 + "    var oldError = console.error;\n" + "    console.log = function(){\n"
                 + "      old.apply(this, arguments);\n" + "      var args = [].slice.apply(arguments);\n"
                 + "      var msg = '';\n" + "      args.forEach(function(arg){\n"
@@ -33,6 +31,5 @@ class JSConsole
                 + "      oldError.apply(this, arguments);\n" + "      var args = [].slice.apply(arguments);\n"
                 + "      var msg = '';\n" + "      args.forEach(function(arg){\n"
                 + "        msg += JSON.stringify(arg)\n" + "      })\n" + "      if(window.java) {\n"
-                + "        java.error(msg);\n" + "      }\n" + "    }\n" + "  }\n" + "})();";
-    }
+                + "        java.error(msg);\n" + "      }\n" + "    }\n" + "  }\n";
 }
