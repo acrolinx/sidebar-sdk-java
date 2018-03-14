@@ -189,11 +189,20 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     private void initSidebar()
     {
-        new BrowserFunction(browser, "overwriteJSLoggingP") {
+        new BrowserFunction(browser, "overwriteJSLoggingInfoP") {
             @Override
             public Object function(final Object[] arguments)
             {
-                logger.debug("JSLogging: " + arguments[0]);
+                logger.info("Java Script: " + arguments[0]);
+                return null;
+            }
+        };
+
+        new BrowserFunction(browser, "overwriteJSLoggingErrorP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                logger.debug("Java Script: " + arguments[0]);
                 return null;
             }
         };
