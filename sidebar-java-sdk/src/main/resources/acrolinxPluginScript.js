@@ -2,10 +2,10 @@
 
 window.java = {
   log: function(args){
-    overwriteJSLoggingP(args);
+    overwriteJSLoggingInfoP(args);
   },
   error: function(args){
-    overwriteJSLoggingP(args);
+    overwriteJSLoggingErrorP(args);
   }
 }
 
