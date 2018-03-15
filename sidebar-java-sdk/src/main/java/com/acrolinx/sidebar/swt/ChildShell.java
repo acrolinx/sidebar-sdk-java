@@ -4,6 +4,7 @@
 
 package com.acrolinx.sidebar.swt;
 
+import com.acrolinx.sidebar.utils.IconUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
@@ -21,7 +22,7 @@ public class ChildShell
         child = new Shell(parent, SWT.DIALOG_TRIM);
         child.setLayout(new FillLayout());
         child.setText("Acrolinx Sidebar");
-        Image small = new Image(display, getClass().getClassLoader().getResourceAsStream("iconAcrolinx.png"));
+        Image small = new Image(display, IconUtils.getAcrolinxIcon_24_24_AsStream());
         child.setImage(small);
     }
 
