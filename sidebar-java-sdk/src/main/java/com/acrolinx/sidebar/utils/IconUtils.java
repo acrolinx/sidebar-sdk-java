@@ -53,14 +53,14 @@ import java.net.URL;
     /**
      * This method loads a scaled instance of the image for retina displays.
      */
-    public Image getAcrolinxIcon_16_16() {
+    public static Image getAcrolinxIcon_16_16() {
         return Toolkit.getDefaultToolkit().getImage(getAcrolinxIcon_16_16_URL());
     }
 
     /**
      * This method loads a scaled instance of the image for retina displays.
      */
-    public Image getAcrolinxIcon_24_24() {
+    public static Image getAcrolinxIcon_24_24() {
         return Toolkit.getDefaultToolkit().getImage(getAcrolinxIcon_24_24_URL());
     }
 }
