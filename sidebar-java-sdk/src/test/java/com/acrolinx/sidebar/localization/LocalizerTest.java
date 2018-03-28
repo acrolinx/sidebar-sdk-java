@@ -38,6 +38,6 @@ public class LocalizerTest
     {
         Localizer.getInstance().changeLocale(Locale.GERMAN);
         String text = Localizer.getInstance().getText(LocalizedStrings.SHOW_SIDEBAR_TOOLTIP);
-        Assert.assertTrue(text.equalsIgnoreCase("Acrolinx Sidebar öffnen"));
+        Assert.assertTrue(text.equalsIgnoreCase("Sidebar anzeigen"));
     }
 }
