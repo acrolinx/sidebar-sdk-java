@@ -120,9 +120,9 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     }
 
     @Override
-    public void checkGlobal(boolean checkSelection)
+    public void checkGlobal()
     {
-        sidebarJFX.checkGlobal(checkSelection);
+        sidebarJFX.checkGlobal();
     }
 
     @Override

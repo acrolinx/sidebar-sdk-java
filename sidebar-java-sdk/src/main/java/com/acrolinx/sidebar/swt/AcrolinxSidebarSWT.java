@@ -423,9 +423,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     }
 
     @Override
-    public void checkGlobal(boolean checkSelection)
+    public void checkGlobal()
     {
-        browser.execute("window.acrolinxPlugin.requestGlobalCheck({selection: " + checkSelection + "})");
+        browser.execute("window.acrolinxPlugin.requestGlobalCheck()");
     }
 
     @Override

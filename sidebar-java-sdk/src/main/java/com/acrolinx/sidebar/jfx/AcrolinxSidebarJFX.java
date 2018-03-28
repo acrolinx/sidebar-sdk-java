@@ -143,9 +143,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public void checkGlobal(boolean selectionEnabled)
+    public void checkGlobal()
     {
-        acrolinxSidebarPlugin.runCheck(selectionEnabled);
+        acrolinxSidebarPlugin.runCheck(false);
     }
 
     @Override

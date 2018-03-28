@@ -29,9 +29,8 @@ public interface AcrolinxSidebar
     /**
      * Triggers a check action in the Acrolinx Sidebar, same as pushing the checkButton.
      *
-     * @param checkSelection If true only the selected text will be checked.
      */
-    void checkGlobal(boolean checkSelection);
+    void checkGlobal();
 
     /**
      * Notifies the sidebar that the check was canceled.
