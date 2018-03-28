@@ -7,7 +7,6 @@ package com.acrolinx.sidebar.jfx;
 import static jdk.nashorn.internal.objects.Global.undefined;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -25,7 +24,6 @@ import com.acrolinx.sidebar.AcrolinxSidebar;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
-import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.utils.LogMessages;
@@ -37,6 +35,7 @@ import netscape.javascript.JSObject;
 
 /**
  * JFX implementation of Acrolinx Sidebar.
+ *
  * @see AcrolinxSidebar
  */
 @SuppressWarnings("unused")
@@ -143,15 +142,18 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public CompletableFuture<String> checkGlobal(String documentContent, CheckOptions options)
+    public void checkGlobal()
     {
-        return acrolinxSidebarPlugin.checkGlobal(documentContent, options);
+        if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithCheckSelectionSupport) {
+            ((AcrolinxSidebarPluginWithCheckSelectionSupport) acrolinxSidebarPlugin).requestGlobalCheck(null);
+        } else if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithoutCheckSelectionSupport) {
+            ((AcrolinxSidebarPluginWithoutCheckSelectionSupport) acrolinxSidebarPlugin).requestGlobalCheck();
+        }
     }
 
     @Override
     public void onGlobalCheckRejected()
     {
-
         acrolinxSidebarPlugin.onGlobalCheckRejected();
     }
 

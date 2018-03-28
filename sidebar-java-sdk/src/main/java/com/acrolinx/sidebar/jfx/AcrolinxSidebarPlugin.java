@@ -16,7 +16,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
@@ -100,17 +99,6 @@ abstract class AcrolinxSidebarPlugin
             jsobj.setMember("checkText", lastCheckedDocument.get());
             jsobj.eval("acrolinxSidebar.checkGlobal(checkText," + checkOptions.toString() + ")");
         });
-    }
-
-    public synchronized CompletableFuture<String> checkGlobal(String documentContent, CheckOptions checkOptions)
-    {
-        final CompletableFuture<String> future = new CompletableFuture<>();
-        Platform.runLater(() -> {
-            jsobj.eval("var globalCheckResult = JSON.stringify(acrolinxSidebar.checkGlobal(" + documentContent + ","
-                    + checkOptions.toString() + "))");
-            future.complete((String) jsobj.getMember("globalCheckResult"));
-        });
-        return future;
     }
 
     public synchronized void onCheckResult(final JSObject o)
