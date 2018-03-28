@@ -71,9 +71,9 @@ public class LookupForResolvedEditorViews
                         + ("".equals(match.getContent()) || match.getContent().equalsIgnoreCase(" ")));
                 boolean matchLineBreakOrTab = match.getContent().matches("[\\n\\r\\t]+");
                 logger.debug("match content is linebreak or tab? " + matchLineBreakOrTab);
-                return (("".equals(match.getContent()) || match.getContent().equals(" ") || matchLineBreakOrTab) && ignore);
+                return (("".equals(match.getContent()) || match.getContent().equals(" ") || matchLineBreakOrTab)
+                        && ignore);
             }).collect(Collectors.toList());
-
             adjustedRangesCopy = adjustedRangesCopy.stream().filter(match -> {
                 boolean b = !filteredMatches.contains(match);
                 if (!b) {

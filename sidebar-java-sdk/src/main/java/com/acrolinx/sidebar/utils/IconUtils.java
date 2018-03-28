@@ -1,3 +1,4 @@
+
 package com.acrolinx.sidebar.utils;
 
 import java.awt.*;
@@ -8,7 +9,8 @@ import java.net.URL;
 
 /**
  * Use this class to retrieve the Acrolinx Logo from package resources.
- */ public class IconUtils
+ */
+public class IconUtils
 {
     public static InputStream getAcrolinxIcon_16_16_AsStream()
     {
@@ -53,14 +55,16 @@ import java.net.URL;
     /**
      * This method loads a scaled instance of the image for retina displays.
      */
-    public static Image getAcrolinxIcon_16_16() {
+    public static Image getAcrolinxIcon_16_16()
+    {
         return Toolkit.getDefaultToolkit().getImage(getAcrolinxIcon_16_16_URL());
     }
 
     /**
      * This method loads a scaled instance of the image for retina displays.
      */
-    public static Image getAcrolinxIcon_24_24() {
+    public static Image getAcrolinxIcon_24_24()
+    {
         return Toolkit.getDefaultToolkit().getImage(getAcrolinxIcon_24_24_URL());
     }
 }

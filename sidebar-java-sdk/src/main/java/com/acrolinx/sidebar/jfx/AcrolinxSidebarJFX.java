@@ -143,9 +143,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public CompletableFuture<String> checkGlobal(String documentContent, CheckOptions options)
+    public void checkGlobal(boolean selectionEnabled)
     {
-        return acrolinxSidebarPlugin.checkGlobal(documentContent, options);
+        acrolinxSidebarPlugin.runCheck(selectionEnabled);
     }
 
     @Override

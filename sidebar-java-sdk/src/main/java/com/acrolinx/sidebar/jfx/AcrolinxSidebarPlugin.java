@@ -12,6 +12,17 @@
 
 package com.acrolinx.sidebar.jfx;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import javafx.application.Platform;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.*;
@@ -19,23 +30,14 @@ import com.acrolinx.sidebar.pojo.settings.*;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.google.common.base.Preconditions;
-import javafx.application.Platform;
-import netscape.javascript.JSObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
+import netscape.javascript.JSObject;
 
 /**
  * For internal use.
  */
-@SuppressWarnings({"unused"}) abstract class AcrolinxSidebarPlugin
+@SuppressWarnings({"unused"})
+abstract class AcrolinxSidebarPlugin
 {
     final AcrolinxIntegration client;
     private final JSObject jsobj;
@@ -99,18 +101,6 @@ import java.util.stream.Collectors;
         });
     }
 
-    public synchronized CompletableFuture<String> checkGlobal(String documentContent, CheckOptions checkOptions)
-    {
-        final CompletableFuture<String> future = new CompletableFuture<>();
-        Platform.runLater(() -> {
-            jsobj.setMember("documentContent", documentContent);
-            jsobj.setMember("globalCheckResult", jsobj.eval(
-                    "JSON.stringify(acrolinxSidebar.checkGlobal(documentContent," + checkOptions.toString() + "))"));
-            future.complete((String) jsobj.getMember("globalCheckResult"));
-        });
-        return future;
-    }
-
     public synchronized void onCheckResult(final JSObject o)
     {
         Instant checkEndedTime = Instant.now();
@@ -142,10 +132,10 @@ import java.util.stream.Collectors;
 
     public void invalidateRangesForMatches(List<? extends AbstractMatch> matches)
     {
-        List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map(
-                (match) -> new CheckedDocumentPart(currentCheckId.get(),
-                        new IntRange(match.getRange().getMinimumInteger(),
-                                match.getRange().getMaximumInteger()))).collect(Collectors.toList());
+        List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map((match) -> new CheckedDocumentPart(
+                currentCheckId.get(),
+                new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()))).collect(
+                        Collectors.toList());
         invalidateRanges(invalidDocumentParts);
     }
 

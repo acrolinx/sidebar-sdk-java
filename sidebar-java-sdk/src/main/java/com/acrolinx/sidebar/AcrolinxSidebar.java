@@ -27,13 +27,11 @@ public interface AcrolinxSidebar
     void configure(SidebarConfiguration configuration);
 
     /**
-     * Pushes a check request to the Acrolinx Sidebar.
+     * Triggers a check action in the Acrolinx Sidebar, same as pushing the checkButton.
      *
-     * @param documentContent
-     * @param options
-     * @return String containing the checkId assigned with the requested check
+     * @param checkSelection If true only the selected text will be checked.
      */
-    CompletableFuture<String> checkGlobal(String documentContent, CheckOptions options);
+    void checkGlobal(boolean checkSelection);
 
     /**
      * Notifies the sidebar that the check was canceled.
