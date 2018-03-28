@@ -4,10 +4,17 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import static jdk.nashorn.internal.objects.Global.undefined;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import com.acrolinx.sidebar.AcrolinxIntegration;
+import com.acrolinx.sidebar.AcrolinxSidebar;
+import com.acrolinx.sidebar.AcrolinxStorage;
+import com.acrolinx.sidebar.pojo.document.AbstractMatch;
+import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
+import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;
+import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
+import com.acrolinx.sidebar.utils.LogMessages;
+import com.acrolinx.sidebar.utils.SecurityUtils;
+import com.acrolinx.sidebar.utils.SidebarUtils;
+import com.acrolinx.sidebar.utils.StartPageInstaller;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -16,31 +23,20 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebErrorEvent;
 import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
-
+import netscape.javascript.JSObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.acrolinx.sidebar.AcrolinxIntegration;
-import com.acrolinx.sidebar.AcrolinxSidebar;
-import com.acrolinx.sidebar.AcrolinxStorage;
-import com.acrolinx.sidebar.pojo.document.AbstractMatch;
-import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
-import com.acrolinx.sidebar.pojo.settings.CheckOptions;
-import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;
-import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
-import com.acrolinx.sidebar.utils.LogMessages;
-import com.acrolinx.sidebar.utils.SecurityUtils;
-import com.acrolinx.sidebar.utils.SidebarUtils;
-import com.acrolinx.sidebar.utils.StartPageInstaller;
+import java.util.List;
 
-import netscape.javascript.JSObject;
+import static jdk.nashorn.internal.objects.Global.undefined;
 
 /**
  * JFX implementation of Acrolinx Sidebar.
+ *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings("unused")
-public class AcrolinxSidebarJFX implements AcrolinxSidebar
+@SuppressWarnings("unused") public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
     private final WebView browser = new WebView();
     private final WebEngine webEngine;
@@ -83,8 +79,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         webEngine.setOnAlert((final WebEvent<String> arg0) -> logger.debug("Alert: " + arg0.getData()));
 
         webEngine.getLoadWorker().stateProperty().addListener(
-                (final ObservableValue<? extends Worker.State> observedValue, final Worker.State oldState,
-                        final Worker.State newState) -> {
+                (final ObservableValue<? extends Worker.State> observedValue, final Worker.State oldState, final Worker.State newState) -> {
                     logger.debug("state changed: " + observedValue.getValue() + ": " + oldState + " -> " + newState);
                     if (newState == Worker.State.SUCCEEDED) {
                         logger.debug("Sidebar loaded from " + webEngine.getLocation());
@@ -145,13 +140,16 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     @Override
     public void checkGlobal()
     {
-        acrolinxSidebarPlugin.runCheck(false);
+        if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithCheckSelectionSupport) {
+            ((AcrolinxSidebarPluginWithCheckSelectionSupport) acrolinxSidebarPlugin).requestGlobalCheck(null);
+        } else if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithoutCheckSelectionSupport) {
+            ((AcrolinxSidebarPluginWithoutCheckSelectionSupport) acrolinxSidebarPlugin).requestGlobalCheck();
+        }
     }
 
     @Override
     public void onGlobalCheckRejected()
     {
-
         acrolinxSidebarPlugin.onGlobalCheckRejected();
     }
 
