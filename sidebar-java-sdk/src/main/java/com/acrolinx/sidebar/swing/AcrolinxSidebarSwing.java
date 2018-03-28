@@ -120,9 +120,9 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     }
 
     @Override
-    public CompletableFuture<String> checkGlobal(String documentContent, CheckOptions options)
+    public void checkGlobal()
     {
-        return sidebarJFX.checkGlobal(documentContent, options);
+        sidebarJFX.checkGlobal();
     }
 
     @Override

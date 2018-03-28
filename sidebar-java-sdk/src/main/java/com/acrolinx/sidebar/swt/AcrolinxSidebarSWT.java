@@ -423,13 +423,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     }
 
     @Override
-    public CompletableFuture<String> checkGlobal(String content, CheckOptions options)
+    public void checkGlobal()
     {
-        CompletableFuture<String> future = new CompletableFuture<>();
-        String result = (String) browser.evaluate(
-                "JSON.stringify(window.acrolinxSidebar.checkGlobal(" + content + "," + options.toString() + "));");
-        future.complete(result);
-        return future;
+        browser.execute("window.acrolinxPlugin.requestGlobalCheck()");
     }
 
     @Override
