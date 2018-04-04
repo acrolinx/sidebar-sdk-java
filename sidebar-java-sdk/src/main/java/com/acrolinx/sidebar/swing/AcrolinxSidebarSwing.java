@@ -59,7 +59,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         Platform.runLater(this::createScene);
     }
 
-   /* protected void processKeyEvent(KeyEvent e)
+   protected void processKeyEvent(KeyEvent e)
     {
         // Hack to prevent pasting event for editor (e. g. .
         if (e.getModifiers() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
@@ -70,7 +70,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
             super.processKeyEvent(e);
         }
 
-    }*/
+    }
 
     private void createScene()
     {
