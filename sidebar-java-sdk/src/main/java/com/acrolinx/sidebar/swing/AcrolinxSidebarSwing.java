@@ -59,16 +59,18 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         Platform.runLater(this::createScene);
     }
 
-    protected void processKeyEvent(KeyEvent e)
+   /* protected void processKeyEvent(KeyEvent e)
     {
         // Hack to prevent pasting event for editor (e. g. .
         if (e.getModifiers() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
                 && e.getKeyCode() == KeyEvent.VK_V) {
             //Consume it.
             e.consume();
+        } else {
+            super.processKeyEvent(e);
         }
-        super.processKeyEvent(e);
-    }
+
+    }*/
 
     private void createScene()
     {
@@ -87,7 +89,6 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
                 final float i = (float) getWidth() / 300;
                 logger.debug(String.valueOf(i) + " Zoom");
                 Platform.runLater(() -> getSidebarJFX().getWebView().setZoom(i));
-
             }
 
             @Override
