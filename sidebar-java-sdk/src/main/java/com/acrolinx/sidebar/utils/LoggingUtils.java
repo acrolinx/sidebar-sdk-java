@@ -43,7 +43,7 @@ public class LoggingUtils
     private static void loadLogFileConfig(InputStream configStream, String applicationName)
             throws JoranException, IOException, URISyntaxException
     {
-        if(!(LoggerFactory.getILoggerFactory() instanceof  LoggerContext)) {
+        if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
             if (configStream != null) {
                 configStream.close();
             }
@@ -94,7 +94,7 @@ public class LoggingUtils
         String logFileLocation = null;
         File clientLogFile;
         FileAppender<?> fileAppender = null;
-        if(!(LoggerFactory.getILoggerFactory() instanceof  LoggerContext)) {
+        if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
             return null;
         }
         LoggerContext lContext = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -126,7 +126,7 @@ public class LoggingUtils
      */
     public static void resetLoggingContext()
     {
-        if(!(LoggerFactory.getILoggerFactory() instanceof  LoggerContext)) {
+        if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
             return;
         }
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
