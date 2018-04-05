@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.slf4j.Logger;
@@ -148,20 +149,50 @@ public class LookupForResolvedEditorViews
                             match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
                     // Diff xml fragment with node content fragment.
                     correctedMatch.ifPresent(range -> {
+                        logger.debug(contentNode.getAsXMLFragment());
+                        logger.debug(textContent);
                         List<DiffMatchPatch.Diff> diffsNode = Lookup.getDiffs(contentNode.getAsXMLFragment(),
                                 textContent);
                         List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffsNode);
-                        Optional<IntRange> finalMatch = Lookup.getCorrectedMatch(diffsNode, offsetMappingArray,
-                                range.getMinimumInteger(), range.getMaximumInteger());
-                        finalMatch.ifPresent(rangeFinal -> {
-                            AbstractMatch copy = match.setRange(
-                                    new IntRange(startOffset + rangeFinal.getMinimumInteger(),
-                                            startOffset + rangeFinal.getMaximumInteger()));
-                            logger.debug("Found range for content by diffing content nodes: " + match.getContent());
-                            logger.debug("New range at: " + copy.getRange().toString());
-                            newRanges.add(copy);
-                            mappedRanges.add(match);
-                        });
+
+                        String rangeContentEscaped = StringEscapeUtils.escapeHtml(rangeContent);
+                        //Deal with HTML entitiy
+                        if (!rangeContent.equals(rangeContentEscaped) && match.getRange().getMaximumInteger()
+                                - match.getRange().getMinimumInteger() == rangeContentEscaped.length()) {
+                            logger.debug("Has to find HTML entitiy " + rangeContentEscaped);
+                            Optional<Integer> diffOffsetPositionStart = Lookup.getDiffOffsetPositionStart(
+                                    offsetMappingArray, range.getMinimumInteger() - 1);
+                            diffOffsetPositionStart.ifPresent(value -> {
+                                logger.debug("Mapped to offset: " + value);
+                                logger.debug("range min in is: " + range.getMinimumInteger());
+                                logger.debug("Textcontent is: " + textContent.substring(
+                                        range.getMinimumInteger() + value, range.getMinimumInteger() + value + 1));
+                                if (textContent.substring(range.getMinimumInteger() + value,
+                                        range.getMinimumInteger() + value + 1).equals(rangeContent)) {
+                                    AbstractMatch copy = match.setRange(
+                                            new IntRange(startOffset + range.getMinimumInteger() + value,
+                                                    startOffset + range.getMinimumInteger() + value + 1));
+                                    logger.debug("Found range for html entity content by diffing content nodes: "
+                                            + match.getContent());
+                                    logger.debug("New range at: " + copy.getRange().toString());
+                                    newRanges.add(copy);
+                                    mappedRanges.add(match);
+                                }
+                            });
+                        } else {
+                            Optional<IntRange> finalMatch = Lookup.getCorrectedMatch(diffsNode, offsetMappingArray,
+                                    range.getMinimumInteger(), range.getMaximumInteger());
+                            finalMatch.ifPresent(rangeFinal -> {
+                                AbstractMatch copy = match.setRange(
+                                        new IntRange(startOffset + rangeFinal.getMinimumInteger(),
+                                                startOffset + rangeFinal.getMaximumInteger()));
+                                logger.debug("Found range for content by diffing content nodes: " + match.getContent());
+                                logger.debug("New range at: " + copy.getRange().toString());
+                                newRanges.add(copy);
+                                mappedRanges.add(match);
+
+                            });
+                        }
                     });
                 }
             }
