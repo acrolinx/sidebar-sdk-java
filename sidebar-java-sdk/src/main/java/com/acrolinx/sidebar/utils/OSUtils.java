@@ -5,9 +5,10 @@ package com.acrolinx.sidebar.utils;
  * Retrieves the current OS.
  */
 
+@SuppressWarnings("unused")
 public class OSUtils
 {
-    public static enum EnumOS
+    public enum EnumOS
     {
         linux, macos, unknown, windows;
 

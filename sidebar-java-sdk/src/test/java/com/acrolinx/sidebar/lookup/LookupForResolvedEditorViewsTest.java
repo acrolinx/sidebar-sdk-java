@@ -558,4 +558,66 @@ public class LookupForResolvedEditorViewsTest
                         match.getRange().getMaximumInteger()).equalsIgnoreCase(match.getContent())));
     }
 
+    @Test
+    public void testLookupIncludesHTMLEntities()
+    {
+        final String authorViewContent = "Instructions for Authors.\n"
+                + "Replace the values in < > appropriate values.\n" + "The <caar> is <nicce>.";
+        final String documentContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<!DOCTYPE topic PUBLIC \"-//OASIS//DTD DITA Topic//EN\" \"topic.dtd\">\n"
+                + "<topic id=\"topic_icd_txy_3db\">\n" + "    <title>Instructions for Authors.</title>\n"
+                + "    <body>\n" + "        <p>Replace the values in &lt; > appropriate values.</p>\n"
+                + "        <p>The &lt;caar&gt; is &lt;nicce&gt;.</p>\n" + "    </body>\n" + "</topic>\n";
+
+        ContentNode contentNode = new ContentNode() {
+            @Override
+            public int getStartOffset()
+            {
+                return 72;
+            }
+
+            @Override
+            public int getEndOffset()
+            {
+                return 94;
+            }
+
+            @Override
+            public String getContent()
+            {
+                return "The <caar> is <nicce>.";
+            }
+
+            @Override
+            public String getAsXMLFragment()
+            {
+                return "<p>The &lt;caar&gt; is &lt;nicce&gt;.</p>";
+            }
+        };
+
+        Assert.assertTrue(
+                authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()).equalsIgnoreCase(
+                        contentNode.getContent()));
+
+        ArrayList<AcrolinxMatch> matches = new ArrayList<>();
+
+        matches.add(new AcrolinxMatch(new IntRange(272, 276), "<"));
+        matches.add(new AcrolinxMatch(new IntRange(276, 280), "caar"));
+        matches.add(new AcrolinxMatch(new IntRange(280, 284), ">"));
+
+        matches.add(new AcrolinxMatch(new IntRange(288, 292), "<"));
+        matches.add(new AcrolinxMatch(new IntRange(292, 297), "nicce"));
+        matches.add(new AcrolinxMatch(new IntRange(297, 301), ">"));
+
+        LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+                documentContent, authorViewContent, offset -> contentNode);
+
+        Assert.assertTrue(abstractMatches.isPresent());
+        abstractMatches.get().stream().forEach(
+                match -> Assert.assertTrue(authorViewContent.substring(match.getRange().getMinimumInteger(),
+                        match.getRange().getMaximumInteger()).equalsIgnoreCase(match.getContent())));
+
+    }
+
 }

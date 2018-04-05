@@ -24,6 +24,8 @@ import ch.qos.logback.core.joran.spi.JoranException;
 /**
  * Set up the integration's logging.
  */
+
+@SuppressWarnings("WeakerAccess")
 public class LoggingUtils
 {
 

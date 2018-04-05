@@ -36,7 +36,7 @@ import netscape.javascript.JSObject;
 /**
  * For internal use.
  */
-@SuppressWarnings({"unused"})
+@SuppressWarnings({"unused", "WeakerAccess"})
 abstract class AcrolinxSidebarPlugin
 {
     final AcrolinxIntegration client;
@@ -142,10 +142,7 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void openWindow(final JSObject o)
     {
         String url = o.getMember("url").toString();
-        if (SidebarUtils.isValidURL(url)) {
-            SidebarUtils.openWebPageInDefaultBrowser(url);
-        } else
-            logger.warn("Attempt to open invalid URL: " + url);
+        SidebarUtils.openWebPageInDefaultBrowser(url);
     }
 
     public void openLogFile()

@@ -29,16 +29,11 @@ apply plugin: 'io.codearte.nexus-staging'
 
 allprojects {
 
-	/*tasks.withType(Javadoc) {
+	tasks.withType(Javadoc) {
 		options.addStringOption('Xdoclint:none', '-quiet')
 		options.memberLevel = JavadocMemberLevel.PUBLIC
-	}*/
-
-	gradle.projectsEvaluated {
-		tasks.withType(JavaCompile) {
-			options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-		}
 	}
+
 	project.version = currentVersion
 	group = 'com.acrolinx.client'
 }

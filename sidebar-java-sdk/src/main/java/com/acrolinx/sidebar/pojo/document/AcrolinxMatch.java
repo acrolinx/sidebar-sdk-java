@@ -4,7 +4,7 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class AcrolinxMatch extends AbstractMatch
 {
     private final String content;

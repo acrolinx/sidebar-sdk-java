@@ -4,11 +4,16 @@
 
 package com.acrolinx.sidebar.swt;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -31,7 +36,6 @@ import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.*;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxURL;
-import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.DocumentSelection;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.utils.*;
@@ -44,9 +48,10 @@ import com.google.gson.reflect.TypeToken;
 
 /**
  * SWT implementation of Acrolinx Sidebar.
+ *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings({"SameParameterValue", "WeakerAccess"})
+@SuppressWarnings({"unused", "SameParameterValue", "WeakerAccess"})
 public class AcrolinxSidebarSWT implements AcrolinxSidebar
 {
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSWT.class);
@@ -385,8 +390,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             @Override
             public Object function(final Object[] arguments)
             {
-                if (!SidebarUtils.openSystemSpecific(LoggingUtils.getLogFileLocation())) {
-                    Program.launch(new File(LoggingUtils.getLogFileLocation()).getParent());
+                String logFileLocation = LoggingUtils.getLogFileLocation();
+                if (logFileLocation != null) {
+                    if (!SidebarUtils.openSystemSpecific(logFileLocation)) {
+                        Program.launch(new File(logFileLocation).getParent());
+                    }
                 }
                 return null;
             }
@@ -425,7 +433,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     @Override
     public void checkGlobal()
     {
-        browser.execute("window.acrolinxPlugin.requestGlobalCheck()");
+        browser.execute("window.acrolinxPlugin.requestGlobalCheck({selection: false});");
     }
 
     @Override

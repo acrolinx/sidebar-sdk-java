@@ -15,6 +15,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("WeakerAccess")
 public class StartPageInstaller
 {
     private static final Logger logger = LoggerFactory.getLogger(StartPageInstaller.class);

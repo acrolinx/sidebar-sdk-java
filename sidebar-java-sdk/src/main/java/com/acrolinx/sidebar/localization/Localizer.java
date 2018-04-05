@@ -14,7 +14,7 @@ import com.google.common.base.Preconditions;
 /**
  * Singleton to handle localization keys and resource bundles
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class Localizer
 {
 

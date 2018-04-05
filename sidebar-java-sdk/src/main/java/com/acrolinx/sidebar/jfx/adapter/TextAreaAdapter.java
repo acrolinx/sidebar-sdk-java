@@ -10,9 +10,6 @@ import javafx.scene.control.IndexRange;
 import javafx.scene.control.TextArea;
 
 import com.acrolinx.sidebar.InputAdapterInterface;
-import com.acrolinx.sidebar.LookupRanges;
-import com.acrolinx.sidebar.lookup.Lookup;
-import com.acrolinx.sidebar.lookup.LookupRangesDiff;
 import com.acrolinx.sidebar.lookup.MatchComparator;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
@@ -87,7 +84,7 @@ public class TextAreaAdapter implements InputAdapterInterface
         IndexRange selection = this.textArea.getSelection();
         int start = selection.getStart();
         int end = selection.getEnd();
-        List<IntRange> ranges = new ArrayList();
+        List<IntRange> ranges = new ArrayList<>();
         ranges.add(new IntRange(start, end));
         return ranges;
     }

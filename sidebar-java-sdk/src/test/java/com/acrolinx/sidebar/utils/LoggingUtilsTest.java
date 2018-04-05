@@ -4,7 +4,6 @@ package com.acrolinx.sidebar.utils;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -24,8 +23,9 @@ public class LoggingUtilsTest
     {
         LoggingUtils.setupLogging("TEST");
         String logFileLocation = LoggingUtils.getLogFileLocation();
+        Assert.assertTrue(logFileLocation != null);
         Assert.assertTrue(logFileLocation.contains("TEST"));
-        Files.deleteIfExists(Paths.get(LoggingUtils.getLogFileLocation()));
+        Files.deleteIfExists(Paths.get(logFileLocation));
     }
 
     @Test
@@ -39,12 +39,14 @@ public class LoggingUtilsTest
         assertTrue(level.toString().equalsIgnoreCase("INFO"));
         logger.debug("debug test");
         logger.warn("warning test");
-        List<String> strings = Files.readAllLines(Paths.get(LoggingUtils.getLogFileLocation()), Charsets.UTF_8);
+        String logFileLocation = LoggingUtils.getLogFileLocation();
+        Assert.assertTrue(logFileLocation != null);
+        List<String> strings = Files.readAllLines(Paths.get(logFileLocation), Charsets.UTF_8);
         strings.stream().forEach(string -> {
             assertTrue(string.contains("WARN"));
             assertTrue(string.contains("warning test"));
         });
-        Files.deleteIfExists(Paths.get(LoggingUtils.getLogFileLocation()));
+        Files.deleteIfExists(Paths.get(logFileLocation));
     }
 
     @Test
@@ -58,12 +60,14 @@ public class LoggingUtilsTest
         assertTrue(level.toString().equalsIgnoreCase("DEBUG"));
         Logger logger = LoggerFactory.getLogger("LoggingUtilsTest");
         logger.debug("debug test1");
-        List<String> strings = Files.readAllLines(Paths.get(LoggingUtils.getLogFileLocation()), Charsets.UTF_8);
+        String logFileLocation = LoggingUtils.getLogFileLocation();
+        Assert.assertTrue(logFileLocation != null);
+        List<String> strings = Files.readAllLines(Paths.get(logFileLocation), Charsets.UTF_8);
         strings.stream().forEach(string -> {
             assertTrue(string.contains("DEBUG"));
             assertTrue(string.contains("debug test1"));
         });
-        Files.deleteIfExists(Paths.get(LoggingUtils.getLogFileLocation()));
+        Files.deleteIfExists(Paths.get(logFileLocation));
         System.clearProperty("acrolog.level");
     }
 
@@ -79,9 +83,11 @@ public class LoggingUtilsTest
                 ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
         Level level = root.getLevel();
         assertTrue(level.equals(Level.OFF));
-        List<String> strings = Files.readAllLines(Paths.get(LoggingUtils.getLogFileLocation()), Charsets.UTF_8);
+        String logFileLocation = LoggingUtils.getLogFileLocation();
+        Assert.assertTrue(logFileLocation != null);
+        List<String> strings = Files.readAllLines(Paths.get(logFileLocation), Charsets.UTF_8);
         strings.stream().forEach(string -> assertTrue("".equals(string)));
-        Files.deleteIfExists(Paths.get(LoggingUtils.getLogFileLocation()));
+        Files.deleteIfExists(Paths.get(logFileLocation));
         System.clearProperty("acrolog.level");
     }
 
