@@ -66,8 +66,10 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
                 && e.getKeyCode() == KeyEvent.VK_V) {
             //Consume it.
             e.consume();
+        } else {
+            super.processKeyEvent(e);
         }
-        super.processKeyEvent(e);
+
     }
 
     private void createScene()
@@ -87,7 +89,6 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
                 final float i = (float) getWidth() / 300;
                 logger.debug(String.valueOf(i) + " Zoom");
                 Platform.runLater(() -> getSidebarJFX().getWebView().setZoom(i));
-
             }
 
             @Override

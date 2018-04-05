@@ -43,6 +43,12 @@ public class LoggingUtils
     private static void loadLogFileConfig(InputStream configStream, String applicationName)
             throws JoranException, IOException, URISyntaxException
     {
+        if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
+            if (configStream != null) {
+                configStream.close();
+            }
+            return;
+        }
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         loggerContext.reset();
         JoranConfigurator configurator = new JoranConfigurator();
@@ -88,6 +94,9 @@ public class LoggingUtils
         String logFileLocation = null;
         File clientLogFile;
         FileAppender<?> fileAppender = null;
+        if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
+            return null;
+        }
         LoggerContext lContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         for (ch.qos.logback.classic.Logger logger : lContext.getLoggerList()) {
             for (Iterator<Appender<ILoggingEvent>> index = logger.iteratorForAppenders(); index.hasNext();) {
@@ -117,6 +126,9 @@ public class LoggingUtils
      */
     public static void resetLoggingContext()
     {
+        if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
+            return;
+        }
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         loggerContext.reset();
     }
