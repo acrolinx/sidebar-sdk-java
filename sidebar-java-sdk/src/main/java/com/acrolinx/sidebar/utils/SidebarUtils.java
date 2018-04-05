@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponent;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponentCategory;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class SidebarUtils
 {
     private static final Logger logger = LoggerFactory.getLogger(SidebarUtils.class);
@@ -40,15 +40,19 @@ public class SidebarUtils
      */
     public static void openWebPageInDefaultBrowser(String url)
     {
-        try {
-            openURIInDefaultBrowser(new URI(url));
-        } catch (URISyntaxException e) {
-            logger.error(e.getMessage());
-        }
+        if (SidebarUtils.isValidURL(url)) {
+            try {
+                openURIInDefaultBrowser(new URI(url));
+            } catch (URISyntaxException e) {
+                logger.error(e.getMessage());
+            }
+        } else
+            logger.warn("Attempt to open invalid URL: " + url);
     }
 
     /**
      * Validates a URL. Local URLs are allowed.
+     *
      * @param url
      * @return true if url is valid
      */
@@ -74,12 +78,10 @@ public class SidebarUtils
 
     private static String getTldString(String urlString)
     {
-        URL url = null;
         String tldString = null;
         if (urlString != null && urlString.length() > 0) {
             try {
-
-                url = new URL(urlString);
+                URL url = new URL(urlString);
                 String[] domainNameParts = url.getHost().split("\\.");
                 tldString = domainNameParts[domainNameParts.length - 1];
             } catch (MalformedURLException e) {
@@ -109,38 +111,44 @@ public class SidebarUtils
      * Opens the log file. For internal use.
      * Attempts to open and preselect log file in systems file manager (only for mac os and windows).
      * If that fails, it just shows the containing folder in the file manager.
-     *
      */
     public static void openLogFile()
     {
 
-        String logFile = new File(LoggingUtils.getLogFileLocation()).getPath();
-        if (openSystemSpecific(logFile))
-            return;
-        openLogFileFolderInFileManger();
+        String logFileLocation = LoggingUtils.getLogFileLocation();
+        if (logFileLocation != null) {
+            String logFile = new File(logFileLocation).getPath();
+            if (openSystemSpecific(logFile))
+                return;
+            openLogFileFolderInFileManger();
+        }
     }
 
     private static void openLogFileFolderInFileManger()
     {
-        String folder = new File(LoggingUtils.getLogFileLocation()).getParent();
-        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-        if (desktop != null && desktop.isSupported(Desktop.Action.OPEN)) {
-            new Thread(() -> {
-                try {
-                    Desktop.getDesktop().open(new File(folder));
-                } catch (Exception e) {
-                    logger.error(e.getMessage());
-                }
-            }).start();
-        } else {
-            logger.error("Desktop is not available to get systems default browser.");
+        String logFileLocation = LoggingUtils.getLogFileLocation();
+        if (logFileLocation != null) {
+            String folder = new File(logFileLocation).getParent();
+            Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+            if (desktop != null && desktop.isSupported(Desktop.Action.OPEN)) {
+                new Thread(() -> {
+                    try {
+                        Desktop.getDesktop().open(new File(folder));
+                    } catch (Exception e) {
+                        logger.error(e.getMessage());
+                    }
+                }).start();
+            } else {
+                logger.error("Desktop is not available to get systems default browser.");
+            }
         }
     }
 
     /**
      * Returns the sidebar URL for a given Acrolinx Server Address. For internal use.
+     *
      * @param serverAddress
-     * @return
+     * @return sidebar url
      */
     public static String getSidebarUrl(String serverAddress)
     {
@@ -186,6 +194,7 @@ public class SidebarUtils
 
     /**
      * Test if a sidebar is available for the given server address
+     *
      * @param serverAddress
      * @return true if sidebar is available
      */
@@ -227,8 +236,9 @@ public class SidebarUtils
     /**
      * Attempts to show file in system specific file manager. Works only for mac and windows.
      * For internal use only.
+     *
      * @param path to file
-     * @return
+     * @return boolean
      */
 
     public static boolean openSystemSpecific(String path)

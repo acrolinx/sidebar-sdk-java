@@ -14,6 +14,8 @@ import java.util.ResourceBundle;
 /*
  * https://github.com/joconner/enhanced-resources
  */
+
+@SuppressWarnings("WeakerAccess")
 class UTF8ResourceBundleControl extends ResourceBundle.Control
 {
 

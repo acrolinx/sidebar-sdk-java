@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 
+@SuppressWarnings("unused")
 public abstract class LookupRanges
 {
 

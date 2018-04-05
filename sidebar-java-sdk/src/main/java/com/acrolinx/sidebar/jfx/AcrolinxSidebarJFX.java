@@ -4,8 +4,6 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import static jdk.nashorn.internal.objects.Global.undefined;
-
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -88,9 +86,16 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                     if (newState == Worker.State.SUCCEEDED) {
                         logger.debug("Sidebar loaded from " + webEngine.getLocation());
                         final JSObject jsobj = (JSObject) webEngine.executeScript("window");
-                        if (jsobj == null || jsobj == undefined) {
-                            logger.error("Window Object undefined or null!");
+                        if (jsobj == null) {
+                            logger.error("Window Object null!");
                         }
+                        logger.debug("Injecting JSLogger.");
+                        jsobj.setMember("java", new JSLogger());
+                        webEngine.executeScript("console.log = function()\n" + "{\n" + "    java.log('JavaScript: ' + "
+                                + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
+                        webEngine.executeScript(
+                                "console.error = function()\n" + "{\n" + "    java.error('JavaScript: ' + "
+                                        + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
                         logger.debug("Setting local storage");
                         jsobj.setMember("acrolinxStorage", storage);
                         PluginSupportedParameters supported = integration.getInitParameters().getSupported();
@@ -118,8 +123,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             logger.error("webEngine exception: " + t1.getMessage());
         });
 
-        com.sun.javafx.webkit.WebConsoleListener.setDefaultListener(
-                (webView, message, lineNumber, sourceId) -> logger.info("JavaScript: " + message));
         if (sidebarUrl != null) {
             logger.info("Loading: " + sidebarUrl);
             webEngine.load(sidebarUrl);
