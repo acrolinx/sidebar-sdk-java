@@ -12,6 +12,7 @@
 
 package com.acrolinx.sidebar.jfx;
 
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -142,10 +143,7 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void openWindow(final JSObject o)
     {
         String url = o.getMember("url").toString();
-        if (SidebarUtils.isValidURL(url)) {
-            SidebarUtils.openWebPageInDefaultBrowser(url);
-        } else
-            logger.warn("Attempt to open invalid URL: " + url);
+        SidebarUtils.openWebPageInDefaultBrowser(url);
     }
 
     public void openLogFile()

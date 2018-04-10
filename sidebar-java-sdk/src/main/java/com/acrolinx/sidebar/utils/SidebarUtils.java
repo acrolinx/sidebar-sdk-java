@@ -40,15 +40,23 @@ public class SidebarUtils
      */
     public static void openWebPageInDefaultBrowser(String url)
     {
-        try {
-            openURIInDefaultBrowser(new URI(url));
-        } catch (URISyntaxException e) {
-            logger.error(e.getMessage());
-        }
+        if (SidebarUtils.isValidURL(url)) {
+            if (openSystemSpecificURL(url)) {
+                return;
+            } else {
+                try {
+                    openURIInDefaultBrowser(new URI(url));
+                } catch (URISyntaxException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        } else
+            logger.warn("Attempt to open invalid URL: " + url);
     }
 
     /**
      * Validates a URL. Local URLs are allowed.
+     *
      * @param url
      * @return true if url is valid
      */
@@ -109,7 +117,6 @@ public class SidebarUtils
      * Opens the log file. For internal use.
      * Attempts to open and preselect log file in systems file manager (only for mac os and windows).
      * If that fails, it just shows the containing folder in the file manager.
-     *
      */
     public static void openLogFile()
     {
@@ -139,6 +146,7 @@ public class SidebarUtils
 
     /**
      * Returns the sidebar URL for a given Acrolinx Server Address. For internal use.
+     *
      * @param serverAddress
      * @return
      */
@@ -186,6 +194,7 @@ public class SidebarUtils
 
     /**
      * Test if a sidebar is available for the given server address
+     *
      * @param serverAddress
      * @return true if sidebar is available
      */
@@ -224,9 +233,26 @@ public class SidebarUtils
                 SoftwareComponentCategory.DETAIL);
     }
 
+    private static boolean openSystemSpecificURL(String url)
+    {
+        OSUtils.EnumOS os = OSUtils.getOS();
+
+        if (os.isMac()) {
+            if (runCommand("open", "", url))
+                return true;
+        }
+
+        if (os.isWindows()) {
+            if (runCommand("explorer", "", "\"" + url + "\""))
+                return true;
+        }
+        return false;
+    }
+
     /**
      * Attempts to show file in system specific file manager. Works only for mac and windows.
      * For internal use only.
+     *
      * @param path to file
      * @return
      */
