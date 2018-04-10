@@ -41,14 +41,10 @@ public class SidebarUtils
     public static void openWebPageInDefaultBrowser(String url)
     {
         if (SidebarUtils.isValidURL(url)) {
-            if (openSystemSpecificURL(url)) {
-                return;
-            } else {
-                try {
-                    openURIInDefaultBrowser(new URI(url));
-                } catch (URISyntaxException e) {
-                    logger.error(e.getMessage());
-                }
+            try {
+                openURIInDefaultBrowser(new URI(url));
+            } catch (URISyntaxException e) {
+                logger.error(e.getMessage());
             }
         } else
             logger.warn("Attempt to open invalid URL: " + url);
@@ -231,22 +227,6 @@ public class SidebarUtils
     {
         return new SoftwareComponent("com.acrolinx.sidebar.java", "Java SDK", getCurrentSDKImplementationVersion(),
                 SoftwareComponentCategory.DETAIL);
-    }
-
-    private static boolean openSystemSpecificURL(String url)
-    {
-        OSUtils.EnumOS os = OSUtils.getOS();
-
-        if (os.isMac()) {
-            if (runCommand("open", "", url))
-                return true;
-        }
-
-        if (os.isWindows()) {
-            if (runCommand("explorer", "", "\"" + url + "\""))
-                return true;
-        }
-        return false;
     }
 
     /**
