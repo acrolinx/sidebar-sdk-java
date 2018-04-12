@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponent;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponentCategory;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class SidebarUtils
 {
     private static final Logger logger = LoggerFactory.getLogger(SidebarUtils.class);
@@ -78,12 +78,10 @@ public class SidebarUtils
 
     private static String getTldString(String urlString)
     {
-        URL url = null;
         String tldString = null;
         if (urlString != null && urlString.length() > 0) {
             try {
-
-                url = new URL(urlString);
+                URL url = new URL(urlString);
                 String[] domainNameParts = url.getHost().split("\\.");
                 tldString = domainNameParts[domainNameParts.length - 1];
             } catch (MalformedURLException e) {
@@ -117,26 +115,32 @@ public class SidebarUtils
     public static void openLogFile()
     {
 
-        String logFile = new File(LoggingUtils.getLogFileLocation()).getPath();
-        if (openSystemSpecific(logFile))
-            return;
-        openLogFileFolderInFileManger();
+        String logFileLocation = LoggingUtils.getLogFileLocation();
+        if (logFileLocation != null) {
+            String logFile = new File(logFileLocation).getPath();
+            if (openSystemSpecific(logFile))
+                return;
+            openLogFileFolderInFileManger();
+        }
     }
 
     private static void openLogFileFolderInFileManger()
     {
-        String folder = new File(LoggingUtils.getLogFileLocation()).getParent();
-        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-        if (desktop != null && desktop.isSupported(Desktop.Action.OPEN)) {
-            new Thread(() -> {
-                try {
-                    Desktop.getDesktop().open(new File(folder));
-                } catch (Exception e) {
-                    logger.error(e.getMessage());
-                }
-            }).start();
-        } else {
-            logger.error("Desktop is not available to get systems default browser.");
+        String logFileLocation = LoggingUtils.getLogFileLocation();
+        if (logFileLocation != null) {
+            String folder = new File(logFileLocation).getParent();
+            Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+            if (desktop != null && desktop.isSupported(Desktop.Action.OPEN)) {
+                new Thread(() -> {
+                    try {
+                        Desktop.getDesktop().open(new File(folder));
+                    } catch (Exception e) {
+                        logger.error(e.getMessage());
+                    }
+                }).start();
+            } else {
+                logger.error("Desktop is not available to get systems default browser.");
+            }
         }
     }
 
@@ -144,7 +148,7 @@ public class SidebarUtils
      * Returns the sidebar URL for a given Acrolinx Server Address. For internal use.
      *
      * @param serverAddress
-     * @return
+     * @return sidebar url
      */
     public static String getSidebarUrl(String serverAddress)
     {
@@ -234,7 +238,7 @@ public class SidebarUtils
      * For internal use only.
      *
      * @param path to file
-     * @return
+     * @return boolean
      */
 
     public static boolean openSystemSpecific(String path)

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class CheckResult
 {
     private final CheckedDocumentPart checkedDocumentPart;

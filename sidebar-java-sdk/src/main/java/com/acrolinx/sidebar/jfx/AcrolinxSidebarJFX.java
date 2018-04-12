@@ -4,8 +4,6 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import static jdk.nashorn.internal.objects.Global.undefined;
-
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -88,7 +86,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                     if (newState == Worker.State.SUCCEEDED) {
                         logger.debug("Sidebar loaded from " + webEngine.getLocation());
                         final JSObject jsobj = (JSObject) webEngine.executeScript("window");
-                        if (jsobj == null || jsobj == undefined) {
+                        if (jsobj == null) {
                             logger.error("Window Object undefined or null!");
                         }
                         logger.debug("Setting local storage");

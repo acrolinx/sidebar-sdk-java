@@ -4,14 +4,12 @@ package com.acrolinx.sidebar.utils;
 import static org.apache.commons.io.FileUtils.deleteDirectory;
 import static org.junit.Assert.assertTrue;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,9 +36,7 @@ public class StartPageInstallerTest
             try {
                 String startPageURL1 = StartPageInstaller.getStartPageURL();
                 Assert.assertTrue(startPageURL1.contains("index.html"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
+            } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
         };
@@ -48,9 +44,7 @@ public class StartPageInstallerTest
             try {
                 String startPageURL1 = StartPageInstaller.getStartPageURL();
                 Assert.assertTrue(startPageURL1.contains("index.html"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
+            } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
         };
@@ -58,9 +52,7 @@ public class StartPageInstallerTest
             try {
                 String startPageURL1 = StartPageInstaller.getStartPageURL();
                 Assert.assertTrue(startPageURL1.contains("index.html"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
+            } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
         };

@@ -282,7 +282,7 @@ public class AcrolinxSidebarInitParameter
          * Requires minimum sidebar version 14.5.0.
          *
          * @param supported
-         * @return
+         * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
         public AcrolinxSidebarInitParameterBuilder withPluginSupportedParameters(PluginSupportedParameters supported)
         {

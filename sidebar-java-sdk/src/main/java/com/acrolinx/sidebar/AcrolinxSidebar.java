@@ -5,11 +5,9 @@
 package com.acrolinx.sidebar;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
-import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 
 /**

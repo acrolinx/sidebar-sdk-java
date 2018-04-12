@@ -118,6 +118,7 @@ task convertLocalizationEncoding() {
 task generateJavaDocs(type: Javadoc) {
 	source = sourceSets.main.allJava
 	destinationDir = new File(rootProject.projectDir, "docs/")
+	classpath = sourceSets.main.runtimeClasspath
 	failOnError = false
 }
 

@@ -12,7 +12,6 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -37,7 +36,7 @@ import netscape.javascript.JSObject;
 /**
  * For internal use.
  */
-@SuppressWarnings({"unused"})
+@SuppressWarnings({"unused", "WeakerAccess"})
 abstract class AcrolinxSidebarPlugin
 {
     final AcrolinxIntegration client;

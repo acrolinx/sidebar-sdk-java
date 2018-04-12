@@ -12,6 +12,7 @@ import com.acrolinx.sidebar.LookupRanges;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 
+@SuppressWarnings("WeakerAccess")
 public class LookupRangesDiff extends LookupRanges
 {
 
