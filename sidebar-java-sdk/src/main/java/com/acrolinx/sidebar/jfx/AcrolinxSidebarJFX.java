@@ -87,8 +87,15 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                         logger.debug("Sidebar loaded from " + webEngine.getLocation());
                         final JSObject jsobj = (JSObject) webEngine.executeScript("window");
                         if (jsobj == null) {
-                            logger.error("Window Object undefined or null!");
+                            logger.error("Window Object null!");
                         }
+                        logger.debug("Injecting JSLogger.");
+                        jsobj.setMember("java", new JSLogger());
+                        webEngine.executeScript("console.log = function()\n" + "{\n" + "    java.log('JavaScript: ' + "
+                                + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
+                        webEngine.executeScript(
+                                "console.error = function()\n" + "{\n" + "    java.error('JavaScript: ' + "
+                                        + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
                         logger.debug("Setting local storage");
                         jsobj.setMember("acrolinxStorage", storage);
                         PluginSupportedParameters supported = integration.getInitParameters().getSupported();
@@ -116,8 +123,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             logger.error("webEngine exception: " + t1.getMessage());
         });
 
-        com.sun.javafx.webkit.WebConsoleListener.setDefaultListener(
-                (webView, message, lineNumber, sourceId) -> logger.info("JavaScript: " + message));
         if (sidebarUrl != null) {
             logger.info("Loading: " + sidebarUrl);
             webEngine.load(sidebarUrl);
