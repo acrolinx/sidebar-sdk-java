@@ -97,11 +97,15 @@ abstract class AcrolinxSidebarPlugin
         logger.debug("Got check content.");
         logger.debug(lastCheckedDocument.get());
         Platform.runLater(() -> {
-            logger.debug(checkOptions.toString());
             logger.debug("jsObject is present:" + (jsobj != null));
-            jsobj.eval("var checkText = \"\" + " + lastCheckedDocument.get() + ";");
-            jsobj.eval("var checkOptions = " + checkOptions.toString() + ";");
-            jsobj.eval("acrolinxSidebar.checkGlobal(checkText, checkOptions);");
+            try {
+
+                JSObject acrolinxSidebar = (JSObject) jsobj.getMember("acrolinxSidebar");
+                acrolinxSidebar.call("checkGlobal", lastCheckedDocument.get(), checkOptions);
+
+            } catch (Error e) {
+                logger.error(e.getMessage());
+            }
             logger.debug("Run check was sent...");
         });
     }
