@@ -100,7 +100,9 @@ abstract class AcrolinxSidebarPlugin
             logger.debug(checkOptions.toString());
             logger.debug("jsObject is present:" + (jsobj != null));
             jsobj.setMember("checkText", lastCheckedDocument.get());
+            logger.debug("checkText is present:" + (jsobj.getMember("checkText") != null));
             jsobj.setMember("checkOptions", checkOptions);
+            logger.debug("checkOptions are present:" + (jsobj.getMember("checkOptions") != null));
             logger.debug(jsobj.getMember("checkText").toString());
             Object eval = jsobj.eval("acrolinxSidebar.checkGlobal(checkText, checkOptions);");
             logger.debug(eval.toString());
