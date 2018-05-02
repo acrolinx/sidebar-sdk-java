@@ -287,7 +287,7 @@ public class SidebarUtils
                     return false;
                 }
             } catch (IllegalThreadStateException e) {
-                logger.debug("Process is running.", e);
+                logger.debug("Process is running.");
                 return true;
             }
         } catch (IOException e) {
@@ -295,5 +295,4 @@ public class SidebarUtils
             return false;
         }
     }
-
 }
