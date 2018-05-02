@@ -12,6 +12,17 @@
 
 package com.acrolinx.sidebar.jfx;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import javafx.application.Platform;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.*;
@@ -19,17 +30,8 @@ import com.acrolinx.sidebar.pojo.settings.*;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.google.common.base.Preconditions;
-import javafx.application.Platform;
-import netscape.javascript.JSObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
+import netscape.javascript.JSObject;
 
 /**
  * For internal use.
@@ -92,10 +94,13 @@ abstract class AcrolinxSidebarPlugin
     {
         final CheckOptions checkOptions = getCheckSettingsFromClient(selectionEnabled);
         lastCheckedDocument.set(client.getEditorAdapter().getContent());
+        logger.debug("Got check content.");
+        logger.debug(lastCheckedDocument.get());
         Platform.runLater(() -> {
             logger.debug(checkOptions.toString());
             jsobj.setMember("checkText", lastCheckedDocument.get());
-            jsobj.eval("acrolinxSidebar.checkGlobal(checkText," + checkOptions.toString() + ")");
+            Object eval = jsobj.eval("acrolinxSidebar.checkGlobal(checkText," + checkOptions.toString() + ")");
+            logger.debug(eval.toString());
         });
     }
 
@@ -154,6 +159,7 @@ abstract class AcrolinxSidebarPlugin
         documentReference.set(client.getEditorAdapter().getDocumentReference());
         DocumentSelection selection = null;
         if (includeCheckSelectionRanges) {
+            logger.debug("Including check selection ranges.");
             List<IntRange> currentSelection = client.getEditorAdapter().getCurrentSelection();
             checkSelectionRange.set(currentSelection);
             if (currentSelection != null) {

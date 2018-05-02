@@ -31,6 +31,7 @@ public class AcrolinxSidebarPluginWithCheckSelectionSupport extends AcrolinxSide
         }
         if (client.getEditorAdapter() != null && !(client.getEditorAdapter() instanceof NullEditorAdapter)
                 && client.getEditorAdapter().getContent() != null) {
+            logger.debug("Editor is ready for running a check");
             runCheck(selection);
         } else {
             logger.warn("Current File Editor not supported for checking or no file present.");
