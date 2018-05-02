@@ -12,17 +12,6 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import javafx.application.Platform;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.*;
@@ -30,14 +19,22 @@ import com.acrolinx.sidebar.pojo.settings.*;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.google.common.base.Preconditions;
-
+import javafx.application.Platform;
 import netscape.javascript.JSObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * For internal use.
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
-abstract class AcrolinxSidebarPlugin
+@SuppressWarnings({"unused", "WeakerAccess"}) abstract class AcrolinxSidebarPlugin
 {
     final AcrolinxIntegration client;
     private final JSObject jsobj;
@@ -99,14 +96,10 @@ abstract class AcrolinxSidebarPlugin
         Platform.runLater(() -> {
             logger.debug(checkOptions.toString());
             logger.debug("jsObject is present:" + (jsobj != null));
-            jsobj.setMember("checkText", lastCheckedDocument.get());
-            logger.debug("checkText is present:" + (jsobj.getMember("checkText") != null));
-            jsobj.setMember("checkOptions", checkOptions);
-            logger.debug("checkOptions are present:" + (jsobj.getMember("checkOptions") != null));
-            logger.debug(jsobj.getMember("checkText").toString());
-            Object eval = jsobj.eval("acrolinxSidebar.checkGlobal(checkText, checkOptions);");
-            logger.debug(eval.toString());
-            logger.debug("run check was sent");
+            jsobj.eval("var checkText=" + lastCheckedDocument.get() + ";");
+            jsobj.eval("var checkOptions=" + checkOptions.toString() + ";");
+            jsobj.eval("acrolinxSidebar.checkGlobal(checkText, checkOptions);");
+            logger.debug("Run check was sent...");
         });
     }
 
@@ -141,10 +134,10 @@ abstract class AcrolinxSidebarPlugin
 
     public void invalidateRangesForMatches(List<? extends AbstractMatch> matches)
     {
-        List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map((match) -> new CheckedDocumentPart(
-                currentCheckId.get(),
-                new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()))).collect(
-                        Collectors.toList());
+        List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map(
+                (match) -> new CheckedDocumentPart(currentCheckId.get(),
+                        new IntRange(match.getRange().getMinimumInteger(),
+                                match.getRange().getMaximumInteger()))).collect(Collectors.toList());
         invalidateRanges(invalidDocumentParts);
     }
 
