@@ -72,14 +72,7 @@ abstract class AcrolinxSidebarPlugin
     {
         logger.debug("Requesting init sidebar: " + client.getInitParameters().toString());
         this.initParameters.set(client.getInitParameters());
-        Platform.runLater(() -> {
-            try {
-                JSObject acrolinxSidebar = (JSObject) jsobj.getMember("acrolinxSidebar");
-                acrolinxSidebar.call("init", this.initParameters.get());
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-            }
-        });
+        Platform.runLater(() -> jsobj.eval("acrolinxSidebar.init(" + this.initParameters.get().toString() + ")"));
     }
 
     public synchronized void onInitFinished(final JSObject o)
