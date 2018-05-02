@@ -99,8 +99,8 @@ abstract class AcrolinxSidebarPlugin
         Platform.runLater(() -> {
             logger.debug(checkOptions.toString());
             logger.debug("jsObject is present:" + (jsobj != null));
-            jsobj.eval("var checkText=" + lastCheckedDocument.get() + ";");
-            jsobj.eval("var checkOptions=" + checkOptions.toString() + ";");
+            jsobj.eval("var checkText = \"\" + " + lastCheckedDocument.get() + ";");
+            jsobj.eval("var checkOptions = " + checkOptions.toString() + ";");
             jsobj.eval("acrolinxSidebar.checkGlobal(checkText, checkOptions);");
             logger.debug("Run check was sent...");
         });
