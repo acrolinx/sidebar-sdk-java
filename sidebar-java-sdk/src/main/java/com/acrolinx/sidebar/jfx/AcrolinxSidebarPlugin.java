@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
+import javafx.scene.web.WebView;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,24 +48,31 @@ abstract class AcrolinxSidebarPlugin
     private final AtomicReference<String> documentReference = new AtomicReference<>("");
     private final AtomicReference<List<IntRange>> checkSelectionRange = new AtomicReference<>();
     private final AtomicReference<AcrolinxSidebarInitParameter> initParameters = new AtomicReference<>();
+    private volatile WebView webView;
 
     final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarPlugin.class);
 
     protected Instant checkStartedTime;
 
-    public AcrolinxSidebarPlugin(final AcrolinxIntegration client)
+    public AcrolinxSidebarPlugin(final AcrolinxIntegration client, WebView webView)
     {
         Preconditions.checkNotNull(client, "Workspace should not be null");
         Preconditions.checkNotNull(client.getEditorAdapter(), "EditorAdapter should not be null");
         this.client = client;
+        this.webView = webView;
         logger.debug("Injecting Acrolinx Plugin.");
         Platform.runLater(() -> {
             try {
-                AcrolinxSidebarJFX.getWindowObject().setMember("acrolinxPlugin", this);
+                getWindowObject().setMember("acrolinxPlugin", this);
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
         });
+    }
+
+    private JSObject getWindowObject()
+    {
+        return (JSObject) webView.getEngine().executeScript("window");
     }
 
     private AcrolinxIntegration getClient()
@@ -78,8 +86,7 @@ abstract class AcrolinxSidebarPlugin
         this.initParameters.set(client.getInitParameters());
         Platform.runLater(() -> {
             try {
-                AcrolinxSidebarJFX.getWindowObject().eval(
-                        "acrolinxSidebar.init(" + this.initParameters.get().toString() + ")");
+                getWindowObject().eval("acrolinxSidebar.init(" + this.initParameters.get().toString() + ")");
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
@@ -100,8 +107,7 @@ abstract class AcrolinxSidebarPlugin
         logger.debug("Configuring Sidebar: " + sidebarConfiguration.toString());
         Platform.runLater(() -> {
             try {
-                AcrolinxSidebarJFX.getWindowObject().eval(
-                        "acrolinxSidebar.configure(" + sidebarConfiguration.toString() + ")");
+                getWindowObject().eval("acrolinxSidebar.configure(" + sidebarConfiguration.toString() + ")");
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
@@ -116,7 +122,7 @@ abstract class AcrolinxSidebarPlugin
             try {
                 logger.debug(checkOptions.toString());
                 String nameVariableCheckText = "checkText";
-                JSObject jsObject = AcrolinxSidebarJFX.getWindowObject();
+                JSObject jsObject = getWindowObject();
                 jsObject.setMember(nameVariableCheckText, lastCheckedDocument.get());
                 jsObject.eval("acrolinxSidebar.checkGlobal(checkText," + checkOptions.toString() + ");");
             } catch (Exception e) {
@@ -196,7 +202,7 @@ abstract class AcrolinxSidebarPlugin
         LogMessages.logCheckRejected(logger);
         Platform.runLater(() -> {
             try {
-                AcrolinxSidebarJFX.getWindowObject().eval("acrolinxSidebar.onGlobalCheckRejected();");
+                getWindowObject().eval("acrolinxSidebar.onGlobalCheckRejected();");
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
@@ -213,7 +219,7 @@ abstract class AcrolinxSidebarPlugin
         String js = buildStringOfCheckedDocumentRanges(invalidCheckedDocumentRanges);
         Platform.runLater(() -> {
             try {
-                AcrolinxSidebarJFX.getWindowObject().eval("acrolinxSidebar.invalidateRanges([" + js + "])");
+                getWindowObject().eval("acrolinxSidebar.invalidateRanges([" + js + "])");
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }

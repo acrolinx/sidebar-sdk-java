@@ -6,6 +6,7 @@ package com.acrolinx.sidebar.jfx;
 
 import java.time.Instant;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.adapter.NullEditorAdapter;
@@ -15,9 +16,9 @@ import netscape.javascript.JSObject;
 
 public class AcrolinxSidebarPluginWithCheckSelectionSupport extends AcrolinxSidebarPlugin
 {
-    public AcrolinxSidebarPluginWithCheckSelectionSupport(AcrolinxIntegration client)
+    public AcrolinxSidebarPluginWithCheckSelectionSupport(AcrolinxIntegration client, WebView webView)
     {
-        super(client);
+        super(client, webView);
     }
 
     public synchronized void requestGlobalCheck(final JSObject o)

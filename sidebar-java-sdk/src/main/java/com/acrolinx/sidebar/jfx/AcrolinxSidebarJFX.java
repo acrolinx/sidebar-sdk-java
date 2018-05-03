@@ -39,7 +39,7 @@ import netscape.javascript.JSObject;
 @SuppressWarnings("unused, WeakerAccess")
 public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
-    private static volatile WebView WEB_VIEW = null;
+    private volatile WebView webView = new WebView();
     private AcrolinxSidebarPlugin acrolinxSidebarPlugin;
     private final AcrolinxIntegration integration;
 
@@ -98,9 +98,11 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                         jsobj.setMember("acrolinxStorage", storage);
                         PluginSupportedParameters supported = integration.getInitParameters().getSupported();
                         if (supported != null && supported.isCheckSelection()) {
-                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionSupport(integration);
+                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionSupport(integration,
+                                    webView);
                         } else {
-                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionSupport(integration);
+                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionSupport(integration,
+                                    webView);
                         }
                     }
                     if ("FAILED".equals("" + newState)) {
@@ -130,24 +132,16 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     {
         Platform.runLater(() -> {
             try {
-                WEB_VIEW.setZoom(i);
+                webView.setZoom(i);
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
         });
     }
 
-    public static WebView getWebView()
+    public WebView getWebView()
     {
-        if (WEB_VIEW == null) {
-            WEB_VIEW = new WebView();
-        }
-        return WEB_VIEW;
-    }
-
-    public static JSObject getWindowObject()
-    {
-        return (JSObject) getWebView().getEngine().executeScript("window");
+        return webView;
     }
 
     @Override
@@ -193,7 +187,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         integration.getInitParameters().setShowServerSelector(true);
         Platform.runLater(() -> {
             try {
-                WEB_VIEW.getEngine().load(SidebarUtils.getSidebarUrl(serverAddress));
+                webView.getEngine().load(SidebarUtils.getSidebarUrl(serverAddress));
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
@@ -209,10 +203,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             } catch (Exception e) {
                 logger.error("Error while exporting start page resources!");
                 logger.error(e.getMessage());
-                WEB_VIEW.getEngine().loadContent(SidebarUtils.sidebarErrorHTML);
+                webView.getEngine().loadContent(SidebarUtils.sidebarErrorHTML);
             }
         }
-        Platform.runLater(WEB_VIEW.getEngine()::reload);
+        Platform.runLater(webView.getEngine()::reload);
     }
 
     @Override
