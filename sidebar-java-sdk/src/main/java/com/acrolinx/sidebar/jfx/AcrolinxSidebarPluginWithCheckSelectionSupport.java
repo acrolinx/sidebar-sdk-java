@@ -5,7 +5,6 @@
 package com.acrolinx.sidebar.jfx;
 
 import java.time.Instant;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
