@@ -10,7 +10,7 @@ import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.utils.LogMessages;
 
-import jdk.nashorn.api.scripting.JSObject;
+import netscape.javascript.JSObject;
 
 @SuppressWarnings("WeakerAccess")
 public class AcrolinxSidebarPluginWithoutCheckSelectionSupport extends AcrolinxSidebarPlugin

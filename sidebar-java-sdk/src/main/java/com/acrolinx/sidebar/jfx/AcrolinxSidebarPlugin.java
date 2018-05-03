@@ -31,7 +31,7 @@ import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.google.common.base.Preconditions;
 
-import jdk.nashorn.api.scripting.JSObject;
+import netscape.javascript.JSObject;
 
 /**
  * For internal use.
@@ -110,13 +110,12 @@ abstract class AcrolinxSidebarPlugin
                 logger.debug(checkOptions.toString());
                 String nameVariableCheckText = "checkText";
                 String nameVariableCheckOptions = "checkOptions";
-                if (jsobj.get().hasMember("acrolinxSidebar")) {
                     jsobj.get().setMember(nameVariableCheckText, lastCheckedDocument.get());
                     jsobj.get().setMember(nameVariableCheckOptions, checkOptions);
                     jsobj.get().eval("acrolinxSidebar.checkGlobal(checkText, checkOptions);");
-                }
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
+                jsobj.get().eval("acrolinxSidebar.onGlobalCheckRejected()");
             }
         });
     }

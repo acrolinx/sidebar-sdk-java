@@ -17,7 +17,7 @@ import com.acrolinx.sidebar.pojo.document.*;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxPluginConfiguration;
 import com.google.common.collect.Lists;
 
-import jdk.nashorn.api.scripting.JSObject;
+import netscape.javascript.JSObject;
 
 @SuppressWarnings("unused")
 class JSToJavaConverter

@@ -28,8 +28,7 @@ import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.acrolinx.sidebar.utils.StartPageInstaller;
-
-import jdk.nashorn.api.scripting.JSObject;
+import netscape.javascript.JSObject;
 
 /**
  * JFX implementation of Acrolinx Sidebar.
