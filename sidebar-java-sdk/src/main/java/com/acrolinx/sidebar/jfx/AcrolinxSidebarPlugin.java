@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
+import javafx.scene.web.WebView;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,6 @@ import netscape.javascript.JSObject;
 abstract class AcrolinxSidebarPlugin
 {
     final AcrolinxIntegration client;
-    private final JSObject jsobj;
     private final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocument = new AtomicReference<>("");
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
@@ -48,19 +48,31 @@ abstract class AcrolinxSidebarPlugin
     private final AtomicReference<String> documentReference = new AtomicReference<>("");
     private final AtomicReference<List<IntRange>> checkSelectionRange = new AtomicReference<>();
     private final AtomicReference<AcrolinxSidebarInitParameter> initParameters = new AtomicReference<>();
+    private volatile WebView webView;
 
     final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarPlugin.class);
 
     protected Instant checkStartedTime;
 
-    public AcrolinxSidebarPlugin(final AcrolinxIntegration client, final JSObject jsobj)
+    public AcrolinxSidebarPlugin(final AcrolinxIntegration client, WebView webView)
     {
-        Preconditions.checkNotNull(jsobj, "JsObject should not be null");
         Preconditions.checkNotNull(client, "Workspace should not be null");
         Preconditions.checkNotNull(client.getEditorAdapter(), "EditorAdapter should not be null");
-
         this.client = client;
-        this.jsobj = jsobj;
+        this.webView = webView;
+        logger.debug("Injecting Acrolinx Plugin.");
+        Platform.runLater(() -> {
+            try {
+                getWindowObject().setMember("acrolinxPlugin", this);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
+    }
+
+    private JSObject getWindowObject()
+    {
+        return (JSObject) webView.getEngine().executeScript("window");
     }
 
     private AcrolinxIntegration getClient()
@@ -72,7 +84,13 @@ abstract class AcrolinxSidebarPlugin
     {
         logger.debug("Requesting init sidebar: " + client.getInitParameters().toString());
         this.initParameters.set(client.getInitParameters());
-        Platform.runLater(() -> jsobj.eval("acrolinxSidebar.init(" + this.initParameters.get().toString() + ")"));
+        Platform.runLater(() -> {
+            try {
+                getWindowObject().eval("acrolinxSidebar.init(" + this.initParameters.get().toString() + ")");
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
     }
 
     public synchronized void onInitFinished(final JSObject o)
@@ -87,7 +105,13 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void configureSidebar(SidebarConfiguration sidebarConfiguration)
     {
         logger.debug("Configuring Sidebar: " + sidebarConfiguration.toString());
-        Platform.runLater(() -> jsobj.eval("acrolinxSidebar.configure(" + sidebarConfiguration.toString() + ")"));
+        Platform.runLater(() -> {
+            try {
+                getWindowObject().eval("acrolinxSidebar.configure(" + sidebarConfiguration.toString() + ")");
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
     }
 
     public synchronized void runCheck(boolean selectionEnabled)
@@ -95,9 +119,16 @@ abstract class AcrolinxSidebarPlugin
         final CheckOptions checkOptions = getCheckSettingsFromClient(selectionEnabled);
         lastCheckedDocument.set(client.getEditorAdapter().getContent());
         Platform.runLater(() -> {
-            logger.debug(checkOptions.toString());
-            jsobj.setMember("checkText", lastCheckedDocument.get());
-            jsobj.eval("acrolinxSidebar.checkGlobal(checkText," + checkOptions.toString() + ")");
+            try {
+                logger.debug(checkOptions.toString());
+                String nameVariableCheckText = "checkText";
+                JSObject jsObject = getWindowObject();
+                jsObject.setMember(nameVariableCheckText, lastCheckedDocument.get());
+                jsObject.eval("acrolinxSidebar.checkGlobal(checkText," + checkOptions.toString() + ");");
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+                onGlobalCheckRejected();
+            }
         });
     }
 
@@ -145,7 +176,7 @@ abstract class AcrolinxSidebarPlugin
         SidebarUtils.openWebPageInDefaultBrowser(url);
     }
 
-    public void openLogFile()
+    public synchronized void openLogFile()
     {
         SidebarUtils.openLogFile();
     }
@@ -156,6 +187,7 @@ abstract class AcrolinxSidebarPlugin
         documentReference.set(client.getEditorAdapter().getDocumentReference());
         DocumentSelection selection = null;
         if (includeCheckSelectionRanges) {
+            logger.debug("Including check selection ranges.");
             List<IntRange> currentSelection = client.getEditorAdapter().getCurrentSelection();
             checkSelectionRange.set(currentSelection);
             if (currentSelection != null) {
@@ -168,7 +200,13 @@ abstract class AcrolinxSidebarPlugin
     public void onGlobalCheckRejected()
     {
         LogMessages.logCheckRejected(logger);
-        Platform.runLater(() -> jsobj.eval("acrolinxSidebar.onGlobalCheckRejected()"));
+        Platform.runLater(() -> {
+            try {
+                getWindowObject().eval("acrolinxSidebar.onGlobalCheckRejected();");
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
     }
 
     private static String buildStringOfCheckedDocumentRanges(java.util.List<CheckedDocumentPart> checkedDocumentParts)
@@ -179,7 +217,13 @@ abstract class AcrolinxSidebarPlugin
     public void invalidateRanges(List<CheckedDocumentPart> invalidCheckedDocumentRanges)
     {
         String js = buildStringOfCheckedDocumentRanges(invalidCheckedDocumentRanges);
-        Platform.runLater(() -> jsobj.eval("acrolinxSidebar.invalidateRanges([" + js + "])"));
+        Platform.runLater(() -> {
+            try {
+                getWindowObject().eval("acrolinxSidebar.invalidateRanges([" + js + "])");
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
     }
 
     public String getLastCheckedDocumentReference()
@@ -198,4 +242,8 @@ abstract class AcrolinxSidebarPlugin
         return null;
     }
 
+    public void configure(AcrolinxPluginConfiguration configuration)
+    {
+        // Not used ...
+    }
 }
