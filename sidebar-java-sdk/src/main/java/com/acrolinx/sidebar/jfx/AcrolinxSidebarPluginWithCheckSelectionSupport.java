@@ -5,6 +5,8 @@
 package com.acrolinx.sidebar.jfx;
 
 import java.time.Instant;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.adapter.NullEditorAdapter;
@@ -14,9 +16,9 @@ import netscape.javascript.JSObject;
 
 public class AcrolinxSidebarPluginWithCheckSelectionSupport extends AcrolinxSidebarPlugin
 {
-    public AcrolinxSidebarPluginWithCheckSelectionSupport(AcrolinxIntegration client, JSObject jsobj)
+    public AcrolinxSidebarPluginWithCheckSelectionSupport(AcrolinxIntegration client, WebView webView)
     {
-        super(client, jsobj);
+        super(client, webView);
     }
 
     public synchronized void requestGlobalCheck(final JSObject o)
@@ -31,6 +33,7 @@ public class AcrolinxSidebarPluginWithCheckSelectionSupport extends AcrolinxSide
         }
         if (client.getEditorAdapter() != null && !(client.getEditorAdapter() instanceof NullEditorAdapter)
                 && client.getEditorAdapter().getContent() != null) {
+            logger.debug("Editor is ready for running a check");
             runCheck(selection);
         } else {
             logger.warn("Current File Editor not supported for checking or no file present.");

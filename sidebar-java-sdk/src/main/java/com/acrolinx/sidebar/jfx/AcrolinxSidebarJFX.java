@@ -36,17 +36,15 @@ import netscape.javascript.JSObject;
  *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("unused, WeakerAccess")
 public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
-    private final WebView browser = new WebView();
-    private final WebEngine webEngine;
+    private volatile WebView webView = new WebView();
     private AcrolinxSidebarPlugin acrolinxSidebarPlugin;
     private final AcrolinxIntegration integration;
 
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
 
-    @SuppressWarnings("WeakerAccess")
     public AcrolinxSidebarJFX(AcrolinxIntegration integration)
     {
         this(integration, null);
@@ -69,12 +67,12 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         }
 
         logger.debug("Trying to load sidebar url: " + sidebarUrl);
-
-        this.webEngine = this.browser.getEngine();
+        WebView webView = getWebView();
+        WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
-        browser.setContextMenuEnabled(false);
-        browser.setCache(true);
-        browser.setCacheHint(CacheHint.SPEED);
+        webView.setContextMenuEnabled(false);
+        webView.setCache(true);
+        webView.setCacheHint(CacheHint.SPEED);
 
         webEngine.setOnError((final WebErrorEvent arg0) -> logger.error("Error: " + arg0.getMessage()));
         webEngine.setOnAlert((final WebEvent<String> arg0) -> logger.debug("Alert: " + arg0.getData()));
@@ -101,13 +99,11 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                         PluginSupportedParameters supported = integration.getInitParameters().getSupported();
                         if (supported != null && supported.isCheckSelection()) {
                             acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionSupport(integration,
-                                    jsobj);
+                                    webView);
                         } else {
                             acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionSupport(integration,
-                                    jsobj);
+                                    webView);
                         }
-                        logger.debug("Injecting Acrolinx Plugin.");
-                        jsobj.setMember("acrolinxPlugin", acrolinxSidebarPlugin);
                     }
                     if ("FAILED".equals("" + newState)) {
                         logger.debug("New state: " + newState);
@@ -132,9 +128,20 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         }
     }
 
+    public void setZoom(float i)
+    {
+        Platform.runLater(() -> {
+            try {
+                webView.setZoom(i);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
+    }
+
     public WebView getWebView()
     {
-        return this.browser;
+        return webView;
     }
 
     @Override
@@ -178,7 +185,13 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     {
         integration.getInitParameters().setServerAddress(serverAddress);
         integration.getInitParameters().setShowServerSelector(true);
-        Platform.runLater(() -> webEngine.load(SidebarUtils.getSidebarUrl(serverAddress)));
+        Platform.runLater(() -> {
+            try {
+                webView.getEngine().load(SidebarUtils.getSidebarUrl(serverAddress));
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
     }
 
     @Override
@@ -190,10 +203,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             } catch (Exception e) {
                 logger.error("Error while exporting start page resources!");
                 logger.error(e.getMessage());
-                webEngine.loadContent(SidebarUtils.sidebarErrorHTML);
+                webView.getEngine().loadContent(SidebarUtils.sidebarErrorHTML);
             }
         }
-        Platform.runLater(webEngine::reload);
+        Platform.runLater(webView.getEngine()::reload);
     }
 
     @Override
