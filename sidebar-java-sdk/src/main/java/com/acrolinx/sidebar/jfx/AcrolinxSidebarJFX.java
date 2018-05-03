@@ -29,7 +29,7 @@ import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.acrolinx.sidebar.utils.StartPageInstaller;
 
-import netscape.javascript.JSObject;
+import jdk.nashorn.api.scripting.JSObject;
 
 /**
  * JFX implementation of Acrolinx Sidebar.
