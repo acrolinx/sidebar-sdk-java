@@ -106,8 +106,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                             acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionSupport(integration,
                                     jsobj);
                         }
-                        logger.debug("Injecting Acrolinx Plugin.");
-                        jsobj.setMember("acrolinxPlugin", acrolinxSidebarPlugin);
                     }
                     if ("FAILED".equals("" + newState)) {
                         logger.debug("New state: " + newState);
