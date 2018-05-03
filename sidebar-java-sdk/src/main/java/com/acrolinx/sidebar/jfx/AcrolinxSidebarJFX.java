@@ -36,17 +36,15 @@ import netscape.javascript.JSObject;
  *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("unused, WeakerAccess")
 public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
-    private final WebView browser = new WebView();
-    private final WebEngine webEngine;
+    private static volatile WebView WEB_VIEW = null;
     private AcrolinxSidebarPlugin acrolinxSidebarPlugin;
     private final AcrolinxIntegration integration;
 
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
 
-    @SuppressWarnings("WeakerAccess")
     public AcrolinxSidebarJFX(AcrolinxIntegration integration)
     {
         this(integration, null);
@@ -69,12 +67,12 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         }
 
         logger.debug("Trying to load sidebar url: " + sidebarUrl);
-
-        this.webEngine = this.browser.getEngine();
+        WebView webView = getWebView();
+        WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
-        browser.setContextMenuEnabled(false);
-        browser.setCache(true);
-        browser.setCacheHint(CacheHint.SPEED);
+        webView.setContextMenuEnabled(false);
+        webView.setCache(true);
+        webView.setCacheHint(CacheHint.SPEED);
 
         webEngine.setOnError((final WebErrorEvent arg0) -> logger.error("Error: " + arg0.getMessage()));
         webEngine.setOnAlert((final WebEvent<String> arg0) -> logger.debug("Alert: " + arg0.getData()));
@@ -100,11 +98,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                         jsobj.setMember("acrolinxStorage", storage);
                         PluginSupportedParameters supported = integration.getInitParameters().getSupported();
                         if (supported != null && supported.isCheckSelection()) {
-                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionSupport(integration,
-                                    jsobj);
+                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionSupport(integration);
                         } else {
-                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionSupport(integration,
-                                    jsobj);
+                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionSupport(integration);
                         }
                     }
                     if ("FAILED".equals("" + newState)) {
@@ -130,20 +126,28 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         }
     }
 
-    public WebView getWebView()
-    {
-        return this.browser;
-    }
-
     public void setZoom(float i)
     {
         Platform.runLater(() -> {
             try {
-                this.browser.setZoom(i);
+                WEB_VIEW.setZoom(i);
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
         });
+    }
+
+    public static WebView getWebView()
+    {
+        if (WEB_VIEW == null) {
+            WEB_VIEW = new WebView();
+        }
+        return WEB_VIEW;
+    }
+
+    public static JSObject getWindowObject()
+    {
+        return (JSObject) getWebView().getEngine().executeScript("window");
     }
 
     @Override
@@ -189,7 +193,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         integration.getInitParameters().setShowServerSelector(true);
         Platform.runLater(() -> {
             try {
-                webEngine.load(SidebarUtils.getSidebarUrl(serverAddress));
+                WEB_VIEW.getEngine().load(SidebarUtils.getSidebarUrl(serverAddress));
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
@@ -205,10 +209,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             } catch (Exception e) {
                 logger.error("Error while exporting start page resources!");
                 logger.error(e.getMessage());
-                webEngine.loadContent(SidebarUtils.sidebarErrorHTML);
+                WEB_VIEW.getEngine().loadContent(SidebarUtils.sidebarErrorHTML);
             }
         }
-        Platform.runLater(webEngine::reload);
+        Platform.runLater(WEB_VIEW.getEngine()::reload);
     }
 
     @Override

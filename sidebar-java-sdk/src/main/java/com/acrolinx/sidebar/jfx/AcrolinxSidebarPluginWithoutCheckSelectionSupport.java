@@ -5,20 +5,19 @@
 package com.acrolinx.sidebar.jfx;
 
 import java.time.Instant;
+import javafx.scene.web.WebEngine;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.utils.LogMessages;
 
-import netscape.javascript.JSObject;
-
 @SuppressWarnings("WeakerAccess")
 public class AcrolinxSidebarPluginWithoutCheckSelectionSupport extends AcrolinxSidebarPlugin
 {
 
-    public AcrolinxSidebarPluginWithoutCheckSelectionSupport(AcrolinxIntegration client, JSObject jsobj)
+    public AcrolinxSidebarPluginWithoutCheckSelectionSupport(AcrolinxIntegration client)
     {
-        super(client, jsobj);
+        super(client);
     }
 
     public synchronized void requestGlobalCheck()
