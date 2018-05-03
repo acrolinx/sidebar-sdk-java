@@ -110,9 +110,9 @@ abstract class AcrolinxSidebarPlugin
                 logger.debug(checkOptions.toString());
                 String nameVariableCheckText = "checkText";
                 String nameVariableCheckOptions = "checkOptions";
-                    jsobj.get().setMember(nameVariableCheckText, lastCheckedDocument.get());
-                    jsobj.get().setMember(nameVariableCheckOptions, checkOptions);
-                    jsobj.get().eval("acrolinxSidebar.checkGlobal(checkText, checkOptions);");
+                jsobj.get().setMember(nameVariableCheckText, lastCheckedDocument.get());
+                jsobj.get().setMember(nameVariableCheckOptions, checkOptions);
+                jsobj.get().eval("acrolinxSidebar.checkGlobal(checkText, checkOptions);");
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
                 jsobj.get().eval("acrolinxSidebar.onGlobalCheckRejected()");
