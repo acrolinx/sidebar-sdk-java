@@ -115,7 +115,7 @@ abstract class AcrolinxSidebarPlugin
                 jsobj.get().eval("acrolinxSidebar.checkGlobal(checkText, checkOptions);");
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
-                jsobj.get().eval("acrolinxSidebar.onGlobalCheckRejected()");
+                onGlobalCheckRejected();
             }
         });
     }
@@ -164,7 +164,7 @@ abstract class AcrolinxSidebarPlugin
         SidebarUtils.openWebPageInDefaultBrowser(url);
     }
 
-    public void openLogFile()
+    public synchronized void openLogFile()
     {
         SidebarUtils.openLogFile();
     }
