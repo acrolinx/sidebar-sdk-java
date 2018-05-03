@@ -9,6 +9,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -83,10 +84,9 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
             {
                 logger.debug("Component resized");
                 logger.debug(getWidth() + " width");
-
                 final float i = (float) getWidth() / 300;
                 logger.debug(String.valueOf(i) + " Zoom");
-                Platform.runLater(() -> getSidebarJFX().getWebView().setZoom(i));
+                sidebarJFX.setZoom(i);
             }
 
             @Override

@@ -135,6 +135,15 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         return this.browser;
     }
 
+    public void setZoom(float i)
+    {
+        try {
+            this.browser.setZoom(i);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
     @Override
     public void configure(SidebarConfiguration configuration)
     {
