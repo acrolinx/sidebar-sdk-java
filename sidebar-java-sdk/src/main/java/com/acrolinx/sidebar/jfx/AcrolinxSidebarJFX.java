@@ -137,11 +137,13 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
 
     public void setZoom(float i)
     {
-        try {
-            this.browser.setZoom(i);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
+        Platform.runLater(() -> {
+            try {
+                this.browser.setZoom(i);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
     }
 
     @Override
@@ -185,7 +187,13 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     {
         integration.getInitParameters().setServerAddress(serverAddress);
         integration.getInitParameters().setShowServerSelector(true);
-        Platform.runLater(() -> webEngine.load(SidebarUtils.getSidebarUrl(serverAddress)));
+        Platform.runLater(() -> {
+            try {
+                webEngine.load(SidebarUtils.getSidebarUrl(serverAddress));
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
     }
 
     @Override
