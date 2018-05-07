@@ -9,7 +9,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -24,6 +23,7 @@ import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.AcrolinxSidebar;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.jfx.AcrolinxSidebarJFX;
+import com.acrolinx.sidebar.jfx.JFXUtils;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
@@ -55,7 +55,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         this.storage = storage;
         this.integration = integration;
         Platform.setImplicitExit(false);
-        Platform.runLater(this::createScene);
+        JFXUtils.invokeInJFXThread(this::createScene);
     }
 
     protected void processKeyEvent(KeyEvent e)
