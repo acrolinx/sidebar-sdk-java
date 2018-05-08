@@ -5,7 +5,6 @@
 package com.acrolinx.sidebar.jfx;
 
 import java.util.List;
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.CacheHint;
@@ -130,7 +129,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
 
     public void setZoom(float i)
     {
-        Platform.runLater(() -> {
+        JFXUtils.invokeInJFXThread(() -> {
             try {
                 webView.setZoom(i);
             } catch (Exception e) {
@@ -185,7 +184,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     {
         integration.getInitParameters().setServerAddress(serverAddress);
         integration.getInitParameters().setShowServerSelector(true);
-        Platform.runLater(() -> {
+        JFXUtils.invokeInJFXThread(() -> {
             try {
                 webView.getEngine().load(SidebarUtils.getSidebarUrl(serverAddress));
             } catch (Exception e) {
@@ -206,7 +205,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                 webView.getEngine().loadContent(SidebarUtils.sidebarErrorHTML);
             }
         }
-        Platform.runLater(webView.getEngine()::reload);
+        JFXUtils.invokeInJFXThread(webView.getEngine()::reload);
     }
 
     @Override
