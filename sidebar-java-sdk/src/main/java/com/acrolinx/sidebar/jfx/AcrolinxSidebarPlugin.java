@@ -115,7 +115,7 @@ abstract class AcrolinxSidebarPlugin
         client.onInitFinished(initResult);
     }
 
-    public synchronized void configureSidebar(SidebarConfiguration sidebarConfiguration)
+    public void configureSidebar(SidebarConfiguration sidebarConfiguration)
     {
         logger.debug("Configuring Sidebar: " + sidebarConfiguration.toString());
         JFXUtils.invokeInJFXThread(() -> {
@@ -171,7 +171,6 @@ abstract class AcrolinxSidebarPlugin
         final List<AcrolinxMatchWithReplacement> matches = JSToJavaConverter.getAcrolinxMatchWithReplacementFromJSObject(
                 o);
         client.getEditorAdapter().replaceRanges(checkID, matches);
-
     }
 
     public void invalidateRangesForMatches(List<? extends AbstractMatch> matches)
@@ -189,7 +188,7 @@ abstract class AcrolinxSidebarPlugin
         SidebarUtils.openWebPageInDefaultBrowser(url);
     }
 
-    public synchronized void openLogFile()
+    public void openLogFile()
     {
         SidebarUtils.openLogFile();
     }
