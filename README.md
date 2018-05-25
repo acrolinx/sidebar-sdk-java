@@ -137,3 +137,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 For more information visit: http://www.acrolinx.com
+
+### Dependencies
+
+This project depends on (unmodified) Logback for logging. Logback is Copyright (C) 1999-2017, QOS.ch and licensed under the EPL-1.0. You can get the source from https://github.com/qos-ch/logback. The Logback website is at https://logback.qos.ch/license.html
