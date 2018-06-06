@@ -19,7 +19,7 @@ public class CheckResultTest
         map.put("status", "yellow");
         map.put("scorecardURL", "https://test-ssl.acrolinx.com/output/en/something_report.html");
         String inputFormat = "xml";
-        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), null, map, inputFormat);
+        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
         String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
         Assert.assertTrue(embedCheckDataAsProcessingInstruction.equalsIgnoreCase(
                 "<?acrolinxCheckData score=\"67\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" status=\"yellow\" ?>"));
@@ -34,7 +34,7 @@ public class CheckResultTest
         map.put("status", "yellow");
         map.put("scorecardURL", "https://test-ssl.acrolinx.com/output/en/something_report.html");
         String inputFormat = "html";
-        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), null, map, inputFormat);
+        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
         String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
         Assert.assertTrue(embedCheckDataAsProcessingInstruction.equalsIgnoreCase(
                 "<meta name=\"acrolinxCheckData\" score=\"67\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" status=\"yellow\" />"));
@@ -49,7 +49,7 @@ public class CheckResultTest
         map.put("status", "yellow");
         map.put("scorecardURL", "https://test-ssl.acrolinx.com/output/en/something_report.html");
         String inputFormat = "markdown";
-        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), null, map, inputFormat);
+        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
         String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
         System.out.println(embedCheckDataAsProcessingInstruction);
         Assert.assertTrue(embedCheckDataAsProcessingInstruction.equalsIgnoreCase(
@@ -59,7 +59,7 @@ public class CheckResultTest
     @Test
     public void testConvertToProcessingInstructionWhenCheckDataIsNull()
     {
-        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), null, null, null);
+        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), null, null);
         Optional<String> embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString();
         Assert.assertFalse(embedCheckDataAsProcessingInstruction.isPresent());
     }

@@ -152,7 +152,7 @@ abstract class AcrolinxSidebarPlugin
         LogMessages.logCheckFinishedWithDurationTime(logger,
                 Duration.between(checkStartedTime, checkEndedTime).toMillis());
         final CheckResult checkResult = JSToJavaConverter.getCheckResultFromJSObject(o);
-        if (checkResult.getCheckError().isPresent()) {
+        if (checkResult == null) {
             logger.info("Check finished with errors.");
         } else {
             currentCheckId.set(checkResult.getCheckedDocumentPart().getCheckId());

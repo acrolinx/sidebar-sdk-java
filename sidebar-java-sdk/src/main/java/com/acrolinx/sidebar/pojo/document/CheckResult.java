@@ -13,7 +13,6 @@ import com.acrolinx.sidebar.pojo.settings.InputFormat;
 public class CheckResult
 {
     private final CheckedDocumentPart checkedDocumentPart;
-    private CheckError checkError;
     private HashMap<String, String> embedCheckInformation;
     public final static String ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME = "acrolinxCheckData";
     private String inputFormat;
@@ -24,11 +23,10 @@ public class CheckResult
     }
 
     @SuppressWarnings("UnusedParameters")
-    public CheckResult(CheckedDocumentPart checkedDocumentPart, CheckError checkError,
-            HashMap<String, String> embedCheckInformation, String inputFormat)
+    public CheckResult(CheckedDocumentPart checkedDocumentPart, HashMap<String, String> embedCheckInformation,
+            String inputFormat)
     {
         this.checkedDocumentPart = checkedDocumentPart;
-        this.checkError = checkError;
         this.embedCheckInformation = embedCheckInformation;
         this.inputFormat = inputFormat;
     }
@@ -36,11 +34,6 @@ public class CheckResult
     public CheckedDocumentPart getCheckedDocumentPart()
     {
         return checkedDocumentPart;
-    }
-
-    public Optional<CheckError> getCheckError()
-    {
-        return Optional.ofNullable(checkError);
     }
 
     public Optional<HashMap<String, String>> getEmbedCheckInformation()

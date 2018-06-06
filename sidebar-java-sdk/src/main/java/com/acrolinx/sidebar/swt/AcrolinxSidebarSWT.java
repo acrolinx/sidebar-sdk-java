@@ -287,7 +287,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 try {
                     CheckResultFromJSON checkResultObj = new Gson().fromJson(checkResult, CheckResultFromJSON.class);
                     CheckResult result = checkResultObj.getAsCheckResult();
-                    if (result.getCheckError().isPresent()) {
+                    if (result == null) {
                         logger.info("Check finished with errors.");
                     } else {
                         currentCheckId.set(result.getCheckedDocumentPart().getCheckId());
