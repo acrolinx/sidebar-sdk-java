@@ -67,7 +67,7 @@ class JSToJavaConverter
         final IntRange range = getIntRangeFromJSString(checkedDocumentParts.getMember("range").toString());
         String inputFormat = null;
         Object checkError = o.getMember("checkError");
-        if (checkError != null && !checkError.toString().equals("undefined")) {
+        if (checkError != null) {
             return null;
         }
         HashMap<String, String> embedCheckInformation = null;
