@@ -59,6 +59,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private final Browser browser;
     private final AcrolinxIntegration client;
     private final AcrolinxStorage storage;
+    private final AtomicReference<String> currentlyCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> documentReference = new AtomicReference<>("");
     private final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
@@ -227,7 +228,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 LogMessages.logCheckRequested(logger);
                 checkStartTime.set(Instant.now());
                 final String requestText = client.getEditorAdapter().getContent();
-                lastCheckedText.set(requestText);
+                currentlyCheckedText.set(requestText);
                 if (Strings.isNullOrEmpty(requestText)) {
                     return "<unsupported/>";
                 }
@@ -286,9 +287,14 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 try {
                     CheckResultFromJSON checkResultObj = new Gson().fromJson(checkResult, CheckResultFromJSON.class);
                     CheckResult result = checkResultObj.getAsCheckResult();
-                    currentCheckId.set(result.getCheckedDocumentPart().getCheckId());
-                    currentDocumentReference.set(documentReference.get());
-                    client.onCheckResult(result);
+                    if (result.getCheckError().isPresent()) {
+                        logger.info("Check finished with errors.");
+                    } else {
+                        currentCheckId.set(result.getCheckedDocumentPart().getCheckId());
+                        currentDocumentReference.set(documentReference.get());
+                        lastCheckedText.set(currentlyCheckedText.get());
+                        client.onCheckResult(result);
+                    }
                 } catch (Exception e) {
                     logger.error(e.getMessage());
                 }
