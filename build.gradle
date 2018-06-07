@@ -22,6 +22,7 @@ buildscript {
 		classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.11.0"
 		classpath "gradle.plugin.se.patrikerdes:gradle-use-latest-versions-plugin:0.2.3"
 		classpath "com.github.ben-manes:gradle-versions-plugin:0.17.0"
+		classpath 'org.owasp:dependency-check-gradle:3.2.1'
 	}
 }
 
@@ -41,6 +42,7 @@ allprojects {
 
 	apply plugin: 'com.github.ben-manes.versions'
 	apply plugin: 'se.patrikerdes.use-latest-versions'
+	apply plugin: 'org.owasp.dependencycheck'
 
 	dependencyUpdates.resolutionStrategy = {
 		componentSelection { rules ->

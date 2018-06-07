@@ -141,6 +141,17 @@ and exclude any alpha or beta versions.
 
 ```
 
+### Vulnerable Dependencies Check
+
+```
+./gradlew dependencyCheckAnalyze --info
+
+```
+
+This generates a html report in the projects's build folder and lists all vulnerable dependencies and where they are
+referenced found by the [dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle) plugin.
+
+
 ## License
 
 Copyright 2016-2017 Acrolinx GmbH
