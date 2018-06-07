@@ -15,6 +15,7 @@ import com.acrolinx.sidebar.pojo.settings.InputFormat;
 @SuppressWarnings("unused")
 /**
  * Use as fallback input adapter.
+ * 
  * @see InputAdapterInterface
  */
 public class NullEditorAdapter implements InputAdapterInterface

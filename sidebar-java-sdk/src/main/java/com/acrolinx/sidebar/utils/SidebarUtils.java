@@ -33,8 +33,8 @@ public class SidebarUtils
             + LoggingUtils.getLogFileLocation() + "</body>\n" + "</html>";
 
     /**
-     * Opens the given URL in the default Browser of the current OS.
-     * Note that this method is likely to cause JVM crashes within SWT-based applications!
+     * Opens the given URL in the default Browser of the current OS. Note that this method is likely
+     * to cause JVM crashes within SWT-based applications!
      *
      * @param url
      */
@@ -108,9 +108,9 @@ public class SidebarUtils
     }
 
     /**
-     * Opens the log file. For internal use.
-     * Attempts to open and preselect log file in systems file manager (only for mac os and windows).
-     * If that fails, it just shows the containing folder in the file manager.
+     * Opens the log file. For internal use. Attempts to open and preselect log file in systems file
+     * manager (only for mac os and windows). If that fails, it just shows the containing folder in
+     * the file manager.
      */
     public static void openLogFile()
     {
@@ -158,7 +158,8 @@ public class SidebarUtils
 
     private static String getCurrentSDKImplementationVersion()
     {
-        // Need version from properties file to get proper version number in case sdk gets packed into fat jar
+        // Need version from properties file to get proper version number in case sdk gets packed
+        // into fat jar
         String versionFromPropertiesFile = getJavaSDKVersionFromPropertiesFile();
         if (versionFromPropertiesFile == null) {
             return SidebarUtils.class.getPackage().getImplementationVersion();
@@ -234,8 +235,8 @@ public class SidebarUtils
     }
 
     /**
-     * Attempts to show file in system specific file manager. Works only for mac and windows.
-     * For internal use only.
+     * Attempts to show file in system specific file manager. Works only for mac and windows. For
+     * internal use only.
      *
      * @param path to file
      * @return boolean

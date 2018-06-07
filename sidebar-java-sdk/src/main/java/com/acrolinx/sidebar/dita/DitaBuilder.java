@@ -94,7 +94,9 @@ public class DitaBuilder
 
     /**
      * Parse ditamap and resolve all references.
-     * @return ditamap as string with topic references resolved and inserted, to enable Acrolinx to check those.
+     * 
+     * @return ditamap as string with topic references resolved and inserted, to enable Acrolinx to
+     *         check those.
      * @throws SAXException
      * @throws IOException
      * @throws URISyntaxException

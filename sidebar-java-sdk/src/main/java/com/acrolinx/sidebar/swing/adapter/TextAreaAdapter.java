@@ -24,6 +24,7 @@ import com.acrolinx.sidebar.pojo.settings.InputFormat;
 
 /**
  * Demo adapter for Swing JTextArea.
+ * 
  * @see InputAdapterInterface
  */
 @SuppressWarnings({"WeakerAccess", "unused"})

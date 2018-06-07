@@ -18,8 +18,8 @@ public interface InputAdapterInterface
 {
 
     /**
-     * Receives the current input format. If this method returns null,
-     * the check will be canceled by the sidebar.
+     * Receives the current input format. If this method returns null, the check will be canceled by
+     * the sidebar.
      *
      * @return Returns the current input format.
      * @see InputFormat
@@ -34,15 +34,17 @@ public interface InputAdapterInterface
     String getContent();
 
     /**
-     * The path or filename of the document to check. In a CMS, it can be the id that is used to look up the document.
+     * The path or filename of the document to check. In a CMS, it can be the id that is used to
+     * look up the document.
      */
     String getDocumentReference();
 
     /**
      * Is called by the Acrolinx Integration to highlight current issues in the text editor.
      *
-     * Note that the matches contain the ranges as found in the originally checked text.
-     * It might be necessary to implement some lookup algorithm here to map these ranges to the current document (which might have changed in the meantime).
+     * Note that the matches contain the ranges as found in the originally checked text. It might be
+     * necessary to implement some lookup algorithm here to map these ranges to the current document
+     * (which might have changed in the meantime).
      *
      * @param checkId The current check id.
      * @param matches The ranges to be highlighted as sent by the AcrolinxServer.
@@ -51,11 +53,13 @@ public interface InputAdapterInterface
     void selectRanges(String checkId, List<AcrolinxMatch> matches);
 
     /**
-     * Is called by the Acrolinx Integration to replace found issues with suggestions from the Acrolinx Sidebar.
-     * If the Acrolinx Sidebar is configured as read only, this method won't be called.
+     * Is called by the Acrolinx Integration to replace found issues with suggestions from the
+     * Acrolinx Sidebar. If the Acrolinx Sidebar is configured as read only, this method won't be
+     * called.
      *
-     * Note that the matches contain the ranges as found in the originally checked text.
-     * It might be necessary to implement some lookup algorithm here to map these ranges to the current document (which might have changed in the meantime).
+     * Note that the matches contain the ranges as found in the originally checked text. It might be
+     * necessary to implement some lookup algorithm here to map these ranges to the current document
+     * (which might have changed in the meantime).
      *
      * @param checkId The current check id.
      * @param matchesWithReplacement The ranges to be replaced.
@@ -65,6 +69,7 @@ public interface InputAdapterInterface
 
     /**
      * Is called when checkSelection is enabled to get the current selected intRange for checking.
+     * 
      * @return currently selected range.
      */
     @SuppressWarnings("SameReturnValue")

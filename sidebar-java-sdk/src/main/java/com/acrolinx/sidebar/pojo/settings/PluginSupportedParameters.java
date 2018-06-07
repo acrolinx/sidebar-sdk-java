@@ -8,6 +8,7 @@ public class PluginSupportedParameters
 
     /**
      * This is supported only for minimum sidebar version 14.5.0.
+     * 
      * @param checkSelection set to true to enable check selection in the sidebar.
      */
     public PluginSupportedParameters(boolean checkSelection)

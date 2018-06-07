@@ -66,7 +66,7 @@ public class Lookup
         DiffMatchPatch differ = new DiffMatchPatch();
         differ.diffTimeout = 5;
         LinkedList<DiffMatchPatch.Diff> diffs = differ.diffMain(checkedText, changedText);
-        //differ.diffCleanupSemantic(diffs);
+        // differ.diffCleanupSemantic(diffs);
         differ.diffCleanupSemanticLossless(diffs);
         return Collections.unmodifiableList(diffs);
     }

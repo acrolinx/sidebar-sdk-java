@@ -18,7 +18,8 @@ public class CheckOptions
 
     /**
      * @param inputFormat Check InputFormat for valid formats.
-     * @param requestDescription Contains the document reference. This can be an id or path to identify the document.
+     * @param requestDescription Contains the document reference. This can be an id or path to
+     *        identify the document.
      */
     public CheckOptions(RequestDescription requestDescription, InputFormat inputFormat,
             DocumentSelection documentSelection)

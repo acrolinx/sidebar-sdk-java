@@ -6,11 +6,18 @@ package com.acrolinx.sidebar.pojo.document;
 
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.acrolinx.sidebar.pojo.SidebarError;
+
 @SuppressWarnings("unused")
 public class CheckResultFromJSON
 {
+    private final Logger logger = LoggerFactory.getLogger(CheckResultFromJSON.class);
+
     private CheckedDocumentPartFromJSON checkedPart;
-    private CheckError error;
+    private SidebarError error;
     @SuppressWarnings("MismatchedReadAndWriteOfArray")
     private CheckInformationKeyValuePairFromJSON[] embedCheckInformation;
     private String inputFormat;
@@ -22,7 +29,11 @@ public class CheckResultFromJSON
 
     public CheckResult getAsCheckResult()
     {
-        return new CheckResult(checkedPart.getAsCheckResult(), error, getEmbedCheckInformation(), inputFormat);
+        if (this.error != null) {
+            logger.error(error.getMessage());
+            return null;
+        }
+        return new CheckResult(checkedPart.getAsCheckResult(), getEmbedCheckInformation(), inputFormat);
     }
 
     private HashMap<String, String> getEmbedCheckInformation()

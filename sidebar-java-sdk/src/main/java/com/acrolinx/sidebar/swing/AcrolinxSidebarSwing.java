@@ -31,6 +31,7 @@ import com.acrolinx.sidebar.utils.LogMessages;
 
 /**
  * Swing implementation of Acrolinx Sidebar.
+ * 
  * @see AcrolinxSidebar
  */
 @SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"})
@@ -63,7 +64,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         // Hack to prevent pasting event for editor (e. g. .
         if (e.getModifiers() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
                 && e.getKeyCode() == KeyEvent.VK_V) {
-            //Consume it.
+            // Consume it.
             e.consume();
         } else {
             super.processKeyEvent(e);

@@ -36,16 +36,17 @@ public interface AcrolinxSidebar
     void onGlobalCheckRejected();
 
     /**
-     * Notifies the sidebar about invalid ranges of the current document.
-     * The sidebar will then invalidate all cards containing issues within this text range.
+     * Notifies the sidebar about invalid ranges of the current document. The sidebar will then
+     * invalidate all cards containing issues within this text range.
      *
      * @param invalidCheckedDocumentRanges
      */
     void invalidateRanges(List<CheckedDocumentPart> invalidCheckedDocumentRanges);
 
     /**
-     * Notifies the sidebar about invalid ranges of the current document.
-     * The sidebar will then invalidate all cards containing issues within this text range for the current check.
+     * Notifies the sidebar about invalid ranges of the current document. The sidebar will then
+     * invalidate all cards containing issues within this text range for the current check.
+     * 
      * @param matches
      */
     void invalidateRangesForMatches(List<? extends AbstractMatch> matches);
@@ -64,6 +65,7 @@ public interface AcrolinxSidebar
 
     /**
      * Gets the document reference of the lasted successfully checked document.
+     * 
      * @return documentReference
      */
     String getLastCheckedDocumentReference();
@@ -71,6 +73,7 @@ public interface AcrolinxSidebar
     /**
      *
      * Gets the content of the lasted successfully checked document.
+     * 
      * @return documentContent
      */
     String getLastCheckedDocument();

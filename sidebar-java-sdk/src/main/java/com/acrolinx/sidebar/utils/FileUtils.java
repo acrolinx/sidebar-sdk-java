@@ -10,8 +10,10 @@ import com.acrolinx.sidebar.pojo.settings.InputFormat;
 public class FileUtils
 {
     /**
-     * This is just a basic implementation to get the {@link InputFormat}s from file name with file extension.
-     * For integration using an Acrolinx Server 5.2 or newer just set the InputFormat to AUTO.
+     * This is just a basic implementation to get the {@link InputFormat}s from file name with file
+     * extension. For integration using an Acrolinx Server 5.2 or newer just set the InputFormat to
+     * AUTO.
+     * 
      * @param fileName
      * @return inputFormat
      */

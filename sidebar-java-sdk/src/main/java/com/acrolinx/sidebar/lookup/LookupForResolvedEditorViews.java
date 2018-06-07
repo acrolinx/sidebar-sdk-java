@@ -156,7 +156,7 @@ public class LookupForResolvedEditorViews
                         List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffsNode);
 
                         String rangeContentEscaped = StringEscapeUtils.escapeHtml(rangeContent);
-                        //Deal with HTML entitiy
+                        // Deal with HTML entitiy
                         if (!rangeContent.equals(rangeContentEscaped) && match.getRange().getMaximumInteger()
                                 - match.getRange().getMinimumInteger() == rangeContentEscaped.length()) {
                             logger.debug("Has to find HTML entitiy " + rangeContentEscaped);

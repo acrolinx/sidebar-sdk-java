@@ -23,8 +23,8 @@ public class CheckSettings
     private final String[] termStatuses;
 
     /**
-     * Settings used by the Acrolinx Server to check the text. The available options depend on the configuration of
-     * the Acrolinx Server.
+     * Settings used by the Acrolinx Server to check the text. The available options depend on the
+     * configuration of the Acrolinx Server.
      *
      * @param language
      * @param ruleSetName

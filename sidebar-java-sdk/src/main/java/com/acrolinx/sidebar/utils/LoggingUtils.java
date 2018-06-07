@@ -65,8 +65,9 @@ public class LoggingUtils
     }
 
     /**
-     * Call this method on your integration's startup.
-     * This will initialize the logs as specified in the Acrolinx Coding Guidance.
+     * Call this method on your integration's startup. This will initialize the logs as specified in
+     * the Acrolinx Coding Guidance.
+     * 
      * @param applicationName the integration's name e.g. AcrolinxForEditorName
      * @throws IOException Exception
      * @throws JoranException Exception
@@ -86,8 +87,7 @@ public class LoggingUtils
     }
 
     /**
-     * Retrieve the current path to the integrations log file.
-     * The path is OS-specific.
+     * Retrieve the current path to the integrations log file. The path is OS-specific.
      *
      * @return path to the integrations logging file.
      */
@@ -123,7 +123,7 @@ public class LoggingUtils
     }
 
     /**
-     *Resets the current Logging Context.
+     * Resets the current Logging Context.
      *
      */
     public static void resetLoggingContext()

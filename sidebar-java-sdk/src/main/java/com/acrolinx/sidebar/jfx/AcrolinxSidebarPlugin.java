@@ -43,6 +43,7 @@ abstract class AcrolinxSidebarPlugin
     final AcrolinxIntegration client;
     private final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocument = new AtomicReference<>("");
+    private final AtomicReference<String> currentlyCheckedDocument = new AtomicReference<>("");
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<InputFormat> inputFormatRef = new AtomicReference<>();
     private final AtomicReference<String> documentReference = new AtomicReference<>("");
@@ -130,13 +131,13 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void runCheck(boolean selectionEnabled)
     {
         final CheckOptions checkOptions = getCheckSettingsFromClient(selectionEnabled);
-        lastCheckedDocument.set(client.getEditorAdapter().getContent());
+        currentlyCheckedDocument.set(client.getEditorAdapter().getContent());
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 logger.debug(checkOptions.toString());
                 String nameVariableCheckText = "checkText";
                 JSObject jsObject = getWindowObject();
-                jsObject.setMember(nameVariableCheckText, lastCheckedDocument.get());
+                jsObject.setMember(nameVariableCheckText, currentlyCheckedDocument.get());
                 jsObject.eval("acrolinxSidebar.checkGlobal(checkText," + checkOptions.toString() + ");");
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
@@ -151,9 +152,14 @@ abstract class AcrolinxSidebarPlugin
         LogMessages.logCheckFinishedWithDurationTime(logger,
                 Duration.between(checkStartedTime, checkEndedTime).toMillis());
         final CheckResult checkResult = JSToJavaConverter.getCheckResultFromJSObject(o);
-        currentCheckId.set(checkResult.getCheckedDocumentPart().getCheckId());
-        currentDocumentReference.set(documentReference.get());
-        client.onCheckResult(checkResult);
+        if (checkResult == null) {
+            logger.info("Check finished with errors.");
+        } else {
+            currentCheckId.set(checkResult.getCheckedDocumentPart().getCheckId());
+            currentDocumentReference.set(documentReference.get());
+            lastCheckedDocument.set(currentlyCheckedDocument.get());
+            client.onCheckResult(checkResult);
+        }
     }
 
     public synchronized void selectRanges(final String checkID, final JSObject o)

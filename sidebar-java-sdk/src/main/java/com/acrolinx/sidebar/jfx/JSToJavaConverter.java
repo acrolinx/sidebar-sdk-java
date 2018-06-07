@@ -66,9 +66,10 @@ class JSToJavaConverter
         final String checkId = checkedDocumentParts.getMember("checkId").toString();
         final IntRange range = getIntRangeFromJSString(checkedDocumentParts.getMember("range").toString());
         String inputFormat = null;
-        CheckError checkError = null;
-        if (!o.getMember("checkError").toString().equals("undefined")) {
-            checkError = getCheckErrorFromJSString((JSObject) o.getMember("checkError"));
+        Object checkError = o.getMember("error");
+        if (checkError != null && !checkError.toString().equals("undefined")) {
+            logger.error(((JSObject) checkError).getMember("message").toString());
+            return null;
         }
         HashMap<String, String> embedCheckInformation = null;
         Object checkInformation = o.getMember("embedCheckInformation");
@@ -79,19 +80,7 @@ class JSToJavaConverter
         if (inputFormatString != null && !inputFormatString.toString().equals("undefined")) {
             inputFormat = inputFormatString.toString();
         }
-        return new CheckResult(new CheckedDocumentPart(checkId, range), checkError, embedCheckInformation, inputFormat);
-    }
-
-    @SuppressWarnings("EqualsBetweenInconvertibleTypes")
-    private static CheckError getCheckErrorFromJSString(JSObject checkError)
-    {
-        if (checkError.getClass().equals(String.class)) {
-            final String message = checkError.getMember("message").toString();
-            final String code = checkError.getMember("code").toString();
-            final String checkId = checkError.getMember("checkId").toString();
-            return new CheckError(message, code, checkId);
-        } else
-            return null;
+        return new CheckResult(new CheckedDocumentPart(checkId, range), embedCheckInformation, inputFormat);
     }
 
     private static HashMap<String, String> getEmbedCheckInformationFromJSString(JSObject embedCheckInformation)
@@ -121,7 +110,7 @@ class JSToJavaConverter
     static Optional<SidebarError> getAcrolinxInitResultFromJSObject(JSObject o)
     {
         final Object hasError = o.getMember("error");
-        if (!hasError.getClass().equals(String.class)) {
+        if (hasError != null && !hasError.toString().equals("undefined")) {
             final JSObject error = (JSObject) hasError;
             final String code = error.getMember("code").toString();
             final String message = error.getMember("message").toString();
