@@ -9,6 +9,13 @@ def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
 
 def isMasterBranch = false
 
+dependencyCheck {
+	cveValidForHours=1
+	format='HTML'
+	failBuildOnCVSS='1'
+	scanConfigurations=['compile', 'runtime']
+}
+
 task getIsMasterBranch {
 	def branch = ""
 	def proc = "git rev-parse --abbrev-ref HEAD".execute()
@@ -304,3 +311,4 @@ processResources.dependsOn copyServerSelectorRessources
 processResources.dependsOn convertLocalizationEncoding
 processResources.dependsOn  generateThirdPartyLibraryReport
 jar.dependsOn createVersionPropertiesFile
+check.dependsOn dependencyCheckAnalyze
