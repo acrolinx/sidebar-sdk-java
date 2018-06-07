@@ -20,6 +20,7 @@ import com.acrolinx.sidebar.pojo.settings.InputFormat;
 
 /**
  * Text Adapter for SWT TEXT Widget.
+ * 
  * @see InputAdapterInterface
  */
 @SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "unused"})

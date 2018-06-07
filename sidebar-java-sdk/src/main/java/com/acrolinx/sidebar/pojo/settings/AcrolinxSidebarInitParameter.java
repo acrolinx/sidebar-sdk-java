@@ -149,12 +149,13 @@ public class AcrolinxSidebarInitParameter
         private PluginSupportedParameters supported;
 
         /**
-         * Class to build the parameters to initialize the Acrolinx Sidebar.
-         * Two parameters have to be set, all others are optional.
+         * Class to build the parameters to initialize the Acrolinx Sidebar. Two parameters have to
+         * be set, all others are optional.
          *
-         * @param clientSignature This signature will be provided by Acrolinx once the integration got certified.
-         * @param clientComponents This contains id, name and version of the Acrolinx integration as well as
-         * other software components that where used.
+         * @param clientSignature This signature will be provided by Acrolinx once the integration
+         *        got certified.
+         * @param clientComponents This contains id, name and version of the Acrolinx integration as
+         *        well as other software components that where used.
          * @see SoftwareComponent
          */
         public AcrolinxSidebarInitParameterBuilder(String clientSignature,
@@ -165,8 +166,8 @@ public class AcrolinxSidebarInitParameter
         }
 
         /**
-         * Configure the server that should be used to check the content.
-         * If this is not set, set member 'showServerSelector' to true.
+         * Configure the server that should be used to check the content. If this is not set, set
+         * member 'showServerSelector' to true.
          *
          * @param serverAddress Address of the Acrolinx Server that is used to check the content.
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
@@ -178,8 +179,8 @@ public class AcrolinxSidebarInitParameter
         }
 
         /**
-         * The url of the Acrolinx Sidebar.
-         * If this is not set the publicly available Sidebar will be used by default.
+         * The url of the Acrolinx Sidebar. If this is not set the publicly available Sidebar will
+         * be used by default.
          *
          * @param sidebarUrl
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
@@ -203,8 +204,8 @@ public class AcrolinxSidebarInitParameter
         }
 
         /**
-         * If this parameter is set to 'true' the Acrolinx Sidebar will provide an input field to set an url
-         * for the Acrolinx Server.
+         * If this parameter is set to 'true' the Acrolinx Sidebar will provide an input field to
+         * set an url for the Acrolinx Server.
          *
          * @param showServerSelector
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
@@ -216,8 +217,9 @@ public class AcrolinxSidebarInitParameter
         }
 
         /**
-         * This parameter defines the check settings that will apply to all triggered checks.
-         * If this parameter is set, then the default check settings and the check settings saved by the user will be ignored.
+         * This parameter defines the check settings that will apply to all triggered checks. If
+         * this parameter is set, then the default check settings and the check settings saved by
+         * the user will be ignored.
          *
          * @param checkSettings
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
@@ -229,8 +231,8 @@ public class AcrolinxSidebarInitParameter
         }
 
         /**
-         * These check settings will be used as the initial check settings when the Acrolinx Sidebar is used for
-         * the first time.
+         * These check settings will be used as the initial check settings when the Acrolinx Sidebar
+         * is used for the first time.
          *
          * @param defaultCheckSettings
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
@@ -242,8 +244,8 @@ public class AcrolinxSidebarInitParameter
         }
 
         /**
-         * If the Acrolinx Server is set up for single sign on, this parameter has to be set to 'true'
-         * in order enable single sign on from the integration.
+         * If the Acrolinx Server is set up for single sign on, this parameter has to be set to
+         * 'true' in order enable single sign on from the integration.
          *
          * @param enableSingleSignOn
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
@@ -268,6 +270,7 @@ public class AcrolinxSidebarInitParameter
 
         /**
          * This can be set to require a minimum version of the sidebar. (eg. "4.4", "4.4.1")
+         * 
          * @param minimumSidebarVersion
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
@@ -278,8 +281,8 @@ public class AcrolinxSidebarInitParameter
         }
 
         /**
-         * Add a parameter for integrations to enable check selection in the sidebar.
-         * Requires minimum sidebar version 14.5.0.
+         * Add a parameter for integrations to enable check selection in the sidebar. Requires
+         * minimum sidebar version 14.5.0.
          *
          * @param supported
          * @return Returns the AcrolinxInitParameterBuilder for chaining.

@@ -106,9 +106,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                     }
                     if ("FAILED".equals("" + newState)) {
                         logger.debug("New state: " + newState);
-                        //noinspection ThrowableResultOfMethodCallIgnored
+                        // noinspection ThrowableResultOfMethodCallIgnored
                         if (webEngine.getLoadWorker().getException() != null) {
-                            //noinspection ThrowableResultOfMethodCallIgnored
+                            // noinspection ThrowableResultOfMethodCallIgnored
                             logger.error(webEngine.getLoadWorker().getException().getMessage());
                         }
                         webEngine.loadContent(SidebarUtils.sidebarErrorHTML);
