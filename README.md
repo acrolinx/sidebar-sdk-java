@@ -106,6 +106,8 @@ you’re good to go. If your company has installed an Acrolinx server, but you d
 
 ## Information for internal developers on this project
 
+### Branches and Releasing
+
 Please add new features using the develop branch. If your build on Travis was successful a new snapshot version will
 be automatically available via maven snapshot repository ("https://oss.sonatype.org/content/repositories/snapshots/").
 
@@ -119,6 +121,25 @@ Once you are sure and have tested, that everything works fine, ask your technica
 Make sure to merge the stable master branch into the releases branch and create a version tag there.
 
 Once the release branch is pushed to GitHub, the api documentation on the gh-pages will automatically updated by TravisCI.
+
+### Dependency updates
+
+To check if the SDK uses any outdated libraries run:
+
+```
+./gradlew dependencyUpdates -Drevision=release
+
+```
+
+This will generate a report in the projects' build folder. Check the report to find any outdated libraries.
+
+To update the dependency libraries run the following gradle task. This will update to the latest stable release version
+and exclude any alpha or beta versions.
+
+```
+./gradlew useLatestVersions && ./gradlew useLatestVersionsCheck
+
+```
 
 ## License
 
