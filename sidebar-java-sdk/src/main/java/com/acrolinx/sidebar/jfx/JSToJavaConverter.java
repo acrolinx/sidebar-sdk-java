@@ -66,9 +66,9 @@ class JSToJavaConverter
         final String checkId = checkedDocumentParts.getMember("checkId").toString();
         final IntRange range = getIntRangeFromJSString(checkedDocumentParts.getMember("range").toString());
         String inputFormat = null;
-        Object checkError = o.getMember("checkError");
+        Object checkError = o.getMember("error");
         if (checkError != null && !checkError.toString().equals("undefined")) {
-            logger.info(((JSObject) checkError).getMember("message").toString());
+            logger.error(((JSObject) checkError).getMember("message").toString());
             return null;
         }
         HashMap<String, String> embedCheckInformation = null;
@@ -110,7 +110,7 @@ class JSToJavaConverter
     static Optional<SidebarError> getAcrolinxInitResultFromJSObject(JSObject o)
     {
         final Object hasError = o.getMember("error");
-        if (!hasError.getClass().equals(String.class)) {
+        if (hasError != null && !hasError.toString().equals("undefined")) {
             final JSObject error = (JSObject) hasError;
             final String code = error.getMember("code").toString();
             final String message = error.getMember("message").toString();
