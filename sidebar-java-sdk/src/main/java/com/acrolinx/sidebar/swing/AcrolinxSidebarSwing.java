@@ -4,11 +4,12 @@
 
 package com.acrolinx.sidebar.swing;
 
-import java.awt.*;
+import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
+
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -37,6 +38,7 @@ import com.acrolinx.sidebar.utils.LogMessages;
 @SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"})
 public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 {
+    private static final long serialVersionUID = 3813416489627785478L;
     private AcrolinxSidebarJFX sidebarJFX;
     private final AcrolinxStorage storage;
 
@@ -44,12 +46,12 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
 
-    public AcrolinxSidebarSwing(AcrolinxIntegration integration)
+    public AcrolinxSidebarSwing(final AcrolinxIntegration integration)
     {
         this(integration, null);
     }
 
-    public AcrolinxSidebarSwing(AcrolinxIntegration integration, AcrolinxStorage storage)
+    public AcrolinxSidebarSwing(final AcrolinxIntegration integration, final AcrolinxStorage storage)
     {
         super();
         LogMessages.logJavaVersionAndUIFramework(logger, "Java Swing with Java FX Sidebar component");
@@ -59,11 +61,12 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         JFXUtils.invokeInJFXThread(this::createScene);
     }
 
-    protected void processKeyEvent(KeyEvent e)
+    @Override
+    protected void processKeyEvent(final KeyEvent e)
     {
         // Hack to prevent pasting event for editor (e. g. .
-        if (e.getModifiers() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
-                && e.getKeyCode() == KeyEvent.VK_V) {
+        if ((e.getModifiers() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())
+                && (e.getKeyCode() == KeyEvent.VK_V)) {
             // Consume it.
             e.consume();
         } else {
@@ -75,13 +78,13 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     private void createScene()
     {
         sidebarJFX = new AcrolinxSidebarJFX(integration, storage);
-        WebView webview = sidebarJFX.getWebView();
+        final WebView webview = sidebarJFX.getWebView();
         GridPane.setHgrow(webview, Priority.ALWAYS);
         GridPane.setVgrow(webview, Priority.ALWAYS);
         webview.setPrefWidth(300);
         addComponentListener(new ComponentListener() {
             @Override
-            public void componentResized(ComponentEvent e)
+            public void componentResized(final ComponentEvent e)
             {
                 logger.debug("Component resized");
                 logger.debug(getWidth() + " width");
@@ -91,30 +94,30 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
             }
 
             @Override
-            public void componentMoved(ComponentEvent e)
+            public void componentMoved(final ComponentEvent e)
             {
 
             }
 
             @Override
-            public void componentShown(ComponentEvent e)
+            public void componentShown(final ComponentEvent e)
             {
 
             }
 
             @Override
-            public void componentHidden(ComponentEvent e)
+            public void componentHidden(final ComponentEvent e)
             {
 
             }
         });
-        Scene scene = new Scene(webview);
+        final Scene scene = new Scene(webview);
         setScene(scene);
         setVisible(true);
     }
 
     @Override
-    public void configure(SidebarConfiguration configuration)
+    public void configure(final SidebarConfiguration configuration)
     {
         sidebarJFX.configure(configuration);
     }
@@ -132,19 +135,19 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     }
 
     @Override
-    public void invalidateRanges(List<CheckedDocumentPart> invalidCheckedDocumentRanges)
+    public void invalidateRanges(final List<CheckedDocumentPart> invalidCheckedDocumentRanges)
     {
         sidebarJFX.invalidateRanges(invalidCheckedDocumentRanges);
     }
 
     @Override
-    public void invalidateRangesForMatches(List<? extends AbstractMatch> matches)
+    public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches)
     {
         sidebarJFX.invalidateRangesForMatches(matches);
     }
 
     @Override
-    public void loadSidebarFromServerLocation(String serverAddress)
+    public void loadSidebarFromServerLocation(final String serverAddress)
     {
         sidebarJFX.loadSidebarFromServerLocation(serverAddress);
     }

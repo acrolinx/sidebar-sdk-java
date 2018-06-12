@@ -23,11 +23,13 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
     {
     }
 
+    @Override
     @SuppressWarnings({"ThrowFromFinallyBlock", "IfCanBeSwitch", "ConstantConditions"})
-    public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
+    public ResourceBundle newBundle(final String baseName, final Locale locale, final String format,
+            final ClassLoader loader, final boolean reload)
             throws IllegalAccessException, InstantiationException, IOException
     {
-        String bundleName = toBundleName(baseName, locale);
+        final String bundleName = toBundleName(baseName, locale);
         ResourceBundle bundle = null;
         if (format.equals("java.class")) {
             bundle = super.newBundle(baseName, locale, format, loader, reload);
@@ -53,12 +55,12 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
         return bundle;
     }
 
-    private InputStream reload(String resourceName, ClassLoader classLoader) throws IOException
+    private static InputStream reload(final String resourceName, final ClassLoader classLoader) throws IOException
     {
         InputStream stream = null;
-        URL url = classLoader.getResource(resourceName);
+        final URL url = classLoader.getResource(resourceName);
         if (url != null) {
-            URLConnection connection = url.openConnection();
+            final URLConnection connection = url.openConnection();
             if (connection != null) {
                 // Disable caches to get fresh data for
                 // reloading.

@@ -5,6 +5,7 @@
 package com.acrolinx.sidebar.jfx;
 
 import java.util.List;
+
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.CacheHint;
@@ -44,7 +45,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
 
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
 
-    public AcrolinxSidebarJFX(AcrolinxIntegration integration)
+    public AcrolinxSidebarJFX(final AcrolinxIntegration integration)
     {
         this(integration, null);
     }
@@ -53,7 +54,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
      * @param integration The implementation of the Acrolinx Integration.
      */
     @SuppressWarnings("ConstantConditions")
-    public AcrolinxSidebarJFX(AcrolinxIntegration integration, AcrolinxStorage storage)
+    public AcrolinxSidebarJFX(final AcrolinxIntegration integration, final AcrolinxStorage storage)
     {
         LogMessages.logJavaVersionAndUIFramework(logger, "Java FX");
         SecurityUtils.setUpEnvironment();
@@ -61,13 +62,13 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         String sidebarUrl = null;
         try {
             sidebarUrl = integration.getInitParameters().getSidebarUrl();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             logger.error("Error getting sidebarURL", e);
         }
 
         logger.debug("Trying to load sidebar url: " + sidebarUrl);
-        WebView webView = getWebView();
-        WebEngine webEngine = webView.getEngine();
+        final WebView webView = getWebView();
+        final WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
         webView.setContextMenuEnabled(false);
         webView.setCache(true);
@@ -85,18 +86,20 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                         final JSObject jsobj = (JSObject) webEngine.executeScript("window");
                         if (jsobj == null) {
                             logger.error("Window Object null!");
+                        } else {
+                            logger.debug("Injecting JSLogger.");
+                            jsobj.setMember("java", new JSLogger());
+                            webEngine.executeScript(
+                                    "console.log = function()\n" + "{\n" + "    java.log('JavaScript: ' + "
+                                            + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
+                            webEngine.executeScript(
+                                    "console.error = function()\n" + "{\n" + "    java.error('JavaScript: ' + "
+                                            + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
+                            logger.debug("Setting local storage");
+                            jsobj.setMember("acrolinxStorage", storage);
                         }
-                        logger.debug("Injecting JSLogger.");
-                        jsobj.setMember("java", new JSLogger());
-                        webEngine.executeScript("console.log = function()\n" + "{\n" + "    java.log('JavaScript: ' + "
-                                + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
-                        webEngine.executeScript(
-                                "console.error = function()\n" + "{\n" + "    java.error('JavaScript: ' + "
-                                        + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
-                        logger.debug("Setting local storage");
-                        jsobj.setMember("acrolinxStorage", storage);
-                        PluginSupportedParameters supported = integration.getInitParameters().getSupported();
-                        if (supported != null && supported.isCheckSelection()) {
+                        final PluginSupportedParameters supported = integration.getInitParameters().getSupported();
+                        if ((supported != null) && supported.isCheckSelection()) {
                             acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionSupport(integration,
                                     webView);
                         } else {
@@ -127,12 +130,12 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         }
     }
 
-    public void setZoom(float i)
+    public void setZoom(final float i)
     {
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 webView.setZoom(i);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
             }
         });
@@ -144,7 +147,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public void configure(SidebarConfiguration configuration)
+    public void configure(final SidebarConfiguration configuration)
     {
         acrolinxSidebarPlugin.configureSidebar(configuration);
 
@@ -167,27 +170,27 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public void invalidateRanges(List<CheckedDocumentPart> invalidCheckedDocumentRanges)
+    public void invalidateRanges(final List<CheckedDocumentPart> invalidCheckedDocumentRanges)
     {
         acrolinxSidebarPlugin.invalidateRanges(invalidCheckedDocumentRanges);
 
     }
 
     @Override
-    public void invalidateRangesForMatches(List<? extends AbstractMatch> matches)
+    public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches)
     {
         acrolinxSidebarPlugin.invalidateRangesForMatches(matches);
     }
 
     @Override
-    public void loadSidebarFromServerLocation(String serverAddress)
+    public void loadSidebarFromServerLocation(final String serverAddress)
     {
         integration.getInitParameters().setServerAddress(serverAddress);
         integration.getInitParameters().setShowServerSelector(true);
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 webView.getEngine().load(SidebarUtils.getSidebarUrl(serverAddress));
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
             }
         });
@@ -199,7 +202,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         if (integration.getInitParameters().getShowServerSelector()) {
             try {
                 StartPageInstaller.exportStartPageResources();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 logger.error("Error while exporting start page resources!");
                 logger.error(e.getMessage());
                 webView.getEngine().loadContent(SidebarUtils.sidebarErrorHTML);
