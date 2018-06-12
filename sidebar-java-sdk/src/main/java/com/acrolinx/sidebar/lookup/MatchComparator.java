@@ -11,8 +11,10 @@ import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 
 public class MatchComparator implements Comparator<AbstractMatch>, Serializable
 {
+    private static final long serialVersionUID = 485264620726058219L;
+
     @Override
-    public int compare(AbstractMatch o1, AbstractMatch o2)
+    public int compare(final AbstractMatch o1, final AbstractMatch o2)
     {
         return Integer.compare(o1.getRange().getMinimumInteger(), o2.getRange().getMinimumInteger());
     }

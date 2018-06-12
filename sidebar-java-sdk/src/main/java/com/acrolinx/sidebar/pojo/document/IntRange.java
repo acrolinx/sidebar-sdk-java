@@ -8,10 +8,11 @@ import org.apache.commons.lang.text.StrBuilder;
 @SuppressWarnings("WeakerAccess")
 public class IntRange implements Serializable
 {
+    private static final long serialVersionUID = -2808883234003742075L;
     final int min;
     final int max;
 
-    public IntRange(int number1, int number2)
+    public IntRange(final int number1, final int number2)
     {
         if (number2 < number1) {
             this.min = number2;
@@ -32,9 +33,10 @@ public class IntRange implements Serializable
         return max;
     }
 
+    @Override
     public String toString()
     {
-        StrBuilder buf = new StrBuilder(32);
+        final StrBuilder buf = new StrBuilder(32);
         buf.append("Range[");
         buf.append(getMinimumInteger());
         buf.append(',');

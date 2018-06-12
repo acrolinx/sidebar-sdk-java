@@ -11,19 +11,20 @@ public class AcrolinxMatch extends AbstractMatch
     private IntRange extractedRange;
     private IntRange range;
 
-    public AcrolinxMatch(IntRange range, String content)
+    public AcrolinxMatch(final IntRange range, final String content)
     {
         this.content = content;
         this.range = range;
     }
 
-    public AcrolinxMatch(IntRange range, IntRange extractedRange, String content)
+    public AcrolinxMatch(final IntRange range, final IntRange extractedRange, final String content)
     {
         this.range = range;
         this.extractedRange = extractedRange;
         this.content = content;
     }
 
+    @Override
     public String getContent()
     {
         return content;
@@ -34,17 +35,18 @@ public class AcrolinxMatch extends AbstractMatch
         return extractedRange;
     }
 
+    @Override
     public IntRange getRange()
     {
         return range;
     }
 
     @Override
-    public AcrolinxMatch setRange(IntRange range)
+    public AcrolinxMatch setRange(final IntRange range)
     {
         if (this.extractedRange != null) {
-            int eRangeMin = this.extractedRange.getMinimumInteger();
-            int eRangeMax = this.extractedRange.getMaximumInteger();
+            final int eRangeMin = this.extractedRange.getMinimumInteger();
+            final int eRangeMax = this.extractedRange.getMaximumInteger();
 
             return new AcrolinxMatch(range, new IntRange(eRangeMin, eRangeMax), content);
         } else {
@@ -55,11 +57,11 @@ public class AcrolinxMatch extends AbstractMatch
     @Override
     public AbstractMatch copy()
     {
-        int rangeMin = this.range.getMinimumInteger();
-        int rangeMax = this.range.getMaximumInteger();
+        final int rangeMin = this.range.getMinimumInteger();
+        final int rangeMax = this.range.getMaximumInteger();
         if (this.extractedRange != null) {
-            int eRangeMin = this.extractedRange.getMinimumInteger();
-            int eRangeMax = this.extractedRange.getMaximumInteger();
+            final int eRangeMin = this.extractedRange.getMinimumInteger();
+            final int eRangeMax = this.extractedRange.getMaximumInteger();
 
             return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), new IntRange(eRangeMin, eRangeMax), content);
         } else {
