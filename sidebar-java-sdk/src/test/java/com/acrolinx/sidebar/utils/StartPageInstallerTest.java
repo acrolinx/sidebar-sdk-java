@@ -5,6 +5,7 @@ import static org.apache.commons.io.FileUtils.deleteDirectory;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,39 +19,38 @@ public class StartPageInstallerTest
     @Test
     public void getServerSelectorVersion() throws Exception
     {
-        String serverSelectorVersion = StartPageInstaller.getStartPageVersion();
+        final String serverSelectorVersion = StartPageInstaller.getStartPageVersion();
         assertTrue(serverSelectorVersion != null);
     }
 
     @Test
     public void exportStartpageFromDifferentThreadsDoesNotCrash() throws Exception
     {
-        String startPageURL = StartPageInstaller.getStartPageURL();
-        String replace = startPageURL.replace("file:", "");
-        Path path = Paths.get(replace);
-        Path startpageDir = path.getParent();
+        final String startPageURL = StartPageInstaller.getStartPageURL();
+        final Path path = Paths.get(new URI(startPageURL));
+        final Path startpageDir = path.getParent();
         if (Files.exists(startpageDir)) {
             deleteDirectory(startpageDir.toFile());
         }
-        Runnable runnable1 = () -> {
+        final Runnable runnable1 = () -> {
             try {
-                String startPageURL1 = StartPageInstaller.getStartPageURL();
+                final String startPageURL1 = StartPageInstaller.getStartPageURL();
                 Assert.assertTrue(startPageURL1.contains("index.html"));
             } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
         };
-        Runnable runnable2 = () -> {
+        final Runnable runnable2 = () -> {
             try {
-                String startPageURL1 = StartPageInstaller.getStartPageURL();
+                final String startPageURL1 = StartPageInstaller.getStartPageURL();
                 Assert.assertTrue(startPageURL1.contains("index.html"));
             } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
         };
-        Runnable runnable3 = () -> {
+        final Runnable runnable3 = () -> {
             try {
-                String startPageURL1 = StartPageInstaller.getStartPageURL();
+                final String startPageURL1 = StartPageInstaller.getStartPageURL();
                 Assert.assertTrue(startPageURL1.contains("index.html"));
             } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();

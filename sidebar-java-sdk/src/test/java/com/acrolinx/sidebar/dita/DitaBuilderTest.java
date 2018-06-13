@@ -19,13 +19,13 @@ public class DitaBuilderTest
     @Test
     public void testDitaBuilder() throws IOException, ParserConfigurationException, SAXException, URISyntaxException
     {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("DITA/WorldTimePro.ditamap").getFile());
-        DitaBuilder ditaBuilder = new DitaBuilder(file.toURI().toURL(), null);
+        final ClassLoader classLoader = getClass().getClassLoader();
+        final File file = new File(classLoader.getResource("DITA/WorldTimePro.ditamap").getFile());
+        final DitaBuilder ditaBuilder = new DitaBuilder(file.toURI().toURL(), null);
         try {
-            String andResolveAllTopicRefs = ditaBuilder.findAndResolveAllTopicRefs();
-            assertTrue(andResolveAllTopicRefs.contains(
-                    "<map id=\"map_usingworldtimepro\" title=\"Using World Time Pro\">\n" + "\t<title>\n"
+            final String andResolveAllTopicRefs = ditaBuilder.findAndResolveAllTopicRefs();
+            assertTrue(andResolveAllTopicRefs.replace("\r", "\n").replace("\n\n", "\n").contains(
+                    ("<map id=\"map_usingworldtimepro\" title=\"Using World Time Pro\">\n" + "\t<title>\n"
                             + "    Using\n" + "    <term>World Time Pro</term>\n" + "\t</title>\n" + "\t<topicmeta>\n"
                             + "\t\t<shortdesc>\n" + "      This documentation suite explains how to use the\n"
                             + "      <term>World Time Pro</term>.\n" + "    </shortdesc>\n"
@@ -881,8 +881,8 @@ public class DitaBuilderTest
                             + "\t\t\t\t<term>military time</term> to \n"
                             + "\t\t\t\t<term>standard time</term>, type the time you want to convert in\n"
                             + "\t\t\t\tthe \n" + "\t\t\t\t<uicontrol>Military Time</uicontrol> fields.\n"
-                            + "\t\t\t </choice> \n" + "\t"));
-        } catch (TransformerException e) {
+                            + "\t\t\t </choice> \n" + "\t").replace("\n\n", "\n")));
+        } catch (final TransformerException e) {
             e.printStackTrace();
         }
     }
@@ -891,15 +891,15 @@ public class DitaBuilderTest
     @Test
     public void containsPublicIdAndSystemId()
     {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("DITA/WorldTimePro.ditamap").getFile());
+        final ClassLoader classLoader = getClass().getClassLoader();
+        final File file = new File(classLoader.getResource("DITA/WorldTimePro.ditamap").getFile());
         DitaBuilder ditaBuilder;
         try {
             ditaBuilder = new DitaBuilder(file.toURI().toURL(), null);
-            String andResolveAllTopicRefs = ditaBuilder.findAndResolveAllTopicRefs();
+            final String andResolveAllTopicRefs = ditaBuilder.findAndResolveAllTopicRefs();
             assertTrue(andResolveAllTopicRefs.contains("<!DOCTYPE map PUBLIC \"-//OASIS//DTD DITA Map//EN\""));
             assertTrue(andResolveAllTopicRefs.contains("\"http://docs.oasis-open.org/dita/v1.2/OS/dtd/map.dtd\""));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             //
         }
     }
