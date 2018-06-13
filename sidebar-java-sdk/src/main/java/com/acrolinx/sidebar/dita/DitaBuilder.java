@@ -145,6 +145,7 @@ public class DitaBuilder
     private Node getHrefContentAsNode(final String href) throws URISyntaxException, IOException, SAXException
     {
         if (("" + href).startsWith("http://") || ("" + href).startsWith("https://")) {
+            logger.warn("Not following href to '" + href + "'");
             return null;
         }
 
