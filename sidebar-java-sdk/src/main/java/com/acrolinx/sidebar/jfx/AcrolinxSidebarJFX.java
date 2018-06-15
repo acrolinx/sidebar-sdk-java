@@ -59,12 +59,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         LogMessages.logJavaVersionAndUIFramework(logger, "Java FX");
         SecurityUtils.setUpEnvironment();
         this.integration = integration;
-        String sidebarUrl = null;
-        try {
-            sidebarUrl = integration.getInitParameters().getSidebarUrl();
-        } catch (final Exception e) {
-            logger.error("Error getting sidebarURL", e);
-        }
+        final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(integration.getInitParameters());
 
         logger.debug("Trying to load sidebar url: " + sidebarUrl);
         final WebView webView = getWebView();
@@ -199,7 +194,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     @Override
     public void reload()
     {
-        if (integration.getInitParameters().getShowServerSelector()) {
+        if (StartPageInstaller.isExportRequired(integration.getInitParameters())) {
             try {
                 StartPageInstaller.exportStartPageResources();
             } catch (final Exception e) {

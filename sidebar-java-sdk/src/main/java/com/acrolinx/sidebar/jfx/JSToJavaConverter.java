@@ -68,7 +68,7 @@ class JSToJavaConverter
         String inputFormat = null;
         Object checkError = o.getMember("error");
         if (checkError != null && !checkError.toString().equals("undefined")) {
-            logger.error(((JSObject) checkError).getMember("message").toString());
+            logger.warn(((JSObject) checkError).getMember("message").toString());
             return null;
         }
         HashMap<String, String> embedCheckInformation = null;

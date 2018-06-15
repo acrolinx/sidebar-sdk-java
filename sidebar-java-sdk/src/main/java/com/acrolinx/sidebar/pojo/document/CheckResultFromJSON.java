@@ -30,7 +30,7 @@ public class CheckResultFromJSON
     public CheckResult getAsCheckResult()
     {
         if (this.error != null) {
-            logger.error(error.getMessage());
+            logger.warn(error.getMessage());
             return null;
         }
         return new CheckResult(checkedPart.getAsCheckResult(), getEmbedCheckInformation(), inputFormat);

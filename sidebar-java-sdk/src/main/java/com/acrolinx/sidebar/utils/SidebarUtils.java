@@ -4,11 +4,15 @@
 
 package com.acrolinx.sidebar.utils;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -38,16 +42,17 @@ public class SidebarUtils
      *
      * @param url
      */
-    public static void openWebPageInDefaultBrowser(String url)
+    public static void openWebPageInDefaultBrowser(final String url)
     {
         if (SidebarUtils.isValidURL(url)) {
             try {
                 openURIInDefaultBrowser(new URI(url));
-            } catch (URISyntaxException e) {
+            } catch (final URISyntaxException e) {
                 logger.error(e.getMessage());
             }
-        } else
+        } else {
             logger.warn("Attempt to open invalid URL: " + url);
+        }
     }
 
     /**
@@ -56,18 +61,18 @@ public class SidebarUtils
      * @param url
      * @return true if url is valid
      */
-    public static boolean isValidURL(String url)
+    public static boolean isValidURL(final String url)
     {
-        UrlValidator urlValidator = new UrlValidator(UrlValidator.ALLOW_LOCAL_URLS);
+        final UrlValidator urlValidator = new UrlValidator(UrlValidator.ALLOW_LOCAL_URLS);
         boolean valid = urlValidator.isValid(url);
         // workaround for data pipe server
         if (!valid) {
-            String tldString = getTldString(url);
-            if (tldString != null && tldString.length() > 0) {
-                boolean validTld = DomainValidator.getInstance().isValidTld(tldString);
+            final String tldString = getTldString(url);
+            if ((tldString != null) && (tldString.length() > 0)) {
+                final boolean validTld = DomainValidator.getInstance().isValidTld(tldString);
                 if (!validTld) {
                     if (tldString.equals("cloud")) {
-                        String replace = url.replace(".cloud", ".de");
+                        final String replace = url.replace(".cloud", ".de");
                         valid = urlValidator.isValid(replace);
                     }
                 }
@@ -76,29 +81,29 @@ public class SidebarUtils
         return valid;
     }
 
-    private static String getTldString(String urlString)
+    private static String getTldString(final String urlString)
     {
         String tldString = null;
-        if (urlString != null && urlString.length() > 0) {
+        if ((urlString != null) && (urlString.length() > 0)) {
             try {
-                URL url = new URL(urlString);
-                String[] domainNameParts = url.getHost().split("\\.");
+                final URL url = new URL(urlString);
+                final String[] domainNameParts = url.getHost().split("\\.");
                 tldString = domainNameParts[domainNameParts.length - 1];
-            } catch (MalformedURLException e) {
+            } catch (final MalformedURLException e) {
                 logger.error("Non valid URL", e);
             }
         }
         return tldString;
     }
 
-    private static void openURIInDefaultBrowser(URI url)
+    private static void openURIInDefaultBrowser(final URI url)
     {
-        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+        final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if ((desktop != null) && desktop.isSupported(Desktop.Action.BROWSE)) {
             new Thread(() -> {
                 try {
                     Desktop.getDesktop().browse(url);
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     logger.error(e.getMessage());
                 }
             }).start();
@@ -115,26 +120,27 @@ public class SidebarUtils
     public static void openLogFile()
     {
 
-        String logFileLocation = LoggingUtils.getLogFileLocation();
+        final String logFileLocation = LoggingUtils.getLogFileLocation();
         if (logFileLocation != null) {
-            String logFile = new File(logFileLocation).getPath();
-            if (openSystemSpecific(logFile))
+            final String logFile = new File(logFileLocation).getPath();
+            if (openSystemSpecific(logFile)) {
                 return;
+            }
             openLogFileFolderInFileManger();
         }
     }
 
     private static void openLogFileFolderInFileManger()
     {
-        String logFileLocation = LoggingUtils.getLogFileLocation();
+        final String logFileLocation = LoggingUtils.getLogFileLocation();
         if (logFileLocation != null) {
-            String folder = new File(logFileLocation).getParent();
-            Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-            if (desktop != null && desktop.isSupported(Desktop.Action.OPEN)) {
+            final String folder = new File(logFileLocation).getParent();
+            final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+            if ((desktop != null) && desktop.isSupported(Desktop.Action.OPEN)) {
                 new Thread(() -> {
                     try {
                         Desktop.getDesktop().open(new File(folder));
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         logger.error(e.getMessage());
                     }
                 }).start();
@@ -150,7 +156,7 @@ public class SidebarUtils
      * @param serverAddress
      * @return sidebar url
      */
-    public static String getSidebarUrl(String serverAddress)
+    public static String getSidebarUrl(final String serverAddress)
     {
         return serverAddress + (serverAddress.endsWith("/") ? "sidebar/v14/index.html" : "/sidebar/v14/index.html");
 
@@ -160,29 +166,30 @@ public class SidebarUtils
     {
         // Need version from properties file to get proper version number in case sdk gets packed
         // into fat jar
-        String versionFromPropertiesFile = getJavaSDKVersionFromPropertiesFile();
+        final String versionFromPropertiesFile = getJavaSDKVersionFromPropertiesFile();
         if (versionFromPropertiesFile == null) {
             return SidebarUtils.class.getPackage().getImplementationVersion();
-        } else
+        } else {
             return versionFromPropertiesFile;
+        }
     }
 
     private static String getJavaSDKVersionFromPropertiesFile()
     {
-        String resourceName = "/versionJavaSDK.properties";
-        Properties props = new Properties();
-        InputStream resourceStream = SidebarUtils.class.getResourceAsStream(resourceName);
+        final String resourceName = "/versionJavaSDK.properties";
+        final Properties props = new Properties();
+        final InputStream resourceStream = SidebarUtils.class.getResourceAsStream(resourceName);
         if (resourceStream != null) {
             try {
                 props.load(resourceStream);
                 return (String) props.get("VERSION_JAVA_SDK");
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 logger.error("Could not read java sdk version!");
                 logger.error(e.getMessage());
             } finally {
                 try {
                     resourceStream.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     logger.debug("Could not close resource stream or stream already cleaned up!");
                     logger.error(e.getMessage());
                 }
@@ -199,13 +206,13 @@ public class SidebarUtils
      * @param serverAddress
      * @return true if sidebar is available
      */
-    public static boolean isValidServerAddress(String serverAddress)
+    public static boolean isValidServerAddress(final String serverAddress)
     {
         try {
-            URL url = new URL(getSidebarUrl(serverAddress));
-            URLConnection conn = url.openConnection();
+            final URL url = new URL(getSidebarUrl(serverAddress));
+            final URLConnection conn = url.openConnection();
             conn.connect();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             logger.error("Invalid Server URL!");
             logger.error(e.getMessage());
             return false;
@@ -215,7 +222,7 @@ public class SidebarUtils
 
     protected static Path getUserTempDirLocation() throws URISyntaxException
     {
-        String s = System.getProperty("os.name").toLowerCase();
+        final String s = System.getProperty("os.name").toLowerCase();
         String temDirProp;
         if (s.contains("mac")) {
             temDirProp = System.getProperty("user.home");
@@ -242,34 +249,36 @@ public class SidebarUtils
      * @return boolean
      */
 
-    public static boolean openSystemSpecific(String path)
+    public static boolean openSystemSpecific(final String path)
     {
 
-        OSUtils.EnumOS os = OSUtils.getOS();
+        final OSUtils.EnumOS os = OSUtils.getOS();
 
         if (os.isMac()) {
-            if (runCommand("open", "-R", path))
+            if (runCommand("open", "-R", path)) {
                 return true;
+            }
         }
 
         if (os.isWindows()) {
-            if (runCommand("explorer", "/select,", "\"" + path + "\""))
+            if (runCommand("explorer", "/select,", "\"" + path + "\"")) {
                 return true;
+            }
         }
 
         return false;
     }
 
-    private static boolean runCommand(String command, String args, String file)
+    private static boolean runCommand(final String command, final String args, final String file)
     {
 
         logger.info("Trying to exec:\n   cmd = " + command + "\n   args = " + args + "\n   %s = " + file);
 
-        ArrayList<String> parts = new ArrayList<>();
+        final ArrayList<String> parts = new ArrayList<>();
         parts.add(command);
 
         if (args != null) {
-            for (String s : args.split(" ")) {
+            for (final String s : args.split(" ")) {
                 parts.add(s.trim());
             }
         }
@@ -277,9 +286,9 @@ public class SidebarUtils
         parts.add(file);
 
         try {
-            Process p = Runtime.getRuntime().exec(parts.toArray(new String[parts.size()]));
+            final Process p = Runtime.getRuntime().exec(parts.toArray(new String[parts.size()]));
             try {
-                int retval = p.exitValue();
+                final int retval = p.exitValue();
                 if (retval == 0) {
                     logger.error("Process ended immediately.");
                     return false;
@@ -287,11 +296,11 @@ public class SidebarUtils
                     logger.error("Process crashed.");
                     return false;
                 }
-            } catch (IllegalThreadStateException e) {
+            } catch (final IllegalThreadStateException e) {
                 logger.debug("Process is running.");
                 return true;
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             logger.error("Error running command.", e);
             return false;
         }

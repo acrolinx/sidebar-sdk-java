@@ -15,6 +15,9 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
+import com.google.common.base.Strings;
+
 @SuppressWarnings("WeakerAccess")
 public class StartPageInstaller
 {
@@ -23,20 +26,20 @@ public class StartPageInstaller
 
     protected static String getStartPageVersion()
     {
-        String resourceName = "/server-selector/version.properties";
-        Properties props = new Properties();
-        InputStream resourceStream = StartPageInstaller.class.getResourceAsStream(resourceName);
+        final String resourceName = "/server-selector/version.properties";
+        final Properties props = new Properties();
+        final InputStream resourceStream = StartPageInstaller.class.getResourceAsStream(resourceName);
         if (resourceStream != null) {
             try {
                 props.load(resourceStream);
                 return (String) props.get("version");
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 logger.error("Could not read server selector version!");
                 logger.error(e.getMessage());
             } finally {
                 try {
                     resourceStream.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     logger.debug("Could not close resource stream or stream already cleaned up!");
                     logger.error(e.getMessage());
                 }
@@ -57,19 +60,19 @@ public class StartPageInstaller
     {
         InputStream asset;
         logger.info("Exporting Server Selector Resources.");
-        Path assetDir = getDefaultStartPageInstallLocation();
+        final Path assetDir = getDefaultStartPageInstallLocation();
         try (BufferedReader listFile = new BufferedReader(new InputStreamReader(
                 StartPageInstaller.class.getResourceAsStream("/server-selector/files.txt"), StandardCharsets.UTF_8))) {
             String assetResource;
             while ((assetResource = listFile.readLine()) != null) {
-                Path assetFile = assetDir.resolve(assetResource.substring(1, assetResource.length()));
+                final Path assetFile = assetDir.resolve(assetResource.substring(1, assetResource.length()));
                 if (assetFile != null) {
-                    Path parent = assetFile.getParent();
-                    if (parent != null && !Files.exists(parent)) {
+                    final Path parent = assetFile.getParent();
+                    if ((parent != null) && !Files.exists(parent)) {
                         Files.createDirectories(parent);
                     }
                     asset = StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
-                    if (asset != null && !Files.exists(assetFile)) {
+                    if ((asset != null) && !Files.exists(assetFile)) {
                         Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
                     }
                 }
@@ -79,8 +82,8 @@ public class StartPageInstaller
 
     private static Path getDefaultStartPageInstallLocation() throws URISyntaxException, IOException
     {
-        Path userTempDirLocation = SidebarUtils.getUserTempDirLocation();
-        String osName = System.getProperty("os.name");
+        final Path userTempDirLocation = SidebarUtils.getUserTempDirLocation();
+        final String osName = System.getProperty("os.name");
         Path acrolinxDir;
         if (osName.toLowerCase().contains("mac") || osName.contains("windows")) {
             acrolinxDir = userTempDirLocation.resolve("Acrolinx");
@@ -104,11 +107,30 @@ public class StartPageInstaller
      */
     public static String getStartPageURL() throws IOException, URISyntaxException
     {
-        Path assetDir = getDefaultStartPageInstallLocation();
+        final Path assetDir = getDefaultStartPageInstallLocation();
         if (!Files.exists(assetDir.resolve("index.html"))) {
             logger.debug("Acrolinx start page not present!");
             exportStartPageResources();
         }
         return assetDir.toUri().toString() + "index.html";
+    }
+
+    public static String prepareSidebarUrl(final AcrolinxSidebarInitParameter initParam)
+    {
+        try {
+            if (!isExportRequired(initParam)) {
+                return initParam.getSidebarUrl();
+            }
+
+            return getStartPageURL();
+        } catch (final Exception e) {
+            logger.error("Error getting sidebarURL", e);
+            return "";
+        }
+    }
+
+    public static boolean isExportRequired(final AcrolinxSidebarInitParameter initParam)
+    {
+        return initParam.getShowServerSelector() || Strings.isNullOrEmpty(initParam.getSidebarUrl());
     }
 }
