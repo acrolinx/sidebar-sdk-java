@@ -59,11 +59,11 @@ to initialize the Acrolinx Sidebar according to your needs.
 
 On start of the integration call:
 
-```
+```java
 LoggingUtils.setupLogging("AcrolinxDemoClientJFX");
 ```
 
-This will setup the logging according to the [acrolinx coding guidance].(https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/logging.md)
+This will setup the logging according to the [acrolinx coding guidance](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/logging.md)
 
 ### Lookup
 
@@ -74,7 +74,6 @@ which uses the diff-match-patch library.
 Refer to class ``LookupRangesDiff``.
 
 More information about how to implement a good lookup algorithm can be found in [acrolinx coding guidance](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-lookup.md).
-
 
 ### Local Storage
 
@@ -87,11 +86,15 @@ If you want to use an Acrolinx Sidebar with an Acrolinx Server that run on diffe
 [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing). That can be done by setting the following System
 property in your Java Code:
 
-	System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
+```java
+System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
+```
 
 Or you can set the following VM Option when running Java:
 
-	-Dsun.net.http.allowRestrictedHeaders=true
+```bash
+-Dsun.net.http.allowRestrictedHeaders=true
+```
 
 Also you'll need have CORS enabled on your Acrolinx Server.
 For help, check the Acrolinx Support on [how to enable CORS](https://support.acrolinx.com/hc/en-us/articles/203851132#task_izv_qn4_fv).
@@ -124,7 +127,7 @@ Once the release branch is pushed to GitHub, the api documentation on the gh-pag
 
 To check if the SDK uses any outdated libraries run:
 
-```
+```bash
 ./gradlew dependencyUpdates -Drevision=release
 
 ```
@@ -134,21 +137,20 @@ This will generate a report in the projects' build folder. Check the report to f
 To update the dependency libraries, run the following gradle task. This will update to the latest stable release version
 and exclude any alpha or beta versions.
 
-```
+```bash
 ./gradlew useLatestVersions && ./gradlew useLatestVersionsCheck
 
 ```
 
 ### Vulnerable Dependencies Check
 
-```
+```bash
 ./gradlew dependencyCheckAnalyze --info
 
 ```
 
 This generates an html report in the projects's build folder and lists all vulnerable dependencies and where they're
 referenced found by the [dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle) plugin.
-
 
 ## License
 
