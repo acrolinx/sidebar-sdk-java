@@ -21,8 +21,6 @@ The Acrolinx Sidebar is then available under
 
 For more information on Acrolinx check [www.acrolinx.com](https://www.acrolinx.com).
 
-[Back to top](#acrolinx-java-sidebar-demo)
-
 ## Prerequisites
 
 Please contact Acrolinx SDK support (sdk-support@acrolinx.com) for consulting and getting your integration certified.
@@ -154,7 +152,7 @@ referenced found by the [dependency-check-gradle](https://github.com/jeremylong/
 
 ## License
 
-Copyright 2016-2017 Acrolinx GmbH
+Copyright 2016-2018 Acrolinx GmbH
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
