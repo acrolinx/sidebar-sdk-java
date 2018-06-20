@@ -12,9 +12,9 @@ spotless {
 			include '**/*.java'
 			exclude '**/*.license.java'
 		}
-		// licenseHeaderFile	rootProject.file('spotless/spotless.license.java')			// License header file
-		importOrderFile		rootProject.file('spotless/spotless.importorder')			// An import ordering file, exported from Eclipse
-		eclipseFormatFile	rootProject.file('spotless/spotless.eclipseformat.xml')		// XML file dumped out by the Eclipse formatter
+		// licenseHeaderFile	rootProject.file('spotless-sidebar-sdk-java/spotless.license.java')			// License header file
+		importOrderFile		rootProject.file('spotless-sidebar-sdk-java/spotless.importorder')			// An import ordering file, exported from Eclipse
+		eclipseFormatFile	rootProject.file('spotless-sidebar-sdk-java/spotless.eclipseformat.xml')		// XML file dumped out by the Eclipse formatter
 		custom 'Lambda fix', { it.replace('} )', '})').replace('} ,', '},') }
 	}
 	format 'misc', {
