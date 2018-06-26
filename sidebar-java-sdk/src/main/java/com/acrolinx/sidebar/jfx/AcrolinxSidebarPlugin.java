@@ -224,7 +224,8 @@ abstract class AcrolinxSidebarPlugin
                 selection = new DocumentSelection(checkSelectionRange.get());
             }
         }
-        return new CheckOptions(new RequestDescription(currentDocumentReference.get()), inputFormatRef.get(), selection);
+        return new CheckOptions(new RequestDescription(currentDocumentReference.get()), inputFormatRef.get(),
+                selection);
     }
 
     public void onGlobalCheckRejected()
