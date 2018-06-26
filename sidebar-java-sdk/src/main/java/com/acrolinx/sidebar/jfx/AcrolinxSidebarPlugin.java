@@ -58,7 +58,7 @@ abstract class AcrolinxSidebarPlugin
     private final AtomicReference<String> currentlyCheckedDocument = new AtomicReference<>("");
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<InputFormat> inputFormatRef = new AtomicReference<>();
-    private final AtomicReference<String> documentReference = new AtomicReference<>("");
+    private final AtomicReference<String> lastCheckedDocumentReference = new AtomicReference<>("");
     private final AtomicReference<List<IntRange>> checkSelectionRange = new AtomicReference<>();
     private final AtomicReference<AcrolinxSidebarInitParameter> initParameters = new AtomicReference<>();
     private volatile WebView webView;
@@ -168,7 +168,7 @@ abstract class AcrolinxSidebarPlugin
             logger.info("Check finished with errors.");
         } else {
             currentCheckId.set(checkResult.getCheckedDocumentPart().getCheckId());
-            currentDocumentReference.set(documentReference.get());
+            lastCheckedDocumentReference.set(currentDocumentReference.get());
             lastCheckedDocument.set(currentlyCheckedDocument.get());
             client.onCheckResult(checkResult);
         }
@@ -214,7 +214,7 @@ abstract class AcrolinxSidebarPlugin
     private CheckOptions getCheckSettingsFromClient(final boolean includeCheckSelectionRanges)
     {
         inputFormatRef.set(client.getEditorAdapter().getInputFormat());
-        documentReference.set(client.getEditorAdapter().getDocumentReference());
+        currentDocumentReference.set(client.getEditorAdapter().getDocumentReference());
         DocumentSelection selection = null;
         if (includeCheckSelectionRanges) {
             logger.debug("Including check selection ranges.");
@@ -224,7 +224,7 @@ abstract class AcrolinxSidebarPlugin
                 selection = new DocumentSelection(checkSelectionRange.get());
             }
         }
-        return new CheckOptions(new RequestDescription(documentReference.get()), inputFormatRef.get(), selection);
+        return new CheckOptions(new RequestDescription(currentDocumentReference.get()), inputFormatRef.get(), selection);
     }
 
     public void onGlobalCheckRejected()
@@ -259,8 +259,8 @@ abstract class AcrolinxSidebarPlugin
 
     public String getLastCheckedDocumentReference()
     {
-        if ((this.documentReference.get() != null) && !"".equals(this.documentReference.get())) {
-            return this.documentReference.get();
+        if ((this.lastCheckedDocumentReference.get() != null) && !"".equals(this.lastCheckedDocumentReference.get())) {
+            return this.lastCheckedDocumentReference.get();
         }
         return null;
     }

@@ -72,7 +72,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private final AcrolinxStorage storage;
     private final AtomicReference<String> currentlyCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedText = new AtomicReference<>("");
-    private final AtomicReference<String> documentReference = new AtomicReference<>("");
+    private final AtomicReference<String> lastCheckedDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<Instant> checkStartTime = new AtomicReference<>();
@@ -303,7 +303,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                         logger.info("Check finished with errors.");
                     } else {
                         currentCheckId.set(result.getCheckedDocumentPart().getCheckId());
-                        currentDocumentReference.set(documentReference.get());
+                        lastCheckedDocumentReference.set(currentDocumentReference.get());
                         lastCheckedText.set(currentlyCheckedText.get());
                         client.onCheckResult(result);
                     }
@@ -364,7 +364,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             public Object function(final Object[] arguments)
             {
                 final String documentRef = client.getEditorAdapter().getDocumentReference();
-                documentReference.set(documentRef);
+                currentDocumentReference.set(documentRef);
                 return documentRef;
             }
 
@@ -510,8 +510,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     @Override
     public String getLastCheckedDocumentReference()
     {
-        if (!"".equals(currentDocumentReference.get())) {
-            return currentDocumentReference.get();
+        if (!"".equals(lastCheckedDocumentReference.get())) {
+            return lastCheckedDocumentReference.get();
         }
         return null;
     }
