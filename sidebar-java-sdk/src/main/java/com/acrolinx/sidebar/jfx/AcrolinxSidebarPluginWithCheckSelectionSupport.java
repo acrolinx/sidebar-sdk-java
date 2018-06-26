@@ -5,6 +5,7 @@
 package com.acrolinx.sidebar.jfx;
 
 import java.time.Instant;
+
 import javafx.scene.web.WebView;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
@@ -15,7 +16,7 @@ import netscape.javascript.JSObject;
 
 public class AcrolinxSidebarPluginWithCheckSelectionSupport extends AcrolinxSidebarPlugin
 {
-    public AcrolinxSidebarPluginWithCheckSelectionSupport(AcrolinxIntegration client, WebView webView)
+    public AcrolinxSidebarPluginWithCheckSelectionSupport(final AcrolinxIntegration client, final WebView webView)
     {
         super(client, webView);
     }
@@ -30,8 +31,8 @@ public class AcrolinxSidebarPluginWithCheckSelectionSupport extends AcrolinxSide
                 selection = Boolean.parseBoolean(o.getMember("selection").toString());
             }
         }
-        if (client.getEditorAdapter() != null && !(client.getEditorAdapter() instanceof NullEditorAdapter)
-                && client.getEditorAdapter().getContent() != null) {
+        if ((client.getEditorAdapter() != null) && !(client.getEditorAdapter() instanceof NullEditorAdapter)
+                && (client.getEditorAdapter().getContent() != null)) {
             logger.debug("Editor is ready for running a check");
             runCheck(selection);
         } else {

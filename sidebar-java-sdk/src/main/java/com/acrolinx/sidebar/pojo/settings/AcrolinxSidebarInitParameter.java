@@ -4,16 +4,14 @@
 
 package com.acrolinx.sidebar.pojo.settings;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.utils.LoggingUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
-import com.acrolinx.sidebar.utils.StartPageInstaller;
 import com.google.gson.Gson;
 
 @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
@@ -23,25 +21,25 @@ public class AcrolinxSidebarInitParameter
     private final String clientSignature;
     private String sidebarUrl;
     private String clientLocale;
-    private final ArrayList<SoftwareComponent> clientComponents;
-    private Boolean showServerSelector;
+    private final List<SoftwareComponent> clientComponents;
+    private boolean showServerSelector;
     private CheckSettings checkSettings;
     private CheckSettings defaultCheckSettings;
-    private Boolean enableSingleSignOn;
-    private Boolean enforceHTTPS;
+    private boolean enableSingleSignOn;
+    private boolean enforceHTTPS;
     private String logFileLocation;
     private String minimumSidebarVersion;
     private PluginSupportedParameters supported;
 
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarInitParameter.class);
 
-    private AcrolinxSidebarInitParameter(AcrolinxSidebarInitParameterBuilder builder)
+    private AcrolinxSidebarInitParameter(final AcrolinxSidebarInitParameterBuilder builder)
     {
         this.serverAddress = builder.serverAddress;
         this.clientSignature = builder.clientSignature;
         this.sidebarUrl = builder.sidebarUrl;
         this.clientLocale = builder.clientLocale;
-        ArrayList<SoftwareComponent> copy = new ArrayList<>();
+        final List<SoftwareComponent> copy = new ArrayList<>();
         copy.addAll(builder.clientComponents);
         copy.add(SidebarUtils.getJavaSDKSoftwareComponent());
         copy.add(new SoftwareComponent("os", System.getProperty("os.name"), System.getProperty("os.version"),
@@ -62,12 +60,10 @@ public class AcrolinxSidebarInitParameter
         if (this.clientLocale != null) {
             logger.info("Plugin initialized with client locale: " + this.clientLocale);
         }
-        if (this.enforceHTTPS != null) {
-            logger.info("Plugin initialized with force https: " + this.enforceHTTPS);
-        }
-        if (this.enableSingleSignOn != null) {
-            logger.info("Plugin initialized with enableSingleSignOn: " + this.enableSingleSignOn);
-        }
+
+        logger.info("Plugin initialized with force https: " + this.enforceHTTPS);
+        logger.info("Plugin initialized with enableSingleSignOn: " + this.enableSingleSignOn);
+
         if (this.minimumSidebarVersion != null) {
             logger.info("Plugin expects minimum sidebar version: " + this.minimumSidebarVersion);
         }
@@ -83,13 +79,9 @@ public class AcrolinxSidebarInitParameter
         return clientSignature;
     }
 
-    public String getSidebarUrl() throws URISyntaxException, IOException
+    public String getSidebarUrl()
     {
-        if (sidebarUrl != null && !this.showServerSelector) {
-            return sidebarUrl;
-        } else
-            this.setShowServerSelector(true);
-        return StartPageInstaller.getStartPageURL();
+        return sidebarUrl;
     }
 
     public boolean getShowServerSelector()
@@ -97,19 +89,19 @@ public class AcrolinxSidebarInitParameter
         return this.showServerSelector;
     }
 
-    public void setServerAddress(String serverAddress)
+    public void setServerAddress(final String serverAddress)
     {
         this.serverAddress = serverAddress;
     }
 
-    public void setShowServerSelector(boolean showServerSelector)
+    public void setShowServerSelector(final boolean showServerSelector)
     {
         this.showServerSelector = showServerSelector;
     }
 
-    public void setClientLocale(String clientLocale)
+    public void setClientLocale(final String clientLocale)
     {
-        if (this.clientLocale == null || !this.clientLocale.equalsIgnoreCase(clientLocale)) {
+        if ((this.clientLocale == null) || !this.clientLocale.equalsIgnoreCase(clientLocale)) {
             logger.info("Set client locale to " + clientLocale);
             this.clientLocale = clientLocale;
         }
@@ -128,7 +120,7 @@ public class AcrolinxSidebarInitParameter
     @Override
     public String toString()
     {
-        Gson gson = new Gson();
+        final Gson gson = new Gson();
         return gson.toJson(this);
     }
 
@@ -139,12 +131,12 @@ public class AcrolinxSidebarInitParameter
         private final String clientSignature;
         private String sidebarUrl;
         private String clientLocale;
-        private final ArrayList<SoftwareComponent> clientComponents;
-        private Boolean showServerSelector;
+        private final List<SoftwareComponent> clientComponents;
+        private boolean showServerSelector;
         private CheckSettings checkSettings;
         private CheckSettings defaultCheckSettings;
-        private Boolean enableSingleSignOn;
-        private Boolean enforceHTTPS;
+        private boolean enableSingleSignOn;
+        private boolean enforceHTTPS;
         private String minimumSidebarVersion;
         private PluginSupportedParameters supported;
 
@@ -158,8 +150,8 @@ public class AcrolinxSidebarInitParameter
          *        well as other software components that where used.
          * @see SoftwareComponent
          */
-        public AcrolinxSidebarInitParameterBuilder(String clientSignature,
-                ArrayList<SoftwareComponent> clientComponents)
+        public AcrolinxSidebarInitParameterBuilder(final String clientSignature,
+                final List<SoftwareComponent> clientComponents)
         {
             this.clientSignature = clientSignature;
             this.clientComponents = clientComponents;
@@ -172,7 +164,7 @@ public class AcrolinxSidebarInitParameter
          * @param serverAddress Address of the Acrolinx Server that is used to check the content.
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
-        public AcrolinxSidebarInitParameterBuilder withServerAddress(String serverAddress)
+        public AcrolinxSidebarInitParameterBuilder withServerAddress(final String serverAddress)
         {
             this.serverAddress = serverAddress;
             return this;
@@ -185,7 +177,7 @@ public class AcrolinxSidebarInitParameter
          * @param sidebarUrl
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
-        public AcrolinxSidebarInitParameterBuilder withSidebarUrl(String sidebarUrl)
+        public AcrolinxSidebarInitParameterBuilder withSidebarUrl(final String sidebarUrl)
         {
             this.sidebarUrl = sidebarUrl;
             return this;
@@ -197,7 +189,7 @@ public class AcrolinxSidebarInitParameter
          * @param clientLocale Should be "en", "fr", "de", "sv", "ja", etc.
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
-        public AcrolinxSidebarInitParameterBuilder withClientLocale(String clientLocale)
+        public AcrolinxSidebarInitParameterBuilder withClientLocale(final String clientLocale)
         {
             this.clientLocale = clientLocale;
             return this;
@@ -210,7 +202,7 @@ public class AcrolinxSidebarInitParameter
          * @param showServerSelector
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
-        public AcrolinxSidebarInitParameterBuilder withShowServerSelector(Boolean showServerSelector)
+        public AcrolinxSidebarInitParameterBuilder withShowServerSelector(final Boolean showServerSelector)
         {
             this.showServerSelector = showServerSelector;
             return this;
@@ -224,7 +216,7 @@ public class AcrolinxSidebarInitParameter
          * @param checkSettings
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
-        public AcrolinxSidebarInitParameterBuilder withCheckSettings(CheckSettings checkSettings)
+        public AcrolinxSidebarInitParameterBuilder withCheckSettings(final CheckSettings checkSettings)
         {
             this.checkSettings = checkSettings;
             return this;
@@ -237,7 +229,7 @@ public class AcrolinxSidebarInitParameter
          * @param defaultCheckSettings
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
-        public AcrolinxSidebarInitParameterBuilder withDefaultCheckSettings(CheckSettings defaultCheckSettings)
+        public AcrolinxSidebarInitParameterBuilder withDefaultCheckSettings(final CheckSettings defaultCheckSettings)
         {
             this.defaultCheckSettings = defaultCheckSettings;
             return this;
@@ -250,7 +242,7 @@ public class AcrolinxSidebarInitParameter
          * @param enableSingleSignOn
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
-        public AcrolinxSidebarInitParameterBuilder withEnableSingleSignOn(Boolean enableSingleSignOn)
+        public AcrolinxSidebarInitParameterBuilder withEnableSingleSignOn(final boolean enableSingleSignOn)
         {
             this.enableSingleSignOn = enableSingleSignOn;
             return this;
@@ -262,7 +254,7 @@ public class AcrolinxSidebarInitParameter
          * @param enforceHTTPS
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
-        public AcrolinxSidebarInitParameterBuilder withEnforceHTTPS(Boolean enforceHTTPS)
+        public AcrolinxSidebarInitParameterBuilder withEnforceHTTPS(final boolean enforceHTTPS)
         {
             this.enforceHTTPS = enforceHTTPS;
             return this;
@@ -274,7 +266,7 @@ public class AcrolinxSidebarInitParameter
          * @param minimumSidebarVersion
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
-        public AcrolinxSidebarInitParameterBuilder withMinimumSidebarVersion(String minimumSidebarVersion)
+        public AcrolinxSidebarInitParameterBuilder withMinimumSidebarVersion(final String minimumSidebarVersion)
         {
             this.minimumSidebarVersion = minimumSidebarVersion;
             return this;
@@ -287,7 +279,8 @@ public class AcrolinxSidebarInitParameter
          * @param supported
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
-        public AcrolinxSidebarInitParameterBuilder withPluginSupportedParameters(PluginSupportedParameters supported)
+        public AcrolinxSidebarInitParameterBuilder withPluginSupportedParameters(
+                final PluginSupportedParameters supported)
         {
             this.supported = supported;
             return this;

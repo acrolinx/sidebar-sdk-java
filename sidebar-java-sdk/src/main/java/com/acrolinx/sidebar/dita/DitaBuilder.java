@@ -24,7 +24,11 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
@@ -43,17 +47,17 @@ public class DitaBuilder
     final private Logger logger = LoggerFactory.getLogger(com.acrolinx.sidebar.dita.DitaBuilder.class);
 
     @SuppressWarnings("SameParameterValue")
-    public DitaBuilder(URL editorLocation, EntityResolver entityResolver)
+    public DitaBuilder(final URL editorLocation, final EntityResolver entityResolver)
             throws URISyntaxException, ParserConfigurationException, SAXException, IOException
     {
         this.editorLocation = editorLocation;
         parseXml(entityResolver);
     }
 
-    private void parseXml(EntityResolver entityResolver)
+    private void parseXml(final EntityResolver entityResolver)
             throws ParserConfigurationException, IOException, SAXException, URISyntaxException
     {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setValidating(false);
         dbf.setNamespaceAware(true);
         dbf.setFeature("http://xml.org/sax/features/namespaces", false);
@@ -63,26 +67,26 @@ public class DitaBuilder
 
         this.documentBuilder = dbf.newDocumentBuilder();
         documentBuilder.setEntityResolver(entityResolver);
-        Path path = Paths.get(editorLocation.toURI());
+        final Path path = Paths.get(editorLocation.toURI());
         if (!Files.isRegularFile(path)) {
             logger.error("Ditamap file " + editorLocation.toURI() + " does not exist.");
             return;
         }
         documentBuilder.setErrorHandler(new ErrorHandler() {
             @Override
-            public void warning(SAXParseException exception) throws SAXException
+            public void warning(final SAXParseException exception) throws SAXException
             {
                 logger.warn("Warning: " + exception.getMessage());
             }
 
             @Override
-            public void error(SAXParseException exception) throws SAXException
+            public void error(final SAXParseException exception) throws SAXException
             {
                 logger.error("Error occurred while parsing document: " + exception.getMessage());
             }
 
             @Override
-            public void fatalError(SAXParseException exception) throws SAXException
+            public void fatalError(final SAXParseException exception) throws SAXException
             {
                 logger.error("Fatal error occurred while parsing document: " + exception.getMessage());
             }
@@ -110,43 +114,49 @@ public class DitaBuilder
             logger.error("No document found to insert topic refs.");
             return null;
         }
-        NodeList topicrefs = this.document.getDocumentElement().getElementsByTagName("topicref");
-        int length = topicrefs.getLength();
+        final NodeList topicrefs = this.document.getDocumentElement().getElementsByTagName("topicref");
+        final int length = topicrefs.getLength();
         logger.debug("Found " + length + " topicrefs");
         for (int i = 0; i < length; i++) {
-            Node node = topicrefs.item(i);
+            final Node node = topicrefs.item(i);
             insertTopicRef(node);
         }
         return getDocumentAsString();
     }
 
-    private void insertTopicRef(Node ref) throws SAXException, IOException, URISyntaxException
+    private void insertTopicRef(final Node ref) throws SAXException, IOException, URISyntaxException
     {
         if (this.document == null) {
             logger.error("No document found to insert topic refs.");
             return;
         }
-        Element item = (Element) ref;
-        String href = item.getAttribute("href");
+        final Element item = (Element) ref;
+        final String href = item.getAttribute("href");
         logger.debug("Start to insert topicref " + href);
-        Node hrefContentAsNode = getHrefContentAsNode(href);
+        final Node hrefContentAsNode = getHrefContentAsNode(href);
         if (hrefContentAsNode != null) {
-            Node importNode = document.importNode(hrefContentAsNode, true);
-            Element topicresolved = document.createElement("topicrefcontent");
+            final Node importNode = document.importNode(hrefContentAsNode, true);
+            final Element topicresolved = document.createElement("topicrefcontent");
             topicresolved.appendChild(importNode);
             item.appendChild(topicresolved);
         }
     }
 
-    private Node getHrefContentAsNode(String href) throws URISyntaxException, IOException, SAXException
+    private Node getHrefContentAsNode(final String href) throws URISyntaxException, IOException, SAXException
     {
+        if (("" + href).startsWith("http://") || ("" + href).startsWith("https://")) {
+            logger.warn("Not following href to '" + href + "'");
+            return null;
+        }
+
         Node fragmentNode = null;
         logger.debug("Creating content node ... ");
-        Path path = Paths.get(editorLocation.toURI());
-        Path parent = path.getParent();
+        final Path path = Paths.get(editorLocation.toURI());
+        final Path parent = path.getParent();
         if (parent != null) {
             logger.debug("Parent path: " + parent.toString());
-            Path resolvedPath = parent.resolve(href);
+
+            final Path resolvedPath = parent.resolve(href);
             logger.debug("Resolving: " + resolvedPath);
             if (Files.isRegularFile(resolvedPath)) {
                 fragmentNode = this.documentBuilder.parse(resolvedPath.toString()).getDocumentElement();
@@ -161,23 +171,23 @@ public class DitaBuilder
             logger.error("Can not transform document to string, as document is not defined or null.");
             return null;
         }
-        StringWriter sw = new StringWriter();
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
+        final StringWriter sw = new StringWriter();
+        final TransformerFactory tf = TransformerFactory.newInstance();
+        final Transformer transformer = tf.newTransformer();
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
         transformer.setOutputProperty(OutputKeys.METHOD, "xml");
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-        DocumentType doctype = document.getDoctype();
+        final DocumentType doctype = document.getDoctype();
         if (doctype != null) {
-            String systemId = doctype.getSystemId();
-            String publicId = doctype.getPublicId();
+            final String systemId = doctype.getSystemId();
+            final String publicId = doctype.getPublicId();
             transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicId);
             transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemId);
         }
         transformer.transform(new DOMSource(document), new StreamResult(sw));
-        String s = sw.toString();
+        final String s = sw.toString();
         logger.debug("Transform resolved ditamap finished.");
         return s;
     }
