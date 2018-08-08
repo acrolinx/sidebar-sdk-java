@@ -1,6 +1,4 @@
-/*
- * Copyright (c) 2016-2017 Acrolinx GmbH
- */
+/* Copyright (c) 2016-2017 Acrolinx GmbH */
 
 package com.acrolinx.sidebar.lookup;
 

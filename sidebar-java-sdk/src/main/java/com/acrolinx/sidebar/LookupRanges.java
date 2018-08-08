@@ -1,6 +1,4 @@
-/*
- * Copyright (c) 2017 Acrolinx GmbH
- */
+/* Copyright (c) 2017-2018 Acrolinx GmbH */
 
 package com.acrolinx.sidebar;
 

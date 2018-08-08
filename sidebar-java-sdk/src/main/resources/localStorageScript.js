@@ -1,3 +1,5 @@
+/* Copyright (c) 2017 Acrolinx GmbH */
+
 (function() {
   window.acrolinxStorage = {
     getItem: function(key) {
