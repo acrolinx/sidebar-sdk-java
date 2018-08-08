@@ -1,4 +1,4 @@
-/* Copyright (c) 2016-2018 Acrolinx GmbH */
+/* Copyright (c) 2016-present Acrolinx GmbH */
 
 /**
  * (c) 2015 Acrolinx GmbH. All rights reserved.
