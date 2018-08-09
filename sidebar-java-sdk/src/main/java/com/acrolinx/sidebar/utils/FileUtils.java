@@ -1,6 +1,5 @@
 /* Copyright (c) 2017-present Acrolinx GmbH */
 
-
 package com.acrolinx.sidebar.utils;
 
 import java.util.regex.Matcher;

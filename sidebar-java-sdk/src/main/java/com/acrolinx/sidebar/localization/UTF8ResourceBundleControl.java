@@ -1,6 +1,5 @@
 /* Copyright (c) 2017-present Acrolinx GmbH */
 
-
 package com.acrolinx.sidebar.localization;
 
 import java.io.IOException;

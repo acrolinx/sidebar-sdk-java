@@ -1,6 +1,5 @@
 /* Copyright (c) 2017-present Acrolinx GmbH */
 
-
 package com.acrolinx.sidebar.pojo.document;
 
 import org.junit.Assert;
