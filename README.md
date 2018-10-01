@@ -1,131 +1,94 @@
 # Acrolinx Sidebar Java SDK
 
-Acrolinx Sidebar Java SDK
+This is a library for integrating the [Acrolinx](http://www.acrolinx.com/) Sidebar
+into different Java UI framework-based applications (JFX, Swing, and SWT).
 
-This SDK contains code to build integration for Java FX, Swing, or SWT-based clients.
+You can use the Maven artifact [`com.acrolinx.client:sidebar-sdk`](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20)
+to integrate Acrolinx in your Java application.
+
+See: [Getting Started with Custom Integrations](https://support.acrolinx.com/hc/en-us/articles/205687652-Getting-Started-with-Custom-Integrations)
+
+## Live Demo
+
+[Acrolinx Sidebar Java Live Demo](https://github.com/acrolinx/acrolinx-sidebar-demo-java#live-demo)
 
 ## The Acrolinx Sidebar
 
-To use the Acrolinx Sidebar, you need to have an Acrolinx Server set up.
-The Acrolinx Sidebar comes in two flavors.
-
-There's a publicly available Acrolinx Sidebar that will enable you to always use the newest
-version of the Acrolinx Sidebar.
-To use it, you need an Acrolinx Server running via https and with CORS enabled.
-Check the [Acrolinx Support](https://support.acrolinx.com/hc/en-us/articles/203851132-Setting-up-the-Acrolinx-Sidebar#Enable_Cross_Origin_Resource_Sharing_CORS_on_your_Core_Server_)
-for more information on how to enable CORS on your Acrolinx Server.
-
-Acrolinx Server 4.7 and later come with the Acrolinx Sidebar installed.
-The Acrolinx Sidebar is then available under
-`http(s)://<AcrolinxServerHostName>:port/sidebar/v14/index.html`.
-
-For more information on Acrolinx check [www.acrolinx.com](https://www.acrolinx.com).
+The Acrolinx Sidebar is designed to show up beside the window where you edit your content.
+You use it for checking, reviewing, and correcting your content.
+To get an impression what the Sidebar looks like in existing integrations, have a look at
+[Get Started With the Sidebar](https://support.acrolinx.com/hc/en-us/articles/205697451-Get-Started-With-the-Sidebar).
 
 ## Prerequisites
 
-Please contact Acrolinx SDK support (sdk-support@acrolinx.com) for consulting and getting your integration certified.
+Please contact [Acrolinx SDK support](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/sdk-support.md)
+for consulting and getting your integration certified.
+This sample works with a test license on an internal Acrolinx URL.
+This license is only meant for demonstration and developing purposes.
+Once you finished your integration, you'll have to get a license for your integration from Acrolinx.
+  
+Acrolinx offers different other SDKs, and examples for developing integrations.
 
-Before you start developing your own integration, you might benefit from looking into the
-[demo project for java based acrolinx integrations on GitHub](https://github.com/acrolinx/acrolinx-sidebar-demo-java).
+Before you start developing your own integration, you might benefit from looking into:
 
-## How to Build Your Own Integration
+* [Getting Started with Custom Integrations](https://support.acrolinx.com/hc/en-us/articles/205687652-Getting-Started-with-Custom-Integrations),
+* the [Guidance for the Development of Acrolinx Integrations](https://github.com/acrolinx/acrolinx-coding-guidance),
+* the [Acrolinx SDKs](https://github.com/acrolinx?q=sdk), and
+* the [Acrolinx Demo Projects](https://github.com/acrolinx?q=demo).
 
-This Java SDK provides you ready build UI-Elements to display the Acrolinx Sidebar.
-It contains sidebar interfaces for JFX, Swing, and SWT-based Java clients.
-In addition, the Acrolinx Start Page is included.
+## Getting Started
 
-![Java SDK parts overview](/img/SketchJavaSDKComponents.png)
+### Build the Project
 
-You'll need to provide a mechanism, that allows the Acrolinx Sidebar to retrieve the text to be checked and to select
-and replace specific parts of the text in the editor.
+### Using the SDK
 
-Before you start check the [sidebar demo for java on GitHub](https://github.com/acrolinx/acrolinx-sidebar-demo-java).
+1. Just reference the Maven artifact `com.acrolinx.client:sidebar-sdk` that is available on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
+   Have a look at the [`build.gradle`](build.gradle) file if you use Gradle.
+2. Implement:
+    + `AcrolinxIntegrationInterface`, and the
+    + `InputAdapterInterface`.
+    + The `AcrolinxSidebarInitParameterBuilder` helps you initialize the Acrolinx Sidebar.
+3. Check out the [Sidebar SDK Java API Reference](https://acrolinx.github.io/sidebar-sdk-java/) for more details.
 
-Check the [API Documentation](https://acrolinx.github.io/sidebar-sdk-java/).
+![Architecture and Interfaces](img/ArchitectureInterfaces.png)
 
-The sidebar sdk is available on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
+## SDK Features
 
-Please make yourself also familiar with the [acrolinx coding guidance](https://github.com/acrolinx/acrolinx-coding-guidance).
+1. Support for UI-frameworks:
+    + JavaFx
+    + Swing
+    + SWT
+2. `LookupRangesDiff` - Provides [lookup](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-lookup.md)
+  functionality.
+3. **Start page**: Provides interactive way to sign in to Acrolinx with built-in error handling.
+4. Provides [logging](https://github.com/acrolinx/sidebar-sdk-dotnet/blob/master/Acrolinx.Sidebar/Util/Logging/Logger.cs).
+   Logging can be activated via:
+    ```java
+    LoggingUtils.setupLogging("AcrolinxDemoClientJFX");
+    ```
+5. Provides an `AcrolinxStorage` that can be used to persist Sidebar settings in the data store of the host editors.
+   If not set, the SDK will default to the browsers LocalStorage.
 
-To build your own integration with a JFX, Swing or SWT-based editor, you'll need to implement the `AcrolinxIntegration
-Interface` and the `InputAdapterInterface`. This will enable the Acrolinx Sidebar to interact with your editor.
+## SDK Architecture
 
-![Acrolinx Integration interacting with Acrolinx Sidebar and Acrolinx Server](/img/ArchitectureInterfaces.png)
+![Java SDK Overview](img/SketchJavaSDKComponents.png)
 
-When implementing `AcrolinxIntegrationInterface`, make sure to make yourself familiar with `AcrolinxSidebarInitParameterBuilder`
-to initialize the Acrolinx Sidebar according to your needs.
-
-### Logging
-
-On start of the integration call:
-
-```java
-LoggingUtils.setupLogging("AcrolinxDemoClientJFX");
-```
-
-This will setup the logging according to the [acrolinx coding guidance](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/logging.md)
-
-### Lookup
-
-The text in the editor might have been changed after it has been checked. Therefore the ranges for selection and replacing
-as given by the sidebar could appear to not be correct. One approach to recalculate those offsets is implemented within the JAVA SDK,
-which uses the diff-match-patch library.
-
-Refer to class ``LookupRangesDiff``.
-
-More information about how to implement a good lookup algorithm can be found in [acrolinx coding guidance](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-lookup.md).
-
-### Local Storage
-
-The Acrolinx sidebar by default stores information in the local storage of browser that it's running in.
-Some embedded browsers might not support local storage. Therefore you can implement the `AcrolinxStorage` interface.
-
-## Enable CORS
-
-If you want to use an Acrolinx Sidebar with an Acrolinx Server that run on different domains, you'll have to enable
-[CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing). That can be done by setting the following System
-property in your Java Code:
-
-```java
-System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
-```
-
-Or you can set the following VM Option when running Java:
-
-```bash
--Dsun.net.http.allowRestrictedHeaders=true
-```
-
-Also you'll need have CORS enabled on your Acrolinx Server.
-For help, check the Acrolinx Support on [how to enable CORS](https://support.acrolinx.com/hc/en-us/articles/203851132#task_izv_qn4_fv).
-
-## Server Dependency
-
-To use the Acrolinx Sidebar, you need to connect to an Acrolinx server. If you've already received your Acrolinx server address,
-you're good to go. If your company has installed an Acrolinx server, but you don't have an address yet, ask your server administrator first.
-
-
-## Information for Internal Developers on This Project
+## Instructions for Contributing Code
 
 ### Branches and Releasing
 
-Please add new features using the develop branch. If your build on Travis was successful, a new snapshot version will
-be automatically available via maven snapshot repository ("https://oss.sonatype.org/content/repositories/snapshots/").
-
-Once you tested your new features, merge your changes into the master branch and remove the snapshot from the currentVersion
-property in the gradle.properties file.
-
-Commit and push your changes. If all goes right, you'll can download the release version from the oss staging repository (https://oss.sonatype.org/content/groups/staging).
-
-Once you're sure and have tested, that everything works fine, ask your technical lead to release the artifact to maven central.
-
-Make sure to merge the stable master branch into the releases branch and create a version tag there.
-
-Once the release branch is pushed to GitHub, the api documentation on the gh-pages will automatically updated by TravisCI.
+1. Please add new features using the develop branch, or submit a pull request.
+    If your build on Travis was successful, a new snapshot version will be automatically available via [maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
+2. Once you tested your new features, merge your changes into the master branch.
+   Remove the snapshot from the currentVersion property in the `gradle.properties` file.
+3. Commit and push your changes. If all goes right, you can download the release version from the [oss staging repository](https://oss.sonatype.org/content/groups/staging/com/acrolinx/client/sidebar-sdk/).
+4. Once you're sure and have tested, that everything works fine, release the artifact to maven central.
+5. Make sure to merge the stable master branch into the releases branch and create a version tag there.
+6. Once the release branch is pushed to GitHub, TravisCI will automatically update the api documentation on the GitHub Pages.
 
 ### Dependency Updates
 
-To check if the SDK uses any outdated libraries run:
+To check if the SDK uses any outdated libraries, run:
 
 ```bash
 ./gradlew dependencyUpdates -Drevision=release
@@ -134,7 +97,7 @@ To check if the SDK uses any outdated libraries run:
 
 This will generate a report in the projects' build folder. Check the report to find any outdated libraries.
 
-To update the dependency libraries, run the following gradle task. This will update to the latest stable release version
+To update the dependency libraries, run the following Gradle task. This will update to the latest stable release version
 and exclude any alpha or beta versions.
 
 ```bash
@@ -149,18 +112,26 @@ and exclude any alpha or beta versions.
 
 ```
 
-This generates an html report in the projects's build folder and lists all vulnerable dependencies and where they're
-referenced found by the [dependency-check-gradle](https://github.com/jeremylong/dependency-check-gradle) plugin.
+This generates an html report in the projects's build folder. It lists all vulnerable dependencies and where they're
+referenced found by the [Dependency-Check-Gradle](https://github.com/jeremylong/dependency-check-gradle) plugin.
+
+## References
+
+* The [Sidebar DEMO Java](https://github.com/acrolinx/acrolinx-sidebar-demo-java) is built based on this SDK.
+* The Sidebar SDKs are based on the [Acrolinx Sidebar Interface](https://acrolinx.github.io/sidebar-sdk-js/).
+* This project depends on (unmodified) Logback for logging.
+  Logback is Copyright (C) 1999-2017, QOS.ch and licensed under the EPL-1.0. You can get the source from [github.com/qos-ch/logback](https://github.com/qos-ch/logback).
+  The Logback website is at [logback.qos.ch/license.html](https://logback.qos.ch/license.html)
 
 ## License
 
-Copyright 2016-2018 Acrolinx GmbH
+Copyright 2016-present Acrolinx GmbH
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+You may obtain a copy of the License at:
 
-http://www.apache.org/licenses/LICENSE-2.0
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -168,8 +139,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-For more information visit: http://www.acrolinx.com
-
-### Dependencies
-
-This project depends on (unmodified) Logback for logging. Logback is Copyright (C) 1999-2017, QOS.ch and licensed under the EPL-1.0. You can get the source from https://github.com/qos-ch/logback. The Logback website is at https://logback.qos.ch/license.html
+For more information visit: [http://www.acrolinx.com](http://www.acrolinx.com)
