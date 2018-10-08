@@ -20,7 +20,6 @@ spotless {
 	format 'misc', {
 		target rootProject.fileTree('.') {
 			include '**/*.gradle'
-			include '**/*.md'
 			include '**/*.gitignore'
 			'***//*.sh'
 			exclude ("sidebar-java-sdk/node_modules")
