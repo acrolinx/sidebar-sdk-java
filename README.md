@@ -1,6 +1,6 @@
 # Acrolinx Sidebar Java SDK
 
-This is a library for integrating the [Acrolinx](http://www.acrolinx.com/) Sidebar
+This is a library for integrating the [Acrolinx](https://www.acrolinx.com/) Sidebar
 into different Java UI framework-based applications (JFX, Swing, and SWT).
 
 You can use the Maven artifact [`com.acrolinx.client:sidebar-sdk`](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20)
@@ -139,4 +139,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-For more information visit: [http://www.acrolinx.com](http://www.acrolinx.com)
+For more information visit: [https://www.acrolinx.com](https://www.acrolinx.com)
