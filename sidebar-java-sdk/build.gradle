@@ -195,7 +195,7 @@ def getPomSignature = {
 }
 
 def devId = "Acrolinx Open Source"
-def devName = "Franziska Preiß"
+def devName = "Acrolinx"
 def devEmail = "opensource@acrolinx.com"
 
 
