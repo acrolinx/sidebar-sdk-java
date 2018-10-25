@@ -1,3 +1,5 @@
+/* Copyright (c) 2017-present Acrolinx GmbH */
+
 (function(){
 
 window.java = {

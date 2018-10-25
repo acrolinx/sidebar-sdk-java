@@ -10,10 +10,10 @@ def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
 def isMasterBranch = false
 
 dependencyCheck {
-	cveValidForHours=1
-	format='HTML'
-	failBuildOnCVSS='1'
-	scanConfigurations=['compile', 'runtime']
+	cveValidForHours = 1
+	format = 'HTML'
+	failBuildOnCVSS = '1'
+	scanConfigurations = ['compile', 'runtime']
 }
 
 task getIsMasterBranch {
@@ -22,10 +22,10 @@ task getIsMasterBranch {
 	proc.in.eachLine { line -> branch = line }
 	proc.err.eachLine { line -> println line }
 	proc.waitFor()
-	if(branch.startsWith('master')) {
-		isMasterBranch=true
+	if (branch.startsWith('master')) {
+		isMasterBranch = true
 	} else {
-		isMasterBranch=false
+		isMasterBranch = false
 	}
 }
 
@@ -44,7 +44,7 @@ task createVersionPropertiesFile {
 	}
 }
 
-jar{
+jar {
 	archiveName = "${artifactName}-${fullVersion}.jar"
 	manifest {
 		attributes(
@@ -98,7 +98,7 @@ task convertLocalizationEncoding() {
 			if (pFile.name.endsWith(".properties")) {
 				def f = pFile.getText('utf-8')
 				def pFileName = pFile.name
-				if (!pFileName.contains("_ja")){
+				if (!pFileName.contains("_ja")) {
 					def write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + pFileName)
 					write.createNewFile();
 					write.write(f, 'ISO-8859-1')
@@ -143,82 +143,19 @@ task sourceJar(type: Jar) {
 	from project.sourceSets.main.allSource
 }
 
-ext {
-	pomFilePath = "${project.projectDir}/build/repo/com/acrolinx/client/sidebar-sdk/${version}/sidebar-sdk-${version}.pom"
-	pomFile = file(pomFilePath)
-}
-// add configuration for pom signing
-configurations {
-	pom
-}
-
 artifacts {
 	archives jar
 	archives javadocJar
 	archives sourceJar
-	if (project.ext.pomFile.exists()) {
-		pom pomFile
-	}
-}
-
-// sign all artifacts
-task signJars (type : Sign, dependsOn: [jar, javadocJar, sourceJar]) {
-	sign configurations.archives
-}
-// sign pom
-task signPom(type: Sign) {
-	sign configurations.pom
-}
-
-// defining which tasks should be called
-if (project.ext.pomFile.exists() && isReleaseBuild) {
-	task preparePublication (dependsOn : [signJars, signPom])
-} else if (isReleaseBuild) {
-	task preparePublication (dependsOn : signJars)
-}
-
-// extract signatures and add classifier and extension to them
-def getSignatureFiles = {
-	def allFiles = project.tasks.signJars.signatureFiles.collect { it }
-	def signedSources = allFiles.find { it.name.contains('-sources') }
-	def signedJavadoc = allFiles.find { it.name.contains('-javadoc') }
-	def signedJar = (allFiles - [signedSources, signedJavadoc])[0]
-	return [
-			[archive: signedSources, classifier: 'sources', extension: 'jar.asc'],
-			[archive: signedJavadoc, classifier: 'javadoc', extension: 'jar.asc'],
-			[archive: signedJar,     classifier: null,      extension: 'jar.asc']
-	]
-}
-// extract pom signature
-def getPomSignature = {
-	return project.tasks.signPom.signatureFiles.collect{it}[0]
 }
 
 def devId = "Acrolinx Open Source"
-def devName = "Franziska Preiß"
+def devName = "Acrolinx"
 def devEmail = "opensource@acrolinx.com"
 
 
 publishing {
 	publications {
-		if (isReleaseBuild){
-			gpgJars(MavenPublication) {
-				getSignatureFiles().each {signature ->
-					artifact (signature.archive) {
-						classifier = signature.classifier
-						extension  = signature.extension
-					}
-				}
-			}
-		}
-		if (project.ext.pomFile.exists() && isReleaseBuild) {
-			gpgPom(MavenPublication) {
-				artifact (getPomSignature()) {
-					classifier = null
-					extension  = 'pom.asc'
-				}
-			}
-		}
 		jar(MavenPublication) {
 			from components.java
 			artifact sourceJar
@@ -247,8 +184,8 @@ publishing {
 							distribution 'repo'
 						}
 					}
-					if (isReleaseBuild){
-					developers {
+					if (isReleaseBuild) {
+						developers {
 							developer {
 								id devId
 								name devName
@@ -264,17 +201,15 @@ publishing {
 	}
 	repositories {
 		maven {
-		if (isReleaseBuild && project.ext.pomFile.exists()) {
-			url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-			credentials {
-				username = sonatypeUsername
-				password = sonatypePassword
-			}
-		}
-		else if(sonatypeUsername == null || (isReleaseBuild && !project.ext.pomFile.exists())){
+			if (isReleaseBuild) {
+				url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+				credentials {
+					username = sonatypeUsername
+					password = sonatypePassword
+				}
+			} else if (sonatypeUsername == null) {
 				url "$buildDir/repo"
-		}
-		else if(!isReleaseBuild) {
+			} else if (!isReleaseBuild) {
 				url "https://oss.sonatype.org/content/repositories/snapshots/"
 				credentials {
 					username = sonatypeUsername
@@ -285,20 +220,27 @@ publishing {
 	}
 }
 
+
+signing {
+	required { isReleaseBuild }
+	sign publishing.publications.jar
+}
+
+
 task publishDocsAndCreateGithubReleaseTag {
-	doLast{
+	doLast {
 		println 'publishDocsAndCreateGithubReleaseTag'
-		if(isReleaseBuild){
+		if (isReleaseBuild) {
 			println 'starting push to github task'
-		def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
-		if (!hasOldReleaseVersion) {
-			println 'is new release version'
-			grgit.add(patterns: ['docs', 'dependency-licenses'])
-			grgit.commit(message: "Release version ${project.version}")
-			grgit.push(force: true)
-			grgit.tag.add(name: "release-${project.version}", message: "Releasing ${project.version}")
-			grgit.push(tags: true)
-		}
+			def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
+			if (!hasOldReleaseVersion) {
+				println 'is new release version'
+				grgit.add(patterns: ['docs', 'dependency-licenses'])
+				grgit.commit(message: "Release version ${project.version}")
+				grgit.push(force: true)
+				grgit.tag.add(name: "release-${project.version}", message: "Releasing ${project.version}")
+				grgit.push(tags: true)
+			}
 		}
 	}
 
@@ -309,6 +251,6 @@ task publishDocsAndCreateGithubReleaseTag {
 //noinspection GroovyAssignabilityCheck,GroovyAssignabilityCheck
 processResources.dependsOn copyServerSelectorRessources
 processResources.dependsOn convertLocalizationEncoding
-processResources.dependsOn  generateThirdPartyLibraryReport
+processResources.dependsOn generateThirdPartyLibraryReport
 jar.dependsOn createVersionPropertiesFile
 check.dependsOn dependencyCheckAnalyze

@@ -1,3 +1,4 @@
+/* Copyright (c) 2017-present Acrolinx GmbH */
 
 package com.acrolinx.sidebar.utils;
 
@@ -26,6 +27,22 @@ public class SidebarUtilsTest
     {
         boolean validURL = SidebarUtils.isValidURL("https://us-demo.acrolinx.cloud:443/dashboard.html");
         assertTrue(validURL);
+    }
+
+    @Test
+    public void isValidURLTEST2() throws Exception
+    {
+        boolean validURL = SidebarUtils.isValidURL(
+                "https://acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html");
+        assertTrue(validURL);
+    }
+
+    @Test
+    public void isNOTValidURLTEST() throws Exception
+    {
+        boolean validURL = SidebarUtils.isValidURL(
+                "https:/acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html");
+        assertTrue(!validURL);
     }
 
 }

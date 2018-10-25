@@ -25,7 +25,7 @@ PROJECT_VERSION=$(getProperty "currentVersion")
 echo "Current Version: $PROJECT_VERSION"
 
 if [ "$STAGE" = "snapshot" ]; then
-    if ./gradlew pP publish; then
+    if ./gradlew publish; then
         exit 0
     else
         exit 1
@@ -34,21 +34,8 @@ fi
 
 if [ "$STAGE" = "release" ]; then
         echo "Releasing..."
-        if ./gradlew pP publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
-            echo "Done with first publish step."
-            if is_not_substring "SNAPSHOT" "$PROJECT_VERSION"; then
-                echo "ready for release!"
-                if ./gradlew pP publish closeRepository -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
-                    echo "Done with release"
-                    exit 0
-                else
-                    echo "Failed to release"
-                    exit 1
-                fi
-            else
-                echo "Published SNAPHSOT Version to Maven REPO"
-                exit 0
-            fi
+        if ./gradlew publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
+            echo "Done with publish step."
         else
            exit 1
         fi

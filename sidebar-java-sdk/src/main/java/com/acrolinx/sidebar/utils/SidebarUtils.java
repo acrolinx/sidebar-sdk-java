@@ -1,6 +1,4 @@
-/*
- * Copyright (c) 2016-2017 Acrolinx GmbH
- */
+/* Copyright (c) 2016-present Acrolinx GmbH */
 
 package com.acrolinx.sidebar.utils;
 
@@ -63,37 +61,17 @@ public class SidebarUtils
      */
     public static boolean isValidURL(final String url)
     {
-        final UrlValidator urlValidator = new UrlValidator(UrlValidator.ALLOW_LOCAL_URLS);
-        boolean valid = urlValidator.isValid(url);
-        // workaround for data pipe server
-        if (!valid) {
-            final String tldString = getTldString(url);
-            if ((tldString != null) && (tldString.length() > 0)) {
-                final boolean validTld = DomainValidator.getInstance().isValidTld(tldString);
-                if (!validTld) {
-                    if (tldString.equals("cloud")) {
-                        final String replace = url.replace(".cloud", ".de");
-                        valid = urlValidator.isValid(replace);
-                    }
-                }
-            }
-        }
-        return valid;
-    }
-
-    private static String getTldString(final String urlString)
-    {
-        String tldString = null;
-        if ((urlString != null) && (urlString.length() > 0)) {
+        if ((url != null) && (url.length() > 0)) {
+            boolean matches = url.matches("^(https?)://.*$");
             try {
-                final URL url = new URL(urlString);
-                final String[] domainNameParts = url.getHost().split("\\.");
-                tldString = domainNameParts[domainNameParts.length - 1];
+                new URL(url);
+                return matches;
             } catch (final MalformedURLException e) {
                 logger.error("Non valid URL", e);
+                return false;
             }
         }
-        return tldString;
+        return false;
     }
 
     private static void openURIInDefaultBrowser(final URI url)
@@ -201,7 +179,7 @@ public class SidebarUtils
     }
 
     /**
-     * Test if a sidebar is available for the given server address
+     * Test if a sidebar is available for the given server address.
      *
      * @param serverAddress
      * @return true if sidebar is available
