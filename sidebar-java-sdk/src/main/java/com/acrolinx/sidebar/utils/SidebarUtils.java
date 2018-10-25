@@ -179,7 +179,7 @@ public class SidebarUtils
     }
 
     /**
-     * Test if a sidebar is available for the given server address
+     * Test if a sidebar is available for the given server address.
      *
      * @param serverAddress
      * @return true if sidebar is available
