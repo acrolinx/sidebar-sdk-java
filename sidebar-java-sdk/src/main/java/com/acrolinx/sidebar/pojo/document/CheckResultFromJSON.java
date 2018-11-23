@@ -2,7 +2,8 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +35,13 @@ public class CheckResultFromJSON
         return new CheckResult(checkedPart.getAsCheckResult(), getEmbedCheckInformation(), inputFormat);
     }
 
-    private HashMap<String, String> getEmbedCheckInformation()
+    private Map<String, String> getEmbedCheckInformation()
     {
-        HashMap<String, String> map = new HashMap<>();
+        final Map<String, String> map = new LinkedHashMap<>();
         if (embedCheckInformation == null) {
             return null;
         }
-        for (CheckInformationKeyValuePairFromJSON checkInformationKeyValuePairFromJSON : embedCheckInformation) {
+        for (final CheckInformationKeyValuePairFromJSON checkInformationKeyValuePairFromJSON : embedCheckInformation) {
             map.put(checkInformationKeyValuePairFromJSON.getKey(), checkInformationKeyValuePairFromJSON.getValue());
         }
         return map;
