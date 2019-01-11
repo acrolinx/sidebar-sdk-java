@@ -36,3 +36,5 @@ sidebar-java-sdk-build/versionJavaSDK.properties
 obj/
 
 **/.settings
+coverage
+.nyc_output

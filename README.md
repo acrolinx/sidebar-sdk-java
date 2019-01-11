@@ -1,5 +1,9 @@
 # Acrolinx Sidebar Java SDK
 
+| Master                                                                                                                                | Develop                                                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [![Build Status](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=master)](https://travis-ci.org/acrolinx/sidebar-sdk-java) | [![Build Status](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=develop)](https://travis-ci.org/acrolinx/sidebar-sdk-java) |
+
 This is a library for integrating the [Acrolinx](https://www.acrolinx.com/) Sidebar
 into different Java UI framework-based applications (JFX, Swing, and SWT).
 
@@ -78,13 +82,13 @@ Before you start developing your own integration, you might benefit from looking
 ### Branches and Releasing
 
 1. Please add new features using the develop branch, or submit a pull request.
-    If your build on Travis was successful, a new snapshot version will be automatically available via [maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
+    If your build on Travis was successful, a new snapshot version will be automatically available via [Maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
 2. Once you tested your new features, merge your changes into the master branch.
    Remove the snapshot from the currentVersion property in the `gradle.properties` file.
 3. Commit and push your changes. If all goes right, you can download the release version from the [oss staging repository](https://oss.sonatype.org/content/groups/staging/com/acrolinx/client/sidebar-sdk/).
-4. Once you're sure and have tested, that everything works fine, release the artifact to maven central.
+4. Once you're sure and have tested, that everything works fine, release the artifact to Maven central.
 5. Make sure to merge the stable master branch into the releases branch and create a version tag there.
-6. Once the release branch is pushed to GitHub, TravisCI will automatically update the api documentation on the GitHub Pages.
+6. Once the release branch is pushed to GitHub, TravisCI will automatically update the API documentation on the GitHub Pages.
 
 ### Dependency Updates
 
@@ -112,7 +116,7 @@ and exclude any alpha or beta versions.
 
 ```
 
-This generates an html report in the projects's build folder. It lists all vulnerable dependencies and where they're
+This generates an HTML report in the projects build folder. It lists all vulnerable dependencies and where they're
 referenced found by the [Dependency-Check-Gradle](https://github.com/jeremylong/dependency-check-gradle) plugin.
 
 ## References

@@ -2,7 +2,8 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.Assert;
@@ -14,14 +15,14 @@ public class CheckResultTest
     @Test
     public void testConvertToProcessingInstructionXML()
     {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("TimeStarted", "=2017-08-09T10:39:39Z");
+        final Map<String, String> map = new LinkedHashMap<>();
         map.put("score", "67");
-        map.put("status", "yellow");
+        map.put("TimeStarted", "=2017-08-09T10:39:39Z");
         map.put("scorecardURL", "https://test-ssl.acrolinx.com/output/en/something_report.html");
-        String inputFormat = "xml";
-        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
-        String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
+        map.put("status", "yellow");
+        final String inputFormat = "xml";
+        final CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
+        final String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
         Assert.assertTrue(embedCheckDataAsProcessingInstruction.equalsIgnoreCase(
                 "<?acrolinxCheckData score=\"67\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" status=\"yellow\" ?>"));
     }
@@ -29,39 +30,39 @@ public class CheckResultTest
     @Test
     public void testConvertToProcessingInstructionHTML()
     {
-        HashMap<String, String> map = new HashMap<>();
+        final Map<String, String> map = new LinkedHashMap<>();
         map.put("TimeStarted", "=2017-08-09T10:39:39Z");
-        map.put("score", "67");
-        map.put("status", "yellow");
         map.put("scorecardURL", "https://test-ssl.acrolinx.com/output/en/something_report.html");
-        String inputFormat = "html";
-        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
-        String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
+        map.put("status", "yellow");
+        map.put("score", "67");
+        final String inputFormat = "html";
+        final CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
+        final String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
         Assert.assertTrue(embedCheckDataAsProcessingInstruction.equalsIgnoreCase(
-                "<meta name=\"acrolinxCheckData\" score=\"67\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" status=\"yellow\" />"));
+                "<meta name=\"acrolinxCheckData\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" status=\"yellow\" score=\"67\" />"));
     }
 
     @Test
     public void testConvertToProcessingInstructionMarkdown()
     {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("TimeStarted", "=2017-08-09T10:39:39Z");
+        final Map<String, String> map = new LinkedHashMap<>();
         map.put("score", "67");
         map.put("status", "yellow");
+        map.put("TimeStarted", "=2017-08-09T10:39:39Z");
         map.put("scorecardURL", "https://test-ssl.acrolinx.com/output/en/something_report.html");
-        String inputFormat = "markdown";
-        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
-        String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
+        final String inputFormat = "markdown";
+        final CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
+        final String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
         System.out.println(embedCheckDataAsProcessingInstruction);
         Assert.assertTrue(embedCheckDataAsProcessingInstruction.equalsIgnoreCase(
-                "<!-- acrolinxCheckData score=\"67\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" status=\"yellow\" -->"));
+                "<!-- acrolinxCheckData score=\"67\" status=\"yellow\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" -->"));
     }
 
     @Test
     public void testConvertToProcessingInstructionWhenCheckDataIsNull()
     {
-        CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), null, null);
-        Optional<String> embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString();
+        final CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), null, null);
+        final Optional<String> embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString();
         Assert.assertFalse(embedCheckDataAsProcessingInstruction.isPresent());
     }
 }
