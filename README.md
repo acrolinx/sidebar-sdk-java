@@ -46,7 +46,8 @@ Before you start developing your own integration, you might benefit from looking
 
 ### Using the SDK
 
-1. Just reference the Maven artifact `com.acrolinx.client:sidebar-sdk` that is available on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
+1. Just reference the Maven artifact `com.acrolinx.client:sidebar-sdk` that is available on
+   [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
    Have a look at the [`build.gradle`](build.gradle) file if you use Gradle.
 2. Implement:
     + `AcrolinxIntegrationInterface`, and the
@@ -67,9 +68,11 @@ Before you start developing your own integration, you might benefit from looking
 3. **Start page**: Provides interactive way to sign in to Acrolinx with built-in error handling.
 4. Provides [logging](https://github.com/acrolinx/sidebar-sdk-dotnet/blob/master/Acrolinx.Sidebar/Util/Logging/Logger.cs).
    Logging can be activated via:
+
     ```java
     LoggingUtils.setupLogging("AcrolinxDemoClientJFX");
     ```
+
 5. Provides an `AcrolinxStorage` that can be used to persist Sidebar settings in the data store of the host editors.
    If not set, the SDK will default to the browsers LocalStorage.
 
@@ -91,18 +94,20 @@ Before you start developing your own integration, you might benefit from looking
    ```
 
     If your build on Travis was successful, a new snapshot version will be automatically available via [Maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
-2. Once you tested your new features, merge your changes into the master branch.
+2. Once you tested your new features:
    1. Remove the snapshot from the currentVersion property in the `gradle.properties` file.
 
-    ```bash
-   git checkout master
-   git merge origin/develop
-   # maybe git rebase
-   git push
-    ```
+   2. Merge your changes into the master branch:
+
+      ```bash
+      git checkout master
+      git merge origin/develop
+      # maybe git rebase
+      git push
+      ```
 
 3. Commit and push your changes. If all goes right, you can download the release version from the [oss staging repository](https://oss.sonatype.org/content/groups/staging/com/acrolinx/client/sidebar-sdk/).
-4. Once you're sure and have tested, that everything works fine, release the artifact to Maven central.
+4. Once you're sure and have tested, that everything works fine, release the artifact to [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
    Make sure to merge the stable master branch into the releases branch and create a version tag there.
 
    ```bash
@@ -113,7 +118,7 @@ Before you start developing your own integration, you might benefit from looking
    git push --follow-tags
     ```
 
-5. Once the release branch is pushed to GitHub, TravisCI will automatically update the API documentation on the GitHub Pages.
+5. Once the release branch is pushed to GitHub, TravisCI will automatically update the [API documentation on the GitHub Pages](https://acrolinx.github.io/sidebar-sdk-java/).
 
 ### Dependency Updates
 
@@ -144,6 +149,7 @@ referenced found by the [Dependency-Check-Gradle](https://github.com/jeremylong/
 ## References
 
 * The [Sidebar DEMO Java](https://github.com/acrolinx/acrolinx-sidebar-demo-java) is built based on this SDK.
+* The API documentation is published on the [GitHub Pages](https://acrolinx.github.io/sidebar-sdk-java/).
 * The Sidebar SDKs are based on the [Acrolinx Sidebar Interface](https://acrolinx.github.io/sidebar-sdk-js/).
 * This project depends on (unmodified) Logback for logging.
   Logback is Copyright (C) 1999-2017, QOS.ch and licensed under the EPL-1.0. You can get the source from [github.com/qos-ch/logback](https://github.com/qos-ch/logback).
