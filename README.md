@@ -1,8 +1,8 @@
 # Acrolinx Sidebar Java SDK
 
-| Master                                                                                                                                | Develop                                                                                                                                |
-| ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| [![Build Status](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=master)](https://travis-ci.org/acrolinx/sidebar-sdk-java) | [![Build Status](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=develop)](https://travis-ci.org/acrolinx/sidebar-sdk-java) |
+| Master | Develop | Releases |
+| ------ | ------- |-- |
+| [![Build Status Master](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=master)](https://travis-ci.org/acrolinx/sidebar-sdk-java) | [![Build Status Develop](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=develop)](https://travis-ci.org/acrolinx/sidebar-sdk-java) | [![Build Status Releases](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=releases)](https://travis-ci.org/acrolinx/sidebar-sdk-java) |
 
 This is a library for integrating the [Acrolinx](https://www.acrolinx.com/) Sidebar
 into different Java UI framework-based applications (JFX, Swing, and SWT).
@@ -82,13 +82,38 @@ Before you start developing your own integration, you might benefit from looking
 ### Branches and Releasing
 
 1. Please add new features using the develop branch, or submit a pull request.
+
+   ```bash
+   git checkout develop
+   # make your changes
+   git commit
+   git push
+   ```
+
     If your build on Travis was successful, a new snapshot version will be automatically available via [Maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
 2. Once you tested your new features, merge your changes into the master branch.
-   Remove the snapshot from the currentVersion property in the `gradle.properties` file.
+   1. Remove the snapshot from the currentVersion property in the `gradle.properties` file.
+
+    ```bash
+   git checkout master
+   git merge origin/develop
+   # maybe git rebase
+   git push
+    ```
+
 3. Commit and push your changes. If all goes right, you can download the release version from the [oss staging repository](https://oss.sonatype.org/content/groups/staging/com/acrolinx/client/sidebar-sdk/).
 4. Once you're sure and have tested, that everything works fine, release the artifact to Maven central.
-5. Make sure to merge the stable master branch into the releases branch and create a version tag there.
-6. Once the release branch is pushed to GitHub, TravisCI will automatically update the API documentation on the GitHub Pages.
+   Make sure to merge the stable master branch into the releases branch and create a version tag there.
+
+   ```bash
+   git checkout releases
+   git merge origin/master
+   # maybe git rebase
+   git tag -a "release-x.x.x" -m "release v x.x.x"
+   git push --follow-tags
+    ```
+
+5. Once the release branch is pushed to GitHub, TravisCI will automatically update the API documentation on the GitHub Pages.
 
 ### Dependency Updates
 
@@ -96,7 +121,6 @@ To check if the SDK uses any outdated libraries, run:
 
 ```bash
 ./gradlew dependencyUpdates -Drevision=release
-
 ```
 
 This will generate a report in the projects' build folder. Check the report to find any outdated libraries.
@@ -106,14 +130,12 @@ and exclude any alpha or beta versions.
 
 ```bash
 ./gradlew useLatestVersions && ./gradlew useLatestVersionsCheck
-
 ```
 
 ### Vulnerable Dependencies Check
 
 ```bash
 ./gradlew dependencyCheckAnalyze --info
-
 ```
 
 This generates an HTML report in the projects build folder. It lists all vulnerable dependencies and where they're
