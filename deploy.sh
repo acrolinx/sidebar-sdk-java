@@ -36,6 +36,11 @@ if [ "$STAGE" = "release" ]; then
         echo "Releasing..."
         if ./gradlew publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
             echo "Done with publish step."
+            echo "Closing and releasing repository"
+            if ./gradlew closeAndReleaseRepository; then
+              echo "Done releasing"
+            else
+              exit 1
         else
            exit 1
         fi
