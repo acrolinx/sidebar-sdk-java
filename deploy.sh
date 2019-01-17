@@ -41,6 +41,7 @@ if [ "$STAGE" = "release" ]; then
               echo "Done releasing"
             else
               exit 1
+            fi
         else
            exit 1
         fi
