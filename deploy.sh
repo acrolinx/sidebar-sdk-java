@@ -34,14 +34,8 @@ fi
 
 if [ "$STAGE" = "release" ]; then
         echo "Publishing release version to staging repo..."
-        if ./gradlew publishToNexus -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
+        if ./gradlew publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
             echo "Done with publish step."
-            echo "Closing repository"
-            if ./gradlew closeRepository; then
-              echo "Done closing repository. Ready for release..."
-            else
-              exit 1
-            fi
         else
            exit 1
         fi
