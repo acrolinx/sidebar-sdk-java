@@ -11,6 +11,8 @@ bin/
 gen/
 build/
 out/
+docs/
+dependency-licenses/
 
 # local configuration file (for Android sdk path, etc)
 local.properties
