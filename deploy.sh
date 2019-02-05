@@ -1,8 +1,6 @@
 #!/bin/bash
 
-STAGE=$1
-
-echo "Stage: $1"
+echo "Starting publish script"
 
 GRADLE_PROPERTIES_FILE=gradle.properties
 
@@ -24,21 +22,18 @@ getProperty()
 PROJECT_VERSION=$(getProperty "currentVersion")
 echo "Current Version: $PROJECT_VERSION"
 
-if [ "$STAGE" = "snapshot" ]; then
+if [[ "$PROJECT_VERSION" == *"SNAPSHOT"* ]]; then
     if ./gradlew publish; then
+        echo "Publishing snapshot version to snapshot repo..."
         exit 0
     else
         exit 1
     fi
-fi
-
-if [ "$STAGE" = "release" ]; then
-        echo "Publishing release version to staging repo..."
-        if ./gradlew publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
-            echo "Done with publish step."
-        else
-           exit 1
-        fi
+else
+    echo "Publishing release version to staging repo..."
+    if ./gradlew publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
+        echo "Done with publish step."
     else
         exit 1
+    fi
 fi

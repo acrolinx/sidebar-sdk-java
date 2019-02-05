@@ -25,7 +25,6 @@ buildscript {
 		classpath 'org.owasp:dependency-check-gradle:3.2.1'
 		classpath "com.jaredsburrows:gradle-license-plugin:0.8.41"
 		classpath "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.14.0"
-		classpath "de.marcphilipp.gradle:nexus-publish-plugin:0.1.1"
 	}
 }
 
@@ -112,12 +111,11 @@ project(':sidebar-sdk') {
 	apply plugin: 'com.moowork.node'
 	apply plugin: 'com.diffplug.gradle.swt.nativedeps'
 	apply plugin: 'maven-publish'
-	apply plugin: "de.marcphilipp.nexus-publish"
 	apply plugin: 'signing'
 	apply plugin: 'org.owasp.dependencycheck'
 	apply plugin: 'java-library'
 	apply plugin: 'com.jaredsburrows.license'
-	apply plugin: "com.github.hierynomus.license-report"
+	apply plugin: 'com.github.hierynomus.license-report'
 
 
 
