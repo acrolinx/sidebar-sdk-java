@@ -13,6 +13,7 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
 script:
+- ./gradlew build --scan -s
 - cd $TRAVIS_BUILD_DIR
 - chmod +x ./deploy.sh
 deploy:

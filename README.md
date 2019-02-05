@@ -1,8 +1,8 @@
 # Acrolinx Sidebar Java SDK
 
-| Master | Develop | Releases |
-| ------ | ------- |-- |
-| [![Build Status Master](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=master)](https://travis-ci.org/acrolinx/sidebar-sdk-java) | [![Build Status Develop](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=develop)](https://travis-ci.org/acrolinx/sidebar-sdk-java) | [![Build Status Releases](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=releases)](https://travis-ci.org/acrolinx/sidebar-sdk-java) |
+| Master |
+| ------ |
+| [![Build Status Master](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=master)](https://travis-ci.org/acrolinx/sidebar-sdk-java) |
 
 This is a library for integrating the [Acrolinx](https://www.acrolinx.com/) Sidebar
 into different Java UI framework-based applications (JFX, Swing, and SWT).
@@ -84,51 +84,29 @@ Before you start developing your own integration, you might benefit from looking
 
 ### Branches and Releasing
 
-1. Please add new features using the develop branch, or submit a pull request.
-<<<<<<< HEAD
-    If your build on Travis was successful, a new snapshot version will be automatically available via [Maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
-2. Once you tested your new features, merge your changes into the master branch.
-   Remove the snapshot from the currentVersion property in the `gradle.properties` file.
-3. Commit and push your changes. If all goes right, you can download the release version from the [oss staging repository](https://oss.sonatype.org/content/groups/staging/com/acrolinx/client/sidebar-sdk/).
-4. Once you're sure and have tested, that everything works fine, release the artifact to Maven central.
-5. Make sure to merge the stable master branch into the releases branch and create a version tag there.
-6. Once the release branch is pushed to GitHub, TravisCI will automatically update the API documentation on the GitHub Pages.
-=======
+1. Please add new features using the master branch, or submit a pull request.
 
    ```bash
-   git checkout develop
+   git checkout master
    # make your changes
    git commit
    git push
    ```
 
     If your build on Travis was successful, a new snapshot version will be automatically available via [Maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
-2. Once you tested your new features:
-   1. Remove the snapshot from the currentVersion property in the `gradle.properties` file.
 
-   2. Merge your changes into the master branch:
+2. Once you tested your new features, remove the snapshot from the currentVersion property in the `gradle.properties` file.
 
-      ```bash
-      git checkout master
-      git merge origin/develop
-      # maybe git rebase
-      git push
-      ```
+3. Commit and push your changes. If all goes right, the artifact is released to [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
+Note that it might take quite a while until the new version shows up.
 
-3. Commit and push your changes. If all goes right, you can download the release version from the [oss staging repository](https://oss.sonatype.org/content/groups/staging/com/acrolinx/client/sidebar-sdk/).
-4. Once you're sure and have tested, that everything works fine, release the artifact to [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
-   Make sure to merge the stable master branch into the releases branch and create a version tag there.
+4. Run the Gradle Task for creating a release tag and pushing it GitHub:
 
    ```bash
-   git checkout releases
-   git merge origin/master
-   # maybe git rebase
-   git tag -a "release-x.x.x" -m "release v x.x.x"
-   git push --follow-tags
-    ```
+   ./gradlew createGithubReleaseTag
+   ```
 
-5. Once the release branch is pushed to GitHub, TravisCI will automatically update the [API documentation on the GitHub Pages](https://acrolinx.github.io/sidebar-sdk-java/).
->>>>>>> origin/master
+5. Once the tag is pushed to GitHub, TravisCI will automatically update the [API documentation on the GitHub Pages](https://acrolinx.github.io/sidebar-sdk-java/).
 
 ### Dependency Updates
 

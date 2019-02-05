@@ -227,7 +227,7 @@ signing {
 }
 
 
-task publishDocsAndCreateGithubReleaseTag {
+task createGithubReleaseTag {
 	doLast {
 		println 'publishDocsAndCreateGithubReleaseTag'
 		if (isReleaseBuild) {
@@ -235,15 +235,11 @@ task publishDocsAndCreateGithubReleaseTag {
 			def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
 			if (!hasOldReleaseVersion) {
 				println 'is new release version'
-				grgit.add(patterns: ['docs', 'dependency-licenses'])
-				grgit.commit(message: "Release version ${project.version}")
-				grgit.push(force: true)
 				grgit.tag.add(name: "release-${project.version}", message: "Releasing ${project.version}")
 				grgit.push(tags: true)
 			}
 		}
 	}
-
 }
 
 //npm_install.dependsOn npm_cache_clean

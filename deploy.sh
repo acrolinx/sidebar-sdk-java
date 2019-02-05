@@ -35,7 +35,11 @@ else
     if ./gradlew publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="../secring.gpg"; then
         echo "Done with publish step."
         echo "Starting close and release step"
-        ./gradlew closeAndReleaseRepository
+        if ./gradlew closeAndReleaseRepository; then
+            echo "Done with release step."
+        else
+            exit 1
+        fi
     else
         exit 1
     fi
