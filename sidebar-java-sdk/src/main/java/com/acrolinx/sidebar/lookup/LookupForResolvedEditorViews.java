@@ -161,23 +161,49 @@ public class LookupForResolvedEditorViews
                         if (!rangeContent.equals(rangeContentEscaped) && match.getRange().getMaximumInteger()
                                 - match.getRange().getMinimumInteger() == rangeContentEscaped.length()) {
                             logger.debug("Has to find HTML entitiy " + rangeContentEscaped);
+
+                            List<DiffMatchPatch.Diff> diffsNodeforEntity = Lookup.getDiffs(
+                                    contentNode.getAsXMLFragment(), StringEscapeUtils.escapeHtml(textContent));
+                            List<OffsetAlign> offsetMappingArrayforEntity = Lookup.createOffsetMappingArray(
+                                    diffsNodeforEntity);
+
                             Optional<Integer> diffOffsetPositionStart = Lookup.getDiffOffsetPositionStart(
-                                    offsetMappingArray, range.getMinimumInteger() - 1);
+                                    offsetMappingArrayforEntity, range.getMinimumInteger() - 1);
                             diffOffsetPositionStart.ifPresent(value -> {
                                 logger.debug("Mapped to offset: " + value);
                                 logger.debug("range min in is: " + range.getMinimumInteger());
-                                logger.debug("Textcontent is: " + textContent.substring(
-                                        range.getMinimumInteger() + value, range.getMinimumInteger() + value + 1));
-                                if (textContent.substring(range.getMinimumInteger() + value,
-                                        range.getMinimumInteger() + value + 1).equals(rangeContent)) {
-                                    AbstractMatch copy = match.setRange(
-                                            new IntRange(startOffset + range.getMinimumInteger() + value,
-                                                    startOffset + range.getMinimumInteger() + value + 1));
-                                    logger.debug("Found range for html entity content by diffing content nodes: "
-                                            + match.getContent());
-                                    logger.debug("New range at: " + copy.getRange().toString());
-                                    newRanges.add(copy);
-                                    mappedRanges.add(match);
+                                if ((range.getMinimumInteger() + value) >= 0) {
+                                    String textContentUptoMatch = contentNode.getAsXMLFragment().substring(0,
+                                            range.getMinimumInteger());
+                                    logger.debug("Text Content Upto Match: " + textContentUptoMatch);
+                                    String textContentUptoMatchUnescaped = StringEscapeUtils.unescapeHtml(
+                                            textContentUptoMatch);
+                                    logger.debug("Text content upto match unescaped: " + textContentUptoMatchUnescaped);
+                                    int entityDifference = textContentUptoMatch.length()
+                                            - textContentUptoMatchUnescaped.length();
+                                    logger.debug("Entity difference is: " + entityDifference);
+                                    int offsetStart = range.getMinimumInteger() + value - entityDifference;
+                                    if (offsetStart == 0) {
+                                        String matchContent = textContent.substring(0, offsetStart + 1);
+                                        logger.debug("Match Content: " + matchContent);
+                                        logger.debug("Leading whitespaces:  " + matchContent.trim().length());
+                                        offsetStart += matchContent.length() - matchContent.trim().length();
+                                    }
+                                    logger.debug("Recalaculated start offset: " + offsetStart);
+                                    int offsetEnd = offsetStart + 1;
+                                    logger.debug("Recalaculated end offset: " + offsetEnd);
+                                    logger.debug("Text Content : "
+                                            + textContent.substring(offsetStart, offsetEnd).equals(rangeContent));
+                                    if (textContent.substring(offsetStart, offsetEnd).equals(rangeContent)) {
+                                        AbstractMatch copy = match.setRange(
+                                                new IntRange(startOffset + offsetStart, startOffset + offsetEnd));
+                                        logger.debug("Found range for html entity content by diffing content nodes: "
+                                                + match.getContent());
+                                        logger.debug("New range at: " + copy.getRange().toString());
+                                        newRanges.add(copy);
+                                        mappedRanges.add(match);
+
+                                    }
                                 }
                             });
                         } else {
