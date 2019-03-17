@@ -53,6 +53,13 @@ public class LookupForResolvedEditorViews
         }
 
         if (adjustedRangesCopy.size() > 0) {
+            // LookupMatches by finding occurrence only for matches greater than one character
+            getMatchesByOccourrence(adjustedRangesCopy, currentDocumentContent, resolvedViewContent);
+            adjustedRangesCopy = adjustedRangesCopy.stream().filter(match -> !mappedRanges.contains(match)).collect(
+                    Collectors.toList());
+        }
+
+        if (adjustedRangesCopy.size() > 0) {
             // LookupMatches by diffing editor content and document content.
             getMatchesWithCorrectedRangesIgnoreNonMatched(diffs, offsetMappingArray, adjustedRangesCopy);
             adjustedRangesCopy = adjustedRangesCopy.stream().filter(match -> !mappedRanges.contains(match)).collect(
@@ -243,4 +250,27 @@ public class LookupForResolvedEditorViews
             }
         });
     }
+
+    private void getMatchesByOccourrence(List<? extends AbstractMatch> matches, String currentDocumentContent,
+            String resolvedViewContent)
+    {
+        matches.stream().forEach(match -> {
+            if (match.getContent().length() > 1) {
+                String contentUptoMatch = currentDocumentContent.substring(0,
+                        match.getRange().getMaximumInteger()).replaceAll("</?\\w+.*?>", "");
+                int occurrence = StringUtils.countMatches(contentUptoMatch, match.getContent());
+                int ordinalIndex = StringUtils.ordinalIndexOf(resolvedViewContent, match.getContent(), occurrence);
+
+                if (ordinalIndex > 0) {
+                    AbstractMatch copy = match.setRange(
+                            new IntRange(ordinalIndex, ordinalIndex + match.getContent().length()));
+                    logger.debug("Found range for content by diffing content nodes: " + match.getContent());
+                    logger.debug("New range at: " + copy.getRange().toString());
+                    newRanges.add(copy);
+                    mappedRanges.add(match);
+                }
+            }
+        });
+    }
+
 }
