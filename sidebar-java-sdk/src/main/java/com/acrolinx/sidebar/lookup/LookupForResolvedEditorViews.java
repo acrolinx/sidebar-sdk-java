@@ -163,14 +163,19 @@ public class LookupForResolvedEditorViews
                                 textContent);
                         List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffsNode);
 
-                        String rangeContentEscaped = StringEscapeUtils.escapeHtml(rangeContent);
+                        String rangeContentEscaped = StringEscapeUtils.escapeXml(rangeContent);
+                        logger.debug("Range Content escaped:" + rangeContentEscaped);
                         // Deal with HTML entitiy
                         if (!rangeContent.equals(rangeContentEscaped) && match.getRange().getMaximumInteger()
                                 - match.getRange().getMinimumInteger() == rangeContentEscaped.length()) {
                             logger.debug("Has to find HTML entitiy " + rangeContentEscaped);
+                            String cleanedAndEscapedTextContent = StringEscapeUtils.escapeXml(textContent).replaceAll(
+                                    "\\u0000", "");
+
+                            logger.debug("Cleaned and escaped Text Content:" + cleanedAndEscapedTextContent);
 
                             List<DiffMatchPatch.Diff> diffsNodeforEntity = Lookup.getDiffs(
-                                    contentNode.getAsXMLFragment(), StringEscapeUtils.escapeHtml(textContent));
+                                    contentNode.getAsXMLFragment(), cleanedAndEscapedTextContent);
                             List<OffsetAlign> offsetMappingArrayforEntity = Lookup.createOffsetMappingArray(
                                     diffsNodeforEntity);
 
@@ -183,24 +188,31 @@ public class LookupForResolvedEditorViews
                                     String textContentUptoMatch = contentNode.getAsXMLFragment().substring(0,
                                             range.getMinimumInteger());
                                     logger.debug("Text Content Upto Match: " + textContentUptoMatch);
-                                    String textContentUptoMatchUnescaped = StringEscapeUtils.unescapeHtml(
+                                    String textContentUptoMatchUnescaped = StringEscapeUtils.unescapeXml(
                                             textContentUptoMatch);
                                     logger.debug("Text content upto match unescaped: " + textContentUptoMatchUnescaped);
                                     int entityDifference = textContentUptoMatch.length()
                                             - textContentUptoMatchUnescaped.length();
                                     logger.debug("Entity difference is: " + entityDifference);
                                     int offsetStart = range.getMinimumInteger() + value - entityDifference;
-                                    if (offsetStart == 0) {
-                                        String matchContent = textContent.substring(0, offsetStart + 1);
-                                        logger.debug("Match Content: " + matchContent);
-                                        logger.debug("Leading whitespaces:  " + matchContent.trim().length());
-                                        offsetStart += matchContent.length() - matchContent.trim().length();
+                                    String matchContent = textContent.substring(0, offsetStart + 1);
+                                    logger.debug("Match Content: " + matchContent);
+                                    logger.debug("Leading whitespaces:  " + (matchContent.length()
+                                            - matchContent.replaceAll("\\u0000", "").length()));
+                                    offsetStart += matchContent.length()
+                                            - matchContent.replaceAll("\\u0000", "").length();
+                                    int differedNullOffset = 0;
+                                    while (textContent.substring(offsetStart + differedNullOffset,
+                                            offsetStart + differedNullOffset + 1).matches("\\u0000")) {
+                                        logger.debug("Offsets are null characters");
+                                        differedNullOffset++;
                                     }
+                                    logger.debug("Differerd null characters:" + differedNullOffset);
+                                    offsetStart += differedNullOffset;
                                     logger.debug("Recalaculated start offset: " + offsetStart);
                                     int offsetEnd = offsetStart + 1;
                                     logger.debug("Recalaculated end offset: " + offsetEnd);
-                                    logger.debug("Text Content : "
-                                            + textContent.substring(offsetStart, offsetEnd).equals(rangeContent));
+                                    logger.debug("Text Content : " + textContent.substring(offsetStart, offsetEnd));
                                     if (textContent.substring(offsetStart, offsetEnd).equals(rangeContent)) {
                                         AbstractMatch copy = match.setRange(
                                                 new IntRange(startOffset + offsetStart, startOffset + offsetEnd));
