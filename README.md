@@ -21,7 +21,7 @@ See: [Getting Started with Custom Integrations](https://docs.acrolinx.com/custom
 The Acrolinx Sidebar is designed to show up beside the window where you edit your content.
 You use it for checking, reviewing, and correcting your content.
 To get an impression what the Sidebar looks like in existing integrations, have a look at
-[Get Started With the Sidebar](https://support.acrolinx.com/hc/en-us/articles/205697451-Get-Started-With-the-Sidebar).
+[Get Started With the Sidebar](https://docs.acrolinx.com/coreplatform/latest/en/the-sidebar/get-started-with-the-sidebar).
 
 ## Prerequisites
 
