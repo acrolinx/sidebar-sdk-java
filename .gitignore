@@ -14,6 +14,8 @@ out/
 docs/
 dependency-licenses/
 node_modules/
+server-selector
+localization_iso-8859-1
 
 # local configuration file (for Android sdk path, etc)
 local.properties
@@ -33,6 +35,8 @@ versionJavaSDK.properties
 *.iws
 .idea
 .gradle
+
+workspace
 
 
 #NDK
