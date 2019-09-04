@@ -13,10 +13,11 @@ build/
 out/
 docs/
 dependency-licenses/
+node_modules/
 
 # local configuration file (for Android sdk path, etc)
 local.properties
-sidebar-java-sdk-build/versionJavaSDK.properties
+versionJavaSDK.properties
 
 # OSX files
 .DS_Store

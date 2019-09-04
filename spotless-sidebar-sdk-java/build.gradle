@@ -22,9 +22,9 @@ spotless {
 			include '**/*.gradle'
 			include '**/*.gitignore'
 			'***//*.sh'
-			exclude ("sidebar-java-sdk/node_modules")
+			exclude ("node_modules")
+			exclude ("spotless-sdk-java")
 		}
-
 		indentWithTabs()
 		trimTrailingWhitespace()
 		endWithNewline()
