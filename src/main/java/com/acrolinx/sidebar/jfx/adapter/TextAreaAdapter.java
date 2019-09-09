@@ -13,6 +13,7 @@ import com.acrolinx.sidebar.lookup.MatchComparator;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.IntRange;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
 
 @SuppressWarnings("unused")
@@ -49,6 +50,12 @@ public class TextAreaAdapter implements InputAdapterInterface
     public synchronized String getContent()
     {
         return textArea.getText();
+    }
+
+    @Override
+    public ExternalContent getExternalContent()
+    {
+        return null;
     }
 
     @Override

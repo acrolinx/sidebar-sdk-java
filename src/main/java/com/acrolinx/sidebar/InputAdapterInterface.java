@@ -7,6 +7,7 @@ import java.util.List;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.IntRange;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
 
 /**
@@ -30,6 +31,13 @@ public interface InputAdapterInterface
      * @return Returns the text to be checked.
      */
     String getContent();
+
+    /**
+     * Receives the external text from the editor.
+     *
+     * @return Returns the object for external content.
+     */
+    ExternalContent getExternalContent();
 
     /**
      * The path or filename of the document to check. In a CMS, it can be the id that is used to

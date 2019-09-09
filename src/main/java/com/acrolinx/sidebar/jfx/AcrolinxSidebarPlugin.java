@@ -24,13 +24,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
+import com.acrolinx.sidebar.InputAdapterInterface;
 import com.acrolinx.sidebar.pojo.SidebarError;
-import com.acrolinx.sidebar.pojo.document.AbstractMatch;
-import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
-import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
-import com.acrolinx.sidebar.pojo.document.CheckResult;
-import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
-import com.acrolinx.sidebar.pojo.document.IntRange;
+import com.acrolinx.sidebar.pojo.document.*;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxPluginConfiguration;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
@@ -141,13 +138,16 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void runCheck(final boolean selectionEnabled)
     {
         final CheckOptions checkOptions = getCheckSettingsFromClient(selectionEnabled);
+        final InputAdapterInterface editorAdapter = client.getEditorAdapter();
+
         currentlyCheckedDocument.set(client.getEditorAdapter().getContent());
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 logger.debug(checkOptions.toString());
                 final String nameVariableCheckText = "checkText";
                 final JSObject jsObject = getWindowObject();
-                jsObject.setMember(nameVariableCheckText, currentlyCheckedDocument.get());
+                final CheckContent checkContent = getCheckContentFromClient();
+                jsObject.setMember(nameVariableCheckText, checkContent.toString());
                 jsObject.eval("acrolinxSidebar.checkGlobal(checkText," + checkOptions.toString() + ");");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
@@ -224,6 +224,12 @@ abstract class AcrolinxSidebarPlugin
         }
         return new CheckOptions(new RequestDescription(currentDocumentReference.get()), inputFormatRef.get(),
                 selection);
+    }
+
+    private CheckContent getCheckContentFromClient()
+    {
+        final InputAdapterInterface editorAdapter = client.getEditorAdapter();
+        return new CheckContent(editorAdapter.getContent(), editorAdapter.getExternalContent());
     }
 
     public void onGlobalCheckRejected()
