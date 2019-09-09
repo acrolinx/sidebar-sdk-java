@@ -2,33 +2,33 @@ project         sidebar-java-sdk
 branches        master
 
 
-file sidebar-java-sdk/src/main/resources/localization/JavaSDK.properties
+file src/main/resources/localization/JavaSDK.properties
     resource    java-sdk
     lang        en_DE
     format      properties_utf8 xliff
 
-file sidebar-java-sdk/src/main/resources/localization/JavaSDK_en.properties
+file src/main/resources/localization/JavaSDK_en.properties
     resource    java-sdk
     lang        en_US
     mergeinto   en_DE
     format      properties_utf8 xliff
 
-file sidebar-java-sdk/src/main/resources/localization/JavaSDK_de.properties
+file src/main/resources/localization/JavaSDK_de.properties
     resource    java-sdk
     lang        de_DE
     format      properties_utf8 xliff
 
-file sidebar-java-sdk/src/main/resources/localization/JavaSDK_fr.properties
+file src/main/resources/localization/JavaSDK_fr.properties
     resource    java-sdk
     lang        fr_FR
     format      properties_utf8 xliff
 
-file sidebar-java-sdk/src/main/resources/localization/JavaSDK_ja.properties
+file src/main/resources/localization/JavaSDK_ja.properties
     resource    java-sdk
     lang        ja_JP
     format      properties_utf8 xliff
 
-file sidebar-java-sdk/src/main/resources/localization/JavaSDK_sv.properties
+file src/main/resources/localization/JavaSDK_sv.properties
     resource    java-sdk
     lang        sv_SE
     format      properties_utf8 xliff
