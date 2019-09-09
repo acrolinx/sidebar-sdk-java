@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) 2019-present Acrolinx GmbH
+ */
 
 package com.acrolinx.sidebar.pojo.document;
 
