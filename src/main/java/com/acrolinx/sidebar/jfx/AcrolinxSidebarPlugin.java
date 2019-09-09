@@ -138,7 +138,6 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void runCheck(final boolean selectionEnabled)
     {
         final CheckOptions checkOptions = getCheckSettingsFromClient(selectionEnabled);
-        final InputAdapterInterface editorAdapter = client.getEditorAdapter();
 
         currentlyCheckedDocument.set(client.getEditorAdapter().getContent());
         JFXUtils.invokeInJFXThread(() -> {
