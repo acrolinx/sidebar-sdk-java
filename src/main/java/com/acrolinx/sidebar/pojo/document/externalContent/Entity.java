@@ -4,6 +4,7 @@
 
 package com.acrolinx.sidebar.pojo.document.externalContent;
 
+import com.acrolinx.sidebar.utils.GsonUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -32,7 +33,6 @@ public class Entity
     @Override
     public String toString()
     {
-        final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-        return gson.toJson(this);
+        return GsonUtils.getJsonFormObject(this);
     }
 }
