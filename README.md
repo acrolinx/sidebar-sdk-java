@@ -105,7 +105,7 @@ If that build fails, you might have to login into [Nexus Repository Manager](htt
 4. Run the Gradle Task for creating a release tag and pushing it GitHub:
 
    ```bash
-   ./gradlew createGithubReleaseTag
+    ./gradlew createGithubReleaseTag -Dorg.ajoberstar.grgit.auth.username=someone -Dorg.ajoberstar.grgit.auth.password=mysecretpassword
    ```
 
 5. Once the tag is pushed to GitHub, TravisCI will automatically update the [API documentation on the GitHub Pages](https://acrolinx.github.io/sidebar-sdk-java/).
