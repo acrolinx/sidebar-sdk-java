@@ -16,7 +16,8 @@ public class ExternalContent
     private List<Entity> entities;
     private List<DitaReference> ditaReferences;
 
-    ExternalContent(List<TextReplacement> textReplacements, List<Entity> entities, List<DitaReference> ditaReferences)
+    public ExternalContent(List<TextReplacement> textReplacements, List<Entity> entities,
+            List<DitaReference> ditaReferences)
     {
         this.textReplacements = textReplacements;
         this.entities = entities;
