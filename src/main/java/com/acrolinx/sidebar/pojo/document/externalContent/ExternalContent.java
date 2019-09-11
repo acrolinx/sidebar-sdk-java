@@ -7,6 +7,7 @@ package com.acrolinx.sidebar.pojo.document.externalContent;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class ExternalContent
 {
@@ -40,7 +41,7 @@ public class ExternalContent
     @Override
     public String toString()
     {
-        final Gson gson = new Gson();
+        final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         return gson.toJson(this);
     }
 }

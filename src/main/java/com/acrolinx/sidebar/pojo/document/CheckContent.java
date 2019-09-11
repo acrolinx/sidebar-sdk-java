@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class CheckContent
 {
@@ -34,7 +35,7 @@ public class CheckContent
     @Override
     public String toString()
     {
-        final Gson gson = new Gson();
+        final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         return gson.toJson(this);
     }
 }
