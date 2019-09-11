@@ -7,6 +7,7 @@ com.acrolinx.sidebar.localization
 com.acrolinx.sidebar.lookup
 com.acrolinx.sidebar.pojo
 com.acrolinx.sidebar.pojo.document
+com.acrolinx.sidebar.pojo.document.externalContent
 com.acrolinx.sidebar.pojo.settings
 com.acrolinx.sidebar.swing
 com.acrolinx.sidebar.swing.adapter
