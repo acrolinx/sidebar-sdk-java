@@ -145,7 +145,8 @@ abstract class AcrolinxSidebarPlugin
                 logger.debug(checkOptions.toString());
                 final JSObject jsObject = getWindowObject();
                 final CheckContent checkContent = getCheckContentFromClient();
-                jsObject.eval("acrolinxSidebar.checkGlobal("+ checkContent.toString() + "," + checkOptions.toString() + ");");
+                jsObject.eval("acrolinxSidebar.checkGlobal(" + checkContent.toString() + "," + checkOptions.toString()
+                        + ");");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
                 onGlobalCheckRejected();
