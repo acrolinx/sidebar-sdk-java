@@ -71,7 +71,7 @@ public class ExternalContentTest
 
         final ExternalContent content = externalContentBuilder.build();
 
-        final CheckContent checkContent = new CheckContent("<xml>This is a sentence.</xml>", content);
+        final CheckContent checkContent = new CheckContent("<xml>This \"is a sentence.</xml>", content);
 
         assertNotNull(checkContent);
 

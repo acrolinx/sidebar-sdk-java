@@ -5,10 +5,7 @@
 package com.acrolinx.sidebar.pojo.document.externalContent;
 
 import java.util.List;
-
-import com.acrolinx.sidebar.utils.GsonUtils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.util.stream.Collectors;
 
 public class ExternalContent
 {
@@ -43,6 +40,13 @@ public class ExternalContent
     @Override
     public String toString()
     {
-        return GsonUtils.getJsonFormObject(this);
+
+        return "{\"textReplacements\" : ["
+                + textReplacements.stream().map(a -> String.valueOf(a.toString())).collect(Collectors.joining(","))
+                + "] " + ", \"entities\" : ["
+                + entities.stream().map(a -> String.valueOf(a.toString())).collect(Collectors.joining(","))
+                + "], \"ditaReferences\" : ["
+                + ditaReferences.stream().map(a -> String.valueOf(a.toString())).collect(Collectors.joining(","))
+                + "]}";
     }
 }
