@@ -7,6 +7,7 @@ package com.acrolinx.sidebar.pojo.document;
 import javax.annotation.Nullable;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentBuilder;
 
 public class CheckContent
 {
@@ -17,7 +18,7 @@ public class CheckContent
     public CheckContent(String content, @Nullable ExternalContent externalContent)
     {
         this.content = content;
-        this.externalContent = externalContent;
+        this.externalContent = externalContent == null ? new ExternalContentBuilder().build() : externalContent;
     }
 
     public String getContent()
