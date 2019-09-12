@@ -143,11 +143,9 @@ abstract class AcrolinxSidebarPlugin
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 logger.debug(checkOptions.toString());
-                final String nameVariableCheckText = "checkText";
                 final JSObject jsObject = getWindowObject();
                 final CheckContent checkContent = getCheckContentFromClient();
-                jsObject.setMember(nameVariableCheckText, checkContent.toString());
-                jsObject.eval("acrolinxSidebar.checkGlobal(checkText," + checkOptions.toString() + ");");
+                jsObject.eval("acrolinxSidebar.checkGlobal("+ checkContent.toString() + "," + checkOptions.toString() + ");");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
                 onGlobalCheckRejected();
