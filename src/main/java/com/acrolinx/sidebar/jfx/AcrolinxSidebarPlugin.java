@@ -2,7 +2,7 @@
 
 /**
  * (c) 2015 Acrolinx GmbH. All rights reserved.
- *
+ * <p>
  * Created 19.05.2015
  *
  * @author ralf
@@ -27,14 +27,7 @@ import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.InputAdapterInterface;
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.*;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import com.acrolinx.sidebar.pojo.settings.AcrolinxPluginConfiguration;
-import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
-import com.acrolinx.sidebar.pojo.settings.CheckOptions;
-import com.acrolinx.sidebar.pojo.settings.DocumentSelection;
-import com.acrolinx.sidebar.pojo.settings.InputFormat;
-import com.acrolinx.sidebar.pojo.settings.RequestDescription;
-import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
+import com.acrolinx.sidebar.pojo.settings.*;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.google.common.base.Preconditions;
@@ -48,6 +41,7 @@ import netscape.javascript.JSObject;
 abstract class AcrolinxSidebarPlugin
 {
     final AcrolinxIntegration client;
+    final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarPlugin.class);
     private final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocument = new AtomicReference<>("");
     private final AtomicReference<String> currentlyCheckedDocument = new AtomicReference<>("");
@@ -56,11 +50,8 @@ abstract class AcrolinxSidebarPlugin
     private final AtomicReference<String> lastCheckedDocumentReference = new AtomicReference<>("");
     private final AtomicReference<List<IntRange>> checkSelectionRange = new AtomicReference<>();
     private final AtomicReference<AcrolinxSidebarInitParameter> initParameters = new AtomicReference<>();
-    private volatile WebView webView;
-
-    final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarPlugin.class);
-
     protected Instant checkStartedTime;
+    private volatile WebView webView;
 
     public AcrolinxSidebarPlugin(final AcrolinxIntegration client, final WebView webView)
     {
@@ -76,6 +67,12 @@ abstract class AcrolinxSidebarPlugin
                 logger.error(e.getMessage(), e);
             }
         });
+    }
+
+    private static String buildStringOfCheckedDocumentRanges(
+            final java.util.List<CheckedDocumentPart> checkedDocumentParts)
+    {
+        return checkedDocumentParts.stream().map(CheckedDocumentPart::getAsJS).collect(Collectors.joining(", "));
     }
 
     private JSObject getWindowObject()
@@ -145,8 +142,8 @@ abstract class AcrolinxSidebarPlugin
                 logger.debug(checkOptions.toString());
                 final JSObject jsObject = getWindowObject();
                 final CheckContent checkContent = getCheckContentFromClient();
-                jsObject.eval("acrolinxSidebar.checkGlobal(" + checkContent.toString() + "," + checkOptions.toString()
-                        + ");");
+                jsObject.eval("acrolinxSidebar.checkGlobal(" + "JSON.parse(" + checkContent.toString() + ")" + ","
+                        + checkOptions.toString() + ");");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
                 onGlobalCheckRejected();
@@ -240,12 +237,6 @@ abstract class AcrolinxSidebarPlugin
                 logger.error(e.getMessage(), e);
             }
         });
-    }
-
-    private static String buildStringOfCheckedDocumentRanges(
-            final java.util.List<CheckedDocumentPart> checkedDocumentParts)
-    {
-        return checkedDocumentParts.stream().map(CheckedDocumentPart::getAsJS).collect(Collectors.joining(", "));
     }
 
     public void invalidateRanges(final List<CheckedDocumentPart> invalidCheckedDocumentRanges)
