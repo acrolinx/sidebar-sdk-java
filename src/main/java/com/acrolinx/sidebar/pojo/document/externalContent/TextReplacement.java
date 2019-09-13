@@ -4,6 +4,8 @@
 
 package com.acrolinx.sidebar.pojo.document.externalContent;
 
+import com.google.gson.Gson;
+
 public class TextReplacement
 {
     private String id;
@@ -28,6 +30,6 @@ public class TextReplacement
     @Override
     public String toString()
     {
-        return "{\"id\": \"" + id + "\" , \"content\" : \"" + content + "\"}";
+        return new Gson().toJson(this);
     }
 }

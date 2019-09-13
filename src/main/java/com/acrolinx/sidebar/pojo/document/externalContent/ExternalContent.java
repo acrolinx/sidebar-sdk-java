@@ -4,6 +4,8 @@
 
 package com.acrolinx.sidebar.pojo.document.externalContent;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,12 +43,6 @@ public class ExternalContent
     public String toString()
     {
 
-        return "{\"textReplacements\" : ["
-                + textReplacements.stream().map(a -> String.valueOf(a.toString())).collect(Collectors.joining(","))
-                + "] " + ", \"entities\" : ["
-                + entities.stream().map(a -> String.valueOf(a.toString())).collect(Collectors.joining(","))
-                + "], \"ditaReferences\" : ["
-                + ditaReferences.stream().map(a -> String.valueOf(a.toString())).collect(Collectors.joining(","))
-                + "]}";
+        return new Gson().toJson(this);
     }
 }
