@@ -4,10 +4,10 @@
 
 package com.acrolinx.sidebar.pojo.document.externalContent;
 
-import com.google.gson.Gson;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.google.gson.Gson;
 
 public class ExternalContent
 {
