@@ -132,16 +132,15 @@ abstract class AcrolinxSidebarPlugin
         });
     }
 
-    public synchronized void runCheck(final boolean selectionEnabled)
+    public synchronized void runCheck(final boolean selectionEnabled, final CheckContent checkContent)
     {
         final CheckOptions checkOptions = getCheckSettingsFromClient(selectionEnabled);
 
-        currentlyCheckedDocument.set(client.getEditorAdapter().getContent());
+        currentlyCheckedDocument.set(checkContent.getContent());
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 logger.debug(checkOptions.toString());
                 final JSObject jsObject = getWindowObject();
-                final CheckContent checkContent = getCheckContentFromClient();
                 jsObject.eval("acrolinxSidebar.checkGlobal(" + checkContent.toString() + "," + checkOptions.toString()
                         + ");");
             } catch (final Exception e) {
@@ -221,7 +220,7 @@ abstract class AcrolinxSidebarPlugin
                 selection);
     }
 
-    private CheckContent getCheckContentFromClient()
+    protected CheckContent getCheckContentFromClient()
     {
         final InputAdapterInterface editorAdapter = client.getEditorAdapter();
         return new CheckContent(editorAdapter.getContent(), editorAdapter.getExternalContent());

@@ -8,6 +8,7 @@ import javafx.scene.web.WebView;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.adapter.NullEditorAdapter;
+import com.acrolinx.sidebar.pojo.document.CheckContent;
 import com.acrolinx.sidebar.utils.LogMessages;
 
 import netscape.javascript.JSObject;
@@ -29,10 +30,13 @@ public class AcrolinxSidebarPluginWithCheckSelectionSupport extends AcrolinxSide
                 selection = Boolean.parseBoolean(o.getMember("selection").toString());
             }
         }
+
+        final CheckContent checkContent = getCheckContentFromClient();
+        logger.debug("Fetched check content including external content");
         if ((client.getEditorAdapter() != null) && !(client.getEditorAdapter() instanceof NullEditorAdapter)
-                && (client.getEditorAdapter().getContent() != null)) {
+                && (checkContent.getContent() != null)) {
             logger.debug("Editor is ready for running a check");
-            runCheck(selection);
+            runCheck(selection, checkContent);
         } else {
             logger.warn("Current File Editor not supported for checking or no file present.");
             onGlobalCheckRejected();
