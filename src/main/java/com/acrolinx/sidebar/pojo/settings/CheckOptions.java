@@ -2,6 +2,9 @@
 
 package com.acrolinx.sidebar.pojo.settings;
 
+import javax.annotation.Nullable;
+
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.google.gson.Gson;
 
 /**
@@ -13,6 +16,7 @@ public class CheckOptions
     private final InputFormat inputFormat;
     private final RequestDescription requestDescription;
     private final DocumentSelection selection;
+    private final ExternalContent externalContent;
 
     /**
      * @param inputFormat Check InputFormat for valid formats.
@@ -20,11 +24,12 @@ public class CheckOptions
      *        identify the document.
      */
     public CheckOptions(RequestDescription requestDescription, InputFormat inputFormat,
-            DocumentSelection documentSelection)
+            DocumentSelection documentSelection, @Nullable ExternalContent externalContent)
     {
         this.requestDescription = requestDescription;
         this.inputFormat = inputFormat;
         this.selection = documentSelection;
+        this.externalContent = externalContent;
     }
 
     public InputFormat getInputFormat()

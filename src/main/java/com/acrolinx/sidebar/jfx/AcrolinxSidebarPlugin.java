@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 
 import javafx.scene.web.WebView;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +29,7 @@ import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.InputAdapterInterface;
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.*;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.*;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SidebarUtils;
@@ -134,15 +137,17 @@ abstract class AcrolinxSidebarPlugin
 
     public synchronized void runCheck(final boolean selectionEnabled, final CheckContent checkContent)
     {
-        final CheckOptions checkOptions = getCheckSettingsFromClient(selectionEnabled);
+        final CheckOptions checkOptions = getCheckSettingsFromClient(selectionEnabled,
+                checkContent.getExternalContent());
 
         currentlyCheckedDocument.set(checkContent.getContent());
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 logger.debug(checkOptions.toString());
+                final String nameVariableCheckText = "checkText";
                 final JSObject jsObject = getWindowObject();
-                jsObject.eval("acrolinxSidebar.checkGlobal(" + checkContent.toString() + "," + checkOptions.toString()
-                        + ");");
+                jsObject.setMember(nameVariableCheckText, checkContent.getContent());
+                jsObject.eval("acrolinxSidebar.checkGlobal(checkText," + checkOptions.toString() + ");");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
                 onGlobalCheckRejected();
@@ -203,7 +208,8 @@ abstract class AcrolinxSidebarPlugin
         SidebarUtils.openLogFile();
     }
 
-    private CheckOptions getCheckSettingsFromClient(final boolean includeCheckSelectionRanges)
+    private CheckOptions getCheckSettingsFromClient(final boolean includeCheckSelectionRanges,
+            @Nullable ExternalContent externalContent)
     {
         inputFormatRef.set(client.getEditorAdapter().getInputFormat());
         currentDocumentReference.set(client.getEditorAdapter().getDocumentReference());
@@ -216,8 +222,8 @@ abstract class AcrolinxSidebarPlugin
                 selection = new DocumentSelection(checkSelectionRange.get());
             }
         }
-        return new CheckOptions(new RequestDescription(currentDocumentReference.get()), inputFormatRef.get(),
-                selection);
+        return new CheckOptions(new RequestDescription(currentDocumentReference.get()), inputFormatRef.get(), selection,
+                externalContent);
     }
 
     protected CheckContent getCheckContentFromClient()
