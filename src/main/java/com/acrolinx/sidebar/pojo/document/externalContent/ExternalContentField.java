@@ -6,12 +6,12 @@ package com.acrolinx.sidebar.pojo.document.externalContent;
 
 import com.google.gson.Gson;
 
-public class DitaReference
+public class ExternalContentField
 {
     private String id;
     private String content;
 
-    DitaReference(String id, String content)
+    ExternalContentField(String id, String content)
     {
         this.id = id;
         this.content = content;

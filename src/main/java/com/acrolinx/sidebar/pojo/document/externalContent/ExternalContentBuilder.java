@@ -13,9 +13,9 @@ import java.util.List;
 public class ExternalContentBuilder
 {
 
-    private List<TextReplacement> textReplacements = new ArrayList<>();
-    private List<Entity> entities = new ArrayList<>();
-    private List<DitaReference> ditaReferences = new ArrayList<>();
+    private List<ExternalContentField> textReplacements = new ArrayList<>();
+    private List<ExternalContentField> entities = new ArrayList<>();
+    private List<ExternalContentField> ditaReferences = new ArrayList<>();
 
     public ExternalContentBuilder()
     {
@@ -30,7 +30,7 @@ public class ExternalContentBuilder
      */
     public ExternalContentBuilder addTextReplacement(String id, String content)
     {
-        this.textReplacements.add(new TextReplacement(id, content));
+        this.textReplacements.add(new ExternalContentField(id, content));
         return this;
     }
 
@@ -43,7 +43,7 @@ public class ExternalContentBuilder
      */
     public ExternalContentBuilder addEntity(String id, String content)
     {
-        this.entities.add(new Entity(id, content));
+        this.entities.add(new ExternalContentField(id, content));
         return this;
     }
 
@@ -57,7 +57,7 @@ public class ExternalContentBuilder
      */
     public ExternalContentBuilder addDitaReference(String id, String content)
     {
-        this.ditaReferences.add(new DitaReference(id, content));
+        this.ditaReferences.add(new ExternalContentField(id, content));
         return this;
     }
 

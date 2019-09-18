@@ -33,7 +33,8 @@ public interface InputAdapterInterface
     String getContent();
 
     /**
-     * Receives the external text from the editor.
+     * Receives the external text from the editor. Only supported with Acrolinx Platform 2019.10
+     * (Sidebar version 14.16) and newer. Return null if not used.
      *
      * @return Returns the object for external content.
      */

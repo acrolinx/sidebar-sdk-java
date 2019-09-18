@@ -5,36 +5,38 @@
 package com.acrolinx.sidebar.pojo.document.externalContent;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 
+/**
+ * Only supported with Acrolinx Platform 2019.10 (Sidebar version 14.16) and newer.
+ */
 public class ExternalContent
 {
 
-    private List<TextReplacement> textReplacements;
-    private List<Entity> entities;
-    private List<DitaReference> ditaReferences;
+    private List<ExternalContentField> textReplacements;
+    private List<ExternalContentField> entities;
+    private List<ExternalContentField> ditaReferences;
 
-    public ExternalContent(List<TextReplacement> textReplacements, List<Entity> entities,
-            List<DitaReference> ditaReferences)
+    public ExternalContent(List<ExternalContentField> textReplacements, List<ExternalContentField> entities,
+            List<ExternalContentField> ditaReferences)
     {
         this.textReplacements = textReplacements;
         this.entities = entities;
         this.ditaReferences = ditaReferences;
     }
 
-    public List<TextReplacement> getTextReplacements()
+    public List<ExternalContentField> getTextReplacements()
     {
         return textReplacements;
     }
 
-    public List<Entity> getEntities()
+    public List<ExternalContentField> getEntities()
     {
         return entities;
     }
 
-    public List<DitaReference> getDitaReferences()
+    public List<ExternalContentField> getDitaReferences()
     {
         return ditaReferences;
     }

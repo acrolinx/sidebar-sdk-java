@@ -37,9 +37,9 @@ public class ExternalContentTest
 
         final ExternalContent content = externalContentBuilder.build();
 
-        final List<DitaReference> ditaReferences = content.getDitaReferences();
-        final List<Entity> entities = content.getEntities();
-        final List<TextReplacement> textReplacements = content.getTextReplacements();
+        final List<ExternalContentField> ditaReferences = content.getDitaReferences();
+        final List<ExternalContentField> entities = content.getEntities();
+        final List<ExternalContentField> textReplacements = content.getTextReplacements();
 
         assertEquals(3, ditaReferences.size());
         assertEquals(3, entities.size());
