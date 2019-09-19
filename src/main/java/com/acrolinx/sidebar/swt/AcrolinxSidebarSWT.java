@@ -285,6 +285,15 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
+        new BrowserFunction(browser, "getExternalContentP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                LogMessages.logExternalContentRequested(logger);
+                return client.getEditorAdapter().getExternalContent().toString();
+            }
+        };
+
         new BrowserFunction(browser, "onCheckResultP") {
             @Override
             public Object function(final Object[] arguments)

@@ -20,6 +20,11 @@ public class LogMessages
         logger.info("Check requested.");
     }
 
+    public static void logExternalContentRequested(Logger logger)
+    {
+        logger.info("External Content requested.");
+    }
+
     public static void logCheckRejected(Logger logger)
     {
         logger.info("Check rejected.");
