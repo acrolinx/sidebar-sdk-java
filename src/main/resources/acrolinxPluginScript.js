@@ -52,10 +52,10 @@ window.acrolinxPlugin =
     } else {
         if (options && options.selection === true) {
             acrolinxSidebar.checkGlobal(getTextP(),
-                    {inputFormat: getInputFormatP(), externalContent: getExternalContentP(), requestDescription: {documentReference: getDocUrlP()}, selection: JSON.parse(getCurrentSelectionRangesP())});
+                    {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}, selection: JSON.parse(getCurrentSelectionRangesP())});
         } else {
             acrolinxSidebar.checkGlobal(getTextP(),
-                    {inputFormat: getInputFormatP(), requestDescription: {documentReference: getDocUrlP()}});
+                    {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}});
         }
     }
   },
