@@ -40,6 +40,7 @@ import com.acrolinx.sidebar.pojo.document.CheckResult;
 import com.acrolinx.sidebar.pojo.document.CheckResultFromJSON;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.document.IntRange;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxURL;
 import com.acrolinx.sidebar.pojo.settings.DocumentSelection;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
@@ -290,7 +291,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             public Object function(final Object[] arguments)
             {
                 LogMessages.logExternalContentRequested(logger);
-                return client.getEditorAdapter().getExternalContent().toString();
+                final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
+                if (externalContent == null) {
+                    return null;
+                }
+                return externalContent.toString();
             }
         };
 
