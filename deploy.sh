@@ -24,7 +24,7 @@ echo "Current Version: $PROJECT_VERSION"
 
 if [[ "$PROJECT_VERSION" == *"SNAPSHOT"* ]]; then
     echo "Publishing snapshot version to snapshot repo..."
-    if ./gradlew publish; then
+    if ./gradlew publishToSonatype; then
         echo "Published snapshot version to snapshot repo..."
         exit 0
     else
@@ -32,7 +32,7 @@ if [[ "$PROJECT_VERSION" == *"SNAPSHOT"* ]]; then
     fi
 else
     echo "Publishing release version to staging repo..."
-    if ./gradlew publish -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="./secring.gpg"; then
+    if ./gradlew publishToSonatype -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="./secring.gpg"; then
         echo "Done with publish step."
         echo "Starting close and release step"
         if ./gradlew closeAndReleaseRepository; then

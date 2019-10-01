@@ -142,7 +142,7 @@ referenced found by the [Dependency-Check-Gradle](https://github.com/jeremylong/
 
 * The [Sidebar DEMO Java](https://github.com/acrolinx/acrolinx-sidebar-demo-java) is built based on this SDK.
 * The API documentation is published on the [GitHub Pages](https://acrolinx.github.io/sidebar-sdk-java/).
-* The Sidebar SDKs are based on the [Acrolinx Sidebar Interface](https://acrolinx.github.io/sidebar-sdk-js/).
+* The Sidebar SDKs are based on the [Acrolinx Sidebar Interface](https://acrolinx.github.io/sidebar-interface/).
 * This project depends on (unmodified) Logback for logging.
   Logback is Copyright (C) 1999-2017, QOS.ch and licensed under the EPL-1.0. You can get the source from [github.com/qos-ch/logback](https://github.com/qos-ch/logback).
   The Logback website is at [logback.qos.ch/license.html](https://logback.qos.ch/license.html)
