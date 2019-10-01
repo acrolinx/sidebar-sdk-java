@@ -12,8 +12,8 @@ plugins {
 	id 'signing'
 	id 'org.ajoberstar.grgit' version '3.1.1'
 
-	id 'io.codearte.nexus-staging' version '0.21.0'
-	id 'de.marcphilipp.nexus-publish' version '0.3.1'
+	id 'io.codearte.nexus-staging' version '0.21.1'
+	id 'de.marcphilipp.nexus-publish' version '0.4.0'
 
 	id "com.github.ben-manes.versions" version "0.24.0"
 	id "se.patrikerdes.use-latest-versions" version "0.2.12"
@@ -286,8 +286,8 @@ signing {
 
 
 task createGithubReleaseTag {
-	println 'Creating Github Release Tag'
 	doLast {
+		println 'Creating Github Release Tag'
 		if (isReleaseBuild) {
 			def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
 			println 'Finding tags'
