@@ -29,8 +29,6 @@ public class LookupForResolvedEditorViews
             List<? extends AbstractMatch> adjustedRangesForCurrentDocument, String currentDocumentContent,
             String resolvedViewContent, LookupForResolvedViewsHelper utils)
     {
-        List<DiffMatchPatch.Diff> diffs = Lookup.getDiffs(currentDocumentContent, resolvedViewContent);
-        List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffs);
 
         AtomicReference<List<AbstractMatch>> adjustedRangesCopyRef = new AtomicReference<>(new ArrayList<>());
 
@@ -61,6 +59,8 @@ public class LookupForResolvedEditorViews
 
         if (adjustedRangesCopy.size() > 0) {
             // LookupMatches by diffing editor content and document content.
+            List<DiffMatchPatch.Diff> diffs = Lookup.getDiffs(currentDocumentContent, resolvedViewContent);
+            List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffs);
             getMatchesWithCorrectedRangesIgnoreNonMatched(diffs, offsetMappingArray, adjustedRangesCopy);
             adjustedRangesCopy = adjustedRangesCopy.stream().filter(match -> !mappedRanges.contains(match)).collect(
                     Collectors.toList());
