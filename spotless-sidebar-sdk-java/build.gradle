@@ -1,4 +1,3 @@
-
 plugins {
 	id 'com.diffplug.gradle.spotless' version '2.4.1'
 }
@@ -12,7 +11,6 @@ spotless {
 			include '**/*.java'
 			exclude '**/*.license.java'
 		}
-		// licenseHeaderFile	rootProject.file('spotless-sidebar-sdk-java/spotless.license.java')			// License header file
 		importOrderFile		rootProject.file('spotless-sidebar-sdk-java/spotless.importorder')			// An import ordering file, exported from Eclipse
 		eclipseFormatFile	rootProject.file('spotless-sidebar-sdk-java/spotless.eclipseformat.xml')		// XML file dumped out by the Eclipse formatter
 		custom 'Lambda fix', { it.replace('} )', '})').replace('} ,', '},') }

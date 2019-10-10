@@ -2,10 +2,11 @@
 
 package com.acrolinx.sidebar.utils;
 
-import static org.apache.commons.io.FileUtils.deleteDirectory;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
+import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder;
+import com.acrolinx.sidebar.pojo.settings.SoftwareComponent;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,12 +16,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
-import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder;
-import com.acrolinx.sidebar.pojo.settings.SoftwareComponent;
+import static org.apache.commons.io.FileUtils.deleteDirectory;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class StartPageInstallerTest
 {
@@ -39,7 +37,7 @@ public class StartPageInstallerTest
 
         final AcrolinxSidebarInitParameter params = builder.build();
 
-        assertThat(StartPageInstaller.prepareSidebarUrl(params), equalTo(StartPageInstaller.getStartPageURL()));
+        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageURL());
     }
 
     @Test
@@ -52,7 +50,7 @@ public class StartPageInstallerTest
 
         final AcrolinxSidebarInitParameter params = builder.build();
 
-        assertThat(StartPageInstaller.prepareSidebarUrl(params), equalTo("https://127.0.0.1"));
+        assertEquals(StartPageInstaller.prepareSidebarUrl(params), "https://127.0.0.1");
     }
 
     @Test
@@ -65,7 +63,7 @@ public class StartPageInstallerTest
 
         final AcrolinxSidebarInitParameter params = builder.build();
 
-        assertThat(StartPageInstaller.prepareSidebarUrl(params), equalTo(StartPageInstaller.getStartPageURL()));
+        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageURL());
     }
 
     @Test
@@ -78,7 +76,7 @@ public class StartPageInstallerTest
 
         final AcrolinxSidebarInitParameter params = builder.build();
 
-        assertThat(StartPageInstaller.prepareSidebarUrl(params), equalTo(StartPageInstaller.getStartPageURL()));
+        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageURL());
     }
 
     @Test
@@ -91,7 +89,7 @@ public class StartPageInstallerTest
 
         final AcrolinxSidebarInitParameter params = builder.build();
 
-        assertThat(StartPageInstaller.prepareSidebarUrl(params), equalTo(StartPageInstaller.getStartPageURL()));
+        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageURL());
     }
 
     @Test

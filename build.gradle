@@ -15,12 +15,12 @@ plugins {
 	id 'io.codearte.nexus-staging' version '0.21.1'
 	id 'de.marcphilipp.nexus-publish' version '0.4.0'
 
-	id "com.github.ben-manes.versions" version "0.24.0"
+	id "com.github.ben-manes.versions" version "0.26.0"
 	id "se.patrikerdes.use-latest-versions" version "0.2.12"
 
 	id "com.moowork.node" version "1.3.1"
-	id "com.diffplug.gradle.swt.nativedeps" version "3.18.0"
-	id "org.owasp.dependencycheck" version "5.2.1"
+	id "com.diffplug.gradle.swt.nativedeps" version "3.18.1"
+	id "org.owasp.dependencycheck" version "5.2.2"
 
 	id 'com.github.hierynomus.license' version '0.15.0'
 	id 'com.github.hierynomus.license-report' version '0.15.0'
@@ -106,7 +106,7 @@ task createVersionPropertiesFile {
 }
 
 jar {
-	archiveName = "${artifactName}-${fullVersion}.jar"
+	archiveFileName = "${artifactName}-${fullVersion}.jar"
 	manifest {
 		attributes(
 				"Implementation-Title": "${artifactName}",
@@ -317,7 +317,7 @@ spotbugs {
 }
 
 dependencies {
-	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
 	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
 	compile group: 'org.bitbucket.cowwoc', name: 'diff-match-patch', version: '1.2'
 	compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
@@ -327,6 +327,17 @@ dependencies {
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 	compile 'com.google.guava:guava:28.1-jre'
 	testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+// Vunerability fix for transitive library common-beanutils
+configurations.all {
+	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+		if (details.requested.group == "commons-beanutils"
+				&& details.requested.name == "commons-beanutils"
+				&& details.requested.version == "1.9.2") {
+			details.useTarget("commons-beanutils:commons-beanutils:1.9.4")
+		}
+	}
 }
 
 
