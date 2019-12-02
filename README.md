@@ -97,10 +97,15 @@ Before you start developing your own integration, you might benefit from looking
 
 2. Once you tested your new features, remove the snapshot from the currentVersion property in the `gradle.properties` file.
 
-3. Commit and push your changes. If all goes right, the artifact is released to [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
-Note that it might take quite a while until the new version shows up in [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20), but it will be immediately available in the [oss staging repository](https://oss.sonatype.org/content/groups/staging/com/acrolinx/client/sidebar-sdk/).
+3. Commit and push your changes. If all goes right, the artifact is released to
+   [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
+   Note that it might take quite a while until the new version shows up in
+   [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
+   It will be immediately available in the [oss staging repository](https://oss.sonatype.org/content/groups/staging/com/acrolinx/client/sidebar-sdk/).
 
-If that build fails, you might have to login into [Nexus Repository Manager](https://oss.sonatype.org/#welcome) and drop falsely created repositories, before triggering a new release build.
+   If that build fails, you might have to sign-in into
+   [Nexus Repository Manager](https://oss.sonatype.org/#welcome),
+   and drop falsely created repositories, before starting a new release build.
 
 4. Run the Gradle Task for creating a release tag and pushing it GitHub:
 
