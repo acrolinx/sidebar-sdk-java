@@ -1,3 +1,5 @@
+import org.gradle.internal.jvm.Jvm
+
 /*
 * Copyright (c) 2016-present Acrolinx GmbH
 */
@@ -27,7 +29,7 @@ plugins {
 
 	id "com.github.spotbugs" version "2.0.0"
 
-	id "org.openjfx.javafxplugin" version "0.0.8"
+	id "org.openjfx.javafxplugin" version "0.0.8" apply false
 }
 
 tasks.withType(Javadoc) {
@@ -316,6 +318,13 @@ spotbugs {
 	reportLevel = 'medium'        // low|medium|high (low = sensitive to even minor mistakes)
 	excludeFilter = file("$rootProject.projectDir/findbugs/excludeFilter.xml")
 	omitVisitors = []        // bugs that we want to ignore
+}
+
+
+if (Jvm.current().toString().contains("11")) {
+	apply plugin: "org.openjfx.javafxplugin"
+	println Jvm.current().toString();
+	// Remove this plugin, if you want to compile with a java version < 11
 }
 
 javafx {
