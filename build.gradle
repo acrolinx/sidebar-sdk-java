@@ -321,16 +321,13 @@ spotbugs {
 }
 
 
-if (Jvm.current().toString().contains("11")) {
+if (Integer.parseInt(Jvm.current().getJavaVersion().getMajorVersion()) >= 11) {
 	apply plugin: "org.openjfx.javafxplugin"
-	println Jvm.current().toString();
-	// Remove this plugin, if you want to compile with a java version < 11
-}
 
-javafx {
-	modules = ["javafx.graphics", "javafx.web", "javafx.swing"]
+	javafx {
+		modules = ["javafx.graphics", "javafx.web", "javafx.swing"]
+	}
 }
-
 
 dependencies {
 	// overwrite vulnerability in transitive dependencies...
