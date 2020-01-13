@@ -326,6 +326,7 @@ if (Integer.parseInt(Jvm.current().getJavaVersion().getMajorVersion()) >= 11) {
 
 	javafx {
 		modules = ["javafx.graphics", "javafx.web", "javafx.swing"]
+		configuration = 'compileOnly'
 	}
 }
 
