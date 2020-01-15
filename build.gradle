@@ -325,7 +325,7 @@ if (Integer.parseInt(Jvm.current().getJavaVersion().getMajorVersion()) >= 11) {
 	apply plugin: "org.openjfx.javafxplugin"
 
 	javafx {
-		modules = ["javafx.graphics", "javafx.web", "javafx.swing"]
+		modules = ["javafx.web", "javafx.swing"]
 		configuration = 'compileOnly'
 	}
 }
