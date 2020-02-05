@@ -1,4 +1,4 @@
-/* Copyright (c) 2016-present Acrolinx GmbH */
+/* Copyright (c) 2020-present Acrolinx GmbH */
 
 package com.acrolinx.sidebar.utils;
 
@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
+import com.google.common.collect.Lists;
 
-@SuppressWarnings("unused")
-public class LookupUtils
+public class MatchUtils
 {
 
     private static final Logger logger = LoggerFactory.getLogger(SidebarUtils.class);
@@ -28,5 +28,24 @@ public class LookupUtils
             return !isTag;
 
         }).collect(Collectors.toList());
+    }
+
+    public static <T extends AbstractMatch> List<T> sortByOffsetDesc(final List<T> matches)
+    {
+        final List<T> sortedMatches = Lists.newArrayList(matches);
+        sortedMatches.sort((a, b) -> {
+            final int start = a.getRange().getMinimumInteger() - b.getRange().getMinimumInteger();
+            if (start == 0) {
+                final int end = a.getRange().getMaximumInteger() - b.getRange().getMaximumInteger();
+                if (end == 0) {
+                    return 0;
+                }
+
+                return (end > 0) ? -1 : +1;
+
+            }
+            return start > 0 ? -1 : +1;
+        });
+        return sortedMatches;
     }
 }

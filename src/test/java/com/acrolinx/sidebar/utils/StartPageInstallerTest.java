@@ -2,11 +2,9 @@
 
 package com.acrolinx.sidebar.utils;
 
-import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
-import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder;
-import com.acrolinx.sidebar.pojo.settings.SoftwareComponent;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.apache.commons.io.FileUtils.deleteDirectory;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,24 +14,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import static org.apache.commons.io.FileUtils.deleteDirectory;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
+import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder;
 
 public class StartPageInstallerTest
 {
     @Test
-    public void getServerSelectorVersion() throws Exception
+    public void getServerSelectorVersion()
     {
         final String serverSelectorVersion = StartPageInstaller.getStartPageVersion();
-        assertTrue(serverSelectorVersion != null);
+        assertNotNull(serverSelectorVersion);
     }
 
     @Test
     public void prepareSidebarUrlWithStartPage() throws Exception
     {
         final AcrolinxSidebarInitParameterBuilder builder = new AcrolinxSidebarInitParameterBuilder("123",
-                new ArrayList<SoftwareComponent>());
+                new ArrayList<>());
 
         final AcrolinxSidebarInitParameter params = builder.build();
 
@@ -41,10 +41,10 @@ public class StartPageInstallerTest
     }
 
     @Test
-    public void prepareSidebarUrlWithSidebar() throws Exception
+    public void prepareSidebarUrlWithSidebar()
     {
         final AcrolinxSidebarInitParameterBuilder builder = new AcrolinxSidebarInitParameterBuilder("123",
-                new ArrayList<SoftwareComponent>());
+                new ArrayList<>());
         builder.withSidebarUrl("https://127.0.0.1");
         builder.withShowServerSelector(false);
 
@@ -57,7 +57,7 @@ public class StartPageInstallerTest
     public void prepareSidebarUrlWithStartPageIfSidebarUrlIsSetBut() throws Exception
     {
         final AcrolinxSidebarInitParameterBuilder builder = new AcrolinxSidebarInitParameterBuilder("123",
-                new ArrayList<SoftwareComponent>());
+                new ArrayList<>());
         builder.withSidebarUrl("https://127.0.0.1");
         builder.withShowServerSelector(true);
 
@@ -70,7 +70,7 @@ public class StartPageInstallerTest
     public void prepareSidebarUrlWithStartPageIfServerUrlIsSetButServerSelector() throws Exception
     {
         final AcrolinxSidebarInitParameterBuilder builder = new AcrolinxSidebarInitParameterBuilder("123",
-                new ArrayList<SoftwareComponent>());
+                new ArrayList<>());
         builder.withServerAddress("https://127.0.0.1");
         builder.withShowServerSelector(true);
 
@@ -83,7 +83,7 @@ public class StartPageInstallerTest
     public void prepareSidebarUrlWithStartPageIfServerUrlIsSet() throws Exception
     {
         final AcrolinxSidebarInitParameterBuilder builder = new AcrolinxSidebarInitParameterBuilder("123",
-                new ArrayList<SoftwareComponent>());
+                new ArrayList<>());
         builder.withServerAddress("https://127.0.0.1");
         builder.withShowServerSelector(false);
 

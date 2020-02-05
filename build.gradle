@@ -21,7 +21,7 @@ plugins {
 	id "se.patrikerdes.use-latest-versions" version "0.2.12"
 
 	id "com.moowork.node" version "1.3.1"
-	id "com.diffplug.gradle.swt.nativedeps" version "3.18.1"
+	id "com.diffplug.gradle.swt.nativedeps" version "3.21.0"
 	id "org.owasp.dependencycheck" version "5.2.2"
 
 	id 'com.github.hierynomus.license' version '0.15.0'
@@ -39,19 +39,6 @@ tasks.withType(Javadoc) {
 
 project.version = currentVersion
 group = 'com.acrolinx.client'
-
-dependencyUpdates.resolutionStrategy = {
-	componentSelection { rules ->
-		rules.all { ComponentSelection selection ->
-			boolean rejected = ['dev', 'eap', 'alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
-				selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
-			}
-			if (rejected) {
-				selection.reject('Release candidate')
-			}
-		}
-	}
-}
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -293,6 +280,7 @@ task createGithubReleaseTag {
 	doLast {
 		println 'Creating Github Release Tag'
 		if (isReleaseBuild) {
+			grgit = grgit.open(currentDir: rootDir)
 			def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
 			println 'Finding tags'
 			if (!hasOldReleaseVersion) {
