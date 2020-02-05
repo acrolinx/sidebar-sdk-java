@@ -260,6 +260,11 @@ publishing {
 	}
 }
 
+nexusStaging {
+	numberOfRetries = 40
+	delayBetweenRetriesInMillis = 4000
+}
+
 nexusPublishing {
 	repositories {
 		sonatype {
