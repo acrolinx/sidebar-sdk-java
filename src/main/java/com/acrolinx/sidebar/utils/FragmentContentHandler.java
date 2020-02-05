@@ -18,7 +18,7 @@ public class FragmentContentHandler extends DefaultHandler
     private XMLReader xmlReader;
     private FragmentContentHandler parent;
     private Map<String, Integer> elementNameCount = new HashMap<>();
-    private String markerXpath;
+    private static volatile String markerXpath;
 
     public FragmentContentHandler(XMLReader xmlReader)
     {
