@@ -263,6 +263,7 @@ publishing {
 nexusStaging {
 	numberOfRetries = 40
 	delayBetweenRetriesInMillis = 4000
+	stagingRepositoryId = "comacrolinxclient-1165"
 }
 
 nexusPublishing {
