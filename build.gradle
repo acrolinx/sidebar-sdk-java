@@ -1,5 +1,7 @@
 import org.gradle.internal.jvm.Jvm
 
+import java.time.Duration
+
 /*
 * Copyright (c) 2016-present Acrolinx GmbH
 */
@@ -263,10 +265,11 @@ publishing {
 nexusStaging {
 	numberOfRetries = 40
 	delayBetweenRetriesInMillis = 4000
-	stagingRepositoryId = "comacrolinxclient-1165"
 }
 
 nexusPublishing {
+	connectTimeout = Duration.ofMinutes(5);
+	clientTimeout =  Duration.ofMinutes(5);
 	repositories {
 		sonatype {
 			username = sonatypeUsername
