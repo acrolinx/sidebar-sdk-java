@@ -61,7 +61,10 @@ public class XMLLookupUtils
 
                 if (parentNode != null) {
                     if (parentNode.isSameNode(doc)) {
-                        return new IntRange(0, xmlContent.length() - 1);
+                        String rootElement = doc.getDocumentElement().getTagName();
+                        String rootElementBegin = "<" + rootElement + ">";
+                        String rootElementEnd = "</" + rootElement + ">";
+                        return new IntRange(xmlContent.indexOf(rootElementBegin), xmlContent.lastIndexOf(rootElementEnd) + rootElementEnd.length());
                     }
                     parentNode.insertBefore(acrolinxSelection, node);
                     acrolinxSelection.appendChild(node);
