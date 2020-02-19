@@ -38,11 +38,11 @@ public class XMLLookupUtilsTest
     public void findXpathByOffset() throws Exception
     {
         int index = XML_CONTENT.indexOf("Fantastic");
-        String xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT, index);
+        String xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT, index, index + "Fantastic".length());
         assertEquals("//bookstore[1]/book[1]/genre[1]", xpathByOffset);
 
         index = XML_CONTENT.indexOf("Some Name");
-        xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT, index);
+        xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT, index, index + "Some Name".length());
         assertEquals("//bookstore[1]/book[2]/author[1]/last-name[1]", xpathByOffset);
     }
 

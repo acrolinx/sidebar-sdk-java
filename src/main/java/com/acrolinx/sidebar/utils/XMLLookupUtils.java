@@ -152,10 +152,10 @@ public class XMLLookupUtils
         return doc;
     }
 
-    public static String findXpathByOffset(String xmlContent, int offset) throws Exception
+    public static String findXpathByOffset(String xmlContent, int offsetStart, int offsetEnd) throws Exception
     {
-        String contentWithMarkerNode = xmlContent.substring(0, offset) + "<acroSeparator>" + xmlContent.charAt(offset)
-                + "</acroSeparator>" + xmlContent.substring(offset + 1);
+        String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroSeparator>" + xmlContent.substring(offsetStart, offsetEnd)
+                + "</acroSeparator>" + xmlContent.substring(offsetEnd);
         try {
             logger.info(contentWithMarkerNode);
             SAXParserFactory spf = SAXParserFactory.newInstance();
