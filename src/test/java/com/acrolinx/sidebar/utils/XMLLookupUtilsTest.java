@@ -81,7 +81,7 @@ public class XMLLookupUtilsTest
     public void testGetAllXpathsFromDocument() throws Exception
     {
         final List<String> allXpathInXmlDocument = XMLLookupUtils.getAllXpathInXmlDocument(XML_CONTENT);
-        assertEquals(12, allXpathInXmlDocument.size());
+        assertEquals(15, allXpathInXmlDocument.size());
     }
 
     @Test
