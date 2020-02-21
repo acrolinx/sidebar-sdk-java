@@ -16,12 +16,12 @@ import org.xml.sax.helpers.DefaultHandler;
 public class FragmentContentHandler extends DefaultHandler
 {
 
+    private static volatile String markerXpath;
+    private static volatile List<String> documentXpaths = new ArrayList<>();
     private String xPath = "/";
     private XMLReader xmlReader;
     private FragmentContentHandler parent;
     private Map<String, Integer> elementNameCount = new HashMap<>();
-    private static volatile String markerXpath;
-    private static volatile List<String> documentXpaths;
 
     public FragmentContentHandler(XMLReader xmlReader)
     {
@@ -47,12 +47,7 @@ public class FragmentContentHandler extends DefaultHandler
         elementNameCount.put(qName, count);
         String childXPath = xPath + "/" + qName + "[" + count + "]";
 
-        if (documentXpaths != null) {
-            documentXpaths.add(childXPath);
-        } else {
-            documentXpaths = new ArrayList<>();
-            documentXpaths.add(childXPath);
-        }
+        documentXpaths.add(childXPath);
 
         if (childXPath.contains("acroSeparator")) {
             markerXpath = childXPath;
