@@ -27,6 +27,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
@@ -159,15 +160,16 @@ public class XMLLookupUtils
 
     public static String cleanXML(String markup)
     {
-        final org.jsoup.nodes.Document document = Jsoup.parse(markup);
+        final org.jsoup.nodes.Document document = Jsoup.parse(markup, "", Parser.xmlParser());
         document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+
         return document.toString();
     }
 
     public static String findXpathByOffset(String xmlContent, int offsetStart, int offsetEnd) throws Exception
     {
-        String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroSeparator>"
-                + xmlContent.substring(offsetStart, offsetEnd) + "</acroSeparator>" + xmlContent.substring(offsetEnd);
+        String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroseparator>"
+                + xmlContent.substring(offsetStart, offsetEnd) + "</acroseparator>" + xmlContent.substring(offsetEnd);
         final String cleanXML = XMLLookupUtils.cleanXML(contentWithMarkerNode);
 
         try {

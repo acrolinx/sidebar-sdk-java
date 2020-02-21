@@ -47,9 +47,13 @@ public class FragmentContentHandler extends DefaultHandler
         elementNameCount.put(qName, count);
         String childXPath = xPath + "/" + qName + "[" + count + "]";
 
+        if (xPath.equals("/")) {
+            documentXpaths.clear();
+        }
+
         documentXpaths.add(childXPath);
 
-        if (childXPath.contains("acroSeparator")) {
+        if (childXPath.contains("acroseparator")) {
             markerXpath = childXPath;
         }
 
