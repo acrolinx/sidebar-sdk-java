@@ -163,19 +163,32 @@ public class XMLLookupUtils
         String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroSeparator>"
                 + xmlContent.substring(offsetStart, offsetEnd) + "</acroSeparator>" + xmlContent.substring(offsetEnd);
         try {
-            logger.info(contentWithMarkerNode);
             final SAXParserImpl sp = SAXParserImpl.newInstance(null);
             XMLReader xr = sp.getXMLReader();
             FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
             xr.setContentHandler(fragmentContentHandler);
             xr.parse(new InputSource(new StringReader(contentWithMarkerNode)));
             String markerXpath = fragmentContentHandler.getMarkerXpath();
-            logger.info(markerXpath);
             String xpath = markerXpath.substring(0, markerXpath.lastIndexOf('/'));
             return xpath;
 
         } catch (Exception ex) {
             logger.error("Lookup For Offset Failed");
+            logger.error(ex.getMessage());
+            throw new Exception(ex.getMessage());
+        }
+    }
+
+    public static List<String> getAllXpathInXmlDocument(String xml) throws Exception
+    {
+        try {
+            final SAXParserImpl sp = SAXParserImpl.newInstance(null);
+            XMLReader xr = sp.getXMLReader();
+            FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
+            xr.setContentHandler(fragmentContentHandler);
+            xr.parse(new InputSource(new StringReader(xml)));
+            return fragmentContentHandler.getDocumentXpaths();
+        } catch (Exception ex) {
             logger.error(ex.getMessage());
             throw new Exception(ex.getMessage());
         }

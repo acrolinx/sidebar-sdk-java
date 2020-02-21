@@ -4,7 +4,9 @@
 
 package com.acrolinx.sidebar.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.xml.sax.Attributes;
@@ -19,6 +21,7 @@ public class FragmentContentHandler extends DefaultHandler
     private FragmentContentHandler parent;
     private Map<String, Integer> elementNameCount = new HashMap<>();
     private static volatile String markerXpath;
+    private static volatile List<String> documentXpaths;
 
     public FragmentContentHandler(XMLReader xmlReader)
     {
@@ -43,6 +46,13 @@ public class FragmentContentHandler extends DefaultHandler
         }
         elementNameCount.put(qName, count);
         String childXPath = xPath + "/" + qName + "[" + count + "]";
+
+        if (documentXpaths != null) {
+            documentXpaths.add(childXPath);
+        } else {
+            documentXpaths = new ArrayList<>();
+            documentXpaths.add(childXPath);
+        }
 
         if (childXPath.contains("acroSeparator")) {
             markerXpath = childXPath;
@@ -69,4 +79,8 @@ public class FragmentContentHandler extends DefaultHandler
         return markerXpath;
     }
 
+    public List<String> getDocumentXpaths()
+    {
+        return documentXpaths;
+    }
 }

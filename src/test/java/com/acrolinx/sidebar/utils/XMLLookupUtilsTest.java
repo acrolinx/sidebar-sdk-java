@@ -5,6 +5,9 @@
 package com.acrolinx.sidebar.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Test;
 
@@ -73,5 +76,12 @@ public class XMLLookupUtilsTest
         String xpathByOffset = XMLLookupUtils.findXpathByOffset(XHtmlContent, index, index + "TEST_CONTAINER".length());
         assertEquals("//html[1]/head[1]/title[1]", xpathByOffset);
 
+    }
+
+    @Test
+    public void testGetAllXpathsFromDocument() throws Exception
+    {
+        final List<String> allXpathInXmlDocument = XMLLookupUtils.getAllXpathInXmlDocument(XML_CONTENT);
+        assertEquals(12, allXpathInXmlDocument.size());
     }
 }
