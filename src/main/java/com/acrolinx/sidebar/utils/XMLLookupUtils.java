@@ -14,9 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -28,7 +26,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.ccil.cowan.tagsoup.jaxp.SAXParserImpl;
+import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
@@ -150,24 +148,36 @@ public class XMLLookupUtils
     private static Document buildDocument(String xmlContent)
             throws ParserConfigurationException, IOException, SAXException
     {
+        final String cleanXML = XMLLookupUtils.cleanXML(xmlContent);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
-        ByteArrayInputStream input = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
+        ByteArrayInputStream input = new ByteArrayInputStream(cleanXML.getBytes(StandardCharsets.UTF_8));
         Document doc = builder.parse(input);
         return doc;
+    }
+
+    public static String cleanXML(String markup)
+    {
+        final org.jsoup.nodes.Document document = Jsoup.parse(markup);
+        document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+        return document.toString();
     }
 
     public static String findXpathByOffset(String xmlContent, int offsetStart, int offsetEnd) throws Exception
     {
         String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroSeparator>"
                 + xmlContent.substring(offsetStart, offsetEnd) + "</acroSeparator>" + xmlContent.substring(offsetEnd);
+        final String cleanXML = XMLLookupUtils.cleanXML(contentWithMarkerNode);
+
         try {
-            final SAXParserImpl sp = SAXParserImpl.newInstance(null);
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            SAXParser sp = spf.newSAXParser();
             XMLReader xr = sp.getXMLReader();
+            xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
             xr.setContentHandler(fragmentContentHandler);
-            xr.parse(new InputSource(new StringReader(contentWithMarkerNode)));
+            xr.parse(new InputSource(new StringReader(cleanXML)));
             String markerXpath = fragmentContentHandler.getMarkerXpath();
             String xpath = markerXpath.substring(0, markerXpath.lastIndexOf('/'));
             return xpath;
@@ -182,11 +192,14 @@ public class XMLLookupUtils
     public static List<String> getAllXpathInXmlDocument(String xml) throws Exception
     {
         try {
-            final SAXParserImpl sp = SAXParserImpl.newInstance(null);
+            final String cleanXML = XMLLookupUtils.cleanXML(xml);
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            SAXParser sp = spf.newSAXParser();
             XMLReader xr = sp.getXMLReader();
+            xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
             xr.setContentHandler(fragmentContentHandler);
-            xr.parse(new InputSource(new StringReader(xml)));
+            xr.parse(new InputSource(new StringReader(cleanXML)));
             return fragmentContentHandler.getDocumentXpaths();
         } catch (Exception ex) {
             logger.error(ex.getMessage());

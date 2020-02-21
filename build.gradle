@@ -338,7 +338,7 @@ dependencies {
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
 	compile group: 'commons-validator', name: 'commons-validator', version: '1.6'
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
-	compile group: 'org.ccil.cowan.tagsoup', name: 'tagsoup', version: '1.2.1'
+	compile group: 'org.jsoup', name: 'jsoup', version: '1.12.2'
 	compile 'com.google.guava:guava:28.1-jre'
 	testCompile group: 'junit', name: 'junit', version: '4.+'
 }
