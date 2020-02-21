@@ -56,4 +56,22 @@ public class XMLLookupUtilsTest
         assertEquals("//para[1]/p[2]",
                 XMLLookupUtils.getCommonXpath("//para[1]/p[2]/sub[1]/", "//para[1]/p[2]/sub[2]"));
     }
+
+    @Test
+    public void testXHTMLContent() throws Exception
+    {
+
+        String XHtmlContent = "<!--Arbortext, Inc., 1988-2019, v.4002-->\n"
+                + "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n"
+                + " \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+                + "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" + "<head>\n"
+                + "<title>TEST_CONTAINER</title><?Pub Caret -1>\n"
+                + "<meta content=\"text/html; charset=iso-8859-1\" http-equiv=\"content-type\">\n" + "</head>\n"
+                + "<body>\t\t\t \t\t\t<div>\t\t\t\t<img\n" + "alt=\"notice that all my quotes are in\n"
+                + " place for attribute values\" src=\"logoBlackBlue.png\"> \t\t\t\t</div> \t\t\t</body>\n" + "</html>";
+        int index = XHtmlContent.indexOf("TEST_CONTAINER");
+        String xpathByOffset = XMLLookupUtils.findXpathByOffset(XHtmlContent, index, index + "TEST_CONTAINER".length());
+        assertEquals("//html[1]/head[1]/title[1]", xpathByOffset);
+
+    }
 }

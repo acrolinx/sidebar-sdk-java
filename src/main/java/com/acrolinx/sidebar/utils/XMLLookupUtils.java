@@ -4,14 +4,19 @@
 
 package com.acrolinx.sidebar.utils;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.xml.parsers.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -23,10 +28,10 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.ccil.cowan.tagsoup.jaxp.SAXParserImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
-import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -64,7 +69,8 @@ public class XMLLookupUtils
                         String rootElement = doc.getDocumentElement().getTagName();
                         String rootElementBegin = "<" + rootElement + ">";
                         String rootElementEnd = "</" + rootElement + ">";
-                        return new IntRange(xmlContent.indexOf(rootElementBegin), xmlContent.lastIndexOf(rootElementEnd) + rootElementEnd.length());
+                        return new IntRange(xmlContent.indexOf(rootElementBegin),
+                                xmlContent.lastIndexOf(rootElementEnd) + rootElementEnd.length());
                     }
                     parentNode.insertBefore(acrolinxSelection, node);
                     acrolinxSelection.appendChild(node);
@@ -154,14 +160,12 @@ public class XMLLookupUtils
 
     public static String findXpathByOffset(String xmlContent, int offsetStart, int offsetEnd) throws Exception
     {
-        String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroSeparator>" + xmlContent.substring(offsetStart, offsetEnd)
-                + "</acroSeparator>" + xmlContent.substring(offsetEnd);
+        String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroSeparator>"
+                + xmlContent.substring(offsetStart, offsetEnd) + "</acroSeparator>" + xmlContent.substring(offsetEnd);
         try {
             logger.info(contentWithMarkerNode);
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            SAXParser sp = spf.newSAXParser();
+            final SAXParserImpl sp = SAXParserImpl.newInstance(null);
             XMLReader xr = sp.getXMLReader();
-            xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
             xr.setContentHandler(fragmentContentHandler);
             xr.parse(new InputSource(new StringReader(contentWithMarkerNode)));
