@@ -12,6 +12,7 @@ import com.acrolinx.sidebar.utils.LoggingUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.google.gson.Gson;
 
+
 @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
 public class AcrolinxSidebarInitParameter
 {
@@ -40,10 +41,17 @@ public class AcrolinxSidebarInitParameter
         final List<SoftwareComponent> copy = new ArrayList<>();
         copy.addAll(builder.clientComponents);
         copy.add(SidebarUtils.getJavaSDKSoftwareComponent());
-        copy.add(new SoftwareComponent("os", System.getProperty("os.name"), System.getProperty("os.version"),
+
+        String osID = System.getProperty("os.name").replaceAll(" ", ".");
+
+        String javaID = (System.getProperty("java.runtime.name") + " " +
+                System.getProperty("java.vendor")).replaceAll(" ", ".");
+
+        copy.add(new SoftwareComponent(osID, System.getProperty("os.name"), System.getProperty("os.version"),
                 SoftwareComponentCategory.DETAIL));
-        copy.add(new SoftwareComponent("java", System.getProperty("java.runtime.name"),
+        copy.add(new SoftwareComponent(javaID, System.getProperty("java.runtime.name"),
                 System.getProperty("java.runtime.version"), SoftwareComponentCategory.DETAIL));
+
         this.clientComponents = copy;
         this.showServerSelector = builder.showServerSelector;
         this.checkSettings = builder.checkSettings;
