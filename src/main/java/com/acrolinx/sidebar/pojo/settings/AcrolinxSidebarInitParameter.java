@@ -44,7 +44,7 @@ public class AcrolinxSidebarInitParameter
 
         String osID = System.getProperty("os.name").replaceAll(" ", ".");
 
-        String javaID = (System.getProperty("java.runtime.name") + " " +
+        String javaID = ("java.runtime" + " " +
                 System.getProperty("java.vendor")).replaceAll(" ", ".");
 
         copy.add(new SoftwareComponent(osID, System.getProperty("os.name"), System.getProperty("os.version"),
