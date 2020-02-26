@@ -42,12 +42,12 @@ public class AcrolinxSidebarInitParameter
         copy.addAll(builder.clientComponents);
         copy.add(SidebarUtils.getJavaSDKSoftwareComponent());
 
-        String osID = System.getProperty("os.name").replaceAll(" ", ".");
+        String osID = System.getProperty("os.name");
 
         String javaID = ("java.runtime" + " " +
                 System.getProperty("java.vendor")).replaceAll(" ", ".");
 
-        copy.add(new SoftwareComponent(osID, System.getProperty("os.name"), System.getProperty("os.version"),
+        copy.add(new SoftwareComponent(osID.replaceAll(" ", "."), osID, System.getProperty("os.version"),
                 SoftwareComponentCategory.DETAIL));
         copy.add(new SoftwareComponent(javaID, System.getProperty("java.runtime.name"),
                 System.getProperty("java.runtime.version"), SoftwareComponentCategory.DETAIL));
