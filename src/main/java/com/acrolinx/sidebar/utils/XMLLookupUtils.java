@@ -152,9 +152,16 @@ public class XMLLookupUtils
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
-        ByteArrayInputStream input = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
-        Document doc = builder.parse(input);
-        return doc;
+
+        try {
+            ByteArrayInputStream input = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
+            return builder.parse(input);
+        } catch (Exception e) {
+            final String cleanXML = XMLLookupUtils.cleanXML(xmlContent);
+            ByteArrayInputStream input = new ByteArrayInputStream(cleanXML.getBytes(StandardCharsets.UTF_8));
+            return builder.parse(input);
+        }
+
     }
 
     public static String cleanXML(String markup)
