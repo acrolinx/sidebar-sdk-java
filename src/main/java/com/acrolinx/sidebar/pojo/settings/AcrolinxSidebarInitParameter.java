@@ -12,7 +12,6 @@ import com.acrolinx.sidebar.utils.LoggingUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.google.gson.Gson;
 
-
 @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
 public class AcrolinxSidebarInitParameter
 {
@@ -42,9 +41,8 @@ public class AcrolinxSidebarInitParameter
         copy.addAll(builder.clientComponents);
         copy.add(SidebarUtils.getJavaSDKSoftwareComponent());
 
-        String osID = ("os." + System.getProperty("os.name").replaceAll(" ", "."));
-        String javaID = ("java.runtime." +
-                System.getProperty("java.vendor")).replaceAll(" ", ".");
+        final String osID = ("os." + System.getProperty("os.name").replaceAll(" ", "."));
+        final String javaID = ("java.runtime." + System.getProperty("java.vendor")).replaceAll(" ", ".");
 
         copy.add(new SoftwareComponent(osID, System.getProperty("os.name"), System.getProperty("os.version"),
                 SoftwareComponentCategory.DETAIL));

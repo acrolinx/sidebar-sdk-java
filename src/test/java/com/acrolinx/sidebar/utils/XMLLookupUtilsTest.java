@@ -98,4 +98,19 @@ public class XMLLookupUtilsTest
         final String cleanXML = XMLLookupUtils.cleanXML(XHtmlContent);
         assertTrue(cleanXML.contains("</meta>"));
     }
+
+    @Test
+    public void testElementsWithNamespace()
+    {
+        String xmlContent = "<tech controlno=\"i1234567\" id=\"i1234567\" ietype=\"syso\"\n"
+                + "outputclass=\"tech DoC\" translate=\"yes\" vsp=\"yes\" xml:lang=\"en-us\"\n"
+                + "xmlns:atict=\"http://www.arbortext.com/namespace/atict\"> <ietitle><atict:add user=\"admin\" time=\"1582712102\">There are tracck changess </atict:add>this is tracchec </ietitle> </tech>";
+
+        IntRange offsetInXmlStringByXpath = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent,
+                "//tech[1]/ietitle[1]/atict:add[1]");
+        assertNotNull(offsetInXmlStringByXpath);
+        assertEquals(186, offsetInXmlStringByXpath.getMinimumInteger());
+        assertEquals(266, offsetInXmlStringByXpath.getMaximumInteger());
+
+    }
 }
