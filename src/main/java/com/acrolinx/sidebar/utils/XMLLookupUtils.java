@@ -54,8 +54,6 @@ public class XMLLookupUtils
             Document doc = buildDocument(xmlContent);
 
             XPath xPath = XPathFactory.newInstance().newXPath();
-            xPath.setNamespaceContext(new NamespaceResolver(doc));
-
             NodeList nodeList = (NodeList) xPath.compile(xpath).evaluate(doc, XPathConstants.NODESET);
 
             String selectionTag = "acrolinxnode";
@@ -152,7 +150,6 @@ public class XMLLookupUtils
             throws ParserConfigurationException, IOException, SAXException
     {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
         ByteArrayInputStream input = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
