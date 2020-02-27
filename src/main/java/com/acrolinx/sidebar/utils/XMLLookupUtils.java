@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
@@ -165,20 +168,10 @@ public class XMLLookupUtils
         return document.toString();
     }
 
-    public static List<String> findXpathByOffset(String xmlContent, List<? extends AcrolinxMatch> acrolinxMatches)
-            throws Exception
+    public static String findXpathByOffset(String xmlContent, int offsetStart, int offsetEnd) throws Exception
     {
-        String contentWithMarkerNode = xmlContent;
-        Collections.reverse(acrolinxMatches);
-        int count = 0;
-        for (AcrolinxMatch match : acrolinxMatches) {
-            final int offsetStart = match.getRange().getMinimumInteger();
-            final int offsetEnd = match.getRange().getMaximumInteger();
-
-            contentWithMarkerNode = contentWithMarkerNode.substring(0, offsetStart) + "<acroseparator" + count + ">"
-                    + xmlContent.substring(offsetStart, offsetEnd) + "</acroseparator" + count + ">"
-                    + xmlContent.substring(offsetEnd);
-        }
+        String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroseparator>"
+                + xmlContent.substring(offsetStart, offsetEnd) + "</acroseparator>" + xmlContent.substring(offsetEnd);
 
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -188,14 +181,9 @@ public class XMLLookupUtils
             FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
             xr.setContentHandler(fragmentContentHandler);
             xr.parse(new InputSource(new StringReader(contentWithMarkerNode)));
-            final List<String> markerXpaths = fragmentContentHandler.getMarkerXpath();
-            final List<String> xpathsForMatches = new ArrayList<>();
-            for (String xpath : markerXpaths) {
-                final String xpathForMatch = xpath.substring(0, xpath.lastIndexOf('/'));
-                xpathsForMatches.add(xpathForMatch);
-            }
-
-            return xpathsForMatches;
+            String markerXpath = fragmentContentHandler.getMarkerXpath();
+            String xpath = markerXpath.substring(0, markerXpath.lastIndexOf('/'));
+            return xpath;
 
         } catch (Exception ex) {
             logger.error("Lookup For Offset Failed");
