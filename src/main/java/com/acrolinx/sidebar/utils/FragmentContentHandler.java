@@ -16,7 +16,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class FragmentContentHandler extends DefaultHandler
 {
 
-    private static volatile String markerXpath;
+    private static volatile List<String> markerXpath = new ArrayList<>();
     private static volatile List<String> documentXpaths = new ArrayList<>();
     private String xPath = "/";
     private XMLReader xmlReader;
@@ -49,12 +49,13 @@ public class FragmentContentHandler extends DefaultHandler
 
         if (xPath.equals("/")) {
             documentXpaths.clear();
+            markerXpath.clear();
         }
 
         documentXpaths.add(childXPath);
 
         if (childXPath.contains("acroseparator")) {
-            markerXpath = childXPath;
+            markerXpath.add(childXPath);
         }
 
         FragmentContentHandler child = new FragmentContentHandler(childXPath, xmlReader, this);
@@ -73,7 +74,7 @@ public class FragmentContentHandler extends DefaultHandler
         // nothing to do here
     }
 
-    public String getMarkerXpath()
+    public List<String> getMarkerXpath()
     {
         return markerXpath;
     }

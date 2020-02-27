@@ -6,10 +6,12 @@ package com.acrolinx.sidebar.utils;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
 
+import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 
 public class XMLLookupUtilsTest
@@ -40,11 +42,13 @@ public class XMLLookupUtilsTest
     public void findXpathByOffset() throws Exception
     {
         int index = XML_CONTENT.indexOf("Fantastic");
-        String xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT, index, index + "Fantastic".length());
+        final AcrolinxMatch match = new AcrolinxMatch(new IntRange(index, index + "Fantastic".length()), "");
+        String xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT, Arrays.asList(match)).get(0);
         assertEquals("//bookstore[1]/book[1]/genre[1]", xpathByOffset);
 
         index = XML_CONTENT.indexOf("Some Name");
-        xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT, index, index + "Some Name".length());
+        final AcrolinxMatch match1 = new AcrolinxMatch(new IntRange(index, index + "Some Name".length()), "");
+        xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT, Arrays.asList(match1)).get(0);
         assertEquals("//bookstore[1]/book[2]/author[1]/last-name[1]", xpathByOffset);
     }
 
@@ -73,7 +77,9 @@ public class XMLLookupUtilsTest
                 + " place for attribute values\" src=\"logoBlackBlue.png\"> \t\t\t\t</div> \t\t\t</body>\n" + "</html>";
         final String cleanXML = XMLLookupUtils.cleanXML(XHtmlContent);
         int index = cleanXML.indexOf("TEST_CONTAINER");
-        String xpathByOffset = XMLLookupUtils.findXpathByOffset(cleanXML, index, index + "TEST_CONTAINER".length());
+
+        final AcrolinxMatch match = new AcrolinxMatch(new IntRange(index, index + "TEST_CONTAINER".length()), "");
+        String xpathByOffset = XMLLookupUtils.findXpathByOffset(cleanXML, Arrays.asList(match)).get(0);
         assertEquals("//html[1]/head[1]/title[1]", xpathByOffset);
 
     }
