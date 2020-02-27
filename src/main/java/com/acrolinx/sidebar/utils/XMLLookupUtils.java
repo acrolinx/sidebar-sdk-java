@@ -182,11 +182,14 @@ public class XMLLookupUtils
             SAXParser sp = spf.newSAXParser();
             XMLReader xr = sp.getXMLReader();
             xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
-            xr.setContentHandler(fragmentContentHandler);
+            FragmentContentHandler fragmentContentHandler;
             try {
+                fragmentContentHandler = new FragmentContentHandler(xr);
+                xr.setContentHandler(fragmentContentHandler);
                 xr.parse(new InputSource(new StringReader(contentWithMarkerNode)));
             } catch (Exception e) {
+                fragmentContentHandler = new FragmentContentHandler(xr);
+                xr.setContentHandler(fragmentContentHandler);
                 xr.parse(new InputSource(new StringReader(XMLLookupUtils.cleanXML(contentWithMarkerNode))));
             }
             String markerXpath = fragmentContentHandler.getMarkerXpath();
