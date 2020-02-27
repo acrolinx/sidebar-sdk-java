@@ -71,8 +71,9 @@ public class XMLLookupUtilsTest
                 + "<meta content=\"text/html; charset=iso-8859-1\" http-equiv=\"content-type\">\n" + "</head>\n"
                 + "<body>\t\t\t \t\t\t<div>\t\t\t\t<img\n" + "alt=\"notice that all my quotes are in\n"
                 + " place for attribute values\" src=\"logoBlackBlue.png\"> \t\t\t\t</div> \t\t\t</body>\n" + "</html>";
-        int index = XHtmlContent.indexOf("TEST_CONTAINER");
-        String xpathByOffset = XMLLookupUtils.findXpathByOffset(XHtmlContent, index, index + "TEST_CONTAINER".length());
+        final String cleanXML = XMLLookupUtils.cleanXML(XHtmlContent);
+        int index = cleanXML.indexOf("TEST_CONTAINER");
+        String xpathByOffset = XMLLookupUtils.findXpathByOffset(cleanXML, index, index + "TEST_CONTAINER".length());
         assertEquals("//html[1]/head[1]/title[1]", xpathByOffset);
 
     }

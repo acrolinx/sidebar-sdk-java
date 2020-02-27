@@ -151,12 +151,11 @@ public class XMLLookupUtils
     private static Document buildDocument(String xmlContent)
             throws ParserConfigurationException, IOException, SAXException
     {
-        final String cleanXML = XMLLookupUtils.cleanXML(xmlContent);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
-        ByteArrayInputStream input = new ByteArrayInputStream(cleanXML.getBytes(StandardCharsets.UTF_8));
+        ByteArrayInputStream input = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
         Document doc = builder.parse(input);
         return doc;
     }
@@ -173,7 +172,6 @@ public class XMLLookupUtils
     {
         String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroseparator>"
                 + xmlContent.substring(offsetStart, offsetEnd) + "</acroseparator>" + xmlContent.substring(offsetEnd);
-        final String cleanXML = XMLLookupUtils.cleanXML(contentWithMarkerNode);
 
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -182,7 +180,7 @@ public class XMLLookupUtils
             xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
             xr.setContentHandler(fragmentContentHandler);
-            xr.parse(new InputSource(new StringReader(cleanXML)));
+            xr.parse(new InputSource(new StringReader(contentWithMarkerNode)));
             String markerXpath = fragmentContentHandler.getMarkerXpath();
             String xpath = markerXpath.substring(0, markerXpath.lastIndexOf('/'));
             return xpath;
@@ -197,14 +195,13 @@ public class XMLLookupUtils
     public static List<String> getAllXpathInXmlDocument(String xml) throws Exception
     {
         try {
-            final String cleanXML = XMLLookupUtils.cleanXML(xml);
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser sp = spf.newSAXParser();
             XMLReader xr = sp.getXMLReader();
             xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
             xr.setContentHandler(fragmentContentHandler);
-            xr.parse(new InputSource(new StringReader(cleanXML)));
+            xr.parse(new InputSource(new StringReader(xml)));
             return fragmentContentHandler.getDocumentXpaths();
         } catch (Exception ex) {
             logger.error(ex.getMessage());
