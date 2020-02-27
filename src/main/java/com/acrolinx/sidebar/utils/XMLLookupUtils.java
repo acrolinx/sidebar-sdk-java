@@ -180,7 +180,11 @@ public class XMLLookupUtils
             xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
             xr.setContentHandler(fragmentContentHandler);
-            xr.parse(new InputSource(new StringReader(contentWithMarkerNode)));
+            try {
+                xr.parse(new InputSource(new StringReader(contentWithMarkerNode)));
+            } catch (Exception e) {
+                xr.parse(new InputSource(new StringReader(XMLLookupUtils.cleanXML(contentWithMarkerNode))));
+            }
             String markerXpath = fragmentContentHandler.getMarkerXpath();
             String xpath = markerXpath.substring(0, markerXpath.lastIndexOf('/'));
             return xpath;
