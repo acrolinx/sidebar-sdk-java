@@ -101,7 +101,6 @@ Before you start developing your own integration, you might benefit from looking
    [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
    Note that it might take quite a while until the new version shows up in
    [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
-   It will be immediately available in the [oss staging repository](https://oss.sonatype.org/content/groups/staging/com/acrolinx/client/sidebar-sdk/).
 
    If that build fails, you might have to sign-in into
    [Nexus Repository Manager](https://oss.sonatype.org/#welcome),
