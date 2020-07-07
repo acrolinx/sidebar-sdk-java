@@ -1,7 +1,7 @@
 # Acrolinx Sidebar Java SDK
 
-| Master |
-| ------ |
+| Master                                                                                                                                       |
+| -------------------------------------------------------------------------------------------------------------------------------------------- |
 | [![Build Status Master](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=master)](https://travis-ci.org/acrolinx/sidebar-sdk-java) |
 
 This is a library for integrating the [Acrolinx](https://www.acrolinx.com/) Sidebar
@@ -60,12 +60,12 @@ Before you start developing your own integration, you might benefit from looking
 ## SDK Features
 
 1. Support for UI-frameworks:
-    + JavaFx
+    + JavaFX
     + Swing
     + SWT
 2. `LookupRangesDiff` - Provides [lookup](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-lookup.md)
   functionality.
-3. **Start page**: Provides interactive way to sign in to Acrolinx with built-in error handling.
+3. **Start page**: Provides an interactive way to sign in to Acrolinx with built-in error handling.
 4. Provides [logging](https://github.com/acrolinx/sidebar-sdk-dotnet/blob/master/Acrolinx.Sidebar/Util/Logging/Logger.cs).
    Logging can be activated via:
 
@@ -93,16 +93,17 @@ Before you start developing your own integration, you might benefit from looking
    git push
    ```
 
-    If your build on Travis was successful, a new snapshot version will be automatically available via [Maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
+    If your build on Travis was successful,
+    a new snapshot version will be automatically available via the [Maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
 
-2. Once you tested your new features, remove the snapshot from the currentVersion property in the `gradle.properties` file.
+2. Once you tested your new features, remove the snapshot from the `currentVersion` property in the `gradle.properties` file.
 
 3. Commit and push your changes. If all goes right, the artifact is released to
    [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
    Note that it might take quite a while until the new version shows up in
    [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
 
-   If that build fails, you might have to sign-in into
+   If that build fails, you might have to sign in into
    [Nexus Repository Manager](https://oss.sonatype.org/#welcome),
    and drop falsely created repositories, before starting a new release build.
 
