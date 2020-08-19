@@ -82,7 +82,7 @@ Before you start developing your own integration, you might benefit from looking
 
 ### Branches and Releasing
 
-1. Please add new features using the master branch, or submit a pull request.
+1. Please add new features using the `master` branch, or submit a pull request.
 
    ```bash
    git checkout master
