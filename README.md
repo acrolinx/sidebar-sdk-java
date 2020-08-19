@@ -1,8 +1,6 @@
 # Acrolinx Sidebar Java SDK
 
-| `master`                                                                                                                                     |
-| -------------------------------------------------------------------------------------------------------------------------------------------- |
-| [![Build Status Master](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=master)](https://travis-ci.org/acrolinx/sidebar-sdk-java) |
+[![Build Status `master`](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=master)](https://travis-ci.org/acrolinx/sidebar-sdk-java)
 
 This is a library for integrating the [Acrolinx](https://www.acrolinx.com/) Sidebar
 into different Java UI framework-based applications (JFX, Swing, and SWT).
