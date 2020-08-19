@@ -1,6 +1,6 @@
 # Acrolinx Sidebar Java SDK
 
-| Master                                                                                                                                       |
+| `master`                                                                                                                                     |
 | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | [![Build Status Master](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=master)](https://travis-ci.org/acrolinx/sidebar-sdk-java) |
 
