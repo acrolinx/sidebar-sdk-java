@@ -16,8 +16,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import org.apache.commons.validator.routines.DomainValidator;
-import org.apache.commons.validator.routines.UrlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -282,5 +280,34 @@ public class SidebarUtils
             logger.error("Error running command.", e);
             return false;
         }
+    }
+
+    public static int getSystemJavaVersion()
+    {
+        String version = SidebarUtils.getFullCurrentJavaVersionString();
+        if (version.startsWith("1.")) {
+            version = version.substring(2, 3);
+        } else {
+            int dot = version.indexOf(".");
+            if (dot != -1) {
+                version = version.substring(0, dot);
+            }
+        }
+        return Integer.parseInt(version);
+    }
+
+    public static String getSystemJavaVMName()
+    {
+        return System.getProperty("java.vm.name");
+    }
+
+    public static String getFullCurrentJavaVersionString()
+    {
+        return System.getProperty("java.version");
+    }
+
+    public static String getPathOfCurrentJavaJRE()
+    {
+        return System.getProperty("java.home");
     }
 }

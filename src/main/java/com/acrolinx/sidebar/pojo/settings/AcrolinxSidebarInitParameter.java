@@ -27,6 +27,7 @@ public class AcrolinxSidebarInitParameter
     private boolean enforceHTTPS;
     private String logFileLocation;
     private String minimumSidebarVersion;
+    private Integer minimumJavaVersion;
     private PluginSupportedParameters supported;
 
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarInitParameter.class);
@@ -57,11 +58,30 @@ public class AcrolinxSidebarInitParameter
         this.enforceHTTPS = builder.enforceHTTPS;
         this.logFileLocation = LoggingUtils.getLogFileLocation();
         this.minimumSidebarVersion = builder.minimumSidebarVersion;
+        this.minimumJavaVersion = builder.minimumJavaVersion;
         this.supported = builder.supported;
 
         this.clientComponents.stream().forEach(component -> logger.info("Software component: " + component.toString()));
         if (this.clientLocale != null) {
             logger.info("Plugin initialized with client locale: " + this.clientLocale);
+        }
+
+        logger.info("Plugin running on Java VM: " + SidebarUtils.getSystemJavaVMName());
+
+        if (SidebarUtils.getSystemJavaVMName().indexOf("OpenJDK") < 0
+                || SidebarUtils.getSystemJavaVMName().indexOf("HotSpot") < 0) {
+            logger.warn("You are using an unsupported Java VM. This might cause errors during runtime.");
+        }
+
+        logger.info("Plugin running on Java VM Version: " + SidebarUtils.getFullCurrentJavaVersionString());
+        logger.info("Plugin running with JRE Path: " + SidebarUtils.getPathOfCurrentJavaJRE());
+
+        if (this.minimumJavaVersion != null) {
+            logger.info("Required Java Version is: " + this.minimumJavaVersion);
+            if (SidebarUtils.getSystemJavaVersion() < this.minimumJavaVersion) {
+                logger.warn("The current Java version " + SidebarUtils.getSystemJavaVersion()
+                        + " does not fulfill the requirements.");
+            }
         }
 
         logger.info("Plugin initialized with force https: " + this.enforceHTTPS);
@@ -142,6 +162,7 @@ public class AcrolinxSidebarInitParameter
         private boolean enforceHTTPS;
         private String minimumSidebarVersion;
         private PluginSupportedParameters supported;
+        private int minimumJavaVersion;
 
         /**
          * Class to build the parameters to initialize the Acrolinx Sidebar. Two parameters have to
@@ -265,7 +286,7 @@ public class AcrolinxSidebarInitParameter
 
         /**
          * This can be set to require a minimum version of the sidebar. (eg. "4.4", "4.4.1")
-         * 
+         *
          * @param minimumSidebarVersion
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
@@ -286,6 +307,18 @@ public class AcrolinxSidebarInitParameter
                 final PluginSupportedParameters supported)
         {
             this.supported = supported;
+            return this;
+        }
+
+        /**
+         * This can be set to require a minimum version of Java JRE. (eg. "8", "11")
+         *
+         * @param minimumJavaVersion
+         * @return Returns the AcrolinxInitParameterBuilder for chaining.
+         */
+        public AcrolinxSidebarInitParameterBuilder withMinimumJavaVersion(final int minimumJavaVersion)
+        {
+            this.minimumJavaVersion = minimumJavaVersion;
             return this;
         }
 

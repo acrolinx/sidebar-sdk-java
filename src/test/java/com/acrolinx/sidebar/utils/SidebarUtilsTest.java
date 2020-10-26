@@ -2,6 +2,7 @@
 
 package com.acrolinx.sidebar.utils;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -43,6 +44,14 @@ public class SidebarUtilsTest
         boolean validURL = SidebarUtils.isValidURL(
                 "https:/acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html");
         assertTrue(!validURL);
+    }
+
+    @Test
+    public void testSidebarSystemUtils() {
+        assertNotNull(SidebarUtils.getSystemJavaVMName());
+        assertNotNull(SidebarUtils.getSystemJavaVersion());
+        assertNotNull(SidebarUtils.getPathOfCurrentJavaJRE());
+        assertNotNull(SidebarUtils.getFullCurrentJavaVersionString());
     }
 
 }
