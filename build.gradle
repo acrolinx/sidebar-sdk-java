@@ -32,6 +32,14 @@ plugins {
 	id "com.github.spotbugs" version "4.5.1"
 
 	id "org.openjfx.javafxplugin" version "0.0.9" apply false
+	id "org.sonarqube" version "3.0"
+}
+
+sonarqube {
+	properties {
+		property "sonar.organization", "acrolinx"
+		property "sonar.projectKey", "acrolinx_sidebar-sdk-java"
+	}
 }
 
 tasks.withType(Javadoc) {

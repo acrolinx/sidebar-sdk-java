@@ -2,6 +2,10 @@ plugins {
 	id 'com.diffplug.gradle.spotless' version '2.4.1'
 }
 
+sonarqube {
+	skipProject = true
+}
+
 ////////////////
 // FORMATTING //
 ////////////////

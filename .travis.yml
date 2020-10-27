@@ -19,7 +19,7 @@ cache:
     - $HOME/.gradle/wrapper/
 script:
   - ./gradlew build
-  - sonar-scanner
+  - ./gradlew sonarqube
   - cd $TRAVIS_BUILD_DIR
   - chmod +x ./deploy.sh
 deploy:
