@@ -69,7 +69,7 @@ def isMasterBranch = false
 dependencyCheck {
 	cveValidForHours = 1
 	format = 'HTML'
-	failBuildOnCVSS = '4.0'
+	failBuildOnCVSS = 4.0
 	scanConfigurations = ['compile', 'runtime']
 }
 
