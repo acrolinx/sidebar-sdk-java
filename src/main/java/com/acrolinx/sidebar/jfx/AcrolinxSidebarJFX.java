@@ -37,7 +37,7 @@ import netscape.javascript.JSObject;
 @SuppressWarnings("unused, WeakerAccess")
 public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
-    private volatile WebView webView = new WebView();
+    private WebView webView = new WebView();
     private AcrolinxSidebarPlugin acrolinxSidebarPlugin;
     private final AcrolinxIntegration integration;
 

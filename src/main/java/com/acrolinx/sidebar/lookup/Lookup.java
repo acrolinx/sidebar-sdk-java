@@ -15,12 +15,16 @@ import com.acrolinx.sidebar.pojo.document.IntRange;
 @SuppressWarnings("WeakerAccess")
 public class Lookup
 {
+    private Lookup(){
+        throw new IllegalStateException("Utility class");
+    }
+
     public static List<OffsetAlign> createOffsetMappingArray(List<DiffMatchPatch.Diff> diffs)
     {
         LinkedList<OffsetAlign> offsetMapping = new LinkedList<>();
         final AtomicInteger offsetCountOld = new AtomicInteger(0);
         final AtomicInteger currentDiffOffset = new AtomicInteger(0);
-        diffs.forEach((diff) -> {
+        diffs.forEach(diff -> {
             int offsetCountOldInt = offsetCountOld.get();
             int currentDiffOffsetInt = currentDiffOffset.get();
             int diffLengths = diff.text.length();
@@ -35,6 +39,7 @@ public class Lookup
                 case EQUAL:
                     offsetCountOld.set(offsetCountOldInt + diffLengths);
                     break;
+
             }
             offsetMapping.add(new OffsetAlign(offsetCountOld.get(), currentDiffOffset.get()));
         });
@@ -44,7 +49,7 @@ public class Lookup
     protected static Optional<IntRange> getCorrectedMatch(List<DiffMatchPatch.Diff> diffs, List<OffsetAlign> aligns,
             int offsetStart, int offsetEnd)
     {
-        Optional<OffsetAlign> first = aligns.stream().filter((a) -> a.getOldPosition() >= offsetEnd).findFirst();
+        Optional<OffsetAlign> first = aligns.stream().filter(a -> a.getOldPosition() >= offsetEnd).findFirst();
         if (first.isPresent()) {
             int index = aligns.indexOf(first.get());
             if (index > 0 && aligns.get(index - 1).getOldPosition() <= offsetStart
@@ -64,14 +69,13 @@ public class Lookup
         DiffMatchPatch differ = new DiffMatchPatch();
         differ.diffTimeout = 5;
         LinkedList<DiffMatchPatch.Diff> diffs = differ.diffMain(checkedText, changedText);
-        // differ.diffCleanupSemantic(diffs);
         differ.diffCleanupSemanticLossless(diffs);
         return Collections.unmodifiableList(diffs);
     }
 
     public static Optional<Integer> getDiffOffsetPositionStart(List<OffsetAlign> aligns, int offset)
     {
-        Optional<OffsetAlign> first = aligns.stream().filter((a) -> a.getOldPosition() >= offset + 1).findFirst();
+        Optional<OffsetAlign> first = aligns.stream().filter(a -> a.getOldPosition() >= offset + 1).findFirst();
         if (first.isPresent()) {
             int index = aligns.indexOf(first.get());
             if (index >= 0) {
@@ -84,7 +88,7 @@ public class Lookup
 
     public static Optional<Integer> getDiffOffsetPositionEnd(List<OffsetAlign> aligns, int offset)
     {
-        Optional<OffsetAlign> first = aligns.stream().filter((a) -> a.getOldPosition() <= offset - 1
+        Optional<OffsetAlign> first = aligns.stream().filter(a -> a.getOldPosition() <= offset - 1
                 && aligns.get(aligns.indexOf(a) + 1).getOldPosition() >= offset).findFirst();
         if (first.isPresent()) {
             int index = aligns.indexOf(first.get());

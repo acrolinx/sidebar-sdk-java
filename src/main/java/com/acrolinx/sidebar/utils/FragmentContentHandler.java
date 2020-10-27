@@ -15,9 +15,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class FragmentContentHandler extends DefaultHandler
 {
-
-    private static volatile String markerXpath;
-    private static volatile List<String> documentXpaths = new ArrayList<>();
+    private static String markerXpath;
+    private static List<String> documentXpaths = new ArrayList<>();
     private String xPath = "/";
     private XMLReader xmlReader;
     private FragmentContentHandler parent;

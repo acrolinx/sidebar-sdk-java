@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -120,11 +121,14 @@ public class XMLLookupUtils
 
     private static String getDocumentXML(Document document)
     {
-        TransformerFactory tf = TransformerFactory.newInstance();
+
+        TransformerFactory transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
+        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
         Transformer transformer;
         try {
             logger.debug("Applying transformation to XML.");
-            transformer = tf.newTransformer();
+            transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty(OutputKeys.INDENT, "no");
@@ -150,6 +154,8 @@ public class XMLLookupUtils
             throws ParserConfigurationException, IOException, SAXException
     {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
 
@@ -174,12 +180,15 @@ public class XMLLookupUtils
 
     public static String findXpathByOffset(String xmlContent, int offsetStart, int offsetEnd) throws Exception
     {
-        String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroseparator>"
-                + xmlContent.substring(offsetStart, offsetEnd) + "</acroseparator>" + xmlContent.substring(offsetEnd);
+        String contentWithMarkerNode =
+                xmlContent.substring(0, offsetStart) + "<acroseparator>" + xmlContent.substring(offsetStart, offsetEnd)
+                        + "</acroseparator>" + xmlContent.substring(offsetEnd);
 
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser sp = spf.newSAXParser();
+            sp.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            sp.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             XMLReader xr = sp.getXMLReader();
             xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             FragmentContentHandler fragmentContentHandler;
@@ -209,6 +218,8 @@ public class XMLLookupUtils
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser sp = spf.newSAXParser();
             XMLReader xr = sp.getXMLReader();
+            sp.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            sp.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
             xr.setContentHandler(fragmentContentHandler);

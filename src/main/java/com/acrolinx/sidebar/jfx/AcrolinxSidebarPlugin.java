@@ -54,9 +54,9 @@ abstract class AcrolinxSidebarPlugin
     private final AtomicReference<List<IntRange>> checkSelectionRange = new AtomicReference<>();
     private final AtomicReference<AcrolinxSidebarInitParameter> initParameters = new AtomicReference<>();
     protected Instant checkStartedTime;
-    private volatile WebView webView;
+    private WebView webView;
 
-    public AcrolinxSidebarPlugin(final AcrolinxIntegration client, final WebView webView)
+    protected AcrolinxSidebarPlugin(final AcrolinxIntegration client, final WebView webView)
     {
         Preconditions.checkNotNull(client, "Workspace should not be null");
         Preconditions.checkNotNull(client.getEditorAdapter(), "EditorAdapter should not be null");
@@ -90,6 +90,7 @@ abstract class AcrolinxSidebarPlugin
                 jsobj = (JSObject) webView.getEngine().executeScript("window");
                 count++;
             } catch (final InterruptedException e) {
+                Thread.currentThread().interrupt();
                 logger.error(e.getMessage(), e);
             }
         }
