@@ -39,6 +39,7 @@ sonarqube {
 	properties {
 		property "sonar.organization", "acrolinx"
 		property "sonar.projectKey", "acrolinx_sidebar-sdk-java"
+		property "sonar.exclusions", "src/test/**/*.java"
 	}
 }
 
