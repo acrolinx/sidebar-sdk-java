@@ -406,9 +406,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 final String url = AcrolinxSidebarSWT.getURlFromJS(result);
                 if ("".equals(url)) {
                     logger.warn("Called to open URL but no URL to open is present.");
-                    return null;
                 }
-                if (SidebarUtils.isValidURL(url)) {
+                else if (SidebarUtils.isValidURL(url)) {
                     Program.launch(url);
                 } else {
                     logger.warn("Attempt to open invalid URL: " + url);
