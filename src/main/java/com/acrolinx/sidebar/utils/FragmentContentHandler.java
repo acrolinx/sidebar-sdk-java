@@ -35,7 +35,7 @@ public class FragmentContentHandler extends DefaultHandler
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes atts)
+    public void startElement(String uri, String localName, String qName, Attributes atts) throws FragmentContentException
     {
         Integer count = elementNameCount.get(qName);
         if (null == count) {
@@ -54,6 +54,7 @@ public class FragmentContentHandler extends DefaultHandler
 
         if (childXPath.contains("acroseparator")) {
             markerXpath = childXPath;
+            throw new FragmentContentException("Stop parser - xpath is prepared");
         }
 
         FragmentContentHandler child = new FragmentContentHandler(childXPath, xmlReader, this);

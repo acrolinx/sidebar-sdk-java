@@ -115,7 +115,6 @@ public class XMLLookupUtils
         if (startOffset < 0 || endOffset < 0) {
             return new IntRange(0, 0);
         }
-
         return new IntRange(startOffset, endOffset);
     }
 
@@ -191,15 +190,23 @@ public class XMLLookupUtils
             sp.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             XMLReader xr = sp.getXMLReader();
             xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            FragmentContentHandler fragmentContentHandler;
+            boolean isMalformedXMLFound = false;
+            FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
+            xr.setContentHandler(fragmentContentHandler);
             try {
-                fragmentContentHandler = new FragmentContentHandler(xr);
-                xr.setContentHandler(fragmentContentHandler);
                 xr.parse(new InputSource(new StringReader(contentWithMarkerNode)));
-            } catch (Exception e) {
-                fragmentContentHandler = new FragmentContentHandler(xr);
-                xr.setContentHandler(fragmentContentHandler);
-                xr.parse(new InputSource(new StringReader(XMLLookupUtils.cleanXML(contentWithMarkerNode))));
+            } catch (FragmentContentException s){
+                logger.debug("Custom fragment content exception is received" );
+            }
+            catch (Exception e) {
+                isMalformedXMLFound = true;
+            }
+            if(isMalformedXMLFound) {
+                try {
+                    xr.parse(new InputSource(new StringReader(XMLLookupUtils.cleanXML(contentWithMarkerNode))));
+                } catch (FragmentContentException s){
+                    logger.debug("Custom fragment content exception is received" );
+                }
             }
             String markerXpath = fragmentContentHandler.getMarkerXpath();
             String xpath = markerXpath.substring(0, markerXpath.lastIndexOf('/'));
