@@ -298,7 +298,7 @@ task createGithubReleaseTag {
 	doLast {
 		println 'Creating Github Release Tag'
 		if (isReleaseBuild) {
-			grgit = grgit.open(currentDir: rootDir)
+			grgit.open(currentDir: rootDir)
 			def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
 			println 'Finding tags'
 			if (!hasOldReleaseVersion) {
