@@ -179,7 +179,7 @@ task convertLocalizationEncoding() {
 javadoc {
 	source = sourceSets.main.allJava
 	destinationDir = new File(rootProject.projectDir, "docs/")
-	classpath = sourceSets.main.runtimeClasspath
+	classpath += sourceSets.main.runtimeClasspath
 	failOnError = false
 }
 
@@ -327,7 +327,6 @@ spotbugs {
 
 
 if (Integer.parseInt(Jvm.current().getJavaVersion().getMajorVersion()) >= 11) {
-	println('_____ Applying javadoc ______');
 	apply plugin: "org.openjfx.javafxplugin"
 
 	javafx {
