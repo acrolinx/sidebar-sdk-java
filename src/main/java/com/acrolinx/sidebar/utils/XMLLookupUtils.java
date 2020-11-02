@@ -138,8 +138,13 @@ public class XMLLookupUtils
     {
 
         TransformerFactory transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
-        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+        try {
+            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+        } catch (IllegalArgumentException e){
+            logger.error(e.getMessage());
+            logger.warn("Some XXE preventing settings are not supported by the current XML TransformerFactory library.");
+        }
         Transformer transformer;
         try {
             logger.debug("Applying transformation to XML.");
