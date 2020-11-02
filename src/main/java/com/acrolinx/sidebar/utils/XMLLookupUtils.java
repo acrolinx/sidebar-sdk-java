@@ -169,12 +169,6 @@ public class XMLLookupUtils
             throws ParserConfigurationException, IOException, SAXException
     {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        try {
-            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        } catch (ParserConfigurationException e) {
-            logger.error(e.getMessage());
-            logger.warn("Some XXE preventing settings are not supported by the current DocumentBuilderFactory.");
-        }
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
         try {
