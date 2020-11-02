@@ -35,7 +35,8 @@ public class FragmentContentHandler extends DefaultHandler
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes atts) throws FragmentContentException
+    public void startElement(String uri, String localName, String qName, Attributes atts)
+            throws FragmentContentException
     {
         Integer count = elementNameCount.get(qName);
         if (null == count) {

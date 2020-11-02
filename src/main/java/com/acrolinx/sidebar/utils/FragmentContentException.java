@@ -6,8 +6,10 @@ package com.acrolinx.sidebar.utils;
 
 import org.xml.sax.SAXException;
 
-public class FragmentContentException extends SAXException {
-    public FragmentContentException(String message) {
+public class FragmentContentException extends SAXException
+{
+    public FragmentContentException(String message)
+    {
         super(message);
     }
 }

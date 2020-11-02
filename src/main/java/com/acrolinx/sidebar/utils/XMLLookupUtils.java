@@ -170,12 +170,7 @@ public class XMLLookupUtils
     {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
-            factory.setValidating(false);
-            factory.setNamespaceAware(true);
-            factory.setFeature("http://xml.org/sax/features/namespaces", false);
-            factory.setFeature("http://xml.org/sax/features/validation", false);
-            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
         } catch (ParserConfigurationException e) {
             logger.error(e.getMessage());
             logger.warn("Some XXE preventing settings are not supported by the current DocumentBuilderFactory.");
