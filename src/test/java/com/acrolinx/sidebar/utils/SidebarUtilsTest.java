@@ -47,7 +47,8 @@ public class SidebarUtilsTest
     }
 
     @Test
-    public void testSidebarSystemUtils() {
+    public void testSidebarSystemUtils()
+    {
         assertNotNull(SidebarUtils.getSystemJavaVMName());
         assertTrue(SidebarUtils.getSystemJavaVersion() >= 8);
         assertNotNull(SidebarUtils.getPathOfCurrentJavaJRE());

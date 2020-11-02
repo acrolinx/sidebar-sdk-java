@@ -15,7 +15,8 @@ import com.acrolinx.sidebar.pojo.document.IntRange;
 @SuppressWarnings("WeakerAccess")
 public class Lookup
 {
-    private Lookup(){
+    private Lookup()
+    {
         throw new IllegalStateException("Utility class");
     }
 

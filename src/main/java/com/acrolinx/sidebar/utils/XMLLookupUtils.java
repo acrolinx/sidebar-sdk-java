@@ -124,9 +124,6 @@ public class XMLLookupUtils
         SAXParser sp = spf.newSAXParser();
         XMLReader xr = sp.getXMLReader();
         try {
-            xr.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-            // This may not be strictly required as DTDs shouldn't be allowed at all, per previous
-            // line.
             xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             xr.setFeature("http://xml.org/sax/features/external-general-entities", false);
             xr.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
@@ -173,7 +170,12 @@ public class XMLLookupUtils
     {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
-            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            factory.setValidating(false);
+            factory.setNamespaceAware(true);
+            factory.setFeature("http://xml.org/sax/features/namespaces", false);
+            factory.setFeature("http://xml.org/sax/features/validation", false);
+            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
         } catch (ParserConfigurationException e) {
             logger.error(e.getMessage());
             logger.warn("Some XXE preventing settings are not supported by the current DocumentBuilderFactory.");
