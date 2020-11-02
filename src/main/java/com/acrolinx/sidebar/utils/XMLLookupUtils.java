@@ -120,7 +120,7 @@ public class XMLLookupUtils
 
     private static XMLReader getSecureXMLReader() throws ParserConfigurationException, SAXException
     {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
+        SAXParserFactory spf = javax.xml.parsers.SAXParserFactory.newInstance();
         SAXParser sp = spf.newSAXParser();
         XMLReader xr = sp.getXMLReader();
         try {
@@ -168,7 +168,7 @@ public class XMLLookupUtils
     private static Document buildDocument(String xmlContent)
             throws ParserConfigurationException, IOException, SAXException
     {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
         try {
