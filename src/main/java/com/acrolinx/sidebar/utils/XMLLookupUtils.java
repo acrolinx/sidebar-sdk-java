@@ -118,6 +118,25 @@ public class XMLLookupUtils
         return new IntRange(startOffset, endOffset);
     }
 
+    private static XMLReader getSecureXMLReader() throws ParserConfigurationException, SAXException
+    {
+        SAXParserFactory spf = SAXParserFactory.newInstance();
+        SAXParser sp = spf.newSAXParser();
+        XMLReader xr = sp.getXMLReader();
+        try {
+            xr.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            // This may not be strictly required as DTDs shouldn't be allowed at all, per previous
+            // line.
+            xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            xr.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            xr.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        } catch (SAXException e) {
+            logger.error(e.getMessage());
+            logger.warn("Some XXE preventing settings are not supported by the current XML Reader library.");
+        }
+        return xr;
+    }
+
     private static String getDocumentXML(Document document)
     {
 
@@ -153,11 +172,14 @@ public class XMLLookupUtils
             throws ParserConfigurationException, IOException, SAXException
     {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        try {
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        } catch (ParserConfigurationException e) {
+            logger.error(e.getMessage());
+            logger.warn("Some XXE preventing settings are not supported by the current DocumentBuilderFactory.");
+        }
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
-
         try {
             ByteArrayInputStream input = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
             return builder.parse(input);
@@ -179,33 +201,26 @@ public class XMLLookupUtils
 
     public static String findXpathByOffset(String xmlContent, int offsetStart, int offsetEnd) throws Exception
     {
-        String contentWithMarkerNode =
-                xmlContent.substring(0, offsetStart) + "<acroseparator>" + xmlContent.substring(offsetStart, offsetEnd)
-                        + "</acroseparator>" + xmlContent.substring(offsetEnd);
+        String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroseparator>"
+                + xmlContent.substring(offsetStart, offsetEnd) + "</acroseparator>" + xmlContent.substring(offsetEnd);
 
         try {
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            SAXParser sp = spf.newSAXParser();
-            sp.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            sp.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-            XMLReader xr = sp.getXMLReader();
-            xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            XMLReader xr = XMLLookupUtils.getSecureXMLReader();
             boolean isMalformedXMLFound = false;
             FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
             xr.setContentHandler(fragmentContentHandler);
             try {
                 xr.parse(new InputSource(new StringReader(contentWithMarkerNode)));
-            } catch (FragmentContentException s){
-                logger.debug("Custom fragment content exception is received" );
-            }
-            catch (Exception e) {
+            } catch (FragmentContentException s) {
+                logger.debug("Custom fragment content exception is received");
+            } catch (Exception e) {
                 isMalformedXMLFound = true;
             }
-            if(isMalformedXMLFound) {
+            if (isMalformedXMLFound) {
                 try {
                     xr.parse(new InputSource(new StringReader(XMLLookupUtils.cleanXML(contentWithMarkerNode))));
-                } catch (FragmentContentException s){
-                    logger.debug("Custom fragment content exception is received" );
+                } catch (FragmentContentException s) {
+                    logger.debug("Custom fragment content exception is received");
                 }
             }
             String markerXpath = fragmentContentHandler.getMarkerXpath();
@@ -222,12 +237,7 @@ public class XMLLookupUtils
     public static List<String> getAllXpathInXmlDocument(String xml) throws Exception
     {
         try {
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            SAXParser sp = spf.newSAXParser();
-            XMLReader xr = sp.getXMLReader();
-            sp.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            sp.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-            xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            XMLReader xr = getSecureXMLReader();
             FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
             xr.setContentHandler(fragmentContentHandler);
             xr.parse(new InputSource(new StringReader(xml)));
