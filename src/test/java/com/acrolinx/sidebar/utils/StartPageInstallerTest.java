@@ -97,9 +97,9 @@ public class StartPageInstallerTest
     {
         final String startPageURL = StartPageInstaller.getStartPageURL();
         final Path path = Paths.get(new URI(startPageURL));
-        final Path startpageDir = path.getParent();
-        if (Files.exists(startpageDir)) {
-            deleteDirectory(startpageDir.toFile());
+        final Path startPageDirectory = path.getParent();
+        if (Files.exists(startPageDirectory)) {
+            deleteDirectory(startPageDirectory.toFile());
         }
         final Runnable runnable1 = () -> {
             try {
@@ -130,8 +130,8 @@ public class StartPageInstallerTest
         runnable3.run();
         Assert.assertTrue(Files.exists(path));
         Assert.assertTrue(path.toFile().length() > 0);
-        if (Files.exists(startpageDir)) {
-            deleteDirectory(startpageDir.toFile());
+        if (Files.exists(startPageDirectory)) {
+            deleteDirectory(startPageDirectory.toFile());
         }
     }
 }
