@@ -16,7 +16,7 @@ public class SecurityUtils
     final private static String ACRO_PREFIX = "acrolinx_force_";
 
     private static void logPropertyValue(String propertyName, String propertyValue){
-        return logger.info("Property " + propertyName + " is set to " + propertyValue);
+        logger.info("Property " + propertyName + " is set to " + propertyValue);
     }
 
     public static void setUpEnvironment()
