@@ -15,16 +15,23 @@ public class SecurityUtils
     private static final Logger logger = LoggerFactory.getLogger(SecurityUtils.class);
     final private static String ACRO_PREFIX = "acrolinx_force_";
 
+    private static void logPropertyValue(String propertyName, String propertyValue){
+        return logger.info("Property " + propertyName + " is set to " + propertyValue);
+    }
+
     public static void setUpEnvironment()
     {
-        String propertyRH = System.getProperty("sun.net.http.allowRestrictedHeaders");
-        logger.info("Property sun.net.http.allowRestrictedHeaders" + " set to " + propertyRH);
+        String propertyNameAllowHeaders = "sun.net.http.allowRestrictedHeaders";
+        String propertyRH = System.getProperty(propertyNameAllowHeaders);
+        logPropertyValue(propertyNameAllowHeaders, propertyRH);
 
-        String property = System.getProperty("https.protocols");
-        logger.info("Property https.protocols" + " set to " + property);
+        String propertyNameHTTPProtocols = "https.protocols";
+        String property = System.getProperty(propertyNameHTTPProtocols);
+        logPropertyValue(propertyNameHTTPProtocols, property);
 
-        String propertyGSS = System.getProperty("sun.security.jgss.native");
-        logger.info("Property sun.security.jgss.native" + " set to " + propertyGSS);
+        String propertyNameGSS = "sun.security.jgss.native";
+        String propertyGSS = System.getProperty(propertyNameGSS);
+        logPropertyValue(propertyNameGSS, propertyGSS);
 
         Properties systemProperties = (Properties) System.getProperties().clone();
         systemProperties.forEach((k, v) -> {

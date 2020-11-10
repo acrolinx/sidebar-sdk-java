@@ -19,6 +19,7 @@ public class ExternalContentBuilder
 
     public ExternalContentBuilder()
     {
+        // nothing required here
     }
 
     /**

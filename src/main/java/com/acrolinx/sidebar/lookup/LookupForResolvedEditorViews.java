@@ -170,7 +170,7 @@ public class LookupForResolvedEditorViews
                         if (!rangeContent.equals(rangeContentEscaped) && match.getRange().getMaximumInteger()
                                 - match.getRange().getMinimumInteger() == rangeContentEscaped.length()) {
                             logger.debug("Has to find HTML entitiy " + rangeContentEscaped);
-                            String cleanedAndEscapedTextContent = StringEscapeUtils.escapeXml(textContent).replaceAll(
+                            String cleanedAndEscapedTextContent = StringEscapeUtils.escapeXml(textContent).replace(
                                     whitespaceCharacter, "");
 
                             logger.debug("Cleaned and escaped Text Content:" + cleanedAndEscapedTextContent);

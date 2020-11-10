@@ -23,7 +23,7 @@ import com.google.common.base.Strings;
 public class StartPageInstaller
 {
     private static final Logger logger = LoggerFactory.getLogger(StartPageInstaller.class);
-    private static final String serverSelectorDir = "acrolinx_start_page";
+    private static final String SERVER_SELECTOR_DIR = "acrolinx_start_page";
 
     protected static String getStartPageVersion()
     {
@@ -91,7 +91,7 @@ public class StartPageInstaller
         } else {
             acrolinxDir = userTempDirLocation.resolve("acrolinx");
         }
-        Path serverSelectorDirectory = acrolinxDir.resolve(serverSelectorDir + "_" + getStartPageVersion());
+        Path serverSelectorDirectory = acrolinxDir.resolve(SERVER_SELECTOR_DIR + "_" + getStartPageVersion());
         if (!Files.exists(serverSelectorDirectory)) {
             serverSelectorDirectory = Files.createDirectories(serverSelectorDirectory);
             logger.debug("Creating acrolinx start page directory in: " + serverSelectorDirectory.toString());
