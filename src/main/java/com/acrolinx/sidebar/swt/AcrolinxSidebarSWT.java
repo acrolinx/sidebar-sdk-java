@@ -130,7 +130,7 @@ import com.google.gson.reflect.TypeToken;
             browser.setUrl(sidebarUrl);
         } catch (final Exception e) {
             logger.error("Error while loading sidebar!", e);
-            browser.setText(SidebarUtils.sidebarErrorHTML);
+            browser.setText(SidebarUtils.SIDEBAR_ERROR_HTML);
         }
         browser.addProgressListener(new ProgressListener()
         {
@@ -536,7 +536,7 @@ import com.google.gson.reflect.TypeToken;
                 StartPageInstaller.exportStartPageResources();
             } catch (final Exception e) {
                 logger.error("Error while exporting start page resources!");
-                browser.setText(SidebarUtils.sidebarErrorHTML);
+                browser.setText(SidebarUtils.SIDEBAR_ERROR_HTML);
             }
         }
         browser.refresh();

@@ -77,7 +77,7 @@ import netscape.javascript.JSObject;
             webEngine.load(sidebarUrl);
         } else {
             // if sidebar url is not available show log file location
-            webEngine.loadContent(SidebarUtils.sidebarErrorHTML);
+            webEngine.loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
         }
     }
 
@@ -98,7 +98,7 @@ import netscape.javascript.JSObject;
                 // noinspection ThrowableResultOfMethodCallIgnored
                 logger.error(webEngine.getLoadWorker().getException().getMessage());
             }
-            webEngine.loadContent(SidebarUtils.sidebarErrorHTML);
+            webEngine.loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
         }
     }
 
@@ -202,7 +202,7 @@ import netscape.javascript.JSObject;
             } catch (final Exception e) {
                 logger.error("Error while exporting start page resources!");
                 logger.error(e.getMessage());
-                webView.getEngine().loadContent(SidebarUtils.sidebarErrorHTML);
+                webView.getEngine().loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
             }
         }
         JFXUtils.invokeInJFXThread(webView.getEngine()::reload);

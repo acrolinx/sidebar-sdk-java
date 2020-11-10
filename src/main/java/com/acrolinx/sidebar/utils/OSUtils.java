@@ -11,24 +11,24 @@ public class OSUtils
 {
     public enum EnumOS
     {
-        linux, macos, unknown, windows;
+        LINUX, MACOS, UNKNOWN, WINDOWS;
 
         public boolean isLinux()
         {
 
-            return this == linux;
+            return this == LINUX;
         }
 
         public boolean isMac()
         {
 
-            return this == macos;
+            return this == MACOS;
         }
 
         public boolean isWindows()
         {
 
-            return this == windows;
+            return this == WINDOWS;
         }
     }
 
@@ -37,13 +37,13 @@ public class OSUtils
         String s = System.getProperty("os.name").toLowerCase();
 
         if (s.contains("mac"))
-            return EnumOS.macos;
+            return EnumOS.MACOS;
         else if (s.contains("win"))
-            return EnumOS.windows;
+            return EnumOS.WINDOWS;
         else if (s.contains("linux") || s.contains("sunos") || s.contains("solaris") || s.contains("unix"))
-            return EnumOS.linux;
+            return EnumOS.LINUX;
         else
-            return EnumOS.unknown;
+            return EnumOS.UNKNOWN;
     }
 
 }

@@ -27,7 +27,7 @@ public class SidebarUtils
 {
     private static final Logger logger = LoggerFactory.getLogger(SidebarUtils.class);
 
-    public static final String sidebarErrorHTML = "<!DOCTYPE html>\n" + "<html lang=\"en\">\n" + "<head>\n"
+    public static final String SIDEBAR_ERROR_HTML = "<!DOCTYPE html>\n" + "<html lang=\"en\">\n" + "<head>\n"
             + "  <meta charset=\"UTF-8\">\n" + "  <title>Error while trying to load sidebar</title>\n" + "</head>\n"
             + "<body>\n" + "Sidebar start page failed to load. Please check log files: \n"
             + LoggingUtils.getLogFileLocation() + "</body>\n" + "</html>";
