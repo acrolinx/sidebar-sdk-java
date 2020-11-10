@@ -2,6 +2,7 @@
 
 package com.acrolinx.sidebar.adapter;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.acrolinx.sidebar.InputAdapterInterface;
@@ -59,6 +60,6 @@ public class NullEditorAdapter implements InputAdapterInterface
     @Override
     public List<IntRange> getCurrentSelection()
     {
-        return null;
+        return Collections.emptyList();
     }
 }

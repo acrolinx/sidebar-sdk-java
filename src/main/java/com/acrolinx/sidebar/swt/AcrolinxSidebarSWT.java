@@ -183,32 +183,20 @@ import com.google.gson.reflect.TypeToken;
             @Override
             public Object function(final Object[] arguments)
             {
-                final String key = arguments[0].toString();
-                final String data = arguments[1].toString();
-                logger.debug("Setting " + key + " in local storage to " + data + ".");
-                storage.setItem(key, data);
-                return null;
+                return getSetItemObject(arguments);
             }
         };
 
-        try {
-            final ClassLoader classLoader = this.getClass().getClassLoader();
-            final InputStream inputStream = classLoader.getResourceAsStream("localStorageScript.js");
-            final BufferedReader reader;
-            if (inputStream != null) {
-                reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-                String line;
-                final StringBuilder sb = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line).append("\n");
-                }
-                final String script = sb.toString();
-                reader.close();
-                browser.evaluate(script);
-            }
-        } catch (final Exception e) {
-            logger.error(e.getMessage());
-        }
+        loadScriptJS("localStorageScript.js");
+    }
+
+    private Object getSetItemObject(Object[] arguments)
+    {
+        final String key = arguments[0].toString();
+        final String data = arguments[1].toString();
+        logger.debug("Setting " + key + " in local storage to " + data + ".");
+        storage.setItem(key, data);
+        return null;
     }
 
     private void initSidebar()
@@ -247,14 +235,7 @@ import com.google.gson.reflect.TypeToken;
             @Override
             public Object function(final Object[] arguments)
             {
-                LogMessages.logCheckRequested(logger);
-                checkStartTime.set(Instant.now());
-                final String requestText = client.getEditorAdapter().getContent();
-                currentlyCheckedText.set(requestText);
-                if (Strings.isNullOrEmpty(requestText)) {
-                    return "<unsupported/>";
-                }
-                return requestText;
+                return getTextObject();
             }
 
         };
@@ -264,16 +245,7 @@ import com.google.gson.reflect.TypeToken;
             @Override
             public Object function(final Object[] arguments)
             {
-                final String result = arguments[0].toString();
-                final JsonObject json = (JsonObject) JsonParser.parseString(result);
-                final JsonObject error = json.getAsJsonObject("error");
-                if (error != null) {
-                    final SidebarError sidebarError = new Gson().fromJson(error, SidebarError.class);
-                    client.onInitFinished(Optional.of(sidebarError));
-                } else {
-                    client.onInitFinished(Optional.empty());
-                }
-                return null;
+                return getOnInitFinishedNotificationObject(arguments[0]);
             }
         };
 
@@ -282,12 +254,7 @@ import com.google.gson.reflect.TypeToken;
             @Override
             public Object function(final Object[] arguments)
             {
-                final boolean canCheck = (client.getEditorAdapter() != null)
-                        && !(client.getEditorAdapter() instanceof NullEditorAdapter);
-                if (!canCheck) {
-                    logger.warn("Current File Editor not supported for checking or no file present.");
-                }
-                return canCheck;
+                return getCanCheckObject();
             }
         };
 
@@ -305,12 +272,7 @@ import com.google.gson.reflect.TypeToken;
             @Override
             public Object function(final Object[] arguments)
             {
-                LogMessages.logExternalContentRequested(logger);
-                final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
-                if (externalContent == null) {
-                    return null;
-                }
-                return externalContent.toString();
+                return getExternalContentObject();
             }
         };
 
@@ -319,26 +281,7 @@ import com.google.gson.reflect.TypeToken;
             @Override
             public Object function(final Object[] arguments)
             {
-                final Instant checkEndedTime = Instant.now();
-                LogMessages.logCheckFinishedWithDurationTime(logger,
-                        Duration.between(checkStartTime.get(), checkEndedTime).toMillis());
-                final String checkResult = arguments[0].toString();
-                try {
-                    final CheckResultFromJSON checkResultObj = new Gson().fromJson(checkResult,
-                            CheckResultFromJSON.class);
-                    final CheckResult result = checkResultObj.getAsCheckResult();
-                    if (result == null) {
-                        logger.info("Check finished with errors.");
-                    } else {
-                        currentCheckId.set(result.getCheckedDocumentPart().getCheckId());
-                        lastCheckedDocumentReference.set(currentDocumentReference.get());
-                        lastCheckedText.set(currentlyCheckedText.get());
-                        client.onCheckResult(result);
-                    }
-                } catch (final Exception e) {
-                    logger.error(e.getMessage());
-                }
-                return null;
+                return getOnCheckResultObject(arguments[0]);
             }
         };
 
@@ -347,14 +290,7 @@ import com.google.gson.reflect.TypeToken;
             @Override
             public Object function(final Object[] arguments)
             {
-                final List<IntRange> currentSelection = client.getEditorAdapter().getCurrentSelection();
-                if (currentSelection == null) {
-                    return null;
-                } else {
-                    final DocumentSelection selection = new DocumentSelection(currentSelection);
-                    logger.debug("got selection ranges: " + selection.toString());
-                    return selection.toString();
-                }
+                return getCurrentSelectionRangesObject();
             }
         };
 
@@ -363,13 +299,7 @@ import com.google.gson.reflect.TypeToken;
             @Override
             public Object function(final Object[] arguments)
             {
-                LogMessages.logSelectingRange(logger);
-                final List<AcrolinxMatchFromJSON> match = new Gson().fromJson((String) arguments[1],
-                        new TypeToken<List<AcrolinxMatchFromJSON>>() {}.getType());
-                final List<AcrolinxMatch> result = match.stream().map(
-                        AcrolinxMatchFromJSON::getAsAcrolinxMatch).collect(Collectors.toCollection(ArrayList::new));
-                client.getEditorAdapter().selectRanges(currentCheckId.get(), Collections.unmodifiableList(result));
-                return null;
+                return getSelectRangesObject(arguments[1]);
             }
 
         };
@@ -378,14 +308,7 @@ import com.google.gson.reflect.TypeToken;
             @Override
             public Object function(final Object[] arguments)
             {
-                LogMessages.logReplacingRange(logger);
-                final List<AcrolinxMatchFromJSON> match = new Gson().fromJson((String) arguments[1],
-                        new TypeToken<List<AcrolinxMatchFromJSON>>() {}.getType());
-                final List<AcrolinxMatchWithReplacement> result = match.stream().map(
-                        AcrolinxMatchFromJSON::getAsAcrolinxMatchWithReplacement).collect(
-                        Collectors.toCollection(ArrayList::new));
-                client.getEditorAdapter().replaceRanges(currentCheckId.get(), Collections.unmodifiableList(result));
-                return null;
+                return getReplaceRangesObject(arguments[1]);
             }
         };
         new BrowserFunction(browser, "getDocUrlP")
@@ -423,16 +346,7 @@ import com.google.gson.reflect.TypeToken;
             @Override
             public Object function(final Object[] arguments)
             {
-                final String result = arguments[0].toString();
-                final String url = AcrolinxSidebarSWT.getURlFromJS(result);
-                if ("".equals(url)) {
-                    logger.warn("Called to open URL but no URL to open is present.");
-                } else if (SidebarUtils.isValidURL(url)) {
-                    Program.launch(url);
-                } else {
-                    logger.warn("Attempt to open invalid URL: " + url);
-                }
-                return null;
+                return getOpenWindowObject(arguments[0]);
             }
         };
 
@@ -441,19 +355,18 @@ import com.google.gson.reflect.TypeToken;
             @Override
             public Object function(final Object[] arguments)
             {
-                final String logFileLocation = LoggingUtils.getLogFileLocation();
-                if (logFileLocation != null) {
-                    if (!SidebarUtils.openSystemSpecific(logFileLocation)) {
-                        Program.launch(new File(logFileLocation).getParent());
-                    }
-                }
-                return null;
+                return getOpenLogFileObject();
             }
         };
 
+        loadScriptJS("acrolinxPluginScript.js");
+    }
+
+    private void loadScriptJS(String script)
+    {
         try {
             final ClassLoader classLoader = this.getClass().getClassLoader();
-            final InputStream inputStream = classLoader.getResourceAsStream("acrolinxPluginScript.js");
+            final InputStream inputStream = classLoader.getResourceAsStream(script);
             final BufferedReader reader;
             if (inputStream != null) {
                 reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
@@ -462,14 +375,144 @@ import com.google.gson.reflect.TypeToken;
                 while ((line = reader.readLine()) != null) {
                     sb.append(line).append("\n");
                 }
-                final String script = sb.toString();
+                final String scriptLoaded = sb.toString();
                 reader.close();
-                browser.evaluate(script);
+                browser.evaluate(scriptLoaded);
             }
 
         } catch (final Exception e) {
             logger.error(e.getMessage());
         }
+    }
+
+    private Object getOpenLogFileObject()
+    {
+        final String logFileLocation = LoggingUtils.getLogFileLocation();
+        if (logFileLocation != null) {
+            if (!SidebarUtils.openSystemSpecific(logFileLocation)) {
+                Program.launch(new File(logFileLocation).getParent());
+            }
+        }
+        return null;
+    }
+
+    private Object getOpenWindowObject(Object argument)
+    {
+        final String result = argument.toString();
+        final String url = AcrolinxSidebarSWT.getURlFromJS(result);
+        if ("".equals(url)) {
+            logger.warn("Called to open URL but no URL to open is present.");
+        } else if (SidebarUtils.isValidURL(url)) {
+            Program.launch(url);
+        } else {
+            logger.warn("Attempt to open invalid URL: " + url);
+        }
+        return null;
+    }
+
+    private Object getReplaceRangesObject(Object argument)
+    {
+        LogMessages.logReplacingRange(logger);
+        final List<AcrolinxMatchFromJSON> match = new Gson().fromJson((String) argument,
+                new TypeToken<List<AcrolinxMatchFromJSON>>() {}.getType());
+        final List<AcrolinxMatchWithReplacement> result = match.stream().map(
+                AcrolinxMatchFromJSON::getAsAcrolinxMatchWithReplacement).collect(
+                Collectors.toCollection(ArrayList::new));
+        client.getEditorAdapter().replaceRanges(currentCheckId.get(), Collections.unmodifiableList(result));
+        return null;
+    }
+
+    private Object getSelectRangesObject(Object argument)
+    {
+        LogMessages.logSelectingRange(logger);
+        final List<AcrolinxMatchFromJSON> match = new Gson().fromJson((String) argument,
+                new TypeToken<List<AcrolinxMatchFromJSON>>() {}.getType());
+        final List<AcrolinxMatch> result = match.stream().map(
+                AcrolinxMatchFromJSON::getAsAcrolinxMatch).collect(Collectors.toCollection(ArrayList::new));
+        client.getEditorAdapter().selectRanges(currentCheckId.get(), Collections.unmodifiableList(result));
+        return null;
+    }
+
+    private String getCurrentSelectionRangesObject()
+    {
+        final List<IntRange> currentSelection = client.getEditorAdapter().getCurrentSelection();
+        if (currentSelection == null) {
+            return null;
+        } else {
+            final DocumentSelection selection = new DocumentSelection(currentSelection);
+            logger.debug("got selection ranges: " + selection.toString());
+            return selection.toString();
+        }
+    }
+
+    private Object getOnCheckResultObject(Object argument)
+    {
+        final Instant checkEndedTime = Instant.now();
+        LogMessages.logCheckFinishedWithDurationTime(logger,
+                Duration.between(checkStartTime.get(), checkEndedTime).toMillis());
+        final String checkResult = argument.toString();
+        try {
+            final CheckResultFromJSON checkResultObj = new Gson().fromJson(checkResult,
+                    CheckResultFromJSON.class);
+            final CheckResult result = checkResultObj.getAsCheckResult();
+            if (result == null) {
+                logger.info("Check finished with errors.");
+            } else {
+                currentCheckId.set(result.getCheckedDocumentPart().getCheckId());
+                lastCheckedDocumentReference.set(currentDocumentReference.get());
+                lastCheckedText.set(currentlyCheckedText.get());
+                client.onCheckResult(result);
+            }
+        } catch (final Exception e) {
+            logger.error(e.getMessage());
+        }
+        return null;
+    }
+
+    private String getExternalContentObject()
+    {
+        LogMessages.logExternalContentRequested(logger);
+        final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
+        if (externalContent == null) {
+            return null;
+        }
+        return externalContent.toString();
+    }
+
+    private boolean getCanCheckObject()
+    {
+        final boolean canCheck = (client.getEditorAdapter() != null)
+                && !(client.getEditorAdapter() instanceof NullEditorAdapter);
+        if (!canCheck) {
+            logger.warn("Current File Editor not supported for checking or no file present.");
+        }
+        return canCheck;
+    }
+
+    private Object getOnInitFinishedNotificationObject(Object argument)
+    {
+        final String result = argument.toString();
+        final JsonObject json = (JsonObject) JsonParser.parseString(result);
+        final JsonObject error = json.getAsJsonObject("error");
+        if (error != null) {
+            final SidebarError sidebarError = new Gson().fromJson(error, SidebarError.class);
+            client.onInitFinished(Optional.of(sidebarError));
+        } else {
+            client.onInitFinished(Optional.empty());
+        }
+        return null;
+    }
+
+    private String getTextObject()
+    {
+        LogMessages.logCheckRequested(logger);
+        checkStartTime.set(Instant.now());
+        final String requestText = client.getEditorAdapter().getContent();
+        currentlyCheckedText.set(requestText);
+        if (Strings.isNullOrEmpty(requestText)) {
+            return "<unsupported/>";
+        }
+        return requestText;
     }
 
     @SuppressWarnings("unused")
