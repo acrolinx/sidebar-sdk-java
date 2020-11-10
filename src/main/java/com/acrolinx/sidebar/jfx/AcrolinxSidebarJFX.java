@@ -34,8 +34,7 @@ import netscape.javascript.JSObject;
  *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings("unused, WeakerAccess")
-public class AcrolinxSidebarJFX implements AcrolinxSidebar
+@SuppressWarnings("unused, WeakerAccess") public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
     private WebView webView = new WebView();
     private AcrolinxSidebarPlugin acrolinxSidebarPlugin;
@@ -51,7 +50,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     /**
      * @param integration The implementation of the Acrolinx Integration.
      */
-    @SuppressWarnings("ConstantConditions")
     public AcrolinxSidebarJFX(final AcrolinxIntegration integration, final AcrolinxStorage storage)
     {
         LogMessages.logJavaVersionAndUIFramework(logger, "Java FX");
@@ -71,48 +69,8 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         webEngine.setOnAlert((final WebEvent<String> arg0) -> logger.debug("Alert: " + arg0.getData()));
 
         webEngine.getLoadWorker().stateProperty().addListener(
-                (final ObservableValue<? extends Worker.State> observedValue, final Worker.State oldState,
-                        final Worker.State newState) -> {
-                    logger.debug("state changed: " + observedValue.getValue() + ": " + oldState + " -> " + newState);
-                    if (newState == Worker.State.SUCCEEDED) {
-                        logger.debug("Sidebar loaded from " + webEngine.getLocation());
-                        final JSObject jsobj = (JSObject) webEngine.executeScript("window");
-                        if (jsobj == null) {
-                            logger.error("Window Object null!");
-                        } else {
-                            logger.debug("Injecting JSLogger.");
-                            jsobj.setMember("java", new JSLogger());
-                            webEngine.executeScript(
-                                    "console.log = function()\n" + "{\n" + "    java.log('JavaScript: ' + "
-                                            + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
-                            webEngine.executeScript(
-                                    "console.error = function()\n" + "{\n" + "    java.error('JavaScript: ' + "
-                                            + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
-                            logger.debug("Setting local storage");
-                            jsobj.setMember("acrolinxStorage", storage);
-                        }
-                        final PluginSupportedParameters supported = integration.getInitParameters().getSupported();
-                        if ((supported != null) && supported.isCheckSelection()) {
-                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionSupport(integration,
-                                    webView);
-                        } else {
-                            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionSupport(integration,
-                                    webView);
-                        }
-                    }
-                    if ("FAILED".equals("" + newState)) {
-                        logger.debug("New state: " + newState);
-                        // noinspection ThrowableResultOfMethodCallIgnored
-                        if (webEngine.getLoadWorker().getException() != null) {
-                            // noinspection ThrowableResultOfMethodCallIgnored
-                            logger.error(webEngine.getLoadWorker().getException().getMessage());
-                        }
-                        webEngine.loadContent(SidebarUtils.sidebarErrorHTML);
-                    }
-                });
-        webEngine.getLoadWorker().exceptionProperty().addListener((ov, t, t1) -> {
-            logger.error("webEngine exception: " + t1.getMessage());
-        });
+                (final ObservableValue<? extends Worker.State> observedValue, final Worker.State oldState, final Worker.State newState) -> this.getChangeListener(observedValue, oldState, newState, storage));
+        webEngine.getLoadWorker().exceptionProperty().addListener((ov, t, t1) -> logger.error("webEngine exception: " + t1.getMessage()));
 
         if (sidebarUrl != null) {
             logger.info("Loading: " + sidebarUrl);
@@ -120,6 +78,52 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         } else {
             // if sidebar url is not available show log file location
             webEngine.loadContent(SidebarUtils.sidebarErrorHTML);
+        }
+    }
+
+    private void getChangeListener(final ObservableValue<? extends Worker.State> observedValue,
+            final Worker.State oldState, final Worker.State newState, final AcrolinxStorage storage)
+    {
+
+        logger.debug("state changed: " + observedValue.getValue() + ": " + oldState + " -> " + newState);
+        if (newState == Worker.State.SUCCEEDED) {
+           this.injectAcrolinxPlugin(storage);
+        }
+        if ("FAILED".equals("" + newState)) {
+            final WebView webView = getWebView();
+            final WebEngine webEngine = webView.getEngine();
+            logger.debug("New state: " + newState);
+            // noinspection ThrowableResultOfMethodCallIgnored
+            if (webEngine.getLoadWorker().getException() != null) {
+                // noinspection ThrowableResultOfMethodCallIgnored
+                logger.error(webEngine.getLoadWorker().getException().getMessage());
+            }
+            webEngine.loadContent(SidebarUtils.sidebarErrorHTML);
+        }
+    }
+
+    private void injectAcrolinxPlugin(AcrolinxStorage storage){
+        final WebView webView = getWebView();
+        final WebEngine webEngine = webView.getEngine();
+        logger.debug("Sidebar loaded from " + webEngine.getLocation());
+        final JSObject jsobj = (JSObject) webEngine.executeScript("window");
+        if (jsobj == null) {
+            logger.error("Window Object null!");
+        } else {
+            logger.debug("Injecting JSLogger.");
+            jsobj.setMember("java", new JSLogger());
+            webEngine.executeScript("console.log = function()\n" + "{\n" + "    java.log('JavaScript: ' + "
+                    + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
+            webEngine.executeScript("console.error = function()\n" + "{\n" + "    java.error('JavaScript: ' + "
+                    + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
+            logger.debug("Setting local storage");
+            jsobj.setMember("acrolinxStorage", storage);
+        }
+        final PluginSupportedParameters supported = this.integration.getInitParameters().getSupported();
+        if ((supported != null) && supported.isCheckSelection()) {
+            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionSupport(integration, webView);
+        } else {
+            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionSupport(integration, webView);
         }
     }
 

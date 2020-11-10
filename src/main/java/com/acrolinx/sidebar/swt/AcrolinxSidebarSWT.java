@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -61,8 +62,8 @@ import com.google.gson.reflect.TypeToken;
  *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings({"unused", "SameParameterValue", "WeakerAccess"})
-public class AcrolinxSidebarSWT implements AcrolinxSidebar
+@SuppressWarnings({"unused", "SameParameterValue", "WeakerAccess"}) public class AcrolinxSidebarSWT
+        implements AcrolinxSidebar
 {
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSWT.class);
 
@@ -131,7 +132,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             logger.error("Error while loading sidebar!", e);
             browser.setText(SidebarUtils.sidebarErrorHTML);
         }
-        browser.addProgressListener(new ProgressListener() {
+        browser.addProgressListener(new ProgressListener()
+        {
             @Override
             public void completed(final ProgressEvent event)
             {
@@ -144,13 +146,15 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             @Override
             public void changed(final ProgressEvent event)
             {
+                // we only need completed event to be handled
             }
         });
     }
 
     private void initLocalStorage()
     {
-        new BrowserFunction(browser, "getItemP") {
+        new BrowserFunction(browser, "getItemP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -162,7 +166,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "removeItemP") {
+        new BrowserFunction(browser, "removeItemP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -173,7 +178,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "setItemP") {
+        new BrowserFunction(browser, "setItemP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -188,16 +194,18 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         try {
             final ClassLoader classLoader = this.getClass().getClassLoader();
             final InputStream inputStream = classLoader.getResourceAsStream("localStorageScript.js");
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            String line;
-            final StringBuilder sb = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append("\n");
+            final BufferedReader reader;
+            if (inputStream != null) {
+                reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+                String line;
+                final StringBuilder sb = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+                final String script = sb.toString();
+                reader.close();
+                browser.evaluate(script);
             }
-            final String script = sb.toString();
-            reader.close();
-            browser.evaluate(script);
-
         } catch (final Exception e) {
             logger.error(e.getMessage());
         }
@@ -205,7 +213,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     private void initSidebar()
     {
-        new BrowserFunction(browser, "overwriteJSLoggingInfoP") {
+        new BrowserFunction(browser, "overwriteJSLoggingInfoP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -214,7 +223,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "overwriteJSLoggingErrorP") {
+        new BrowserFunction(browser, "overwriteJSLoggingErrorP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -223,7 +233,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "getInitParamsP") {
+        new BrowserFunction(browser, "getInitParamsP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -231,7 +242,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "getTextP") {
+        new BrowserFunction(browser, "getTextP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -247,13 +259,13 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
         };
 
-        new BrowserFunction(browser, "onInitFinishedNotificationP") {
+        new BrowserFunction(browser, "onInitFinishedNotificationP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
                 final String result = arguments[0].toString();
-                final JsonParser parser = new JsonParser();
-                final JsonObject json = (JsonObject) parser.parse(result);
+                final JsonObject json = (JsonObject) JsonParser.parseString(result);
                 final JsonObject error = json.getAsJsonObject("error");
                 if (error != null) {
                     final SidebarError sidebarError = new Gson().fromJson(error, SidebarError.class);
@@ -265,7 +277,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "canCheck") {
+        new BrowserFunction(browser, "canCheck")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -278,7 +291,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "getInputFormatP") {
+        new BrowserFunction(browser, "getInputFormatP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -286,7 +300,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "getExternalContentP") {
+        new BrowserFunction(browser, "getExternalContentP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -299,7 +314,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "onCheckResultP") {
+        new BrowserFunction(browser, "onCheckResultP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -326,7 +342,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "getCurrentSelectionRangesP") {
+        new BrowserFunction(browser, "getCurrentSelectionRangesP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -341,8 +358,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "selectRangesP") {
-            @SuppressWarnings("unchecked")
+        new BrowserFunction(browser, "selectRangesP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -356,8 +373,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
 
         };
-        new BrowserFunction(browser, "replaceRangesP") {
-            @SuppressWarnings("unchecked")
+        new BrowserFunction(browser, "replaceRangesP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -366,12 +383,13 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                         new TypeToken<List<AcrolinxMatchFromJSON>>() {}.getType());
                 final List<AcrolinxMatchWithReplacement> result = match.stream().map(
                         AcrolinxMatchFromJSON::getAsAcrolinxMatchWithReplacement).collect(
-                                Collectors.toCollection(ArrayList::new));
+                        Collectors.toCollection(ArrayList::new));
                 client.getEditorAdapter().replaceRanges(currentCheckId.get(), Collections.unmodifiableList(result));
                 return null;
             }
         };
-        new BrowserFunction(browser, "getDocUrlP") {
+        new BrowserFunction(browser, "getDocUrlP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -382,7 +400,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
         };
 
-        new BrowserFunction(browser, "notifyAboutSidebarConfigurationP") {
+        new BrowserFunction(browser, "notifyAboutSidebarConfigurationP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -390,7 +409,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "downloadP") {
+        new BrowserFunction(browser, "downloadP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -398,7 +418,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "openWindowP") {
+        new BrowserFunction(browser, "openWindowP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -415,7 +436,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "openLogFileP") {
+        new BrowserFunction(browser, "openLogFileP")
+        {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -432,15 +454,18 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         try {
             final ClassLoader classLoader = this.getClass().getClassLoader();
             final InputStream inputStream = classLoader.getResourceAsStream("acrolinxPluginScript.js");
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            String line;
-            final StringBuilder sb = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append("\n");
+            final BufferedReader reader;
+            if (inputStream != null) {
+                reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+                String line;
+                final StringBuilder sb = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+                final String script = sb.toString();
+                reader.close();
+                browser.evaluate(script);
             }
-            final String script = sb.toString();
-            reader.close();
-            browser.evaluate(script);
 
         } catch (final Exception e) {
             logger.error(e.getMessage());
@@ -488,10 +513,10 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     @Override
     public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches)
     {
-        final List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map((match) -> new CheckedDocumentPart(
-                currentCheckId.get(),
-                new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()))).collect(
-                        Collectors.toList());
+        final List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map(
+                (match) -> new CheckedDocumentPart(currentCheckId.get(),
+                        new IntRange(match.getRange().getMinimumInteger(),
+                                match.getRange().getMaximumInteger()))).collect(Collectors.toList());
         invalidateRanges(invalidDocumentParts);
     }
 

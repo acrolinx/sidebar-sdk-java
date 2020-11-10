@@ -30,19 +30,19 @@ import com.acrolinx.sidebar.utils.LogMessages;
 
 /**
  * Swing implementation of Acrolinx Sidebar.
- * 
+ *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"})
-public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
+@SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"}) public class AcrolinxSidebarSwing extends JFXPanel
+        implements AcrolinxSidebar
 {
     private static final long serialVersionUID = 3813416489627785478L;
-    private AcrolinxSidebarJFX sidebarJFX;
-    private final AcrolinxStorage storage;
+    private transient AcrolinxSidebarJFX sidebarJFX;
+    private transient final AcrolinxStorage storage;
 
-    private final AcrolinxIntegration integration;
+    private transient final AcrolinxIntegration integration;
 
-    private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
+    private transient final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
 
     public AcrolinxSidebarSwing(final AcrolinxIntegration integration)
     {
@@ -63,8 +63,8 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     protected void processKeyEvent(final KeyEvent e)
     {
         // Hack to prevent pasting event for editor (e. g. .
-        if ((e.getModifiersEx() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())
-                && (e.getKeyCode() == KeyEvent.VK_V)) {
+        if ((e.getModifiersEx() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) && (e.getKeyCode()
+                == KeyEvent.VK_V)) {
             // Consume it.
             e.consume();
         } else {
@@ -80,33 +80,34 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         GridPane.setHgrow(webview, Priority.ALWAYS);
         GridPane.setVgrow(webview, Priority.ALWAYS);
         webview.setPrefWidth(300);
-        addComponentListener(new ComponentListener() {
+        addComponentListener(new ComponentListener()
+        {
             @Override
             public void componentResized(final ComponentEvent e)
             {
                 logger.debug("Component resized");
                 logger.debug(getWidth() + " width");
                 final float i = (float) getWidth() / 300;
-                logger.debug(String.valueOf(i) + " Zoom");
+                logger.debug(i + " Zoom");
                 sidebarJFX.setZoom(i);
             }
 
             @Override
             public void componentMoved(final ComponentEvent e)
             {
-
+                // we only need resize event to be handled
             }
 
             @Override
             public void componentShown(final ComponentEvent e)
             {
-
+                // we only need resize event to be handled
             }
 
             @Override
             public void componentHidden(final ComponentEvent e)
             {
-
+                // we only need resize event to be handled
             }
         });
         final Scene scene = new Scene(webview);

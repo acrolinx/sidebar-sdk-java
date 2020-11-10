@@ -24,6 +24,7 @@ public class LookupForResolvedEditorViews
 
     private final List<AbstractMatch> mappedRanges = new ArrayList<>();
     private final List<AbstractMatch> newRanges = new ArrayList<>();
+    private final String whitespaceCharacter = "\\u0000";
 
     public Optional<List<? extends AbstractMatch>> matchRangesForResolvedEditorView(
             List<? extends AbstractMatch> adjustedRangesForCurrentDocument, String currentDocumentContent,
@@ -98,9 +99,9 @@ public class LookupForResolvedEditorViews
         }
 
         // Find duplicates.
-        List<AbstractMatch> duplicates = new ArrayList<>();
         Set<AbstractMatch> matchSet = new TreeSet<>(new MatchComparator());
-        duplicates.addAll(newRanges.stream().filter(m -> !matchSet.add(m)).collect(Collectors.toList()));
+        List<AbstractMatch> duplicates = new ArrayList<>(
+                newRanges.stream().filter(m -> !matchSet.add(m)).collect(Collectors.toList()));
         for (AbstractMatch m : duplicates) {
             logger.debug("Removing duplicate matched range: " + m.getRange().toString() + ", (" + m.getContent() + ")");
             newRanges.remove(m);
@@ -128,7 +129,7 @@ public class LookupForResolvedEditorViews
         AtomicReference<List<DiffMatchPatch.Diff>> diffs = new AtomicReference<>();
         AtomicReference<List<OffsetAlign>> offsetAligns = new AtomicReference<>();
 
-        matches.stream().forEach(match -> {
+        matches.forEach(match -> {
             logger.debug("Mapping range for: " + match.getRange().toString() + ", (" + match.getContent() + ")");
             ContentNode contentNode = utils.getContentNodeForOffsetInCurrentDocument(
                     match.getRange().getMinimumInteger());
@@ -170,7 +171,7 @@ public class LookupForResolvedEditorViews
                                 - match.getRange().getMinimumInteger() == rangeContentEscaped.length()) {
                             logger.debug("Has to find HTML entitiy " + rangeContentEscaped);
                             String cleanedAndEscapedTextContent = StringEscapeUtils.escapeXml(textContent).replaceAll(
-                                    "\\u0000", "");
+                                    whitespaceCharacter, "");
 
                             logger.debug("Cleaned and escaped Text Content:" + cleanedAndEscapedTextContent);
 
@@ -197,13 +198,13 @@ public class LookupForResolvedEditorViews
                                     int offsetStart = range.getMinimumInteger() + value - entityDifference;
                                     String matchContent = textContent.substring(0, offsetStart + 1);
                                     logger.debug("Match Content: " + matchContent);
-                                    logger.debug("Leading whitespaces:  " + (matchContent.length()
-                                            - matchContent.replaceAll("\\u0000", "").length()));
-                                    offsetStart += matchContent.length()
-                                            - matchContent.replaceAll("\\u0000", "").length();
+                                    int leadingWhiteSpaces = matchContent.length()
+                                            - matchContent.replace(whitespaceCharacter, "").length();
+                                    logger.debug("Leading whitespaces:  " + leadingWhiteSpaces);
+                                    offsetStart += leadingWhiteSpaces;
                                     int differedNullOffset = 0;
                                     while (textContent.substring(offsetStart + differedNullOffset,
-                                            offsetStart + differedNullOffset + 1).matches("\\u0000")) {
+                                            offsetStart + differedNullOffset + 1).matches(whitespaceCharacter)) {
                                         logger.debug("Offsets are null characters");
                                         differedNullOffset++;
                                     }
@@ -248,7 +249,7 @@ public class LookupForResolvedEditorViews
     private void getMatchesWithCorrectedRangesIgnoreNonMatched(List<DiffMatchPatch.Diff> diffs,
             List<OffsetAlign> offsetMappingArray, List<? extends AbstractMatch> matches)
     {
-        matches.stream().forEach(match -> {
+        matches.forEach(match -> {
             logger.debug("Mapping range for by diffing editors: " + match.getRange().toString() + ", ("
                     + match.getContent() + ")");
             Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs, offsetMappingArray,
@@ -266,7 +267,7 @@ public class LookupForResolvedEditorViews
     private void getMatchesByOccourrence(List<? extends AbstractMatch> matches, String currentDocumentContent,
             String resolvedViewContent)
     {
-        matches.stream().forEach(match -> {
+        matches.forEach(match -> {
             if (match.getContent().length() > 1) {
                 String contentUptoMatch = currentDocumentContent.substring(0,
                         match.getRange().getMaximumInteger()).replaceAll("</?\\w+.*?>", "");
