@@ -69,14 +69,14 @@ public class AcrolinxSidebarInitParameter
         logger.info("Plugin running on Java VM: " + SidebarUtils.getSystemJavaVMName());
 
         if (SidebarUtils.getSystemJavaVMName().indexOf("OpenJDK") < 0
-                || SidebarUtils.getSystemJavaVMName().indexOf("HotSpot") < 0) {
+                && SidebarUtils.getSystemJavaVMName().indexOf("HotSpot") < 0) {
             logger.warn("You are using an unsupported Java VM. This might cause errors during runtime.");
         }
 
         logger.info("Plugin running on Java VM Version: " + SidebarUtils.getFullCurrentJavaVersionString());
         logger.info("Plugin running with JRE Path: " + SidebarUtils.getPathOfCurrentJavaJRE());
 
-        if (this.minimumJavaVersion != null) {
+        if (this.minimumJavaVersion != 0) {
             logger.info("Required Java Version is: " + this.minimumJavaVersion);
             if (SidebarUtils.getSystemJavaVersion() < this.minimumJavaVersion) {
                 logger.warn("The current Java version " + SidebarUtils.getSystemJavaVersion()
