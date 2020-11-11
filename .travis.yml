@@ -18,7 +18,7 @@ jobs:
         if [[ ($TRAVIS_BRANCH == master) &&
               ($TRAVIS_PULL_REQUEST == false) ]] ; then
           chmod +x ./deploy.sh
-          sh trigger-travis.sh #17849207 https://github.com/acrolinx/acrolinx-sidebar-demo-java $TRAVIS_ACCESS_TOKEN
+          sh trigger-travis.sh --pro #17849207 https://github.com/acrolinx/acrolinx-sidebar-demo-java $TRAVIS_ACCESS_TOKEN
         else
     echo "trigger-travis.sh did not run"
     fi
