@@ -8,8 +8,8 @@ import com.google.gson.Gson;
 
 public class ExternalContentField
 {
-    private String id;
-    private String content;
+    private final String id;
+    private final String content;
 
     ExternalContentField(String id, String content)
     {

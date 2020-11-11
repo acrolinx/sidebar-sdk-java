@@ -14,9 +14,9 @@ import com.google.gson.Gson;
 public class ExternalContent
 {
 
-    private List<ExternalContentField> textReplacements;
-    private List<ExternalContentField> entities;
-    private List<ExternalContentField> ditaReferences;
+    private final List<ExternalContentField> textReplacements;
+    private final List<ExternalContentField> entities;
+    private final List<ExternalContentField> ditaReferences;
 
     public ExternalContent(List<ExternalContentField> textReplacements, List<ExternalContentField> entities,
             List<ExternalContentField> ditaReferences)
