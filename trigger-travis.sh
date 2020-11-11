@@ -16,7 +16,7 @@ curl -s -X POST \
   -H "Travis-API-Version: 3" \
   -H "Authorization: token ${TRAVIS_ACCESS_TOKEN}" \
   -d "$body" \
-  "https://api.travis-ci.com/github/acrolinx/acrolinx-sidebar-demo-java/requests" \
+  "https://api.travis-ci.com/github/5133080/acrolinx-sidebar-demo-java/requests" \
  | tee /tmp/travis-request-output.$$.txt
 
 if grep -q '"@type": "error"' /tmp/travis-request-output.$$.txt; then
