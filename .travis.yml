@@ -23,7 +23,7 @@ script:
   - cd $TRAVIS_BUILD_DIR
   - chmod +x ./deploy.sh
   - chmod +x ./deploy.sh
-  - sh trigger-travis.sh --pro 17849207 https://github.com/acrolinx/acrolinx-sidebar-demo-java $TRAVIS_ACCESS_TOKEN
+  - sh trigger-travis.sh
 deploy:
   - provider: script
     script: "./deploy.sh"
