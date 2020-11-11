@@ -22,8 +22,8 @@ script:
   - ./gradlew sonarqube
   - cd $TRAVIS_BUILD_DIR
   - chmod +x ./deploy.sh
-  - chmod +x ./deploy.sh
-  - sh trigger-travis.sh
+  - chmod +x ./trigger-travis.sh
+  - ./trigger-travis.sh
 deploy:
   - provider: script
     script: "./deploy.sh"
