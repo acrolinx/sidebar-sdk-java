@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -22,10 +23,11 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
 
     public UTF8ResourceBundleControl()
     {
+        // nothing to do here
     }
 
     @Override
-    @SuppressWarnings({"ThrowFromFinallyBlock", "IfCanBeSwitch", "ConstantConditions"})
+    @SuppressWarnings({"IfCanBeSwitch", "ConstantConditions"})
     public ResourceBundle newBundle(final String baseName, final Locale locale, final String format,
             final ClassLoader loader, final boolean reload)
             throws IllegalAccessException, InstantiationException, IOException
@@ -46,7 +48,7 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
                 stream = loader.getResourceAsStream(resourceName);
             }
             if (stream != null) {
-                try (Reader reader = new InputStreamReader(stream, "UTF-8")) {
+                try (Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                     bundle = new PropertyResourceBundle(reader);
                 }
             }
