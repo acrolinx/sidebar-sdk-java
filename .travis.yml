@@ -10,18 +10,6 @@ jdk:
   - openjdk11
 os:
   - linux
-jobs:
-  include:
-    - stage: trigger downstream
-     script: |
-        echo "TRAVIS_BRANCH=$TRAVIS_BRANCH TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST"
-        if [[ ($TRAVIS_BRANCH == master) &&
-              ($TRAVIS_PULL_REQUEST == false) ]] ; then
-          chmod +x ./deploy.sh
-          sh trigger-travis.sh --pro #17849207 https://github.com/acrolinx/acrolinx-sidebar-demo-java $TRAVIS_ACCESS_TOKEN
-        else
-    echo "trigger-travis.sh did not run"
-    fi
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -34,6 +22,8 @@ script:
   - ./gradlew sonarqube
   - cd $TRAVIS_BUILD_DIR
   - chmod +x ./deploy.sh
+  - chmod +x ./deploy.sh
+  - sh trigger-travis.sh --pro 17849207 https://github.com/acrolinx/acrolinx-sidebar-demo-java $TRAVIS_ACCESS_TOKEN
 deploy:
   - provider: script
     script: "./deploy.sh"
