@@ -42,15 +42,15 @@ Before you start developing your own integration, you might benefit from looking
 
 ### Build the Project
 
-- Cone the project.
-- Run `gradlew build` to build the SDK locally.
+* Cone the project.
+* Run `gradlew build` to build the SDK locally.
 
 ### Using the SDK
 
 Note that, if you are using Java version 11 or later you will need to provide the following modules JavaFX modules:
- - "javafx.web"
- - "javafx.swing"
- See the 
+
+* "javafx.web"
+* "javafx.swing"
 
 1. Just reference the Maven artifact `com.acrolinx.client:sidebar-sdk` that is available on
    [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
