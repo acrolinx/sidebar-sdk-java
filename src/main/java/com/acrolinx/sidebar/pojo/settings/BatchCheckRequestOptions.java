@@ -1,3 +1,6 @@
+/**
+ *  Copyright (c) 2020-present Acrolinx GmbH
+ */
 
 package com.acrolinx.sidebar.pojo.settings;
 
@@ -9,7 +12,7 @@ public class BatchCheckRequestOptions
     private String reference;
     private String displayName;
 
-    BatchCheckRequestOptions(String reference, String displayName)
+    public BatchCheckRequestOptions(String reference, String displayName)
     {
         this.displayName = displayName;
         this.reference = reference;

@@ -553,7 +553,7 @@ import com.google.gson.reflect.TypeToken;
     public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
     {
         String jsArgs = buildStringOfBatchCheckRequestOptions(batchCheckRequestOptions);
-        browser.execute("window.acrolinxSidebar.initBatchCheck(" + jsArgs + ");");
+        browser.execute("window.acrolinxSidebar.initBatchCheck([" + jsArgs + "]);");
     }
 
     @Override
@@ -569,9 +569,11 @@ import com.google.gson.reflect.TypeToken;
         return checkedDocumentParts.stream().map(CheckedDocumentPart::getAsJS).collect(Collectors.joining(", "));
     }
 
-    private static String buildStringOfBatchCheckRequestOptions(
+    // public for testing
+    public static String buildStringOfBatchCheckRequestOptions(
             final java.util.List<BatchCheckRequestOptions> batchCheckRequestOptions)
     {
+        // TODO verify if that returns
         return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(
                 Collectors.joining(", "));
     }

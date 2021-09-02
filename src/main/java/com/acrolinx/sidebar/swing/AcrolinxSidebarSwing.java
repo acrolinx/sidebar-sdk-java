@@ -8,6 +8,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -125,6 +126,11 @@ import com.acrolinx.sidebar.utils.LogMessages;
     public void checkGlobal()
     {
         sidebarJFX.checkGlobal();
+    }
+
+    @Override
+    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions) {
+        // TODO!!!
     }
 
     @Override
