@@ -59,6 +59,9 @@ window.acrolinxPlugin =
         }
     }
   },
+ requestBackgroundCheckForRef: function(reference: string){
+    requestBackgroundCheckForRefP(reference);
+ },
   onCheckResult: function(checkResult){
     onCheckResultP(JSON.stringify(checkResult));
   },

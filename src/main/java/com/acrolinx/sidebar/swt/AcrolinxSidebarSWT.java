@@ -43,6 +43,7 @@ import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxURL;
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.pojo.settings.DocumentSelection;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.utils.LogMessages;
@@ -311,8 +312,14 @@ import com.google.gson.reflect.TypeToken;
                 return getReplaceRangesObject(arguments[1]);
             }
         };
-        new BrowserFunction(browser, "getDocUrlP")
-        {
+        new BrowserFunction(browser, "requestBackgroundCheckForRefP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return requestBackgroundCheckForRef(arguments[1]);
+            }
+        };
+        new BrowserFunction(browser, "getDocUrlP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -433,6 +440,15 @@ import com.google.gson.reflect.TypeToken;
         return null;
     }
 
+    private Object requestBackgroundCheckForRef(Object argument)
+    {
+        // client get content and check options
+        List<BatchCheckRequestOptions> batchCheckRequestOptions = client.getContentForReference(argument.toString());
+        // call the sidebar
+        this.initBatchCheck(batchCheckRequestOptions);
+        return null;
+    }
+
     private String getCurrentSelectionRangesObject()
     {
         final List<IntRange> currentSelection = client.getEditorAdapter().getCurrentSelection();
@@ -534,6 +550,13 @@ import com.google.gson.reflect.TypeToken;
     }
 
     @Override
+    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        String jsArgs = buildStringOfBatchCheckRequestOptions(batchCheckRequestOptions);
+        browser.execute("window.acrolinxSidebar.initBatchCheck(" + jsArgs + ");");
+    }
+
+    @Override
     public void onGlobalCheckRejected()
     {
         LogMessages.logCheckRejected(logger);
@@ -544,6 +567,13 @@ import com.google.gson.reflect.TypeToken;
             final java.util.List<CheckedDocumentPart> checkedDocumentParts)
     {
         return checkedDocumentParts.stream().map(CheckedDocumentPart::getAsJS).collect(Collectors.joining(", "));
+    }
+
+    private static String buildStringOfBatchCheckRequestOptions(
+            final java.util.List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(
+                Collectors.joining(", "));
     }
 
     @Override

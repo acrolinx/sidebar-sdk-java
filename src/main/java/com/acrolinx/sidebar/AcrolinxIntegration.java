@@ -2,11 +2,13 @@
 
 package com.acrolinx.sidebar;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.CheckResult;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 
 /**
  * This interface needs be implemented to integrate Acrolinx with an editor or editing environment.
@@ -49,5 +51,7 @@ public interface AcrolinxIntegration
      * @param initResult
      */
     void onInitFinished(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<SidebarError> initResult);
+
+    List<BatchCheckRequestOptions> getContentForReference(String reference);
 
 }
