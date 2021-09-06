@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import javafx.scene.web.WebView;
 
 import javax.annotation.Nullable;
@@ -78,6 +79,12 @@ abstract class AcrolinxSidebarPlugin
         return checkedDocumentParts.stream().map(CheckedDocumentPart::getAsJS).collect(Collectors.joining(", "));
     }
 
+    private static String buildStringOfCheckedRequestOptions(
+            final List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(Collectors.joining(", "));
+    }
+
     private JSObject getWindowObject()
     {
         logger.info("Get window object from webview...");
@@ -136,6 +143,38 @@ abstract class AcrolinxSidebarPlugin
         });
     }
 
+    public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions) {
+        final String js = buildStringOfCheckedRequestOptions(batchCheckRequestOptions);
+        JFXUtils.invokeInJFXThread(() -> {
+            try {
+                getWindowObject().eval("acrolinxSidebar.initBatchCheck([" + js + "])");
+            } catch (final Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
+    }
+
+    //TODO: Multiple parameter passing ?
+    public synchronized void checkReferenceInBackground(final String reference, final String documentContent, final CheckOptions options) {
+        JFXUtils.invokeInJFXThread(() -> {
+            try {
+                getWindowObject().eval("acrolinxSidebar.checkReferenceInBackground(" + reference + "," + documentContent + "," + options.toString() + ")");
+            } catch (final Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
+    }
+
+    public synchronized void onReferenceLoadedInEditor(final String reference) {
+        JFXUtils.invokeInJFXThread(() -> {
+            try {
+                getWindowObject().eval("acrolinxSidebar.onReferenceLoadedInEditor(" + reference + ")");
+            } catch (final Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
+    }
+
     public synchronized void runCheck(final boolean selectionEnabled, final CheckContent checkContent)
     {
         final CheckOptions checkOptions = getCheckSettingsFromClient(selectionEnabled,
@@ -154,6 +193,64 @@ abstract class AcrolinxSidebarPlugin
                 onGlobalCheckRejected();
             }
         });
+    }
+
+
+    public synchronized void runBatchCheck() {
+        List<BatchCheckRequestOptions> batchCheckRequestOptions =  client.extractReferences();
+        initBatchCheck(batchCheckRequestOptions);
+    }
+
+    public synchronized void runInteractiveCheckWithCheckSelection(final JSObject o) {
+        LogMessages.logCheckRequested(logger);
+        this.checkStartedTime = Instant.now();
+        boolean selection = false;
+        if (o != null) {
+            if (o.getMember("selection") != null) {
+                selection = Boolean.parseBoolean(o.getMember("selection").toString());
+            }
+        }
+
+        final CheckContent checkContent = getCheckContentFromClient();
+        logger.debug("Fetched check content including external content");
+        if ((client.getEditorAdapter() != null) && !(client.getEditorAdapter() instanceof NullEditorAdapter)
+                && (checkContent.getContent() != null)) {
+            logger.debug("Editor is ready for running a check");
+            runCheck(selection, checkContent);
+        } else {
+            logger.warn("Current File Editor not supported for checking or no file present.");
+            onGlobalCheckRejected();
+        }
+    }
+
+    public synchronized void runInteractiveCheckWithoutCheckSelection() {
+        LogMessages.logCheckRequested(logger);
+        this.checkStartedTime = Instant.now();
+        final CheckContent checkContent = getCheckContentFromClient();
+        logger.debug("Fetched check content including external content");
+        if ((client.getEditorAdapter() != null) && !(client.getEditorAdapter() instanceof NullEditorAdapter)
+                && (checkContent.getContent() != null)) {
+            runCheck(false, checkContent);
+        } else {
+            logger.warn("Current File Editor not supported for checking or no file present.");
+            onGlobalCheckRejected();
+        }
+    }
+
+    public synchronized void requestBackgroundCheckForRef(String ditaTopicReference) {
+        final String contentToCheck = client.getContentForReference(ditaTopicReference);
+        final CheckOptions options = new CheckOptions(
+                new RequestDescription(ditaTopicReference),
+                InputFormat.AUTO,
+                null,
+                null
+        );
+        this.checkReferenceInBackground(ditaTopicReference, contentToCheck, options);
+    }
+
+    public synchronized void openReferenceInEditor(String reference) {
+         client.openReferenceInEditor(reference);
+        this.onReferenceLoadedInEditor(reference);
     }
 
     public synchronized void onCheckResult(final JSObject o)

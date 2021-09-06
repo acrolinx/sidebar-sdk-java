@@ -5,6 +5,7 @@ package com.acrolinx.sidebar.jfx;
 import java.util.List;
 
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.CacheHint;
@@ -163,7 +164,17 @@ import netscape.javascript.JSObject;
 
     @Override
     public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions) {
-        // TODO
+        acrolinxSidebarPlugin.initBatchCheck(batchCheckRequestOptions);
+    }
+
+    @Override
+    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options) {
+         acrolinxSidebarPlugin.checkReferenceInBackground(reference, documentContent, options);
+    }
+
+    @Override
+    public void onReferenceLoadedInEditor(String reference) {
+        acrolinxSidebarPlugin.onReferenceLoadedInEditor(reference);
     }
 
     @Override

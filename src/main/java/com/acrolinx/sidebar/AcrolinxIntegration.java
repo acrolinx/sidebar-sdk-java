@@ -9,6 +9,7 @@ import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.CheckResult;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckModeType;
 
 /**
  * This interface needs be implemented to integrate Acrolinx with an editor or editing environment.
@@ -52,6 +53,14 @@ public interface AcrolinxIntegration
      */
     void onInitFinished(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<SidebarError> initResult);
 
-    List<BatchCheckRequestOptions> getContentForReference(String reference);
+    //TODO: To check
+    //List<BatchCheckRequestOptions> getContentForReference(String reference);
+    String getContentForReference(String reference);
+
+    CheckModeType getCheckModeOnCheckRequested();
+
+    void openReferenceInEditor(String reference);
+
+    List<BatchCheckRequestOptions> extractReferences();
 
 }

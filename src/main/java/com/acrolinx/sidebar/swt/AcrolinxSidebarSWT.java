@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import com.acrolinx.sidebar.pojo.settings.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
@@ -42,10 +43,6 @@ import com.acrolinx.sidebar.pojo.document.CheckResultFromJSON;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import com.acrolinx.sidebar.pojo.settings.AcrolinxURL;
-import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
-import com.acrolinx.sidebar.pojo.settings.DocumentSelection;
-import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.LoggingUtils;
 import com.acrolinx.sidebar.utils.SecurityUtils;
@@ -312,11 +309,20 @@ import com.google.gson.reflect.TypeToken;
                 return getReplaceRangesObject(arguments[1]);
             }
         };
+        //TODO arguments[0] vs [1] ?
         new BrowserFunction(browser, "requestBackgroundCheckForRefP") {
             @Override
             public Object function(final Object[] arguments)
             {
                 return requestBackgroundCheckForRef(arguments[1]);
+            }
+        };
+        //TODO arguments[0] vs [1] ?
+        new BrowserFunction(browser, "openReferenceInEditorP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return openReferenceInEditor(arguments[1]);
             }
         };
         new BrowserFunction(browser, "getDocUrlP") {
@@ -440,12 +446,29 @@ import com.google.gson.reflect.TypeToken;
         return null;
     }
 
+    //TODO: To check
     private Object requestBackgroundCheckForRef(Object argument)
     {
         // client get content and check options
-        List<BatchCheckRequestOptions> batchCheckRequestOptions = client.getContentForReference(argument.toString());
+        //List<BatchCheckRequestOptions> batchCheckRequestOptions = client.getContentForReference(argument.toString());
         // call the sidebar
-        this.initBatchCheck(batchCheckRequestOptions);
+        //this.initBatchCheck(batchCheckRequestOptions);
+        String reference = argument.toString();
+        String contentForReference= client.getContentForReference(reference);
+        CheckOptions options = new CheckOptions(
+                new RequestDescription(reference),
+                InputFormat.AUTO,
+                null,
+                null
+        );
+        this.checkReferenceInBackground(reference, contentForReference, options);
+        return null;
+    }
+
+    private Object openReferenceInEditor(Object argument)
+    {
+        client.openReferenceInEditor(argument.toString());
+        this.onReferenceLoadedInEditor(argument.toString());
         return null;
     }
 
@@ -554,6 +577,18 @@ import com.google.gson.reflect.TypeToken;
     {
         String jsArgs = buildStringOfBatchCheckRequestOptions(batchCheckRequestOptions);
         browser.execute("window.acrolinxSidebar.initBatchCheck([" + jsArgs + "]);");
+    }
+
+    @Override
+    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options) {
+        // TODO check passing multiple arguments!!
+        browser.execute("window.acrolinxSidebar.checkReferenceInBackground(" + reference + ", " + documentContent + ", " + options.toString() + ");");
+    }
+
+    @Override
+    public void onReferenceLoadedInEditor(String reference) {
+        // TODO!!
+        browser.execute("window.acrolinxSidebar.onReferenceLoadedInEditor("+ reference + ");");
     }
 
     @Override

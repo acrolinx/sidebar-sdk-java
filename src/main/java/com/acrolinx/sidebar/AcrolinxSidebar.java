@@ -7,6 +7,7 @@ import java.util.List;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 
 /**
@@ -30,7 +31,27 @@ public interface AcrolinxSidebar
     void checkGlobal();
 
     // TODO add sidebar dita functions
+
+    /**
+     *
+     * @param batchCheckRequestOptions
+     */
     void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions);
+
+    /**
+     *
+     * @param reference
+     * @param documentContent
+     * @param options
+     */
+
+    void checkReferenceInBackground(String reference, String documentContent, CheckOptions options);
+
+    /**
+     *
+     * @param reference
+     */
+    void onReferenceLoadedInEditor(String reference);
 
     /**
      * Notifies the sidebar that the check was canceled.

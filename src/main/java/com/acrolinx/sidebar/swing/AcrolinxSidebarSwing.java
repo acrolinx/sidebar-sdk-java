@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -131,6 +132,16 @@ import com.acrolinx.sidebar.utils.LogMessages;
     @Override
     public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions) {
         // TODO!!!
+    }
+
+    @Override
+    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options) {
+        // TODO!!
+    }
+
+    @Override
+    public void onReferenceLoadedInEditor(String reference) {
+        // TODO!!
     }
 
     @Override

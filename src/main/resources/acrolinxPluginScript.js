@@ -46,6 +46,7 @@ window.acrolinxPlugin =
   onInitFinished: function(finishResult){
    onInitFinishedNotificationP(JSON.stringify(finishResult));
   },
+  //TODO: modify to add batch check option
   requestGlobalCheck: function(options){
     if(!canCheck()) {
         acrolinxSidebar.onGlobalCheckRejected();
@@ -62,6 +63,9 @@ window.acrolinxPlugin =
  requestBackgroundCheckForRef: function(reference: string){
     requestBackgroundCheckForRefP(reference);
  },
+  openReferenceInEditor: function(reference: string){
+     openReferenceInEditorP(reference);
+  },
   onCheckResult: function(checkResult){
     onCheckResultP(JSON.stringify(checkResult));
   },
