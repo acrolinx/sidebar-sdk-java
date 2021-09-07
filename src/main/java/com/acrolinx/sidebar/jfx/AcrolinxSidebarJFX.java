@@ -4,8 +4,6 @@ package com.acrolinx.sidebar.jfx;
 
 import java.util.List;
 
-import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
-import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.CacheHint;
@@ -22,6 +20,8 @@ import com.acrolinx.sidebar.AcrolinxSidebar;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.utils.LogMessages;
@@ -36,7 +36,8 @@ import netscape.javascript.JSObject;
  *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings("unused, WeakerAccess") public class AcrolinxSidebarJFX implements AcrolinxSidebar
+@SuppressWarnings("unused, WeakerAccess")
+public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
     private WebView webView = new WebView();
     private AcrolinxSidebarPlugin acrolinxSidebarPlugin;
@@ -70,9 +71,11 @@ import netscape.javascript.JSObject;
         webEngine.setOnError((final WebErrorEvent arg0) -> logger.error("Error: " + arg0.getMessage()));
         webEngine.setOnAlert((final WebEvent<String> arg0) -> logger.debug("Alert: " + arg0.getData()));
 
-        webEngine.getLoadWorker().stateProperty().addListener(
-                (final ObservableValue<? extends Worker.State> observedValue, final Worker.State oldState, final Worker.State newState) -> this.getChangeListener(observedValue, oldState, newState, storage));
-        webEngine.getLoadWorker().exceptionProperty().addListener((ov, t, t1) -> logger.error("webEngine exception: " + t1.getMessage()));
+        webEngine.getLoadWorker().stateProperty().addListener((
+                final ObservableValue<? extends Worker.State> observedValue, final Worker.State oldState,
+                final Worker.State newState) -> this.getChangeListener(observedValue, oldState, newState, storage));
+        webEngine.getLoadWorker().exceptionProperty().addListener(
+                (ov, t, t1) -> logger.error("webEngine exception: " + t1.getMessage()));
 
         if (sidebarUrl != null) {
             logger.info("Loading: " + sidebarUrl);
@@ -89,7 +92,7 @@ import netscape.javascript.JSObject;
 
         logger.debug("state changed: " + observedValue.getValue() + ": " + oldState + " -> " + newState);
         if (newState == Worker.State.SUCCEEDED) {
-           this.injectAcrolinxPlugin(storage);
+            this.injectAcrolinxPlugin(storage);
         }
         if ("FAILED".equals("" + newState)) {
             final WebView webView = getWebView();
@@ -104,7 +107,8 @@ import netscape.javascript.JSObject;
         }
     }
 
-    private void injectAcrolinxPlugin(AcrolinxStorage storage){
+    private void injectAcrolinxPlugin(AcrolinxStorage storage)
+    {
         final WebView webView = getWebView();
         final WebEngine webEngine = webView.getEngine();
         logger.debug("Sidebar loaded from " + webEngine.getLocation());
@@ -163,17 +167,20 @@ import netscape.javascript.JSObject;
     }
 
     @Override
-    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions) {
+    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
         acrolinxSidebarPlugin.initBatchCheck(batchCheckRequestOptions);
     }
 
     @Override
-    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options) {
-         acrolinxSidebarPlugin.checkReferenceInBackground(reference, documentContent, options);
+    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options)
+    {
+        acrolinxSidebarPlugin.checkReferenceInBackground(reference, documentContent, options);
     }
 
     @Override
-    public void onReferenceLoadedInEditor(String reference) {
+    public void onReferenceLoadedInEditor(String reference)
+    {
         acrolinxSidebarPlugin.onReferenceLoadedInEditor(reference);
     }
 

@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import javafx.scene.web.WebView;
 
 import javax.annotation.Nullable;
@@ -28,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.InputAdapterInterface;
+import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.*;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
@@ -82,7 +82,8 @@ abstract class AcrolinxSidebarPlugin
     private static String buildStringOfCheckedRequestOptions(
             final List<BatchCheckRequestOptions> batchCheckRequestOptions)
     {
-        return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(Collectors.joining(", "));
+        return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(
+                Collectors.joining(", "));
     }
 
     private JSObject getWindowObject()
@@ -143,7 +144,8 @@ abstract class AcrolinxSidebarPlugin
         });
     }
 
-    public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions) {
+    public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
         final String js = buildStringOfCheckedRequestOptions(batchCheckRequestOptions);
         JFXUtils.invokeInJFXThread(() -> {
             try {
@@ -154,18 +156,22 @@ abstract class AcrolinxSidebarPlugin
         });
     }
 
-    //TODO: Multiple parameter passing ?
-    public synchronized void checkReferenceInBackground(final String reference, final String documentContent, final CheckOptions options) {
+    // TODO: Multiple parameter passing ?
+    public synchronized void checkReferenceInBackground(final String reference, final String documentContent,
+            final CheckOptions options)
+    {
         JFXUtils.invokeInJFXThread(() -> {
             try {
-                getWindowObject().eval("acrolinxSidebar.checkReferenceInBackground(" + reference + "," + documentContent + "," + options.toString() + ")");
+                getWindowObject().eval("acrolinxSidebar.checkReferenceInBackground(" + reference + "," + documentContent
+                        + "," + options.toString() + ")");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
             }
         });
     }
 
-    public synchronized void onReferenceLoadedInEditor(final String reference) {
+    public synchronized void onReferenceLoadedInEditor(final String reference)
+    {
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 getWindowObject().eval("acrolinxSidebar.onReferenceLoadedInEditor(" + reference + ")");
@@ -195,13 +201,14 @@ abstract class AcrolinxSidebarPlugin
         });
     }
 
-
-    public synchronized void runBatchCheck() {
-        List<BatchCheckRequestOptions> batchCheckRequestOptions =  client.extractReferences();
+    public synchronized void runBatchCheck()
+    {
+        List<BatchCheckRequestOptions> batchCheckRequestOptions = client.extractReferences();
         initBatchCheck(batchCheckRequestOptions);
     }
 
-    public synchronized void runInteractiveCheckWithCheckSelection(final JSObject o) {
+    public synchronized void runInteractiveCheckWithCheckSelection(final JSObject o)
+    {
         LogMessages.logCheckRequested(logger);
         this.checkStartedTime = Instant.now();
         boolean selection = false;
@@ -223,7 +230,8 @@ abstract class AcrolinxSidebarPlugin
         }
     }
 
-    public synchronized void runInteractiveCheckWithoutCheckSelection() {
+    public synchronized void runInteractiveCheckWithoutCheckSelection()
+    {
         LogMessages.logCheckRequested(logger);
         this.checkStartedTime = Instant.now();
         final CheckContent checkContent = getCheckContentFromClient();
@@ -237,15 +245,17 @@ abstract class AcrolinxSidebarPlugin
         }
     }
 
-    public synchronized void requestBackgroundCheckForRef(String ditaTopicReference) {
-        //TODO: Wait for the content ?
+    public synchronized void requestBackgroundCheckForRef(String ditaTopicReference)
+    {
+        // TODO: Wait for the content ?
         final String contentToCheck = client.getContentForReference(ditaTopicReference);
         CheckOptions referenceCheckOptions = client.getCheckOptionsForReference(ditaTopicReference);
         this.checkReferenceInBackground(ditaTopicReference, contentToCheck, referenceCheckOptions);
     }
 
-    public synchronized void openReferenceInEditor(String reference) {
-        //TODO: Wait for the editor to open the reference ?
+    public synchronized void openReferenceInEditor(String reference)
+    {
+        // TODO: Wait for the editor to open the reference ?
         client.openReferenceInEditor(reference);
         this.onReferenceLoadedInEditor(reference);
     }

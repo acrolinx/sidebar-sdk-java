@@ -2,10 +2,10 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import com.acrolinx.sidebar.pojo.settings.CheckModeType;
 import javafx.scene.web.WebView;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
+import com.acrolinx.sidebar.pojo.settings.CheckModeType;
 
 import netscape.javascript.JSObject;
 
@@ -18,11 +18,11 @@ public class AcrolinxSidebarPluginWithCheckSelectionSupport extends AcrolinxSide
 
     public synchronized void requestGlobalCheck(final JSObject o)
     {
-        if(!this.client.getInitParameters().getSupported().isBatchChecking()) {
+        if (!this.client.getInitParameters().getSupported().isBatchChecking()) {
             runInteractiveCheckWithCheckSelection(o);
         } else {
             CheckModeType checkModeRequested = client.getCheckModeOnCheckRequested();
-            if(CheckModeType.BACKGROUNDCHECK.equals(checkModeRequested)) {
+            if (CheckModeType.BACKGROUNDCHECK.equals(checkModeRequested)) {
                 runBatchCheck();
             } else {
                 runInteractiveCheckWithCheckSelection(o);

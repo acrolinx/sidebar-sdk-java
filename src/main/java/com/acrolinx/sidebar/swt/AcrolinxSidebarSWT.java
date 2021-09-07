@@ -16,7 +16,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import com.acrolinx.sidebar.pojo.settings.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
@@ -43,6 +42,7 @@ import com.acrolinx.sidebar.pojo.document.CheckResultFromJSON;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
+import com.acrolinx.sidebar.pojo.settings.*;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.LoggingUtils;
 import com.acrolinx.sidebar.utils.SecurityUtils;
@@ -60,8 +60,8 @@ import com.google.gson.reflect.TypeToken;
  *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings({"unused", "SameParameterValue", "WeakerAccess"}) public class AcrolinxSidebarSWT
-        implements AcrolinxSidebar
+@SuppressWarnings({"unused", "SameParameterValue", "WeakerAccess"})
+public class AcrolinxSidebarSWT implements AcrolinxSidebar
 {
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSWT.class);
 
@@ -130,8 +130,7 @@ import com.google.gson.reflect.TypeToken;
             logger.error("Error while loading sidebar!", e);
             browser.setText(SidebarUtils.SIDEBAR_ERROR_HTML);
         }
-        browser.addProgressListener(new ProgressListener()
-        {
+        browser.addProgressListener(new ProgressListener() {
             @Override
             public void completed(final ProgressEvent event)
             {
@@ -151,8 +150,7 @@ import com.google.gson.reflect.TypeToken;
 
     private void initLocalStorage()
     {
-        new BrowserFunction(browser, "getItemP")
-        {
+        new BrowserFunction(browser, "getItemP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -164,8 +162,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "removeItemP")
-        {
+        new BrowserFunction(browser, "removeItemP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -176,8 +173,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "setItemP")
-        {
+        new BrowserFunction(browser, "setItemP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -199,8 +195,7 @@ import com.google.gson.reflect.TypeToken;
 
     private void initSidebar()
     {
-        new BrowserFunction(browser, "overwriteJSLoggingInfoP")
-        {
+        new BrowserFunction(browser, "overwriteJSLoggingInfoP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -209,8 +204,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "overwriteJSLoggingErrorP")
-        {
+        new BrowserFunction(browser, "overwriteJSLoggingErrorP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -219,8 +213,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "getInitParamsP")
-        {
+        new BrowserFunction(browser, "getInitParamsP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -228,8 +221,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "getTextP")
-        {
+        new BrowserFunction(browser, "getTextP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -238,8 +230,7 @@ import com.google.gson.reflect.TypeToken;
 
         };
 
-        new BrowserFunction(browser, "onInitFinishedNotificationP")
-        {
+        new BrowserFunction(browser, "onInitFinishedNotificationP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -247,8 +238,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "canCheck")
-        {
+        new BrowserFunction(browser, "canCheck") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -256,8 +246,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "canBatchCheck")
-        {
+        new BrowserFunction(browser, "canBatchCheck") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -265,8 +254,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "runBatchCheck")
-        {
+        new BrowserFunction(browser, "runBatchCheck") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -274,8 +262,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "getInputFormatP")
-        {
+        new BrowserFunction(browser, "getInputFormatP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -283,8 +270,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "getExternalContentP")
-        {
+        new BrowserFunction(browser, "getExternalContentP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -292,8 +278,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "onCheckResultP")
-        {
+        new BrowserFunction(browser, "onCheckResultP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -301,8 +286,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "getCurrentSelectionRangesP")
-        {
+        new BrowserFunction(browser, "getCurrentSelectionRangesP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -310,8 +294,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "selectRangesP")
-        {
+        new BrowserFunction(browser, "selectRangesP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -319,15 +302,14 @@ import com.google.gson.reflect.TypeToken;
             }
 
         };
-        new BrowserFunction(browser, "replaceRangesP")
-        {
+        new BrowserFunction(browser, "replaceRangesP") {
             @Override
             public Object function(final Object[] arguments)
             {
                 return getReplaceRangesObject(arguments[1]);
             }
         };
-        //TODO arguments[0] vs [1] ?
+        // TODO arguments[0] vs [1] ?
         new BrowserFunction(browser, "requestBackgroundCheckForRefP") {
             @Override
             public Object function(final Object[] arguments)
@@ -335,7 +317,7 @@ import com.google.gson.reflect.TypeToken;
                 return requestBackgroundCheckForRef(arguments[1]);
             }
         };
-        //TODO arguments[0] vs [1] ?
+        // TODO arguments[0] vs [1] ?
         new BrowserFunction(browser, "openReferenceInEditorP") {
             @Override
             public Object function(final Object[] arguments)
@@ -354,8 +336,7 @@ import com.google.gson.reflect.TypeToken;
 
         };
 
-        new BrowserFunction(browser, "notifyAboutSidebarConfigurationP")
-        {
+        new BrowserFunction(browser, "notifyAboutSidebarConfigurationP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -363,8 +344,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "downloadP")
-        {
+        new BrowserFunction(browser, "downloadP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -372,8 +352,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "openWindowP")
-        {
+        new BrowserFunction(browser, "openWindowP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -381,8 +360,7 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
-        new BrowserFunction(browser, "openLogFileP")
-        {
+        new BrowserFunction(browser, "openLogFileP") {
             @Override
             public Object function(final Object[] arguments)
             {
@@ -448,7 +426,7 @@ import com.google.gson.reflect.TypeToken;
                 new TypeToken<List<AcrolinxMatchFromJSON>>() {}.getType());
         final List<AcrolinxMatchWithReplacement> result = match.stream().map(
                 AcrolinxMatchFromJSON::getAsAcrolinxMatchWithReplacement).collect(
-                Collectors.toCollection(ArrayList::new));
+                        Collectors.toCollection(ArrayList::new));
         client.getEditorAdapter().replaceRanges(currentCheckId.get(), Collections.unmodifiableList(result));
         return null;
     }
@@ -458,23 +436,24 @@ import com.google.gson.reflect.TypeToken;
         LogMessages.logSelectingRange(logger);
         final List<AcrolinxMatchFromJSON> match = new Gson().fromJson((String) argument,
                 new TypeToken<List<AcrolinxMatchFromJSON>>() {}.getType());
-        final List<AcrolinxMatch> result = match.stream().map(
-                AcrolinxMatchFromJSON::getAsAcrolinxMatch).collect(Collectors.toCollection(ArrayList::new));
+        final List<AcrolinxMatch> result = match.stream().map(AcrolinxMatchFromJSON::getAsAcrolinxMatch).collect(
+                Collectors.toCollection(ArrayList::new));
         client.getEditorAdapter().selectRanges(currentCheckId.get(), Collections.unmodifiableList(result));
         return null;
     }
 
     private Object requestBackgroundCheckForRef(Object argument)
     {
-        //TODO: wait for the content ??
+        // TODO: wait for the content ??
         String reference = argument.toString();
-        String contentForReference= client.getContentForReference(reference);
+        String contentForReference = client.getContentForReference(reference);
         CheckOptions referenceCheckOptions = client.getCheckOptionsForReference(reference);
         this.checkReferenceInBackground(reference, contentForReference, referenceCheckOptions);
         return null;
     }
 
-    private Object runBatchCheck() {
+    private Object runBatchCheck()
+    {
         List<BatchCheckRequestOptions> references = client.extractReferences();
         this.initBatchCheck(references);
         return null;
@@ -482,7 +461,7 @@ import com.google.gson.reflect.TypeToken;
 
     private Object openReferenceInEditor(Object argument)
     {
-        //TODO: wait for the editor ??
+        // TODO: wait for the editor ??
         client.openReferenceInEditor(argument.toString());
         this.onReferenceLoadedInEditor(argument.toString());
         return null;
@@ -507,8 +486,7 @@ import com.google.gson.reflect.TypeToken;
                 Duration.between(checkStartTime.get(), checkEndedTime).toMillis());
         final String checkResult = argument.toString();
         try {
-            final CheckResultFromJSON checkResultObj = new Gson().fromJson(checkResult,
-                    CheckResultFromJSON.class);
+            final CheckResultFromJSON checkResultObj = new Gson().fromJson(checkResult, CheckResultFromJSON.class);
             final CheckResult result = checkResultObj.getAsCheckResult();
             if (result == null) {
                 logger.info("Check finished with errors.");
@@ -548,8 +526,7 @@ import com.google.gson.reflect.TypeToken;
     {
         boolean batchCheckSupported = client.getInitParameters().getSupported().isBatchChecking();
         CheckModeType checkModeRequested = client.getCheckModeOnCheckRequested();
-        if (!batchCheckSupported
-                || (batchCheckSupported && CheckModeType.INTERACTIVE.equals(checkModeRequested))) {
+        if (!batchCheckSupported || (batchCheckSupported && CheckModeType.INTERACTIVE.equals(checkModeRequested))) {
             return false;
         }
         return true;
@@ -607,14 +584,17 @@ import com.google.gson.reflect.TypeToken;
     }
 
     @Override
-    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options) {
+    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options)
+    {
         // TODO check passing multiple arguments!!
-        browser.execute("window.acrolinxSidebar.checkReferenceInBackground(" + reference + ", " + documentContent + ", " + options.toString() + ");");
+        browser.execute("window.acrolinxSidebar.checkReferenceInBackground(" + reference + ", " + documentContent + ", "
+                + options.toString() + ");");
     }
 
     @Override
-    public void onReferenceLoadedInEditor(String reference) {
-        browser.execute("window.acrolinxSidebar.onReferenceLoadedInEditor("+ reference + ");");
+    public void onReferenceLoadedInEditor(String reference)
+    {
+        browser.execute("window.acrolinxSidebar.onReferenceLoadedInEditor(" + reference + ");");
     }
 
     @Override
@@ -649,10 +629,10 @@ import com.google.gson.reflect.TypeToken;
     @Override
     public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches)
     {
-        final List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map(
-                (match) -> new CheckedDocumentPart(currentCheckId.get(),
-                        new IntRange(match.getRange().getMinimumInteger(),
-                                match.getRange().getMaximumInteger()))).collect(Collectors.toList());
+        final List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map((match) -> new CheckedDocumentPart(
+                currentCheckId.get(),
+                new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()))).collect(
+                        Collectors.toList());
         invalidateRanges(invalidDocumentParts);
     }
 

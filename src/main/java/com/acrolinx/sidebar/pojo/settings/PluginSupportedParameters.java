@@ -17,7 +17,7 @@ public class PluginSupportedParameters
     public PluginSupportedParameters(boolean checkSelection)
     {
         this(checkSelection, false);
-        //this.checkSelection = checkSelection;
+        // this.checkSelection = checkSelection;
     }
 
     public PluginSupportedParameters(boolean checkSelection, boolean supportsBatchChecking)
@@ -31,6 +31,9 @@ public class PluginSupportedParameters
         return checkSelection;
     }
 
-    public boolean isBatchChecking() { return supportsBatchChecking; }
+    public boolean isBatchChecking()
+    {
+        return supportsBatchChecking;
+    }
 
 }

@@ -15,7 +15,8 @@ public class SecurityUtils
     private static final Logger logger = LoggerFactory.getLogger(SecurityUtils.class);
     final private static String ACRO_PREFIX = "acrolinx_force_";
 
-    private static void logPropertyValue(String propertyName, String propertyValue){
+    private static void logPropertyValue(String propertyName, String propertyValue)
+    {
         logger.info("Property " + propertyName + " is set to " + propertyValue);
     }
 

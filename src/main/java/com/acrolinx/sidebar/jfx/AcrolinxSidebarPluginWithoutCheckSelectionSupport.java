@@ -2,10 +2,10 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import com.acrolinx.sidebar.pojo.settings.CheckModeType;
 import javafx.scene.web.WebView;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
+import com.acrolinx.sidebar.pojo.settings.CheckModeType;
 
 @SuppressWarnings("WeakerAccess")
 public class AcrolinxSidebarPluginWithoutCheckSelectionSupport extends AcrolinxSidebarPlugin
@@ -18,11 +18,11 @@ public class AcrolinxSidebarPluginWithoutCheckSelectionSupport extends AcrolinxS
 
     public synchronized void requestGlobalCheck()
     {
-        if(!this.client.getInitParameters().getSupported().isBatchChecking()) {
+        if (!this.client.getInitParameters().getSupported().isBatchChecking()) {
             runInteractiveCheckWithoutCheckSelection();
         } else {
             CheckModeType checkModeRequested = client.getCheckModeOnCheckRequested();
-            if(CheckModeType.BACKGROUNDCHECK.equals(checkModeRequested)) {
+            if (CheckModeType.BACKGROUNDCHECK.equals(checkModeRequested)) {
                 runBatchCheck();
             } else {
                 runInteractiveCheckWithoutCheckSelection();

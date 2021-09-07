@@ -63,28 +63,31 @@ public interface AcrolinxIntegration
     String getContentForReference(String reference);
 
     /**
-     * Gets the check mode for the requested check, returns CheckModeType.INTERACTIVE for normal checks and
-     * CheckModeType.BACKGROUNDCHECK to initialize a background check.
+     * Gets the check mode for the requested check, returns CheckModeType.INTERACTIVE for normal
+     * checks and CheckModeType.BACKGROUNDCHECK to initialize a background check.
      *
      * @return CheckModeType
      */
     CheckModeType getCheckModeOnCheckRequested();
 
-    /** Opens the given reference in editor and notifies the sidebar that the document has been opened.
+    /**
+     * Opens the given reference in editor and notifies the sidebar that the document has been
+     * opened.
      *
      * @param reference
      */
     void openReferenceInEditor(String reference);
 
     /**
-     *  Extracts all the references that should be listed for background check
+     * Extracts all the references that should be listed for background check
      *
      * @return List<BatchCheckRequestOptions>
      */
     List<BatchCheckRequestOptions> extractReferences();
 
     /**
-     * Called together with getContentForReference before running the background check on the given reference.
+     * Called together with getContentForReference before running the background check on the given
+     * reference.
      *
      * @param reference
      * @return CheckOptions
