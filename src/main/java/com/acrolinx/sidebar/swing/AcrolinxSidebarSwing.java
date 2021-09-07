@@ -131,17 +131,17 @@ import com.acrolinx.sidebar.utils.LogMessages;
 
     @Override
     public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions) {
-        // TODO!!!
+        sidebarJFX.initBatchCheck(batchCheckRequestOptions);
     }
 
     @Override
     public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options) {
-        // TODO!!
+        sidebarJFX.checkReferenceInBackground(reference, documentContent, options);
     }
 
     @Override
     public void onReferenceLoadedInEditor(String reference) {
-        // TODO!!
+        sidebarJFX.onReferenceLoadedInEditor(reference);
     }
 
     @Override

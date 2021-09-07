@@ -238,18 +238,15 @@ abstract class AcrolinxSidebarPlugin
     }
 
     public synchronized void requestBackgroundCheckForRef(String ditaTopicReference) {
+        //TODO: Wait for the content ?
         final String contentToCheck = client.getContentForReference(ditaTopicReference);
-        final CheckOptions options = new CheckOptions(
-                new RequestDescription(ditaTopicReference),
-                InputFormat.AUTO,
-                null,
-                null
-        );
-        this.checkReferenceInBackground(ditaTopicReference, contentToCheck, options);
+        CheckOptions referenceCheckOptions = client.getCheckOptionsForReference(ditaTopicReference);
+        this.checkReferenceInBackground(ditaTopicReference, contentToCheck, referenceCheckOptions);
     }
 
     public synchronized void openReferenceInEditor(String reference) {
-         client.openReferenceInEditor(reference);
+        //TODO: Wait for the editor to open the reference ?
+        client.openReferenceInEditor(reference);
         this.onReferenceLoadedInEditor(reference);
     }
 

@@ -4,5 +4,5 @@
 package com.acrolinx.sidebar.pojo.settings;
 
 public enum CheckModeType {
-    BATCHDITA, INTERACTIVE
+    BACKGROUNDCHECK, INTERACTIVE
 }

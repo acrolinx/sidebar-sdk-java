@@ -256,6 +256,24 @@ import com.google.gson.reflect.TypeToken;
             }
         };
 
+        new BrowserFunction(browser, "canBatchCheck")
+        {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return getCanBatchCheck();
+            }
+        };
+
+        new BrowserFunction(browser, "runBatchCheck")
+        {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return runBatchCheck();
+            }
+        };
+
         new BrowserFunction(browser, "getInputFormatP")
         {
             @Override
@@ -446,27 +464,25 @@ import com.google.gson.reflect.TypeToken;
         return null;
     }
 
-    //TODO: To check
     private Object requestBackgroundCheckForRef(Object argument)
     {
-        // client get content and check options
-        //List<BatchCheckRequestOptions> batchCheckRequestOptions = client.getContentForReference(argument.toString());
-        // call the sidebar
-        //this.initBatchCheck(batchCheckRequestOptions);
+        //TODO: wait for the content ??
         String reference = argument.toString();
         String contentForReference= client.getContentForReference(reference);
-        CheckOptions options = new CheckOptions(
-                new RequestDescription(reference),
-                InputFormat.AUTO,
-                null,
-                null
-        );
-        this.checkReferenceInBackground(reference, contentForReference, options);
+        CheckOptions referenceCheckOptions = client.getCheckOptionsForReference(reference);
+        this.checkReferenceInBackground(reference, contentForReference, referenceCheckOptions);
+        return null;
+    }
+
+    private Object runBatchCheck() {
+        List<BatchCheckRequestOptions> references = client.extractReferences();
+        this.initBatchCheck(references);
         return null;
     }
 
     private Object openReferenceInEditor(Object argument)
     {
+        //TODO: wait for the editor ??
         client.openReferenceInEditor(argument.toString());
         this.onReferenceLoadedInEditor(argument.toString());
         return null;
@@ -528,6 +544,17 @@ import com.google.gson.reflect.TypeToken;
         return canCheck;
     }
 
+    private boolean getCanBatchCheck()
+    {
+        boolean batchCheckSupported = client.getInitParameters().getSupported().isBatchChecking();
+        CheckModeType checkModeRequested = client.getCheckModeOnCheckRequested();
+        if (!batchCheckSupported
+                || (batchCheckSupported && CheckModeType.INTERACTIVE.equals(checkModeRequested))) {
+            return false;
+        }
+        return true;
+    }
+
     private Object getOnInitFinishedNotificationObject(Object argument)
     {
         final String result = argument.toString();
@@ -587,7 +614,6 @@ import com.google.gson.reflect.TypeToken;
 
     @Override
     public void onReferenceLoadedInEditor(String reference) {
-        // TODO!!
         browser.execute("window.acrolinxSidebar.onReferenceLoadedInEditor("+ reference + ");");
     }
 

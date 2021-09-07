@@ -18,30 +18,15 @@ public class AcrolinxSidebarPluginWithoutCheckSelectionSupport extends AcrolinxS
 
     public synchronized void requestGlobalCheck()
     {
-
-
         if(!this.client.getInitParameters().getSupported().isBatchChecking()) {
             runInteractiveCheckWithoutCheckSelection();
         } else {
             CheckModeType checkModeRequested = client.getCheckModeOnCheckRequested();
-            if(CheckModeType.BATCHDITA.equals(checkModeRequested)) {
+            if(CheckModeType.BACKGROUNDCHECK.equals(checkModeRequested)) {
                 runBatchCheck();
             } else {
                 runInteractiveCheckWithoutCheckSelection();
             }
         }
-
-//        LogMessages.logCheckRequested(logger);
-//        this.checkStartedTime = Instant.now();
-//        final CheckContent checkContent = getCheckContentFromClient();
-//        logger.debug("Fetched check content including external content");
-//        if ((client.getEditorAdapter() != null) && !(client.getEditorAdapter() instanceof NullEditorAdapter)
-//                && (checkContent.getContent() != null)) {
-//            runCheck(false, checkContent);
-//        } else {
-//            logger.warn("Current File Editor not supported for checking or no file present.");
-//            onGlobalCheckRejected();
-//        }
-
     }
 }
