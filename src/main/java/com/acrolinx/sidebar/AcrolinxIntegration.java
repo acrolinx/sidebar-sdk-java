@@ -2,15 +2,11 @@
 
 package com.acrolinx.sidebar;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.CheckResult;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
-import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
-import com.acrolinx.sidebar.pojo.settings.CheckModeType;
-import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 
 /**
  * This interface needs be implemented to integrate Acrolinx with an editor or editing environment.
@@ -54,43 +50,4 @@ public interface AcrolinxIntegration
      */
     void onInitFinished(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<SidebarError> initResult);
 
-    /**
-     * Gets the content for a requested background check
-     *
-     * @param reference
-     * @return String
-     */
-    String getContentForReference(String reference);
-
-    /**
-     * Gets the check mode for the requested check, returns CheckModeType.INTERACTIVE for normal
-     * checks and CheckModeType.BACKGROUNDCHECK to initialize a background check.
-     *
-     * @return CheckModeType
-     */
-    CheckModeType getCheckModeOnCheckRequested();
-
-    /**
-     * Opens the given reference in editor and notifies the sidebar that the document has been
-     * opened.
-     *
-     * @param reference
-     */
-    void openReferenceInEditor(String reference);
-
-    /**
-     * Extracts all the references that should be listed for background check
-     *
-     * @return List<BatchCheckRequestOptions>
-     */
-    List<BatchCheckRequestOptions> extractReferences();
-
-    /**
-     * Called together with getContentForReference before running the background check on the given
-     * reference.
-     *
-     * @param reference
-     * @return CheckOptions
-     */
-    CheckOptions getCheckOptionsForReference(String reference);
 }

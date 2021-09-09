@@ -4,12 +4,7 @@ package com.acrolinx.sidebar.swt;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
-
-import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 
 public class AcrolinxSidebarSWTTest
 {
@@ -23,16 +18,16 @@ public class AcrolinxSidebarSWTTest
                 "https://test-ssl.acrolinx.com/output/en/summerFlowers_dita_franziska_preiss_acrolinx_com_fc57c97ad061df73_615_report.html?apikey=eyJ0eXAiOiJKV1QiLCJhbGciOiJI"));
     }
 
-    @Test
-    public void getBatchRefsAsJS() throws Exception
-    {
-        List<BatchCheckRequestOptions> list = new ArrayList<>();
-        list.add(new BatchCheckRequestOptions("ditaTopic1.dita", "Topic 1"));
-        list.add(new BatchCheckRequestOptions("ditaTopic2.dita", "Topic 2"));
-        String jsonArgument = AcrolinxSidebarSWT.buildStringOfBatchCheckRequestOptions(list);
-        // System.out.println(jsonArgument);
-        assertTrue(jsonArgument.equals(
-                "{\"reference\":\"ditaTopic1.dita\",\"displayName\":\"Topic 1\"}, {\"reference\":\"ditaTopic2.dita\",\"displayName\":\"Topic 2\"}"));
-    }
+//    @Test
+//    public void getBatchRefsAsJS() throws Exception
+//    {
+//        List<BatchCheckRequestOptions> list = new ArrayList<>();
+//        list.add(new BatchCheckRequestOptions("ditaTopic1.dita", "Topic 1"));
+//        list.add(new BatchCheckRequestOptions("ditaTopic2.dita", "Topic 2"));
+//        String jsonArgument = AcrolinxSidebarSWT.buildStringOfBatchCheckRequestOptions(list);
+//        // System.out.println(jsonArgument);
+//        assertTrue(jsonArgument.equals(
+//                "{\"reference\":\"ditaTopic1.dita\",\"displayName\":\"Topic 1\"}, {\"reference\":\"ditaTopic2.dita\",\"displayName\":\"Topic 2\"}"));
+//    }
 
 }

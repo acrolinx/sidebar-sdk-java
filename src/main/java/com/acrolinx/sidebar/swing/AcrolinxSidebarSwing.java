@@ -25,8 +25,6 @@ import com.acrolinx.sidebar.jfx.AcrolinxSidebarJFX;
 import com.acrolinx.sidebar.jfx.JFXUtils;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
-import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
-import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.utils.LogMessages;
 
@@ -39,12 +37,12 @@ import com.acrolinx.sidebar.utils.LogMessages;
 public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 {
     private static final long serialVersionUID = 3813416489627785478L;
-    private transient AcrolinxSidebarJFX sidebarJFX;
-    private transient final AcrolinxStorage storage;
+    protected transient AcrolinxSidebarJFX sidebarJFX;
+    protected transient final AcrolinxStorage storage;
 
-    private transient final AcrolinxIntegration integration;
+    protected transient final AcrolinxIntegration integration;
 
-    private transient final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
+    protected transient final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
 
     public AcrolinxSidebarSwing(final AcrolinxIntegration integration)
     {
@@ -75,7 +73,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
     }
 
-    private void createScene()
+    protected void createScene()
     {
         sidebarJFX = new AcrolinxSidebarJFX(integration, storage);
         final WebView webview = sidebarJFX.getWebView();
@@ -126,24 +124,6 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     public void checkGlobal()
     {
         sidebarJFX.checkGlobal();
-    }
-
-    @Override
-    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
-    {
-        sidebarJFX.initBatchCheck(batchCheckRequestOptions);
-    }
-
-    @Override
-    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options)
-    {
-        sidebarJFX.checkReferenceInBackground(reference, documentContent, options);
-    }
-
-    @Override
-    public void onReferenceLoadedInEditor(String reference)
-    {
-        sidebarJFX.onReferenceLoadedInEditor(reference);
     }
 
     @Override

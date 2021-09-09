@@ -20,8 +20,6 @@ import com.acrolinx.sidebar.AcrolinxSidebar;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
-import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
-import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.utils.LogMessages;
@@ -39,11 +37,11 @@ import netscape.javascript.JSObject;
 @SuppressWarnings("unused, WeakerAccess")
 public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
-    private WebView webView = new WebView();
-    private AcrolinxSidebarPlugin acrolinxSidebarPlugin;
-    private final AcrolinxIntegration integration;
+    protected WebView webView = new WebView();
+    protected AcrolinxSidebarPlugin acrolinxSidebarPlugin;
+    protected final AcrolinxIntegration integration;
 
-    private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
+    protected final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
 
     public AcrolinxSidebarJFX(final AcrolinxIntegration integration)
     {
@@ -164,24 +162,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         } else if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithoutCheckSelectionSupport) {
             ((AcrolinxSidebarPluginWithoutCheckSelectionSupport) acrolinxSidebarPlugin).requestGlobalCheck();
         }
-    }
-
-    @Override
-    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
-    {
-        acrolinxSidebarPlugin.initBatchCheck(batchCheckRequestOptions);
-    }
-
-    @Override
-    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options)
-    {
-        acrolinxSidebarPlugin.checkReferenceInBackground(reference, documentContent, options);
-    }
-
-    @Override
-    public void onReferenceLoadedInEditor(String reference)
-    {
-        acrolinxSidebarPlugin.onReferenceLoadedInEditor(reference);
     }
 
     @Override
