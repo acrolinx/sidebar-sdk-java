@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import javafx.scene.web.WebView;
 
-import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.AcrolinxIntegrationWithBatchSupport;
 import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.document.CheckContent;
@@ -31,26 +30,25 @@ public class AcrolinxSidebarPluginWithBatchSupport extends AcrolinxSidebarPlugin
     public synchronized void requestBackgroundCheckForRef(String ditaTopicReference)
     {
         // TODO: Wait for the content ?
-        // final String contentToCheck = client.getContentForReference(ditaTopicReference);
+        logger.info("requestBackgroundCheckForRef is called...");
         final String contentToCheck = ((AcrolinxIntegrationWithBatchSupport) client).getContentForReference(
                 ditaTopicReference);
-        // CheckOptions referenceCheckOptions =
-        // client.getCheckOptionsForReference(ditaTopicReference);
         CheckOptions referenceCheckOptions = ((AcrolinxIntegrationWithBatchSupport) client).getCheckOptionsForReference(
                 ditaTopicReference);
         this.checkReferenceInBackground(ditaTopicReference, contentToCheck, referenceCheckOptions);
     }
 
-    public synchronized void openReferenceInEditor(String reference)
-    {
+    public synchronized void openReferenceInEditor(String reference) {
         // TODO: Wait for the editor to open the reference ?
         ((AcrolinxIntegrationWithBatchSupport) client).openReferenceInEditor(reference);
         this.onReferenceLoadedInEditor(reference);
+        logger.info("Sidebar onReferenceLoadedInEditor is called...");
     }
 
     public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions)
     {
         final String js = buildStringOfCheckedRequestOptions(batchCheckRequestOptions);
+        logger.info("initBatchCheck...");
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 getWindowObject().eval("acrolinxSidebar.initBatchCheck([" + js + "])");
@@ -58,27 +56,44 @@ public class AcrolinxSidebarPluginWithBatchSupport extends AcrolinxSidebarPlugin
                 logger.error(e.getMessage(), e);
             }
         });
+        logger.info("end of initBatchCheck...");
     }
 
     // TODO: Multiple parameter passing ?
     public synchronized void checkReferenceInBackground(final String reference, final String documentContent,
             final CheckOptions options)
     {
+        logger.info("checkReferenceInBackground is called...");
         JFXUtils.invokeInJFXThread(() -> {
             try {
-                getWindowObject().eval("acrolinxSidebar.checkReferenceInBackground(" + reference + "," + documentContent
-                        + "," + options.toString() + ")");
+                final String nameVariableReference = "reference";
+                final String nameVariableContent = "documentContent";
+                final JSObject jsObject = getWindowObject();
+                jsObject.setMember(nameVariableReference, reference);
+                jsObject.setMember(nameVariableContent, documentContent);
+                jsObject.eval("acrolinxSidebar.checkReferenceInBackground(reference, documentContent, " + options.toString() + ");");
+                logger.info("end of checkReferenceInBackground...");
             } catch (final Exception e) {
+                logger.info("This is from checkRefernceInBackground");
                 logger.error(e.getMessage(), e);
             }
         });
+
     }
 
     public synchronized void onReferenceLoadedInEditor(final String reference)
     {
         JFXUtils.invokeInJFXThread(() -> {
+//            try {
+//                getWindowObject().eval("acrolinxSidebar.onReferenceLoadedInEditor(" + reference + ")");
+//            } catch (final Exception e) {
+//                logger.error(e.getMessage(), e);
+//            }
             try {
-                getWindowObject().eval("acrolinxSidebar.onReferenceLoadedInEditor(" + reference + ")");
+                final String nameVariableReference = "reference";
+                final JSObject jsObject = getWindowObject();
+                jsObject.setMember(nameVariableReference, reference);
+                jsObject.eval("acrolinxSidebar.checkReferenceInBackground(reference);");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
             }
