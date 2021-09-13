@@ -105,7 +105,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         }
     }
 
-    private void injectAcrolinxPlugin(AcrolinxStorage storage)
+    protected void injectAcrolinxPlugin(AcrolinxStorage storage)
     {
         final WebView webView = getWebView();
         final WebEngine webEngine = webView.getEngine();

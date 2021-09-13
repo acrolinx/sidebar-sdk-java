@@ -33,7 +33,8 @@ public class AcrolinxSidebarJFXWithBatchSupport extends AcrolinxSidebarJFX imple
         super(integration, storage);
     }
 
-    private void injectAcrolinxPlugin(AcrolinxStorage storage)
+    @Override
+    protected void injectAcrolinxPlugin(AcrolinxStorage storage)
     {
         final WebView webView = getWebView();
         final WebEngine webEngine = webView.getEngine();
