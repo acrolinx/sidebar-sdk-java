@@ -9,7 +9,6 @@ import java.util.List;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
-import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.AcrolinxIntegrationWithBatchSupport;
 import com.acrolinx.sidebar.AcrolinxSidebarWithBatchSupport;
 import com.acrolinx.sidebar.AcrolinxStorage;
@@ -36,6 +35,7 @@ public class AcrolinxSidebarJFXWithBatchSupport extends AcrolinxSidebarJFX imple
     @Override
     protected void injectAcrolinxPlugin(AcrolinxStorage storage)
     {
+        logger.info("injectAcrolinxPlugin is called");
         final WebView webView = getWebView();
         final WebEngine webEngine = webView.getEngine();
         logger.debug("Sidebar loaded from " + webEngine.getLocation());
@@ -59,6 +59,15 @@ public class AcrolinxSidebarJFXWithBatchSupport extends AcrolinxSidebarJFX imple
         } else {
             acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithBatchSupportAndNoCheckSelection(
                     (AcrolinxIntegrationWithBatchSupport) integration, webView);
+        }
+    }
+
+    @Override
+    public void checkGlobal() {
+        if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithBatchSupportAndCheckSelection) {
+            ((AcrolinxSidebarPluginWithBatchSupportAndCheckSelection) acrolinxSidebarPlugin).requestGlobalCheck(null);
+        } else if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithBatchSupportAndNoCheckSelection) {
+            ((AcrolinxSidebarPluginWithBatchSupportAndNoCheckSelection) acrolinxSidebarPlugin).requestGlobalCheck();
         }
     }
 

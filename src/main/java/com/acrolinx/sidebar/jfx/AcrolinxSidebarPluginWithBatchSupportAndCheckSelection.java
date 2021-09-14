@@ -6,7 +6,6 @@ package com.acrolinx.sidebar.jfx;
 
 import javafx.scene.web.WebView;
 
-import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.AcrolinxIntegrationWithBatchSupport;
 import com.acrolinx.sidebar.pojo.settings.CheckModeType;
 

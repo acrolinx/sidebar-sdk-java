@@ -40,9 +40,9 @@ public class AcrolinxSidebarPluginWithBatchSupport extends AcrolinxSidebarPlugin
 
     public synchronized void openReferenceInEditor(String reference) {
         // TODO: Wait for the editor to open the reference ?
+        logger.info("openReferenceInEditor is called...");
         ((AcrolinxIntegrationWithBatchSupport) client).openReferenceInEditor(reference);
         this.onReferenceLoadedInEditor(reference);
-        logger.info("Sidebar onReferenceLoadedInEditor is called...");
     }
 
     public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions)
@@ -83,17 +83,13 @@ public class AcrolinxSidebarPluginWithBatchSupport extends AcrolinxSidebarPlugin
 
     public synchronized void onReferenceLoadedInEditor(final String reference)
     {
+        logger.info("Sidebar onReferenceLoadedInEditor is called...");
         JFXUtils.invokeInJFXThread(() -> {
-//            try {
-//                getWindowObject().eval("acrolinxSidebar.onReferenceLoadedInEditor(" + reference + ")");
-//            } catch (final Exception e) {
-//                logger.error(e.getMessage(), e);
-//            }
             try {
                 final String nameVariableReference = "reference";
                 final JSObject jsObject = getWindowObject();
                 jsObject.setMember(nameVariableReference, reference);
-                jsObject.eval("acrolinxSidebar.checkReferenceInBackground(reference);");
+                jsObject.eval("acrolinxSidebar.onReferenceLoadedInEditor(reference);");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
             }
