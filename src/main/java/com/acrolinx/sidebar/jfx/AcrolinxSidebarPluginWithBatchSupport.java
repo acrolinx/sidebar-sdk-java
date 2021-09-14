@@ -38,7 +38,8 @@ public class AcrolinxSidebarPluginWithBatchSupport extends AcrolinxSidebarPlugin
         this.checkReferenceInBackground(ditaTopicReference, contentToCheck, referenceCheckOptions);
     }
 
-    public synchronized void openReferenceInEditor(String reference) {
+    public synchronized void openReferenceInEditor(String reference)
+    {
         // TODO: Wait for the editor to open the reference ?
         logger.info("openReferenceInEditor is called...");
         ((AcrolinxIntegrationWithBatchSupport) client).openReferenceInEditor(reference);
@@ -71,7 +72,8 @@ public class AcrolinxSidebarPluginWithBatchSupport extends AcrolinxSidebarPlugin
                 final JSObject jsObject = getWindowObject();
                 jsObject.setMember(nameVariableReference, reference);
                 jsObject.setMember(nameVariableContent, documentContent);
-                jsObject.eval("acrolinxSidebar.checkReferenceInBackground(reference, documentContent, " + options.toString() + ");");
+                jsObject.eval("acrolinxSidebar.checkReferenceInBackground(reference, documentContent, "
+                        + options.toString() + ");");
                 logger.info("end of checkReferenceInBackground...");
             } catch (final Exception e) {
                 logger.info("This is from checkRefernceInBackground");

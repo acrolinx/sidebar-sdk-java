@@ -28,7 +28,8 @@ public class BatchCheckRequestOptions
         this.displayName = displayName;
     }
 
-    public String getReference() {
+    public String getReference()
+    {
         return reference;
     }
 

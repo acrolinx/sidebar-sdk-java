@@ -63,7 +63,8 @@ public class AcrolinxSidebarJFXWithBatchSupport extends AcrolinxSidebarJFX imple
     }
 
     @Override
-    public void checkGlobal() {
+    public void checkGlobal()
+    {
         if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithBatchSupportAndCheckSelection) {
             ((AcrolinxSidebarPluginWithBatchSupportAndCheckSelection) acrolinxSidebarPlugin).requestGlobalCheck(null);
         } else if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithBatchSupportAndNoCheckSelection) {
