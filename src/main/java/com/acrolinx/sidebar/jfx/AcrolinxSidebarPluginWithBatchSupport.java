@@ -46,6 +46,12 @@ public class AcrolinxSidebarPluginWithBatchSupport extends AcrolinxSidebarPlugin
         this.onReferenceLoadedInEditor(reference);
     }
 
+    public synchronized void openMapInEditor()
+    {
+        logger.info("openMapInEditor is called...");
+        ((AcrolinxIntegrationWithBatchSupport) client).openMapInEditor();
+    }
+
     public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions)
     {
         final String js = buildStringOfCheckedRequestOptions(batchCheckRequestOptions);

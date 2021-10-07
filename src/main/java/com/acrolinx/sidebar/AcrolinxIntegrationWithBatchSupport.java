@@ -22,6 +22,12 @@ public interface AcrolinxIntegrationWithBatchSupport extends AcrolinxIntegration
     void openReferenceInEditor(String reference);
 
     /**
+     * Opens the last checked map in editor on pressing the back to topics list button
+     *
+     */
+    void openMapInEditor();
+
+    /**
      * Extracts all the references that should be listed for background check
      *
      * @return List<BatchCheckRequestOptions>

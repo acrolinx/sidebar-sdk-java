@@ -176,6 +176,13 @@ public class AcrolinxSidebarSWTWithBatchSupport extends AcrolinxSidebarSWT imple
                 return openReferenceInEditor(arguments[1]);
             }
         };
+        new BrowserFunction(browser, "openMapInEditorP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return openMapInEditor();
+            }
+        };
         new BrowserFunction(browser, "getDocUrlP") {
             @Override
             public Object function(final Object[] arguments)
@@ -245,6 +252,12 @@ public class AcrolinxSidebarSWTWithBatchSupport extends AcrolinxSidebarSWT imple
         // TODO: wait for the editor ??
         ((AcrolinxIntegrationWithBatchSupport) client).openReferenceInEditor(argument.toString());
         this.onReferenceLoadedInEditor(argument.toString());
+        return null;
+    }
+
+    private Object openMapInEditor()
+    {
+        ((AcrolinxIntegrationWithBatchSupport) client).openMapInEditor();
         return null;
     }
 

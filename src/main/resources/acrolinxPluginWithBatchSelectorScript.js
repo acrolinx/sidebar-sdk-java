@@ -70,6 +70,9 @@ window.acrolinxPlugin =
   openReferenceInEditor: function(reference: string){
      openReferenceInEditorP(reference);
   },
+  openMapInEditor: function(){
+       openMapInEditorP();
+  },
   onCheckResult: function(checkResult){
     onCheckResultP(JSON.stringify(checkResult));
   },
