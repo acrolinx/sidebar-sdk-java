@@ -11,7 +11,7 @@ public class ExternalContentField
     private final String id;
     private String content;
 
-    ExternalContentField(String id, String content)
+    public ExternalContentField(String id, String content)
     {
         this.id = id;
         this.content = content;
