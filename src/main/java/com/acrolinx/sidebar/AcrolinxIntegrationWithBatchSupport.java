@@ -19,7 +19,7 @@ public interface AcrolinxIntegrationWithBatchSupport extends AcrolinxIntegration
      *
      * @param reference
      */
-    void openReferenceInEditor(String reference);
+    boolean openReferenceInEditor(String reference);
 
     /**
      * Opens the last checked map in editor on pressing the back to topics list button

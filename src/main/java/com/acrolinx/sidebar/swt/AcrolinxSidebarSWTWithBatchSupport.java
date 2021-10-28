@@ -160,7 +160,6 @@ public class AcrolinxSidebarSWTWithBatchSupport extends AcrolinxSidebarSWT imple
                 return getReplaceRangesObject(arguments[1]);
             }
         };
-        // TODO arguments[0] vs [1] ?
         new BrowserFunction(browser, "requestBackgroundCheckForRefP") {
             @Override
             public Object function(final Object[] arguments)
@@ -168,7 +167,6 @@ public class AcrolinxSidebarSWTWithBatchSupport extends AcrolinxSidebarSWT imple
                 return requestBackgroundCheckForRef(arguments[1]);
             }
         };
-        // TODO arguments[0] vs [1] ?
         new BrowserFunction(browser, "openReferenceInEditorP") {
             @Override
             public Object function(final Object[] arguments)
@@ -231,7 +229,6 @@ public class AcrolinxSidebarSWTWithBatchSupport extends AcrolinxSidebarSWT imple
 
     private Object requestBackgroundCheckForRef(Object argument)
     {
-        // TODO: wait for the content ??
         String reference = argument.toString();
         String contentForReference = ((AcrolinxIntegrationWithBatchSupport) client).getContentForReference(reference);
         CheckOptions referenceCheckOptions = ((AcrolinxIntegrationWithBatchSupport) client).getCheckOptionsForReference(
@@ -249,9 +246,10 @@ public class AcrolinxSidebarSWTWithBatchSupport extends AcrolinxSidebarSWT imple
 
     private Object openReferenceInEditor(Object argument)
     {
-        // TODO: wait for the editor ??
-        ((AcrolinxIntegrationWithBatchSupport) client).openReferenceInEditor(argument.toString());
-        this.onReferenceLoadedInEditor(argument.toString());
+        Boolean referenceIsOpen = ((AcrolinxIntegrationWithBatchSupport) client).openReferenceInEditor(argument.toString());
+        if(referenceIsOpen) {
+            this.onReferenceLoadedInEditor(argument.toString());
+        }
         return null;
     }
 
@@ -281,7 +279,6 @@ public class AcrolinxSidebarSWTWithBatchSupport extends AcrolinxSidebarSWT imple
     @Override
     public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options)
     {
-        // TODO check passing multiple arguments!!
         browser.execute("window.acrolinxSidebar.checkReferenceInBackground(" + reference + ", " + documentContent + ", "
                 + options.toString() + ");");
     }

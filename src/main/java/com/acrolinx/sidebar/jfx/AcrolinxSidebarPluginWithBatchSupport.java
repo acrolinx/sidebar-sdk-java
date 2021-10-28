@@ -29,7 +29,6 @@ public class AcrolinxSidebarPluginWithBatchSupport extends AcrolinxSidebarPlugin
 
     public synchronized void requestBackgroundCheckForRef(String ditaTopicReference)
     {
-        // TODO: Wait for the content ?
         logger.info("requestBackgroundCheckForRef is called...");
         final String contentToCheck = ((AcrolinxIntegrationWithBatchSupport) client).getContentForReference(
                 ditaTopicReference);
@@ -40,10 +39,11 @@ public class AcrolinxSidebarPluginWithBatchSupport extends AcrolinxSidebarPlugin
 
     public synchronized void openReferenceInEditor(String reference)
     {
-        // TODO: Wait for the editor to open the reference ?
         logger.info("openReferenceInEditor is called...");
-        ((AcrolinxIntegrationWithBatchSupport) client).openReferenceInEditor(reference);
-        this.onReferenceLoadedInEditor(reference);
+        Boolean referenceIsOpen = ((AcrolinxIntegrationWithBatchSupport) client).openReferenceInEditor(reference);
+        if(referenceIsOpen) {
+            this.onReferenceLoadedInEditor(reference);
+        }
     }
 
     public synchronized void openMapInEditor()
