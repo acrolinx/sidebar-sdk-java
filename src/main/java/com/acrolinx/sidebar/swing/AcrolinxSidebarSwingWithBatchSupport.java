@@ -24,6 +24,8 @@ public class AcrolinxSidebarSwingWithBatchSupport extends AcrolinxSidebarSwing
         implements AcrolinxSidebarWithBatchSupport
 {
 
+    //    protected ArrayList<Scene> sceneList = new ArrayList<Scene>();
+
     public AcrolinxSidebarSwingWithBatchSupport(AcrolinxIntegrationWithBatchSupport integration)
     {
         super(integration);
@@ -73,9 +75,22 @@ public class AcrolinxSidebarSwingWithBatchSupport extends AcrolinxSidebarSwing
             }
         });
         final Scene scene = new Scene(webview);
+        //        this.sceneList.add(scene);
         setScene(scene);
         setVisible(true);
     }
+
+    //    public void changeScene() {
+    //        JFXUtils.invokeInJFXThread(() -> {
+    //        if(this.sceneList.size() != 0) {
+    //            Random rand = new Random();
+    //            int randomNum = rand.nextInt((3) + 1);
+    //            Scene scene = this.sceneList.get(randomNum);
+    //            setScene(scene);
+    //            setVisible(true);
+    //        }
+    //        });
+    //    }
 
     @Override
     public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)

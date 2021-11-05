@@ -153,7 +153,9 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void reload()
     {
-        sidebarJFX.reload();
+        if(sidebarJFX != null) {
+            sidebarJFX.reload();
+        }
     }
 
     @Override
