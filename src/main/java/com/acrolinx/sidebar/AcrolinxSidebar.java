@@ -7,6 +7,7 @@ import java.util.List;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
+import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 
 /**
  * These commands are available to interact with the Acrolinx Sidebar.
@@ -75,5 +76,14 @@ public interface AcrolinxSidebar
      * @return documentContent
      */
     String getLastCheckedDocument();
+
+
+    /**
+     * Shows a message in the sidebar.
+     *
+     * @param sidebarMessage
+     */
+
+    void showMessage(SidebarMessage sidebarMessage);
 
 }

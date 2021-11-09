@@ -8,6 +8,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -168,6 +169,11 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     public String getLastCheckedDocument()
     {
         return sidebarJFX.getLastCheckedDocument();
+    }
+
+    @Override
+    public void showMessage(SidebarMessage sidebarMessage) {
+        sidebarJFX.showMessage(sidebarMessage);
     }
 
     public AcrolinxSidebarJFX getSidebarJFX()

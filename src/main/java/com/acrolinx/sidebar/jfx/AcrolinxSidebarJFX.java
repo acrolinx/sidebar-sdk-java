@@ -4,6 +4,7 @@ package com.acrolinx.sidebar.jfx;
 
 import java.util.List;
 
+import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.CacheHint;
@@ -222,5 +223,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     public String getLastCheckedDocument()
     {
         return acrolinxSidebarPlugin.getLastCheckedDocument();
+    }
+
+    @Override
+    public void showMessage(SidebarMessage sidebarMessage) {
+        acrolinxSidebarPlugin.showSidebarMessage(sidebarMessage);
     }
 }

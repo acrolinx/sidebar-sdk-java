@@ -579,6 +579,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
+    @Override
+    public void showMessage(SidebarMessage sidebarMessage) {
+        browser.execute("window.acrolinxSidebar.showMessage(" + sidebarMessage.toString() + ");");
+    }
+
     @SuppressWarnings("WeakerAccess")
     protected static String getURlFromJS(final String jsonStr)
     {
