@@ -60,6 +60,10 @@ compileTestJava.options.encoding = 'UTF-8'
 repositories {
 	mavenCentral()
 	maven {
+		name = "ajoberstar-backup"
+		url = "https://ajoberstar.org/bintray-backup/"
+	}
+	maven {
 		url "http://maven-eclipse.github.io/maven"
 	}
 }
