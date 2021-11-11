@@ -121,8 +121,7 @@ public class LookupForResolvedEditorViews
                     + ("".equals(match.getContent()) || match.getContent().equalsIgnoreCase(" ")));
             boolean matchLineBreakOrTab = match.getContent().matches("[\\n\\r\\t]+");
             logger.debug("match content is linebreak or tab? " + matchLineBreakOrTab);
-            return (("".equals(match.getContent()) || match.getContent().equals(" ") || matchLineBreakOrTab)
-                    && ignore);
+            return (("".equals(match.getContent()) || match.getContent().equals(" ") || matchLineBreakOrTab) && ignore);
         }).collect(Collectors.toList());
     }
 
@@ -161,8 +160,8 @@ public class LookupForResolvedEditorViews
                     Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
                             match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
                     // Diff xml fragment with node content fragment.
-                    correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode, startOffset, textContent,
-                            rangeContent, range));
+                    correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
+                            startOffset, textContent, rangeContent, range));
                 }
             }
         });
@@ -187,8 +186,7 @@ public class LookupForResolvedEditorViews
             Optional<IntRange> finalMatch = Lookup.getCorrectedMatch(diffsNode, offsetMappingArray,
                     range.getMinimumInteger(), range.getMaximumInteger());
             finalMatch.ifPresent(rangeFinal -> addFoundRanges(match, startOffset, rangeFinal.getMinimumInteger(),
-                    rangeFinal.getMaximumInteger(),
-                    "Found range for content by diffing content nodes: "));
+                    rangeFinal.getMaximumInteger(), "Found range for content by diffing content nodes: "));
         }
     }
 
@@ -196,18 +194,16 @@ public class LookupForResolvedEditorViews
             String textContent, String rangeContent, IntRange range, String rangeContentEscaped)
     {
         logger.debug("Has to find HTML entity " + rangeContentEscaped);
-        String cleanedAndEscapedTextContent = StringEscapeUtils.escapeXml(textContent).replace(
-                whitespaceCharacter, "");
+        String cleanedAndEscapedTextContent = StringEscapeUtils.escapeXml(textContent).replace(whitespaceCharacter, "");
 
         logger.debug("Cleaned and escaped Text Content:" + cleanedAndEscapedTextContent);
 
-        List<DiffMatchPatch.Diff> diffsNodeForEntity = Lookup.getDiffs(
-                contentNode.getAsXMLFragment(), cleanedAndEscapedTextContent);
-        List<OffsetAlign> offsetMappingArrayForEntity = Lookup.createOffsetMappingArray(
-                diffsNodeForEntity);
+        List<DiffMatchPatch.Diff> diffsNodeForEntity = Lookup.getDiffs(contentNode.getAsXMLFragment(),
+                cleanedAndEscapedTextContent);
+        List<OffsetAlign> offsetMappingArrayForEntity = Lookup.createOffsetMappingArray(diffsNodeForEntity);
 
-        Optional<Integer> diffOffsetPositionStart = Lookup.getDiffOffsetPositionStart(
-                offsetMappingArrayForEntity, range.getMinimumInteger() - 1);
+        Optional<Integer> diffOffsetPositionStart = Lookup.getDiffOffsetPositionStart(offsetMappingArrayForEntity,
+                range.getMinimumInteger() - 1);
         diffOffsetPositionStart.ifPresent(value -> {
             logger.debug("Mapped to offset: " + value);
             logger.debug("range min in is: " + range.getMinimumInteger());
@@ -220,25 +216,21 @@ public class LookupForResolvedEditorViews
     private void findRangeInResolvedText(AbstractMatch match, ContentNode contentNode, int startOffset,
             String textContent, String rangeContent, IntRange range, Integer value)
     {
-        String textContentUpToMatch = contentNode.getAsXMLFragment().substring(0,
-                range.getMinimumInteger());
+        String textContentUpToMatch = contentNode.getAsXMLFragment().substring(0, range.getMinimumInteger());
         logger.debug("Text Content up to Match: " + textContentUpToMatch);
-        String textContentUpToMatchUnescaped = StringEscapeUtils.unescapeXml(
-                textContentUpToMatch);
+        String textContentUpToMatchUnescaped = StringEscapeUtils.unescapeXml(textContentUpToMatch);
         logger.debug("Text content up to match unescaped: " + textContentUpToMatchUnescaped);
-        int entityDifference = textContentUpToMatch.length()
-                - textContentUpToMatchUnescaped.length();
+        int entityDifference = textContentUpToMatch.length() - textContentUpToMatchUnescaped.length();
         logger.debug("Entity difference is: " + entityDifference);
         int offsetStart = range.getMinimumInteger() + value - entityDifference;
         String matchContent = textContent.substring(0, offsetStart + 1);
         logger.debug("Match Content: " + matchContent);
-        int leadingWhiteSpaces = matchContent.length()
-                - matchContent.replace(whitespaceCharacter, "").length();
+        int leadingWhiteSpaces = matchContent.length() - matchContent.replace(whitespaceCharacter, "").length();
         logger.debug("Leading whitespaces:  " + leadingWhiteSpaces);
         offsetStart += leadingWhiteSpaces;
         int differedNullOffset = 0;
-        while (textContent.substring(offsetStart + differedNullOffset,
-                offsetStart + differedNullOffset + 1).matches(whitespaceCharacter)) {
+        while (textContent.substring(offsetStart + differedNullOffset, offsetStart + differedNullOffset + 1).matches(
+                whitespaceCharacter)) {
             logger.debug("Offsets are null characters");
             differedNullOffset++;
         }
@@ -255,7 +247,8 @@ public class LookupForResolvedEditorViews
         }
     }
 
-    private void addFoundRanges(AbstractMatch match, int startOffset, int offsetStart, int offsetEnd, String debugMessage)
+    private void addFoundRanges(AbstractMatch match, int startOffset, int offsetStart, int offsetEnd,
+            String debugMessage)
     {
         AbstractMatch copy = match.setRange(new IntRange(startOffset + offsetStart, startOffset + offsetEnd));
         logger.debug(debugMessage + match.getContent());
