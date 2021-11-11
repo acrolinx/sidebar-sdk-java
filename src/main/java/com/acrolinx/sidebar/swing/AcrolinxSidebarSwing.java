@@ -26,6 +26,7 @@ import com.acrolinx.sidebar.jfx.JFXUtils;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
+import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import com.acrolinx.sidebar.utils.LogMessages;
 
 /**
@@ -33,8 +34,8 @@ import com.acrolinx.sidebar.utils.LogMessages;
  *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"}) public class AcrolinxSidebarSwing extends JFXPanel
-        implements AcrolinxSidebar
+@SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"})
+public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 {
     private static final long serialVersionUID = 3813416489627785478L;
     private transient AcrolinxSidebarJFX sidebarJFX;
@@ -63,8 +64,8 @@ import com.acrolinx.sidebar.utils.LogMessages;
     protected void processKeyEvent(final KeyEvent e)
     {
         // Hack to prevent pasting event for editor (e. g. .
-        if ((e.getModifiersEx() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) && (e.getKeyCode()
-                == KeyEvent.VK_V)) {
+        if ((e.getModifiersEx() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())
+                && (e.getKeyCode() == KeyEvent.VK_V)) {
             // Consume it.
             e.consume();
         } else {
@@ -80,8 +81,7 @@ import com.acrolinx.sidebar.utils.LogMessages;
         GridPane.setHgrow(webview, Priority.ALWAYS);
         GridPane.setVgrow(webview, Priority.ALWAYS);
         webview.setPrefWidth(300);
-        addComponentListener(new ComponentListener()
-        {
+        addComponentListener(new ComponentListener() {
             @Override
             public void componentResized(final ComponentEvent e)
             {
@@ -167,6 +167,12 @@ import com.acrolinx.sidebar.utils.LogMessages;
     public String getLastCheckedDocument()
     {
         return sidebarJFX.getLastCheckedDocument();
+    }
+
+    @Override
+    public void showMessage(SidebarMessage sidebarMessage)
+    {
+        sidebarJFX.showMessage(sidebarMessage);
     }
 
     public AcrolinxSidebarJFX getSidebarJFX()

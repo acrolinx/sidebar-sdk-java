@@ -156,6 +156,18 @@ abstract class AcrolinxSidebarPlugin
         });
     }
 
+    public void showSidebarMessage(final SidebarMessage sidebarMessage)
+    {
+        logger.debug("Message to Sidebar: " + sidebarMessage.toString());
+        JFXUtils.invokeInJFXThread(() -> {
+            try {
+                getWindowObject().eval("acrolinxSidebar.showMessage(" + sidebarMessage.toString() + ")");
+            } catch (final Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
+    }
+
     public synchronized void onCheckResult(final JSObject o)
     {
         final Instant checkEndedTime = Instant.now();
