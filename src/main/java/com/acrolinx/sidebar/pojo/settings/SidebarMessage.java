@@ -1,30 +1,35 @@
+/* Copyright (c) 2021-present Acrolinx GmbH */
+
 package com.acrolinx.sidebar.pojo.settings;
 
 import com.google.gson.Gson;
 
-public class SidebarMessage {
+public class SidebarMessage
+{
 
     private String type;
     private String title;
     private String text;
 
-
-
-    public SidebarMessage(String title, String text, SidebarMessageType type) {
+    public SidebarMessage(String title, String text, SidebarMessageType type)
+    {
         this.type = type.getValue();
         this.title = title;
         this.text = text;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
-    public String getText() {
+    public String getText()
+    {
         return text;
     }
 
-    public String getType() {
+    public String getType()
+    {
         return type;
     }
 

@@ -4,7 +4,6 @@ package com.acrolinx.sidebar.jfx;
 
 import java.util.List;
 
-import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.CacheHint;
@@ -21,8 +20,7 @@ import com.acrolinx.sidebar.AcrolinxSidebar;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
-import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;
-import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
+import com.acrolinx.sidebar.pojo.settings.*;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
@@ -226,7 +224,26 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public void showMessage(SidebarMessage sidebarMessage) {
+    public void showMessage(SidebarMessage sidebarMessage)
+    {
         acrolinxSidebarPlugin.showSidebarMessage(sidebarMessage);
+    }
+
+    @Override
+    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).initBatchCheck(batchCheckRequestOptions);
+    }
+
+    @Override
+    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options)
+    {
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).checkReferenceInBackground(reference, documentContent, options);
+    }
+
+    @Override
+    public void onReferenceLoadedInEditor(String reference)
+    {
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).onReferenceLoadedInEditor(reference);
     }
 }

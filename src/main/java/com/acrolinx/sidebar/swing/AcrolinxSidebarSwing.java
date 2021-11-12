@@ -8,7 +8,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -26,7 +25,10 @@ import com.acrolinx.sidebar.jfx.AcrolinxSidebarJFX;
 import com.acrolinx.sidebar.jfx.JFXUtils;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
+import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import com.acrolinx.sidebar.utils.LogMessages;
 
 /**
@@ -154,7 +156,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void reload()
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             sidebarJFX.reload();
         }
     }
@@ -172,8 +174,27 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     }
 
     @Override
-    public void showMessage(SidebarMessage sidebarMessage) {
+    public void showMessage(SidebarMessage sidebarMessage)
+    {
         sidebarJFX.showMessage(sidebarMessage);
+    }
+
+    @Override
+    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        sidebarJFX.initBatchCheck(batchCheckRequestOptions);
+    }
+
+    @Override
+    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options)
+    {
+        sidebarJFX.checkReferenceInBackground(reference, documentContent, options);
+    }
+
+    @Override
+    public void onReferenceLoadedInEditor(String reference)
+    {
+        sidebarJFX.onReferenceLoadedInEditor(reference);
     }
 
     public AcrolinxSidebarJFX getSidebarJFX()

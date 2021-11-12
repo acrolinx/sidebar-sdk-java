@@ -46,18 +46,32 @@ window.acrolinxPlugin =
   onInitFinished: function(finishResult){
    onInitFinishedNotificationP(JSON.stringify(finishResult));
   },
+
   requestGlobalCheck: function(options){
-    if(!canCheck()) {
-        acrolinxSidebar.onGlobalCheckRejected();
+    if(canBatchCheck()) {
+        runBatchCheck();
     } else {
-        if (options && options.selection === true) {
-            acrolinxSidebar.checkGlobal(getTextP(),
-                    {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}, selection: JSON.parse(getCurrentSelectionRangesP())});
+        if(!canCheck()) {
+            acrolinxSidebar.onGlobalCheckRejected();
         } else {
-            acrolinxSidebar.checkGlobal(getTextP(),
-                    {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}});
+            if (options && options.selection === true) {
+                acrolinxSidebar.checkGlobal(getTextP(),
+                        {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}, selection: JSON.parse(getCurrentSelectionRangesP())});
+            } else {
+                acrolinxSidebar.checkGlobal(getTextP(),
+                        {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}});
+            }
         }
     }
+  },
+ requestBackgroundCheckForRef: function(reference){
+    requestBackgroundCheckForRefP(reference);
+ },
+  openReferenceInEditor: function(reference){
+     openReferenceInEditorP(reference);
+  },
+  openMapInEditor: function(){
+       openMapInEditorP();
   },
   onCheckResult: function(checkResult){
     onCheckResultP(JSON.stringify(checkResult));

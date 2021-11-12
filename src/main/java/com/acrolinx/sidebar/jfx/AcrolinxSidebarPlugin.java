@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.InputAdapterInterface;
+import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.*;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
@@ -157,7 +158,8 @@ abstract class AcrolinxSidebarPlugin
         });
     }
 
-    public void showSidebarMessage(final SidebarMessage sidebarMessage) {
+    public void showSidebarMessage(final SidebarMessage sidebarMessage)
+    {
         logger.debug("Message to Sidebar: " + sidebarMessage.toString());
         JFXUtils.invokeInJFXThread(() -> {
             try {
@@ -288,6 +290,133 @@ abstract class AcrolinxSidebarPlugin
     public void configure(final AcrolinxPluginConfiguration configuration)
     {
         // Not used ...
+    }
+
+    public synchronized void requestBackgroundCheckForRef(String ditaTopicReference)
+    {
+        logger.info("requestBackgroundCheckForRef is called...");
+        final String contentToCheck = ((AcrolinxIntegration) client).getContentForReference(ditaTopicReference);
+        CheckOptions referenceCheckOptions = ((AcrolinxIntegration) client).getCheckOptionsForReference(
+                ditaTopicReference);
+        this.checkReferenceInBackground(ditaTopicReference, contentToCheck, referenceCheckOptions);
+    }
+
+    public synchronized void openReferenceInEditor(String reference)
+    {
+        logger.info("openReferenceInEditor is called...");
+        Boolean referenceIsOpen = ((AcrolinxIntegration) client).openReferenceInEditor(reference);
+        if (referenceIsOpen) {
+            this.onReferenceLoadedInEditor(reference);
+        }
+    }
+
+    public synchronized void openMapInEditor()
+    {
+        logger.info("openMapInEditor is called...");
+        ((AcrolinxIntegration) client).openMapInEditor();
+    }
+
+    public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        final String js = buildStringOfCheckedRequestOptions(batchCheckRequestOptions);
+        logger.info("initBatchCheck...");
+        JFXUtils.invokeInJFXThread(() -> {
+            try {
+                getWindowObject().eval("acrolinxSidebar.initBatchCheck([" + js + "])");
+            } catch (final Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
+        logger.info("end of initBatchCheck...");
+    }
+
+    // TODO: Multiple parameter passing ?
+    public synchronized void checkReferenceInBackground(final String reference, final String documentContent,
+            final CheckOptions options)
+    {
+        logger.info("checkReferenceInBackground is called...");
+        JFXUtils.invokeInJFXThread(() -> {
+            try {
+                final String nameVariableReference = "reference";
+                final String nameVariableContent = "documentContent";
+                final JSObject jsObject = getWindowObject();
+                jsObject.setMember(nameVariableReference, reference);
+                jsObject.setMember(nameVariableContent, documentContent);
+                jsObject.eval("acrolinxSidebar.checkReferenceInBackground(reference, documentContent, "
+                        + options.toString() + ");");
+                logger.info("end of checkReferenceInBackground...");
+            } catch (final Exception e) {
+                logger.info("This is from checkRefernceInBackground");
+                logger.error(e.getMessage(), e);
+            }
+        });
+
+    }
+
+    public synchronized void onReferenceLoadedInEditor(final String reference)
+    {
+        logger.info("Sidebar onReferenceLoadedInEditor is called...");
+        JFXUtils.invokeInJFXThread(() -> {
+            try {
+                final String nameVariableReference = "reference";
+                final JSObject jsObject = getWindowObject();
+                jsObject.setMember(nameVariableReference, reference);
+                jsObject.eval("acrolinxSidebar.onReferenceLoadedInEditor(reference);");
+            } catch (final Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
+    }
+
+    public synchronized void runBatchCheck()
+    {
+        List<BatchCheckRequestOptions> batchCheckRequestOptions = ((AcrolinxIntegration) client).extractReferences();
+        initBatchCheck(batchCheckRequestOptions);
+    }
+
+    protected synchronized void runInteractiveCheckWithCheckSelection(final JSObject o)
+    {
+        LogMessages.logCheckRequested(logger);
+        this.checkStartedTime = Instant.now();
+        boolean selection = false;
+        if (o != null) {
+            if (o.getMember("selection") != null) {
+                selection = Boolean.parseBoolean(o.getMember("selection").toString());
+            }
+        }
+
+        final CheckContent checkContent = getCheckContentFromClient();
+        logger.debug("Fetched check content including external content");
+        if ((client.getEditorAdapter() != null) && !(client.getEditorAdapter() instanceof NullEditorAdapter)
+                && (checkContent.getContent() != null)) {
+            logger.debug("Editor is ready for running a check");
+            runCheck(selection, checkContent);
+        } else {
+            logger.warn("Current File Editor not supported for checking or no file present.");
+            onGlobalCheckRejected();
+        }
+    }
+
+    protected synchronized void runInteractiveCheckWithoutCheckSelection()
+    {
+        LogMessages.logCheckRequested(logger);
+        this.checkStartedTime = Instant.now();
+        final CheckContent checkContent = getCheckContentFromClient();
+        logger.debug("Fetched check content including external content");
+        if ((client.getEditorAdapter() != null) && !(client.getEditorAdapter() instanceof NullEditorAdapter)
+                && (checkContent.getContent() != null)) {
+            runCheck(false, checkContent);
+        } else {
+            logger.warn("Current File Editor not supported for checking or no file present.");
+            onGlobalCheckRejected();
+        }
+    }
+
+    private static String buildStringOfCheckedRequestOptions(
+            final List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(
+                Collectors.joining(", "));
     }
 
 }

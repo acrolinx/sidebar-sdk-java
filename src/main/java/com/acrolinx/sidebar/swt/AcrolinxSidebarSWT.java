@@ -246,6 +246,30 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
+        new BrowserFunction(browser, "canBatchCheck") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return getCanBatchCheck();
+            }
+        };
+
+        new BrowserFunction(browser, "runBatchCheck") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return runBatchCheck();
+            }
+        };
+
+        new BrowserFunction(browser, "requestBackgroundCheckForRefP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return requestBackgroundCheckForRef(arguments[1]);
+            }
+        };
+
         new BrowserFunction(browser, "getInputFormatP") {
             @Override
             public Object function(final Object[] arguments)
@@ -336,7 +360,63 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
+        new BrowserFunction(browser, "openReferenceInEditorP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return openReferenceInEditor(arguments[1]);
+            }
+        };
+        new BrowserFunction(browser, "openMapInEditorP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return openMapInEditor();
+            }
+        };
+
         loadScriptJS("acrolinxPluginScript.js");
+    }
+
+    private Object requestBackgroundCheckForRef(Object argument)
+    {
+        String reference = argument.toString();
+        String contentForReference = client.getContentForReference(reference);
+        CheckOptions referenceCheckOptions = client.getCheckOptionsForReference(reference);
+        this.checkReferenceInBackground(reference, contentForReference, referenceCheckOptions);
+        return null;
+    }
+
+    private Object runBatchCheck()
+    {
+        List<BatchCheckRequestOptions> references = client.extractReferences();
+        this.initBatchCheck(references);
+        return null;
+    }
+
+    private Object openReferenceInEditor(Object argument)
+    {
+        Boolean referenceIsOpen = client.openReferenceInEditor(argument.toString());
+        if (referenceIsOpen) {
+            this.onReferenceLoadedInEditor(argument.toString());
+        }
+        return null;
+    }
+
+    private Object openMapInEditor()
+    {
+        client.openMapInEditor();
+        return null;
+    }
+
+    private boolean getCanBatchCheck()
+    {
+        boolean batchCheckSupported = client.getInitParameters().getSupported().isBatchChecking();
+        CheckModeType checkModeRequested = client.getCheckModeOnCheckRequested();
+        if (!batchCheckSupported || (batchCheckSupported && CheckModeType.INTERACTIVE.equals(checkModeRequested))) {
+            return false;
+        }
+        return true;
     }
 
     protected void loadScriptJS(String script)
@@ -580,8 +660,37 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     }
 
     @Override
-    public void showMessage(SidebarMessage sidebarMessage) {
-        browser.execute("window.acrolinxSidebar.showMessage(" + sidebarMessage.toString() + ");");
+    public void showMessage(SidebarMessage sidebarMessage)
+    {
+
+    }
+
+    @Override
+    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        String jsArgs = buildStringOfBatchCheckRequestOptions(batchCheckRequestOptions);
+        browser.execute("window.acrolinxSidebar.initBatchCheck([" + jsArgs + "]);");
+    }
+
+    @Override
+    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options)
+    {
+        browser.execute("window.acrolinxSidebar.checkReferenceInBackground(" + reference + ", " + documentContent + ", "
+                + options.toString() + ");");
+    }
+
+    @Override
+    public void onReferenceLoadedInEditor(String reference)
+    {
+        browser.execute("window.acrolinxSidebar.onReferenceLoadedInEditor(" + reference + ");");
+    }
+
+    public static String buildStringOfBatchCheckRequestOptions(
+            final java.util.List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        // TODO verify if that returns
+        return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(
+                Collectors.joining(", "));
     }
 
     @SuppressWarnings("WeakerAccess")

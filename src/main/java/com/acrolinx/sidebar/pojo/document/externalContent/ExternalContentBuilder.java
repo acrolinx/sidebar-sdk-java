@@ -62,7 +62,6 @@ public class ExternalContentBuilder
         return this;
     }
 
-
     public ExternalContentBuilder addDitaReference(ExternalContentField externalContentField)
     {
         this.ditaReferences.add(externalContentField);

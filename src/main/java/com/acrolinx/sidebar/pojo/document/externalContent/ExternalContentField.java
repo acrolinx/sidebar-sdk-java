@@ -33,7 +33,8 @@ public class ExternalContentField
         return new Gson().toJson(this);
     }
 
-    public void setContent(String content) {
+    public void setContent(String content)
+    {
         this.content = content;
     }
 }
