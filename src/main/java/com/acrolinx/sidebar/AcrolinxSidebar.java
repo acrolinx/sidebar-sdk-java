@@ -87,8 +87,6 @@ public interface AcrolinxSidebar
 
     void showMessage(SidebarMessage sidebarMessage);
 
-    // TODO add sidebar dita functions
-
     /**
      *
      * @param batchCheckRequestOptions
@@ -97,17 +95,11 @@ public interface AcrolinxSidebar
 
     /**
      *
-     * @param reference
+     * @param documentIdentifier
      * @param documentContent
      * @param options
      */
 
-    void checkReferenceInBackground(String reference, String documentContent, CheckOptions options);
-
-    /**
-     *
-     * @param reference
-     */
-    void onReferenceLoadedInEditor(String reference);
+    void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options);
 
 }

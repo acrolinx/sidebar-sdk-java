@@ -55,18 +55,12 @@ public interface AcrolinxIntegration
     void onInitFinished(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<SidebarError> initResult);
 
     /**
-     * Opens the given reference in editor and notifies the sidebar that the document has been
+     * Opens the given document in editor and notifies the sidebar that the document has been
      * opened.
      *
-     * @param reference
+     * @param documentIdentifier
      */
-    boolean openReferenceInEditor(String reference);
-
-    /**
-     * Opens the last checked map in editor on pressing the back to topics list button
-     *
-     */
-    void openMapInEditor();
+    boolean openDocumentInEditor(String documentIdentifier);
 
     /**
      * Extracts all the references that should be listed for background check
@@ -76,21 +70,21 @@ public interface AcrolinxIntegration
     List<BatchCheckRequestOptions> extractReferences();
 
     /**
-     * Called together with getContentForReference before running the background check on the given
-     * reference.
+     * Called together with getContentForDocument before running the background check on the given
+     * document.
      *
-     * @param reference
+     * @param documentIdentifier
      * @return CheckOptions
      */
-    CheckOptions getCheckOptionsForReference(String reference);
+    CheckOptions getCheckOptionsForDocument(String documentIdentifier);
 
     /**
      * Gets the content for a requested background check
      *
-     * @param reference
+     * @param documentIdentifier
      * @return String
      */
-    String getContentForReference(String reference);
+    String getContentForDocument(String documentIdentifier);
 
     /**
      * Gets the check mode for the requested check, returns CheckModeType.INTERACTIVE for normal

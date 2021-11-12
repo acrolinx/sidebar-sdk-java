@@ -64,14 +64,11 @@ window.acrolinxPlugin =
         }
     }
   },
- requestBackgroundCheckForRef: function(reference){
-    requestBackgroundCheckForRefP(reference);
- },
-  openReferenceInEditor: function(reference){
-     openReferenceInEditorP(reference);
+  requestBackgroundCheckForDocument: function(documentIdentifier){
+     requestBackgroundCheckForDocumentP(documentIdentifier);
   },
-  openMapInEditor: function(){
-       openMapInEditorP();
+  openDocumentInEditor: function(documentIdentifier){
+     openDocumentInEditorP(documentIdentifier);
   },
   onCheckResult: function(checkResult){
     onCheckResultP(JSON.stringify(checkResult));

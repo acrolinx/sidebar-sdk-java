@@ -236,14 +236,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options)
+    public void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options)
     {
-        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).checkReferenceInBackground(reference, documentContent, options);
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).checkDocumentInBackground(documentIdentifier, documentContent,
+                options);
     }
 
-    @Override
-    public void onReferenceLoadedInEditor(String reference)
-    {
-        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).onReferenceLoadedInEditor(reference);
-    }
 }

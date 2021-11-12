@@ -186,15 +186,9 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     }
 
     @Override
-    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options)
+    public void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options)
     {
-        sidebarJFX.checkReferenceInBackground(reference, documentContent, options);
-    }
-
-    @Override
-    public void onReferenceLoadedInEditor(String reference)
-    {
-        sidebarJFX.onReferenceLoadedInEditor(reference);
+        sidebarJFX.checkDocumentInBackground(documentIdentifier, documentContent, options);
     }
 
     public AcrolinxSidebarJFX getSidebarJFX()

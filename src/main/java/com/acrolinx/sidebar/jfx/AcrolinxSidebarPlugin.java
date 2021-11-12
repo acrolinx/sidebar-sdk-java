@@ -145,7 +145,6 @@ abstract class AcrolinxSidebarPlugin
         currentlyCheckedDocument.set(checkContent.getContent());
         JFXUtils.invokeInJFXThread(() -> {
             try {
-                logger.debug(checkOptions.toString());
                 logger.info(checkOptions.toString());
                 final String nameVariableCheckText = "checkText";
                 final JSObject jsObject = getWindowObject();
@@ -292,28 +291,22 @@ abstract class AcrolinxSidebarPlugin
         // Not used ...
     }
 
-    public synchronized void requestBackgroundCheckForRef(String ditaTopicReference)
+    public synchronized void requestBackgroundCheckForDocument(String documentIdentifier)
     {
         logger.info("requestBackgroundCheckForRef is called...");
-        final String contentToCheck = ((AcrolinxIntegration) client).getContentForReference(ditaTopicReference);
-        CheckOptions referenceCheckOptions = ((AcrolinxIntegration) client).getCheckOptionsForReference(
-                ditaTopicReference);
-        this.checkReferenceInBackground(ditaTopicReference, contentToCheck, referenceCheckOptions);
+        final String contentToCheck = ((AcrolinxIntegration) client).getContentForDocument(documentIdentifier);
+        CheckOptions referenceCheckOptions = ((AcrolinxIntegration) client).getCheckOptionsForDocument(
+                documentIdentifier);
+        this.checkDocumentInBackground(documentIdentifier, contentToCheck, referenceCheckOptions);
     }
 
-    public synchronized void openReferenceInEditor(String reference)
+    public synchronized void openDocumentInEditor(String documentIdentifier)
     {
         logger.info("openReferenceInEditor is called...");
-        Boolean referenceIsOpen = ((AcrolinxIntegration) client).openReferenceInEditor(reference);
-        if (referenceIsOpen) {
-            this.onReferenceLoadedInEditor(reference);
+        Boolean referenceIsOpen = ((AcrolinxIntegration) client).openDocumentInEditor(documentIdentifier);
+        if (!referenceIsOpen) {
+            // TODO message to the sidebar ?
         }
-    }
-
-    public synchronized void openMapInEditor()
-    {
-        logger.info("openMapInEditor is called...");
-        ((AcrolinxIntegration) client).openMapInEditor();
     }
 
     public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions)
@@ -330,8 +323,7 @@ abstract class AcrolinxSidebarPlugin
         logger.info("end of initBatchCheck...");
     }
 
-    // TODO: Multiple parameter passing ?
-    public synchronized void checkReferenceInBackground(final String reference, final String documentContent,
+    public synchronized void checkDocumentInBackground(final String documentIdentifier, final String documentContent,
             final CheckOptions options)
     {
         logger.info("checkReferenceInBackground is called...");
@@ -340,32 +332,16 @@ abstract class AcrolinxSidebarPlugin
                 final String nameVariableReference = "reference";
                 final String nameVariableContent = "documentContent";
                 final JSObject jsObject = getWindowObject();
-                jsObject.setMember(nameVariableReference, reference);
+                jsObject.setMember(nameVariableReference, documentIdentifier);
                 jsObject.setMember(nameVariableContent, documentContent);
-                jsObject.eval("acrolinxSidebar.checkReferenceInBackground(reference, documentContent, "
+                jsObject.eval("acrolinxSidebar.checkDocumentInBackground(documentIdentifier, documentContent, "
                         + options.toString() + ");");
                 logger.info("end of checkReferenceInBackground...");
             } catch (final Exception e) {
-                logger.info("This is from checkRefernceInBackground");
                 logger.error(e.getMessage(), e);
             }
         });
 
-    }
-
-    public synchronized void onReferenceLoadedInEditor(final String reference)
-    {
-        logger.info("Sidebar onReferenceLoadedInEditor is called...");
-        JFXUtils.invokeInJFXThread(() -> {
-            try {
-                final String nameVariableReference = "reference";
-                final JSObject jsObject = getWindowObject();
-                jsObject.setMember(nameVariableReference, reference);
-                jsObject.eval("acrolinxSidebar.onReferenceLoadedInEditor(reference);");
-            } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
-            }
-        });
     }
 
     public synchronized void runBatchCheck()

@@ -262,11 +262,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "requestBackgroundCheckForRefP") {
+        new BrowserFunction(browser, "requestBackgroundCheckForDocumentP") {
             @Override
             public Object function(final Object[] arguments)
             {
-                return requestBackgroundCheckForRef(arguments[1]);
+                return requestBackgroundCheckForDocument(arguments[1]);
             }
         };
 
@@ -360,30 +360,23 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "openReferenceInEditorP") {
+        new BrowserFunction(browser, "openDocumentInEditorP") {
             @Override
             public Object function(final Object[] arguments)
             {
-                return openReferenceInEditor(arguments[1]);
-            }
-        };
-        new BrowserFunction(browser, "openMapInEditorP") {
-            @Override
-            public Object function(final Object[] arguments)
-            {
-                return openMapInEditor();
+                return openDocumentInEditor(arguments[1]);
             }
         };
 
         loadScriptJS("acrolinxPluginScript.js");
     }
 
-    private Object requestBackgroundCheckForRef(Object argument)
+    private Object requestBackgroundCheckForDocument(Object argument)
     {
-        String reference = argument.toString();
-        String contentForReference = client.getContentForReference(reference);
-        CheckOptions referenceCheckOptions = client.getCheckOptionsForReference(reference);
-        this.checkReferenceInBackground(reference, contentForReference, referenceCheckOptions);
+        String documentIdentifier = argument.toString();
+        String contentForReference = client.getContentForDocument(documentIdentifier);
+        CheckOptions referenceCheckOptions = client.getCheckOptionsForDocument(documentIdentifier);
+        this.checkDocumentInBackground(documentIdentifier, contentForReference, referenceCheckOptions);
         return null;
     }
 
@@ -394,18 +387,12 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    private Object openReferenceInEditor(Object argument)
+    private Object openDocumentInEditor(Object argument)
     {
-        Boolean referenceIsOpen = client.openReferenceInEditor(argument.toString());
-        if (referenceIsOpen) {
-            this.onReferenceLoadedInEditor(argument.toString());
+        Boolean documentIsOpen = client.openDocumentInEditor(argument.toString());
+        if (!documentIsOpen) {
+            // TODO: Message to the sidebar ?
         }
-        return null;
-    }
-
-    private Object openMapInEditor()
-    {
-        client.openMapInEditor();
         return null;
     }
 
@@ -673,16 +660,10 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     }
 
     @Override
-    public void checkReferenceInBackground(String reference, String documentContent, CheckOptions options)
+    public void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options)
     {
-        browser.execute("window.acrolinxSidebar.checkReferenceInBackground(" + reference + ", " + documentContent + ", "
-                + options.toString() + ");");
-    }
-
-    @Override
-    public void onReferenceLoadedInEditor(String reference)
-    {
-        browser.execute("window.acrolinxSidebar.onReferenceLoadedInEditor(" + reference + ");");
+        browser.execute("window.acrolinxSidebar.checkDocumentInBackground(" + documentIdentifier + ", "
+                + documentContent + ", " + options.toString() + ");");
     }
 
     public static String buildStringOfBatchCheckRequestOptions(
