@@ -395,7 +395,7 @@ task checkLicenseHeaders {
 }
 
 dependencyCheck {
-	suppressionFile="/Users/abhijeetnarvekar/github/sidebar-sdk-java/supressions.xml"
+	suppressionFile="https://raw.githubusercontent.com/acrolinx/sidebar-sdk-java/DITA_POC/supressions.xml"
 }
 
 //npm_install.dependsOn npm_cache_clean
