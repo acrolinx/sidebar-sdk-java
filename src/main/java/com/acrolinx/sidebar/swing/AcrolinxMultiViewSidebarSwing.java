@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-present Acrolinx GmbH
+ * Copyright (c) 2021-present Acrolinx GmbH
  */
 
 package com.acrolinx.sidebar.swing;

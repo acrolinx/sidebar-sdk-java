@@ -685,4 +685,24 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             return null;
         }
     }
+
+    public void toggleVisibility()
+    {
+        if (this.browser.isVisible()) {
+            this.browser.setVisible(false);
+        } else {
+            this.browser.setVisible(true);
+        }
+    }
+
+    public void setVisible(Boolean visibility)
+    {
+        this.browser.setVisible(visibility);
+
+    }
+
+    public Boolean isVisible()
+    {
+        return this.browser.isVisible();
+    }
 }
