@@ -74,6 +74,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     protected final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<Instant> checkStartTime = new AtomicReference<>();
+    private GridData gridData;
 
     public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration client)
     {
@@ -119,8 +120,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private void initBrowser()
     {
         logger.debug("Initializing Browser...");
-        final GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-        browser.setLayoutData(gridData);
+        this.gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        browser.setLayoutData(this.gridData);
         browser.setJavascriptEnabled(true);
         try {
             final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(client.getInitParameters());
@@ -698,7 +699,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     public void setVisible(Boolean visibility)
     {
         this.browser.setVisible(visibility);
-
     }
 
     public Boolean isVisible()
