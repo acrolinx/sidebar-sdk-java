@@ -8,7 +8,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-import com.acrolinx.sidebar.utils.AcrolinxException;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -30,6 +29,7 @@ import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
+import com.acrolinx.sidebar.utils.AcrolinxException;
 import com.acrolinx.sidebar.utils.LogMessages;
 
 /**
@@ -121,7 +121,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void configure(final SidebarConfiguration configuration)
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             sidebarJFX.configure(configuration);
         }
     }
@@ -129,7 +129,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void checkGlobal()
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             sidebarJFX.checkGlobal();
         }
     }
@@ -137,7 +137,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void onGlobalCheckRejected()
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             sidebarJFX.onGlobalCheckRejected();
         }
     }
@@ -145,7 +145,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void invalidateRanges(final List<CheckedDocumentPart> invalidCheckedDocumentRanges)
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             sidebarJFX.invalidateRanges(invalidCheckedDocumentRanges);
         }
     }
@@ -153,7 +153,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches)
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             sidebarJFX.invalidateRangesForMatches(matches);
         }
     }
@@ -161,7 +161,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void loadSidebarFromServerLocation(final String serverAddress)
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             sidebarJFX.loadSidebarFromServerLocation(serverAddress);
         }
     }
@@ -177,7 +177,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public String getLastCheckedDocumentReference()
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             return sidebarJFX.getLastCheckedDocumentReference();
         }
         return "";
@@ -186,7 +186,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public String getLastCheckedDocument()
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             return sidebarJFX.getLastCheckedDocument();
         }
         return "";
@@ -195,7 +195,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void showMessage(SidebarMessage sidebarMessage)
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             sidebarJFX.showMessage(sidebarMessage);
         }
     }
@@ -203,7 +203,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             sidebarJFX.initBatchCheck(batchCheckRequestOptions);
         }
     }
@@ -211,7 +211,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options)
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             sidebarJFX.checkDocumentInBackground(documentIdentifier, documentContent, options);
         }
     }

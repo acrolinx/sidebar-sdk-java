@@ -123,7 +123,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             jsobj.setMember("acrolinxStorage", storage);
         }
         final PluginSupportedParameters supported = this.integration.getInitParameters().getSupported();
-        if ((supported != null) && (supported.isCheckSelection() || supported.isBatchChecking()) ) {
+        if ((supported != null) && (supported.isCheckSelection() || supported.isBatchChecking())) {
             acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport(integration, webView);
         } else {
             acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionOrBatchSupport(integration, webView);

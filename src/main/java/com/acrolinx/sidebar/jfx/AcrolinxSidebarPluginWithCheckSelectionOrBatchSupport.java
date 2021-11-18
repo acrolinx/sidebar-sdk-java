@@ -4,21 +4,22 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import com.acrolinx.sidebar.adapter.NullEditorAdapter;
-import com.acrolinx.sidebar.pojo.document.CheckContent;
-import com.acrolinx.sidebar.utils.LogMessages;
+import java.time.Instant;
+
 import javafx.scene.web.WebView;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
+import com.acrolinx.sidebar.adapter.NullEditorAdapter;
+import com.acrolinx.sidebar.pojo.document.CheckContent;
 import com.acrolinx.sidebar.pojo.settings.CheckModeType;
+import com.acrolinx.sidebar.utils.LogMessages;
 
 import netscape.javascript.JSObject;
 
-import java.time.Instant;
-
 public class AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport extends AcrolinxSidebarPlugin
 {
-    public AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport(final AcrolinxIntegration client, final WebView webView)
+    public AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport(final AcrolinxIntegration client,
+            final WebView webView)
     {
         super(client, webView);
     }
@@ -37,7 +38,7 @@ public class AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport extends Acrol
                 batchCheck = Boolean.parseBoolean(o.getMember("batchCheck").toString());
             }
         }
-        if(batchCheck) {
+        if (batchCheck) {
             runBatchCheck();
         } else {
             final CheckContent checkContent = getCheckContentFromClient();

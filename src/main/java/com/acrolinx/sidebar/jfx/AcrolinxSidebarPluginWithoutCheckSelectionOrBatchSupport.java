@@ -4,19 +4,20 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import com.acrolinx.sidebar.adapter.NullEditorAdapter;
-import com.acrolinx.sidebar.pojo.document.CheckContent;
-import com.acrolinx.sidebar.utils.LogMessages;
+import java.time.Instant;
+
 import javafx.scene.web.WebView;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
+import com.acrolinx.sidebar.adapter.NullEditorAdapter;
+import com.acrolinx.sidebar.pojo.document.CheckContent;
 import com.acrolinx.sidebar.pojo.settings.CheckModeType;
-
-import java.time.Instant;
+import com.acrolinx.sidebar.utils.LogMessages;
 
 public class AcrolinxSidebarPluginWithoutCheckSelectionOrBatchSupport extends AcrolinxSidebarPlugin
 {
-    public AcrolinxSidebarPluginWithoutCheckSelectionOrBatchSupport(final AcrolinxIntegration client, final WebView webView)
+    public AcrolinxSidebarPluginWithoutCheckSelectionOrBatchSupport(final AcrolinxIntegration client,
+            final WebView webView)
     {
         super(client, webView);
     }
