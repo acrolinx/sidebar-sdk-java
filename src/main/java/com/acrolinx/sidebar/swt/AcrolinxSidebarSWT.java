@@ -247,14 +247,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "canBatchCheck") {
-            @Override
-            public Object function(final Object[] arguments)
-            {
-                return getCanBatchCheck();
-            }
-        };
-
         new BrowserFunction(browser, "runBatchCheck") {
             @Override
             public Object function(final Object[] arguments)
@@ -395,16 +387,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             // TODO: Message to the sidebar ?
         }
         return null;
-    }
-
-    private boolean getCanBatchCheck()
-    {
-        boolean batchCheckSupported = client.getInitParameters().getSupported().isBatchChecking();
-        CheckModeType checkModeRequested = client.getCheckModeOnCheckRequested();
-        if (!batchCheckSupported || (batchCheckSupported && CheckModeType.INTERACTIVE.equals(checkModeRequested))) {
-            return false;
-        }
-        return true;
     }
 
     protected void loadScriptJS(String script)

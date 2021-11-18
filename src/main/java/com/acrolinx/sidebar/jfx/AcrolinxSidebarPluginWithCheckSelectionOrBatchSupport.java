@@ -37,7 +37,7 @@ public class AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport extends Acrol
                 batchCheck = Boolean.parseBoolean(o.getMember("batchCheck").toString());
             }
         }
-        if(batchCheck == true) {
+        if(batchCheck) {
             runBatchCheck();
         } else {
             final CheckContent checkContent = getCheckContentFromClient();

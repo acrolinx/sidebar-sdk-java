@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 public class BatchCheckRequestOptions
 {
 
-    private String documentIdentifier;
+    private final String documentIdentifier;
     private String displayName;
 
     public BatchCheckRequestOptions(String reference, String displayName)

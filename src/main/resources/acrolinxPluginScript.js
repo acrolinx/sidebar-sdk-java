@@ -48,7 +48,7 @@ window.acrolinxPlugin =
   },
 
   requestGlobalCheck: function(options){
-    if(canBatchCheck()) {
+    if(options && options.selection === true) {
         runBatchCheck();
     } else {
         if(!canCheck()) {
