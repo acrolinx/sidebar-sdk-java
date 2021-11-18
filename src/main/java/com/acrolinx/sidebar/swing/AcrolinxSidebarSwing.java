@@ -8,6 +8,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import com.acrolinx.sidebar.utils.AcrolinxException;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -120,37 +121,49 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void configure(final SidebarConfiguration configuration)
     {
-        sidebarJFX.configure(configuration);
+        if(sidebarJFX != null) {
+            sidebarJFX.configure(configuration);
+        }
     }
 
     @Override
     public void checkGlobal()
     {
-        sidebarJFX.checkGlobal();
+        if(sidebarJFX != null) {
+            sidebarJFX.checkGlobal();
+        }
     }
 
     @Override
     public void onGlobalCheckRejected()
     {
-        sidebarJFX.onGlobalCheckRejected();
+        if(sidebarJFX != null) {
+            sidebarJFX.onGlobalCheckRejected();
+        }
     }
 
     @Override
     public void invalidateRanges(final List<CheckedDocumentPart> invalidCheckedDocumentRanges)
     {
-        sidebarJFX.invalidateRanges(invalidCheckedDocumentRanges);
+        if(sidebarJFX != null) {
+            sidebarJFX.invalidateRanges(invalidCheckedDocumentRanges);
+        }
     }
 
     @Override
     public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches)
     {
-        sidebarJFX.invalidateRangesForMatches(matches);
+        if(sidebarJFX != null) {
+            sidebarJFX.invalidateRangesForMatches(matches);
+        }
     }
 
     @Override
     public void loadSidebarFromServerLocation(final String serverAddress)
     {
-        sidebarJFX.loadSidebarFromServerLocation(serverAddress);
+        if(sidebarJFX != null) {
+            sidebarJFX.loadSidebarFromServerLocation(serverAddress);
+        }
     }
 
     @Override
@@ -164,31 +177,43 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public String getLastCheckedDocumentReference()
     {
-        return sidebarJFX.getLastCheckedDocumentReference();
+        if(sidebarJFX != null) {
+            return sidebarJFX.getLastCheckedDocumentReference();
+        }
+        return "";
     }
 
     @Override
     public String getLastCheckedDocument()
     {
-        return sidebarJFX.getLastCheckedDocument();
+        if(sidebarJFX != null) {
+            return sidebarJFX.getLastCheckedDocument();
+        }
+        return "";
     }
 
     @Override
     public void showMessage(SidebarMessage sidebarMessage)
     {
-        sidebarJFX.showMessage(sidebarMessage);
+        if(sidebarJFX != null) {
+            sidebarJFX.showMessage(sidebarMessage);
+        }
     }
 
     @Override
     public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
     {
-        sidebarJFX.initBatchCheck(batchCheckRequestOptions);
+        if(sidebarJFX != null) {
+            sidebarJFX.initBatchCheck(batchCheckRequestOptions);
+        }
     }
 
     @Override
     public void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options)
     {
-        sidebarJFX.checkDocumentInBackground(documentIdentifier, documentContent, options);
+        if(sidebarJFX != null) {
+            sidebarJFX.checkDocumentInBackground(documentIdentifier, documentContent, options);
+        }
     }
 
     public AcrolinxSidebarJFX getSidebarJFX()

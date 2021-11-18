@@ -329,7 +329,7 @@ abstract class AcrolinxSidebarPlugin
         logger.info("checkReferenceInBackground is called...");
         JFXUtils.invokeInJFXThread(() -> {
             try {
-                final String nameVariableReference = "reference";
+                final String nameVariableReference = "documentIdentifier";
                 final String nameVariableContent = "documentContent";
                 final JSObject jsObject = getWindowObject();
                 jsObject.setMember(nameVariableReference, documentIdentifier);
@@ -348,44 +348,6 @@ abstract class AcrolinxSidebarPlugin
     {
         List<BatchCheckRequestOptions> batchCheckRequestOptions = ((AcrolinxIntegration) client).extractReferences();
         initBatchCheck(batchCheckRequestOptions);
-    }
-
-    protected synchronized void runInteractiveCheckWithCheckSelection(final JSObject o)
-    {
-        LogMessages.logCheckRequested(logger);
-        this.checkStartedTime = Instant.now();
-        boolean selection = false;
-        if (o != null) {
-            if (o.getMember("selection") != null) {
-                selection = Boolean.parseBoolean(o.getMember("selection").toString());
-            }
-        }
-
-        final CheckContent checkContent = getCheckContentFromClient();
-        logger.debug("Fetched check content including external content");
-        if ((client.getEditorAdapter() != null) && !(client.getEditorAdapter() instanceof NullEditorAdapter)
-                && (checkContent.getContent() != null)) {
-            logger.debug("Editor is ready for running a check");
-            runCheck(selection, checkContent);
-        } else {
-            logger.warn("Current File Editor not supported for checking or no file present.");
-            onGlobalCheckRejected();
-        }
-    }
-
-    protected synchronized void runInteractiveCheckWithoutCheckSelection()
-    {
-        LogMessages.logCheckRequested(logger);
-        this.checkStartedTime = Instant.now();
-        final CheckContent checkContent = getCheckContentFromClient();
-        logger.debug("Fetched check content including external content");
-        if ((client.getEditorAdapter() != null) && !(client.getEditorAdapter() instanceof NullEditorAdapter)
-                && (checkContent.getContent() != null)) {
-            runCheck(false, checkContent);
-        } else {
-            logger.warn("Current File Editor not supported for checking or no file present.");
-            onGlobalCheckRejected();
-        }
     }
 
     private static String buildStringOfCheckedRequestOptions(

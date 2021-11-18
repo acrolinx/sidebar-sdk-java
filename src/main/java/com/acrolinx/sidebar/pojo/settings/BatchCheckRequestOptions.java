@@ -9,13 +9,13 @@ import com.google.gson.Gson;
 public class BatchCheckRequestOptions
 {
 
-    private String reference;
+    private String documentIdentifier;
     private String displayName;
 
     public BatchCheckRequestOptions(String reference, String displayName)
     {
         this.displayName = displayName;
-        this.reference = reference;
+        this.documentIdentifier = reference;
     }
 
     public String getDisplayName()
@@ -30,7 +30,7 @@ public class BatchCheckRequestOptions
 
     public String getReference()
     {
-        return reference;
+        return documentIdentifier;
     }
 
     @Override

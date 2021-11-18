@@ -9,6 +9,8 @@ import java.awt.event.ComponentListener;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.acrolinx.sidebar.swt.AcrolinxSidebarSWT;
+import com.acrolinx.sidebar.utils.AcrolinxException;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -71,9 +73,12 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing
         });
     }
 
-    // TODO: how to handle Storage
-    public void addSidebar(AcrolinxIntegration integration, String documentURL)
+    public void addSidebar(AcrolinxIntegration integration, String documentURL) throws AcrolinxException
     {
+        final AcrolinxSidebarJFX existingSidebar = sidebars.get(documentURL);
+        if(existingSidebar != null) {
+            throw new AcrolinxException("Sidebar already exists for document id: " + documentURL);
+        }
         JFXUtils.invokeInJFXThread(() -> {
             sidebarJFX = new AcrolinxSidebarJFX(integration, storage);
             final WebView webview = sidebarJFX.getWebView();
@@ -97,27 +102,38 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing
         });
     }
 
-    public void switchSidebar(String documentURL)
+    public void switchSidebar(String documentURL) throws AcrolinxException
     {
+        final AcrolinxSidebarJFX acrolinxSidebarJFX = sidebars.get(documentURL);
+        if(acrolinxSidebarJFX == null) {
+            throw new AcrolinxException("Existing sidebar not found for document Id. " + documentURL);
+        }
         JFXUtils.invokeInJFXThread(() -> {
             if (sidebars.containsKey(documentURL)) {
                 Scene scene = getScene();
-                scene.setRoot(sidebars.get(documentURL).getWebView());
+                //scene.setRoot(sidebars.get(documentURL).getWebView());
+                scene.setRoot(acrolinxSidebarJFX.getWebView());
                 setScene(scene);
                 setVisible(true);
-                sidebarJFX = sidebars.get(documentURL);
+                //sidebarJFX = sidebars.get(documentURL);
+                sidebarJFX = acrolinxSidebarJFX;
             }
         });
     }
 
-    public void removeSidebar(String documentURL)
-    {
-        JFXUtils.invokeInJFXThread(() -> {
-            if (sidebars.containsKey(documentURL)) {
-                sidebars.remove(documentURL);
-            }
-        });
-        // TODO: When removing sidebars, if there are no sidebars left, set sidebarJFX to null
+    public void removeSidebar(String documentURL) throws AcrolinxException {
+        final AcrolinxSidebarJFX removedJFXSidebar = sidebars.remove(documentURL);
+
+        if(removedJFXSidebar == null) {
+            throw new AcrolinxException("Sidebar doesn't exist for the given document Id");
+        }
+        if(sidebars.isEmpty()) {
+            JFXUtils.invokeInJFXThread(() -> {
+                setVisible(false);
+                sidebarJFX = null;
+            });
+
+        }
     }
 
 }
