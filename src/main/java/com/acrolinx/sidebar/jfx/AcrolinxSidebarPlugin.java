@@ -293,7 +293,7 @@ abstract class AcrolinxSidebarPlugin
 
     public synchronized void requestBackgroundCheckForDocument(String documentIdentifier)
     {
-        logger.info("requestBackgroundCheckForRef is called...");
+        logger.debug("requestBackgroundCheckForRef is called.");
         final String contentToCheck = ((AcrolinxIntegration) client).getContentForDocument(documentIdentifier);
         CheckOptions referenceCheckOptions = ((AcrolinxIntegration) client).getCheckOptionsForDocument(
                 documentIdentifier);
@@ -302,10 +302,10 @@ abstract class AcrolinxSidebarPlugin
 
     public synchronized void openDocumentInEditor(String documentIdentifier)
     {
-        logger.info("openReferenceInEditor is called...");
+        logger.debug("openDocumentInEditor is called...");
         Boolean referenceIsOpen = ((AcrolinxIntegration) client).openDocumentInEditor(documentIdentifier);
         if (!referenceIsOpen) {
-            // TODO message to the sidebar ?
+            logger.debug("openDocumentInEditor failed.");
         }
     }
 
@@ -320,13 +320,12 @@ abstract class AcrolinxSidebarPlugin
                 logger.error(e.getMessage(), e);
             }
         });
-        logger.info("end of initBatchCheck...");
     }
 
     public synchronized void checkDocumentInBackground(final String documentIdentifier, final String documentContent,
             final CheckOptions options)
     {
-        logger.info("checkReferenceInBackground is called...");
+        logger.debug("checkDocumentInBackground is called.");
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 final String nameVariableReference = "documentIdentifier";
@@ -336,18 +335,11 @@ abstract class AcrolinxSidebarPlugin
                 jsObject.setMember(nameVariableContent, documentContent);
                 jsObject.eval("acrolinxSidebar.checkDocumentInBackground(documentIdentifier, documentContent, "
                         + options.toString() + ");");
-                logger.info("end of checkReferenceInBackground...");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
             }
         });
 
-    }
-
-    public synchronized void runBatchCheck()
-    {
-        List<BatchCheckRequestOptions> batchCheckRequestOptions = ((AcrolinxIntegration) client).extractReferences();
-        initBatchCheck(batchCheckRequestOptions);
     }
 
     private static String buildStringOfCheckedRequestOptions(

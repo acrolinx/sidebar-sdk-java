@@ -9,6 +9,7 @@ import java.awt.event.ComponentListener;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.acrolinx.sidebar.AcrolinxMultiViewSidebarInterface;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -18,10 +19,9 @@ import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.jfx.AcrolinxSidebarJFX;
 import com.acrolinx.sidebar.jfx.JFXUtils;
-import com.acrolinx.sidebar.swt.AcrolinxSidebarSWT;
 import com.acrolinx.sidebar.utils.AcrolinxException;
 
-public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing
+public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implements AcrolinxMultiViewSidebarInterface
 {
 
     private Map<String, AcrolinxSidebarJFX> sidebars = new ConcurrentHashMap<>();
@@ -73,14 +73,15 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing
         });
     }
 
-    public void addSidebar(AcrolinxIntegration integration, String documentURL) throws AcrolinxException
+    @Override
+    public void addSidebar(AcrolinxIntegration client, String documentId) throws AcrolinxException
     {
-        final AcrolinxSidebarJFX existingSidebar = sidebars.get(documentURL);
+        final AcrolinxSidebarJFX existingSidebar = sidebars.get(documentId);
         if (existingSidebar != null) {
-            throw new AcrolinxException("Sidebar already exists for document id: " + documentURL);
+            throw new AcrolinxException("Sidebar already exists for document id: " + documentId);
         }
         JFXUtils.invokeInJFXThread(() -> {
-            sidebarJFX = new AcrolinxSidebarJFX(integration, storage);
+            sidebarJFX = new AcrolinxSidebarJFX(client, storage);
             final WebView webview = sidebarJFX.getWebView();
             GridPane.setHgrow(webview, Priority.ALWAYS);
             GridPane.setVgrow(webview, Priority.ALWAYS);
@@ -94,36 +95,36 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing
             } else {
                 scene = new Scene(webview);
             }
-            if (!sidebars.containsKey(documentURL)) {
-                sidebars.put(documentURL, (AcrolinxSidebarJFX) sidebarJFX);
+            if (!sidebars.containsKey(documentId)) {
+                sidebars.put(documentId, (AcrolinxSidebarJFX) sidebarJFX);
             }
             setScene(scene);
             setVisible(true);
         });
     }
 
-    public void switchSidebar(String documentURL) throws AcrolinxException
+    @Override
+    public void switchSidebar(String documentId) throws AcrolinxException
     {
-        final AcrolinxSidebarJFX acrolinxSidebarJFX = sidebars.get(documentURL);
+        final AcrolinxSidebarJFX acrolinxSidebarJFX = sidebars.get(documentId);
         if (acrolinxSidebarJFX == null) {
-            throw new AcrolinxException("Existing sidebar not found for document Id. " + documentURL);
+            throw new AcrolinxException("Existing sidebar not found for document Id. " + documentId);
         }
         JFXUtils.invokeInJFXThread(() -> {
-            if (sidebars.containsKey(documentURL)) {
+            if (sidebars.containsKey(documentId)) {
                 Scene scene = getScene();
-                // scene.setRoot(sidebars.get(documentURL).getWebView());
                 scene.setRoot(acrolinxSidebarJFX.getWebView());
                 setScene(scene);
                 setVisible(true);
-                // sidebarJFX = sidebars.get(documentURL);
                 sidebarJFX = acrolinxSidebarJFX;
             }
         });
     }
 
-    public void removeSidebar(String documentURL) throws AcrolinxException
+    @Override
+    public void removeSidebar(String documentId) throws AcrolinxException
     {
-        final AcrolinxSidebarJFX removedJFXSidebar = sidebars.remove(documentURL);
+        final AcrolinxSidebarJFX removedJFXSidebar = sidebars.remove(documentId);
 
         if (removedJFXSidebar == null) {
             throw new AcrolinxException("Sidebar doesn't exist for the given document Id");

@@ -9,7 +9,6 @@ import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.CheckResult;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
-import com.acrolinx.sidebar.pojo.settings.CheckModeType;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 
 /**
@@ -85,13 +84,5 @@ public interface AcrolinxIntegration
      * @return String
      */
     String getContentForDocument(String documentIdentifier);
-
-    /**
-     * Gets the check mode for the requested check, returns CheckModeType.INTERACTIVE for normal
-     * checks and CheckModeType.BACKGROUNDCHECK to initialize a background check.
-     *
-     * @return CheckModeType
-     */
-    CheckModeType getCheckModeOnCheckRequested();
 
 }

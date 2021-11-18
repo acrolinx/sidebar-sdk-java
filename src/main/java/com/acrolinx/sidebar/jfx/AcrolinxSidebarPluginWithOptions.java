@@ -4,22 +4,21 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import java.time.Instant;
-
-import javafx.scene.web.WebView;
-
-import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.document.CheckContent;
-import com.acrolinx.sidebar.pojo.settings.CheckModeType;
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.utils.LogMessages;
-
+import javafx.scene.web.WebView;
+import com.acrolinx.sidebar.AcrolinxIntegration;
 import netscape.javascript.JSObject;
 
-public class AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport extends AcrolinxSidebarPlugin
+
+import java.time.Instant;
+import java.util.List;
+
+public class AcrolinxSidebarPluginWithOptions extends AcrolinxSidebarPlugin
 {
-    public AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport(final AcrolinxIntegration client,
-            final WebView webView)
+    public AcrolinxSidebarPluginWithOptions(final AcrolinxIntegration client, final WebView webView)
     {
         super(client, webView);
     }
@@ -38,8 +37,9 @@ public class AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport extends Acrol
                 batchCheck = Boolean.parseBoolean(o.getMember("batchCheck").toString());
             }
         }
-        if (batchCheck) {
-            runBatchCheck();
+        if(batchCheck == true) {
+            List<BatchCheckRequestOptions> batchCheckRequestOptions = ((AcrolinxIntegration) client).extractReferences();
+            initBatchCheck(batchCheckRequestOptions);
         } else {
             final CheckContent checkContent = getCheckContentFromClient();
             logger.debug("Fetched check content including external content");

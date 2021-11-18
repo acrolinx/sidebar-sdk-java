@@ -124,9 +124,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         }
         final PluginSupportedParameters supported = this.integration.getInitParameters().getSupported();
         if ((supported != null) && (supported.isCheckSelection() || supported.isBatchChecking())) {
-            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport(integration, webView);
+            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithOptions(integration, webView);
         } else {
-            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionOrBatchSupport(integration, webView);
+            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutOptions(integration, webView);
         }
     }
 
@@ -156,10 +156,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     @Override
     public void checkGlobal()
     {
-        if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport) {
-            ((AcrolinxSidebarPluginWithCheckSelectionOrBatchSupport) acrolinxSidebarPlugin).requestGlobalCheck(null);
-        } else if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithoutCheckSelectionOrBatchSupport) {
-            ((AcrolinxSidebarPluginWithoutCheckSelectionOrBatchSupport) acrolinxSidebarPlugin).requestGlobalCheck();
+        if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithOptions) {
+            ((AcrolinxSidebarPluginWithOptions) acrolinxSidebarPlugin).requestGlobalCheck(null);
+        } else if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithoutOptions) {
+            ((AcrolinxSidebarPluginWithoutOptions) acrolinxSidebarPlugin).requestGlobalCheck();
         }
     }
 
