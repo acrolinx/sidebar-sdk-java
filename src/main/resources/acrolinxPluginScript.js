@@ -48,7 +48,7 @@ window.acrolinxPlugin =
   },
 
   requestGlobalCheck: function(options){
-    if(options && options.selection === true) {
+    if(options && options.batchCheck === true) {
         runBatchCheck();
     } else {
         if(!canCheck()) {
@@ -65,7 +65,10 @@ window.acrolinxPlugin =
     }
   },
   requestBackgroundCheckForDocument: function(documentIdentifier){
-     requestBackgroundCheckForDocumentP(documentIdentifier);
+     var content = getContentForDocumentP(documentIdentifier);
+     var checkOptions = JSON.parse(getCheckOptionsForDocumentP(documentIdentifier));
+     acrolinxSidebar.checkDocumentInBackground(documentIdentifier, content, checkOptions);
+
   },
   openDocumentInEditor: function(documentIdentifier){
      openDocumentInEditorP(documentIdentifier);
