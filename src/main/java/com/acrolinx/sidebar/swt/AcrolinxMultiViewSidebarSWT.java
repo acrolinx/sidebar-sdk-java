@@ -19,12 +19,17 @@ import com.acrolinx.sidebar.utils.AcrolinxException;
 public class AcrolinxMultiViewSidebarSWT
 {
 
-    private AcrolinxStorage acrolinxStorage = null;
+    private AcrolinxStorage acrolinxStorage;
     private final Composite container;
     private final StackLayout stackLayout;
 
     private final Map<String, AcrolinxSidebarSWT> sidebarSWTMap = new HashMap<>();
 
+    /**
+     *
+     * @param parent SWT Composite to which sidebar would be child of.
+     * @param storage Acrolinx storage to act as external storage to sidebar local storage
+     */
     public AcrolinxMultiViewSidebarSWT(final Composite parent, final AcrolinxStorage storage)
     {
         this.container = new Composite(parent, SWT.NONE);
@@ -34,6 +39,11 @@ public class AcrolinxMultiViewSidebarSWT
         this.acrolinxStorage = storage;
     }
 
+    /**
+     *
+     * @param parent SWT Shell to which sidebar would be child of.
+     * @param storage Acrolinx storage to act as external storage to sidebar local storage
+     */
     public AcrolinxMultiViewSidebarSWT(final Shell parent, final AcrolinxStorage storage)
     {
         this.container = new Composite(parent, SWT.NONE);
@@ -43,11 +53,20 @@ public class AcrolinxMultiViewSidebarSWT
         this.acrolinxStorage = storage;
     }
 
+    /**
+     * Creates default empty view in SWT Composite when no sidebar needs to be shown
+     */
     public void createDefaultSidebar()
     {
         // TODO: Create default view (Show Acrolinx Image or some text).
     }
 
+    /**
+     *
+     * @param client New integration dedicated per sidebar instance
+     * @param documentId Unique document Id for the sidebar instance eg: file path
+     * @throws AcrolinxException Throws exception is sidebar already exists for the document
+     */
     public void addSidebar(String documentId, AcrolinxIntegration client) throws AcrolinxException
     {
         final AcrolinxSidebarSWT existingSidebar = this.sidebarSWTMap.get(documentId);
@@ -68,6 +87,11 @@ public class AcrolinxMultiViewSidebarSWT
         acrolinxSidebarSWT.setVisible(true);
     }
 
+    /**
+     *
+     * @param documentId Document Id of the sidebar instance to switch active sidebar to.
+     * @throws AcrolinxException Throws if sidebar not found for provided document id.
+     */
     public void switchSidebar(String documentId) throws AcrolinxException
     {
         this.hideAllSidebars();
@@ -80,6 +104,11 @@ public class AcrolinxMultiViewSidebarSWT
         container.layout(true, true);
     }
 
+    /**
+     *
+     * @param documentId Document Id for the sidebar instance to be removed
+     * @throws AcrolinxException Throws if sidebar not found for the provided document id.
+     */
     public void removeSidebar(String documentId) throws AcrolinxException
     {
         final AcrolinxSidebarSWT sidebarRemoved = this.sidebarSWTMap.remove(documentId);
@@ -93,6 +122,11 @@ public class AcrolinxMultiViewSidebarSWT
         }
     }
 
+    /**
+     *
+     * @return Get Active sidebar from the list. Returns sidebar with visiblity set to true. Null if
+     *         not found.
+     */
     public AcrolinxSidebarSWT getActiveSidebar()
     {
         for (Map.Entry<String, AcrolinxSidebarSWT> entry : this.sidebarSWTMap.entrySet()) {
@@ -103,11 +137,17 @@ public class AcrolinxMultiViewSidebarSWT
         return null;
     }
 
+    /**
+     * Show the default sidebar view.
+     */
     private void showDefaultSidebar()
     {
         // TODO: Show default view
     }
 
+    /**
+     * Set visibility of all the sidebars in tha mep to false
+     */
     private void hideAllSidebars()
     {
         for (Map.Entry<String, AcrolinxSidebarSWT> entry : this.sidebarSWTMap.entrySet()) {

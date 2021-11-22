@@ -9,13 +9,13 @@ import java.awt.event.ComponentListener;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.acrolinx.sidebar.AcrolinxMultiViewSidebarInterface;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.web.WebView;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
+import com.acrolinx.sidebar.AcrolinxMultiViewSidebarInterface;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.jfx.AcrolinxSidebarJFX;
 import com.acrolinx.sidebar.jfx.JFXUtils;
@@ -26,11 +26,20 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
 
     private Map<String, AcrolinxSidebarJFX> sidebars = new ConcurrentHashMap<>();
 
+    /**
+     *
+     * @param integration Acrolinx Integration without Acrolinx Storage
+     */
     public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration)
     {
         super(integration);
     }
 
+    /**
+     *
+     * @param integration Acrolinx Integration with Acrolinx storage as external synchronous local
+     *        storage
+     */
     public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration, AcrolinxStorage storage)
     {
         super(integration, storage);
@@ -73,6 +82,12 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
         });
     }
 
+    /**
+     *
+     * @param client New integration dedicated per sidebar instance
+     * @param documentId Unique document Id for the sidebar instance eg: file path
+     * @throws AcrolinxException Throws exception is sidebar already exists for the document
+     */
     @Override
     public void addSidebar(AcrolinxIntegration client, String documentId) throws AcrolinxException
     {
@@ -103,6 +118,11 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
         });
     }
 
+    /**
+     *
+     * @param documentId Document Id of the sidebar instance to switch active sidebar to.
+     * @throws AcrolinxException Throws if sidebar not found for provided document id.
+     */
     @Override
     public void switchSidebar(String documentId) throws AcrolinxException
     {
@@ -121,6 +141,11 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
         });
     }
 
+    /**
+     *
+     * @param documentId Document Id for the sidebar instance to be removed
+     * @throws AcrolinxException Throws if sidebar not found for the provided document id.
+     */
     @Override
     public void removeSidebar(String documentId) throws AcrolinxException
     {
