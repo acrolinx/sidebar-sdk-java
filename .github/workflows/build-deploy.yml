@@ -35,7 +35,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: '8'
 
       # Build an Test Gradle Project
