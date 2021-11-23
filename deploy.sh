@@ -19,7 +19,7 @@ getProperty()
 }
 
 
-PROJECT_VERSION=$(getProperty "CURRENT_VERSION")
+PROJECT_VERSION=$(getProperty "currentVersion")
 echo "Current Version: $PROJECT_VERSION"
 
 if [[ "$PROJECT_VERSION" == *"SNAPSHOT"* ]]; then
