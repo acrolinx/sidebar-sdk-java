@@ -46,18 +46,32 @@ window.acrolinxPlugin =
   onInitFinished: function(finishResult){
    onInitFinishedNotificationP(JSON.stringify(finishResult));
   },
+
   requestGlobalCheck: function(options){
-    if(!canCheck()) {
-        acrolinxSidebar.onGlobalCheckRejected();
+    if(options && options.batchCheck === true) {
+        runBatchCheck();
     } else {
-        if (options && options.selection === true) {
-            acrolinxSidebar.checkGlobal(getTextP(),
-                    {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}, selection: JSON.parse(getCurrentSelectionRangesP())});
+        if(!canCheck()) {
+            acrolinxSidebar.onGlobalCheckRejected();
         } else {
-            acrolinxSidebar.checkGlobal(getTextP(),
-                    {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}});
+            if (options && options.selection === true) {
+                acrolinxSidebar.checkGlobal(getTextP(),
+                        {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}, selection: JSON.parse(getCurrentSelectionRangesP())});
+            } else {
+                acrolinxSidebar.checkGlobal(getTextP(),
+                        {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}});
+            }
         }
     }
+  },
+  requestBackgroundCheckForDocument: function(documentIdentifier){
+     var content = getContentForDocumentP(documentIdentifier);
+     var checkOptions = JSON.parse(getCheckOptionsForDocumentP(documentIdentifier));
+     acrolinxSidebar.checkDocumentInBackground(documentIdentifier, content, checkOptions);
+
+  },
+  openDocumentInEditor: function(documentIdentifier){
+     openDocumentInEditorP(documentIdentifier);
   },
   onCheckResult: function(checkResult){
     onCheckResultP(JSON.stringify(checkResult));

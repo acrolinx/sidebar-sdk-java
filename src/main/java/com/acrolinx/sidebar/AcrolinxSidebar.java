@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 
@@ -84,5 +86,20 @@ public interface AcrolinxSidebar
      */
 
     void showMessage(SidebarMessage sidebarMessage);
+
+    /**
+     *
+     * @param batchCheckRequestOptions
+     */
+    void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions);
+
+    /**
+     *
+     * @param documentIdentifier
+     * @param documentContent
+     * @param options
+     */
+
+    void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options);
 
 }

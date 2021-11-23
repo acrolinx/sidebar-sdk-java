@@ -63,17 +63,18 @@ import com.google.gson.reflect.TypeToken;
 @SuppressWarnings({"unused", "SameParameterValue", "WeakerAccess"})
 public class AcrolinxSidebarSWT implements AcrolinxSidebar
 {
-    private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSWT.class);
+    protected final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSWT.class);
 
-    private final Browser browser;
-    private final AcrolinxIntegration client;
+    protected final Browser browser;
+    protected final AcrolinxIntegration client;
     private final AcrolinxStorage storage;
     private final AtomicReference<String> currentlyCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocumentReference = new AtomicReference<>("");
-    private final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
+    protected final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<Instant> checkStartTime = new AtomicReference<>();
+    private GridData gridData;
 
     public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration client)
     {
@@ -119,8 +120,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private void initBrowser()
     {
         logger.debug("Initializing Browser...");
-        final GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-        browser.setLayoutData(gridData);
+        this.gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        browser.setLayoutData(this.gridData);
         browser.setJavascriptEnabled(true);
         try {
             final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(client.getInitParameters());
@@ -193,7 +194,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    private void initSidebar()
+    protected void initSidebar()
     {
         new BrowserFunction(browser, "overwriteJSLoggingInfoP") {
             @Override
@@ -243,6 +244,30 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             public Object function(final Object[] arguments)
             {
                 return getCanCheckObject();
+            }
+        };
+
+        new BrowserFunction(browser, "runBatchCheck") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return runBatchCheck();
+            }
+        };
+
+        new BrowserFunction(browser, "getContentForDocumentP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return getContentForDocument(arguments[0]);
+            }
+        };
+
+        new BrowserFunction(browser, "getCheckOptionsForDocumentP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return getCheckOptionsForDocument(arguments[0]);
             }
         };
 
@@ -336,10 +361,45 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
+        new BrowserFunction(browser, "openDocumentInEditorP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return openDocumentInEditor(arguments[0]);
+            }
+        };
+
         loadScriptJS("acrolinxPluginScript.js");
     }
 
-    private void loadScriptJS(String script)
+    private String getContentForDocument(Object documentIdentifier)
+    {
+        return client.getContentForDocument(documentIdentifier.toString());
+    }
+
+    private String getCheckOptionsForDocument(Object documentIdentifier)
+    {
+        CheckOptions checkOptions = client.getCheckOptionsForDocument(documentIdentifier.toString());
+        return checkOptions.toString();
+    }
+
+    private Object runBatchCheck()
+    {
+        List<BatchCheckRequestOptions> references = client.extractReferences();
+        this.initBatchCheck(references);
+        return null;
+    }
+
+    private Object openDocumentInEditor(Object argument)
+    {
+        Boolean documentIsOpen = client.openDocumentInEditor(argument.toString());
+        if (!documentIsOpen) {
+            // TODO: Message to the sidebar ?
+        }
+        return null;
+    }
+
+    protected void loadScriptJS(String script)
     {
         try {
             final ClassLoader classLoader = this.getClass().getClassLoader();
@@ -362,7 +422,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         }
     }
 
-    private Object getOpenLogFileObject()
+    protected Object getOpenLogFileObject()
     {
         final String logFileLocation = LoggingUtils.getLogFileLocation();
         if (logFileLocation != null) {
@@ -373,7 +433,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    private Object getOpenWindowObject(Object argument)
+    protected Object getOpenWindowObject(Object argument)
     {
         final String result = argument.toString();
         final String url = AcrolinxSidebarSWT.getURlFromJS(result);
@@ -387,7 +447,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    private Object getReplaceRangesObject(Object argument)
+    protected Object getReplaceRangesObject(Object argument)
     {
         LogMessages.logReplacingRange(logger);
         final List<AcrolinxMatchFromJSON> match = new Gson().fromJson((String) argument,
@@ -399,7 +459,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    private Object getSelectRangesObject(Object argument)
+    protected Object getSelectRangesObject(Object argument)
     {
         LogMessages.logSelectingRange(logger);
         final List<AcrolinxMatchFromJSON> match = new Gson().fromJson((String) argument,
@@ -410,7 +470,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    private String getCurrentSelectionRangesObject()
+    protected String getCurrentSelectionRangesObject()
     {
         final List<IntRange> currentSelection = client.getEditorAdapter().getCurrentSelection();
         if (currentSelection == null) {
@@ -422,7 +482,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         }
     }
 
-    private Object getOnCheckResultObject(Object argument)
+    protected Object getOnCheckResultObject(Object argument)
     {
         final Instant checkEndedTime = Instant.now();
         LogMessages.logCheckFinishedWithDurationTime(logger,
@@ -445,7 +505,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    private String getExternalContentObject()
+    protected String getExternalContentObject()
     {
         LogMessages.logExternalContentRequested(logger);
         final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
@@ -455,7 +515,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return externalContent.toString();
     }
 
-    private boolean getCanCheckObject()
+    protected boolean getCanCheckObject()
     {
         final boolean canCheck = (client.getEditorAdapter() != null)
                 && !(client.getEditorAdapter() instanceof NullEditorAdapter);
@@ -465,7 +525,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return canCheck;
     }
 
-    private Object getOnInitFinishedNotificationObject(Object argument)
+    protected Object getOnInitFinishedNotificationObject(Object argument)
     {
         final String result = argument.toString();
         final JsonObject json = (JsonObject) JsonParser.parseString(result);
@@ -479,7 +539,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    private String getTextObject()
+    protected String getTextObject()
     {
         LogMessages.logCheckRequested(logger);
         checkStartTime.set(Instant.now());
@@ -582,7 +642,29 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     @Override
     public void showMessage(SidebarMessage sidebarMessage)
     {
-        browser.execute("window.acrolinxSidebar.showMessage(" + sidebarMessage.toString() + ");");
+
+    }
+
+    @Override
+    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        String jsArgs = buildStringOfBatchCheckRequestOptions(batchCheckRequestOptions);
+        browser.execute("window.acrolinxSidebar.initBatchCheck([" + jsArgs + "]);");
+    }
+
+    @Override
+    public void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options)
+    {
+        // The document identifier should be a escaped string, otherwise it may break JS object.
+        browser.execute("window.acrolinxSidebar.requestBackgroundCheckForDocument(\"" + documentIdentifier + "\");");
+    }
+
+    public static String buildStringOfBatchCheckRequestOptions(
+            final java.util.List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        // TODO verify if that returns
+        return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(
+                Collectors.joining(", "));
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -595,5 +677,24 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         } else {
             return null;
         }
+    }
+
+    public void toggleVisibility()
+    {
+        if (this.browser.isVisible()) {
+            this.browser.setVisible(false);
+        } else {
+            this.browser.setVisible(true);
+        }
+    }
+
+    public void setVisible(Boolean visibility)
+    {
+        this.browser.setVisible(visibility);
+    }
+
+    public Boolean isVisible()
+    {
+        return this.browser.isVisible();
     }
 }

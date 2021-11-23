@@ -20,9 +20,7 @@ import com.acrolinx.sidebar.AcrolinxSidebar;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
-import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;
-import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
-import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
+import com.acrolinx.sidebar.pojo.settings.*;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
@@ -38,11 +36,11 @@ import netscape.javascript.JSObject;
 @SuppressWarnings("unused, WeakerAccess")
 public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
-    private WebView webView = new WebView();
-    private AcrolinxSidebarPlugin acrolinxSidebarPlugin;
-    private final AcrolinxIntegration integration;
+    protected WebView webView = new WebView();
+    protected AcrolinxSidebarPlugin acrolinxSidebarPlugin;
+    protected final AcrolinxIntegration integration;
 
-    private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
+    protected final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
 
     public AcrolinxSidebarJFX(final AcrolinxIntegration integration)
     {
@@ -106,7 +104,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         }
     }
 
-    private void injectAcrolinxPlugin(AcrolinxStorage storage)
+    protected void injectAcrolinxPlugin(AcrolinxStorage storage)
     {
         final WebView webView = getWebView();
         final WebEngine webEngine = webView.getEngine();
@@ -125,10 +123,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             jsobj.setMember("acrolinxStorage", storage);
         }
         final PluginSupportedParameters supported = this.integration.getInitParameters().getSupported();
-        if ((supported != null) && supported.isCheckSelection()) {
-            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithCheckSelectionSupport(integration, webView);
+        if ((supported != null) && (supported.isCheckSelection() || supported.isBatchChecking())) {
+            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithOptions(integration, webView);
         } else {
-            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutCheckSelectionSupport(integration, webView);
+            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutOptions(integration, webView);
         }
     }
 
@@ -158,10 +156,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     @Override
     public void checkGlobal()
     {
-        if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithCheckSelectionSupport) {
-            ((AcrolinxSidebarPluginWithCheckSelectionSupport) acrolinxSidebarPlugin).requestGlobalCheck(null);
-        } else if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithoutCheckSelectionSupport) {
-            ((AcrolinxSidebarPluginWithoutCheckSelectionSupport) acrolinxSidebarPlugin).requestGlobalCheck();
+        if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithOptions) {
+            ((AcrolinxSidebarPluginWithOptions) acrolinxSidebarPlugin).requestGlobalCheck(null);
+        } else if (acrolinxSidebarPlugin instanceof AcrolinxSidebarPluginWithoutOptions) {
+            ((AcrolinxSidebarPluginWithoutOptions) acrolinxSidebarPlugin).requestGlobalCheck();
         }
     }
 
@@ -230,4 +228,18 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     {
         acrolinxSidebarPlugin.showSidebarMessage(sidebarMessage);
     }
+
+    @Override
+    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).initBatchCheck(batchCheckRequestOptions);
+    }
+
+    @Override
+    public void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options)
+    {
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).checkDocumentInBackground(documentIdentifier, documentContent,
+                options);
+    }
+
 }

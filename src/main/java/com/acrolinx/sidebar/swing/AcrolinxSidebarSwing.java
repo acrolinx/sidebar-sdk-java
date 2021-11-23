@@ -25,8 +25,11 @@ import com.acrolinx.sidebar.jfx.AcrolinxSidebarJFX;
 import com.acrolinx.sidebar.jfx.JFXUtils;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
+import com.acrolinx.sidebar.utils.AcrolinxException;
 import com.acrolinx.sidebar.utils.LogMessages;
 
 /**
@@ -38,12 +41,12 @@ import com.acrolinx.sidebar.utils.LogMessages;
 public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 {
     private static final long serialVersionUID = 3813416489627785478L;
-    private transient AcrolinxSidebarJFX sidebarJFX;
-    private transient final AcrolinxStorage storage;
+    protected transient AcrolinxSidebarJFX sidebarJFX;
+    protected transient final AcrolinxStorage storage;
 
-    private transient final AcrolinxIntegration integration;
+    protected transient final AcrolinxIntegration integration;
 
-    private transient final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
+    protected transient final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
 
     public AcrolinxSidebarSwing(final AcrolinxIntegration integration)
     {
@@ -74,7 +77,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
     }
 
-    private void createScene()
+    protected void createScene()
     {
         sidebarJFX = new AcrolinxSidebarJFX(integration, storage);
         final WebView webview = sidebarJFX.getWebView();
@@ -118,61 +121,99 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void configure(final SidebarConfiguration configuration)
     {
-        sidebarJFX.configure(configuration);
+        if (sidebarJFX != null) {
+            sidebarJFX.configure(configuration);
+        }
     }
 
     @Override
     public void checkGlobal()
     {
-        sidebarJFX.checkGlobal();
+        if (sidebarJFX != null) {
+            sidebarJFX.checkGlobal();
+        }
     }
 
     @Override
     public void onGlobalCheckRejected()
     {
-        sidebarJFX.onGlobalCheckRejected();
+        if (sidebarJFX != null) {
+            sidebarJFX.onGlobalCheckRejected();
+        }
     }
 
     @Override
     public void invalidateRanges(final List<CheckedDocumentPart> invalidCheckedDocumentRanges)
     {
-        sidebarJFX.invalidateRanges(invalidCheckedDocumentRanges);
+        if (sidebarJFX != null) {
+            sidebarJFX.invalidateRanges(invalidCheckedDocumentRanges);
+        }
     }
 
     @Override
     public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches)
     {
-        sidebarJFX.invalidateRangesForMatches(matches);
+        if (sidebarJFX != null) {
+            sidebarJFX.invalidateRangesForMatches(matches);
+        }
     }
 
     @Override
     public void loadSidebarFromServerLocation(final String serverAddress)
     {
-        sidebarJFX.loadSidebarFromServerLocation(serverAddress);
+        if (sidebarJFX != null) {
+            sidebarJFX.loadSidebarFromServerLocation(serverAddress);
+        }
     }
 
     @Override
     public void reload()
     {
-        sidebarJFX.reload();
+        if (sidebarJFX != null) {
+            sidebarJFX.reload();
+        }
     }
 
     @Override
     public String getLastCheckedDocumentReference()
     {
-        return sidebarJFX.getLastCheckedDocumentReference();
+        if (sidebarJFX != null) {
+            return sidebarJFX.getLastCheckedDocumentReference();
+        }
+        return "";
     }
 
     @Override
     public String getLastCheckedDocument()
     {
-        return sidebarJFX.getLastCheckedDocument();
+        if (sidebarJFX != null) {
+            return sidebarJFX.getLastCheckedDocument();
+        }
+        return "";
     }
 
     @Override
     public void showMessage(SidebarMessage sidebarMessage)
     {
-        sidebarJFX.showMessage(sidebarMessage);
+        if (sidebarJFX != null) {
+            sidebarJFX.showMessage(sidebarMessage);
+        }
+    }
+
+    @Override
+    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        if (sidebarJFX != null) {
+            sidebarJFX.initBatchCheck(batchCheckRequestOptions);
+        }
+    }
+
+    @Override
+    public void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options)
+    {
+        if (sidebarJFX != null) {
+            sidebarJFX.checkDocumentInBackground(documentIdentifier, documentContent, options);
+        }
     }
 
     public AcrolinxSidebarJFX getSidebarJFX()

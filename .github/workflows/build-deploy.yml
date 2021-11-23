@@ -1,0 +1,71 @@
+name: Build and Deploy
+on:
+  push:
+    branches: [ master, DITA_POC ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    - cron: "0 2 * * *" # Everyday at 2:00AM
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Trigger Comment (Optional)"
+        required: false
+        default: "Manual Workflow Run"
+
+jobs:
+  Build-And-Deploy:
+    runs-on: ubuntu-latest
+    env:
+      ACROLINX_URL: ${{ secrets.ACROLINX_URL }}
+      ACROLINX_API_USERNAME: ${{ secrets.ACROLINX_API_USERNAME }}
+      ACROLINX_API_TOKEN: ${{ secrets.ACROLINX_API_TOKEN }}
+      ACROLINX_API_SSO_TOKEN: ${{ secrets.ACROLINX_API_SSO_TOKEN }}
+      ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
+      ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
+      SONATYPE_PW: ${{ secrets.SONATYPE_PW }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # Using Java 8 from Eclipse Foundation
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '8'
+          java-package: 'jdk+fx'
+
+      # Build an Test Gradle Project
+      - name: Build Gradle Project
+        run: ./gradlew build
+
+      # Generate Docs
+      - name: Create Java Doc
+        run: ./gradlew javadoc
+
+      # Deploy artifacts to sonatype and maven central
+      - name: Deploy artifacts
+        id: deploy
+        run: |
+          chmod +x ./deploy.sh
+          ./deploy.sh
+      # Push new tag
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.36.0
+        if: steps.deploy.outputs.RELEASE == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUSTOM_TAG: ${{ steps.deploy.outputs.TAGNAME }}
+
+      # Deploy Java Doc
+      - name: Deploy Java Doc
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        if: steps.deploy.outputs.RELEASE == 'true'
+        with:
+          branch: gh-pages
+          folder: "build/docs/javadoc/"
+          

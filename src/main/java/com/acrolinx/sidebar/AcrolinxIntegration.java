@@ -2,11 +2,14 @@
 
 package com.acrolinx.sidebar;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.CheckResult;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 
 /**
  * This interface needs be implemented to integrate Acrolinx with an editor or editing environment.
@@ -49,5 +52,37 @@ public interface AcrolinxIntegration
      * @param initResult
      */
     void onInitFinished(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<SidebarError> initResult);
+
+    /**
+     * Opens the given document in editor and notifies the sidebar that the document has been
+     * opened.
+     *
+     * @param documentIdentifier
+     */
+    boolean openDocumentInEditor(String documentIdentifier);
+
+    /**
+     * Extracts all the references that should be listed for background check
+     *
+     * @return List<BatchCheckRequestOptions>
+     */
+    List<BatchCheckRequestOptions> extractReferences();
+
+    /**
+     * Called together with getContentForDocument before running the background check on the given
+     * document.
+     *
+     * @param documentIdentifier
+     * @return CheckOptions
+     */
+    CheckOptions getCheckOptionsForDocument(String documentIdentifier);
+
+    /**
+     * Gets the content for a requested background check
+     *
+     * @param documentIdentifier
+     * @return String
+     */
+    String getContentForDocument(String documentIdentifier);
 
 }

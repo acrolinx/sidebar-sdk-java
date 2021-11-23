@@ -19,7 +19,7 @@ getProperty()
 }
 
 
-PROJECT_VERSION=$(getProperty "currentVersion")
+PROJECT_VERSION=$(getProperty "CURRENT_VERSION")
 echo "Current Version: $PROJECT_VERSION"
 
 if [[ "$PROJECT_VERSION" == *"SNAPSHOT"* ]]; then
@@ -32,18 +32,18 @@ if [[ "$PROJECT_VERSION" == *"SNAPSHOT"* ]]; then
     fi
 else
     echo "Publishing release version to staging repo..."
-    if ./gradlew publishToSonatype -Psigning.keyId="$keyId" -Psigning.password="$password" -Psigning.secretKeyRingFile="./secring.gpg"; then
+    if ./gradlew publishToSonatype; then
         echo "Done with publish step."
         echo "Starting close and release step"
         if ./gradlew closeAndReleaseRepository; then
             echo "Done with release step."
             echo "Trying to create Github Release Tag"
-            export GRGIT_USER=$GITHUB_API_TOKEN
-             if ./gradlew createGithubReleaseTag; then
-              echo "Done with tagging as release version on Github."
+            if ./gradlew createGithubReleaseTag; then
+              echo "::set-output name=TAGNAME::release-$PROJECT_VERSION"
+              echo "::set-output name=RELEASE::true"
               exit 0
             else
-              echo "Could not create Github Release Tag. Please do manually."
+              echo "Can't create Github Release Tag. Please do manually."
               exit 1
             fi
         else

@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.InputAdapterInterface;
+import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.*;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
@@ -78,7 +79,7 @@ abstract class AcrolinxSidebarPlugin
         return checkedDocumentParts.stream().map(CheckedDocumentPart::getAsJS).collect(Collectors.joining(", "));
     }
 
-    private JSObject getWindowObject()
+    protected JSObject getWindowObject()
     {
         logger.info("Get window object from webview...");
         JSObject jsobj = (JSObject) webView.getEngine().executeScript("window");
@@ -144,7 +145,7 @@ abstract class AcrolinxSidebarPlugin
         currentlyCheckedDocument.set(checkContent.getContent());
         JFXUtils.invokeInJFXThread(() -> {
             try {
-                logger.debug(checkOptions.toString());
+                logger.info(checkOptions.toString());
                 final String nameVariableCheckText = "checkText";
                 final JSObject jsObject = getWindowObject();
                 jsObject.setMember(nameVariableCheckText, checkContent.getContent());
@@ -288,6 +289,64 @@ abstract class AcrolinxSidebarPlugin
     public void configure(final AcrolinxPluginConfiguration configuration)
     {
         // Not used ...
+    }
+
+    public synchronized void requestBackgroundCheckForDocument(String documentIdentifier)
+    {
+        logger.debug("requestBackgroundCheckForRef is called.");
+        final String contentToCheck = ((AcrolinxIntegration) client).getContentForDocument(documentIdentifier);
+        CheckOptions referenceCheckOptions = ((AcrolinxIntegration) client).getCheckOptionsForDocument(
+                documentIdentifier);
+        this.checkDocumentInBackground(documentIdentifier, contentToCheck, referenceCheckOptions);
+    }
+
+    public synchronized void openDocumentInEditor(String documentIdentifier)
+    {
+        logger.debug("openDocumentInEditor is called...");
+        Boolean referenceIsOpen = ((AcrolinxIntegration) client).openDocumentInEditor(documentIdentifier);
+        if (!referenceIsOpen) {
+            logger.debug("openDocumentInEditor failed.");
+        }
+    }
+
+    public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        final String js = buildStringOfCheckedRequestOptions(batchCheckRequestOptions);
+        logger.info("initBatchCheck...");
+        JFXUtils.invokeInJFXThread(() -> {
+            try {
+                getWindowObject().eval("acrolinxSidebar.initBatchCheck([" + js + "])");
+            } catch (final Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
+    }
+
+    public synchronized void checkDocumentInBackground(final String documentIdentifier, final String documentContent,
+            final CheckOptions options)
+    {
+        logger.debug("checkDocumentInBackground is called.");
+        JFXUtils.invokeInJFXThread(() -> {
+            try {
+                final String nameVariableReference = "documentIdentifier";
+                final String nameVariableContent = "documentContent";
+                final JSObject jsObject = getWindowObject();
+                jsObject.setMember(nameVariableReference, documentIdentifier);
+                jsObject.setMember(nameVariableContent, documentContent);
+                jsObject.eval("acrolinxSidebar.checkDocumentInBackground(documentIdentifier, documentContent, "
+                        + options.toString() + ");");
+            } catch (final Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
+
+    }
+
+    private static String buildStringOfCheckedRequestOptions(
+            final List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(
+                Collectors.joining(", "));
     }
 
 }

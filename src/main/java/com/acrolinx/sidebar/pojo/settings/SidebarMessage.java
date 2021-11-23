@@ -1,3 +1,4 @@
+/* Copyright (c) 2021-present Acrolinx GmbH */
 
 package com.acrolinx.sidebar.pojo.settings;
 

@@ -41,6 +41,27 @@ public class ExternalContent
         return ditaReferences;
     }
 
+    public String getContentForReference(String reference)
+    {
+        String contentForReference = "";
+        for (ExternalContentField externalContentField : ditaReferences) {
+            if (externalContentField.getId().equals(reference)) {
+                contentForReference = externalContentField.getContent();
+            }
+        }
+        return contentForReference;
+    }
+
+    public void updateContentForReference(String reference, String newContent)
+    {
+        System.out.println("This is the external content from updateContentForReference: " + ditaReferences.toString());
+        for (ExternalContentField externalContentField : ditaReferences) {
+            if (externalContentField.getId().equals(reference)) {
+                externalContentField.setContent(newContent);
+            }
+        }
+    }
+
     @Override
     public String toString()
     {

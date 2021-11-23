@@ -9,9 +9,9 @@ import com.google.gson.Gson;
 public class ExternalContentField
 {
     private final String id;
-    private final String content;
+    private String content;
 
-    ExternalContentField(String id, String content)
+    public ExternalContentField(String id, String content)
     {
         this.id = id;
         this.content = content;
@@ -31,5 +31,10 @@ public class ExternalContentField
     public String toString()
     {
         return new Gson().toJson(this);
+    }
+
+    public void setContent(String content)
+    {
+        this.content = content;
     }
 }
