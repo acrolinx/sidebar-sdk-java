@@ -28,6 +28,7 @@ jobs:
       ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.SONATYPE_PW }}
       ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.SONATYPE_USERNAME }}
       ORG_GRADLE_PROJECT_SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -71,7 +72,6 @@ jobs:
         uses: anothrNick/github-tag-action@1.36.0
         if: steps.deploy.outputs.RELEASE == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CUSTOM_TAG: ${{ steps.deploy.outputs.TAGNAME }}
 
       # Deploy Java Doc
