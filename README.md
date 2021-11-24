@@ -1,6 +1,7 @@
 # Acrolinx Sidebar Java SDK
 
-[![Build Status `master`](https://travis-ci.org/acrolinx/sidebar-sdk-java.svg?branch=master)](https://travis-ci.org/acrolinx/sidebar-sdk-java)
+[![Maven Central](https://img.shields.io/maven-central/v/com.acrolinx.client/sidebar-sdk)](https://search.maven.org/artifact/com.acrolinx.client/sidebar-sdk)
+![Build Status](https://github.com/acrolinx/sidebar-sdk-java/actions/workflows/build-deploy.yml/badge.svg)
 
 This is a library for integrating the [Acrolinx](https://www.acrolinx.com/) Sidebar
 into different Java UI framework-based applications (JFX, Swing, and SWT).
@@ -81,6 +82,11 @@ Note that, if you are using Java version 11 or later you will need to provide th
 
 5. Provides an `AcrolinxStorage` that can be used to persist Sidebar settings in the data store of the host editors.
    If not set, the SDK will default to the browsers LocalStorage.
+   
+6. Provides `MultiSidebar` usage that can be used to create and manage multiple sidebars. Every document can get its own sidebar.
+   Helping preserve Acrolinx results switching between documents.
+   
+7. Provides Batch Checking functionality to check a multiple documents with a single click. 
 
 ## SDK Architecture
 
