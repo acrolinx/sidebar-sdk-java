@@ -297,7 +297,7 @@ nexusPublishing {
 
 
 signing {
-	required { isReleaseBuild }
+	// required { isReleaseBuild }
 	def signingKey = findProperty("signingKey")
 	def signingPassword = findProperty("signingPassword")
 	useInMemoryPgpKeys(signingKey, signingPassword)
