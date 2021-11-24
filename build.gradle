@@ -79,6 +79,8 @@ def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
 
 def isMasterBranch = false
 
+def suppressionUrl = "https://raw.githubusercontent.com/acrolinx/sidebar-sdk-java/master/supressions.xml"
+
 dependencyCheck {
 	cveValidForHours = 1
 	format = 'HTML'
@@ -400,7 +402,9 @@ task checkLicenseHeaders {
 }
 
 dependencyCheck {
-	suppressionFile="https://raw.githubusercontent.com/acrolinx/sidebar-sdk-java/DITA_POC/supressions.xml"
+	println("Supression URL: " + suppressionUrl);
+	println("If dependency check fails verify supression URL is correct");
+	suppressionFile=suppressionUrl
 }
 
 //npm_install.dependsOn npm_cache_clean
