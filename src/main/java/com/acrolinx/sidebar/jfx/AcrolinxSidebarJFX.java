@@ -236,9 +236,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options)
+    public void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options)
     {
-        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).checkDocumentInBackground(documentIdentifier, documentContent,
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).checkDocumentInBatch(documentIdentifier, documentContent,
                 options);
     }
 

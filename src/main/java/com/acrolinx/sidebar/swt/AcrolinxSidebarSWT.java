@@ -653,10 +653,10 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     }
 
     @Override
-    public void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options)
+    public void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options)
     {
         // The document identifier should be a escaped string, otherwise it may break JS object.
-        browser.execute("window.acrolinxSidebar.requestBackgroundCheckForDocument(\"" + documentIdentifier + "\");");
+        browser.execute("window.acrolinxSidebar.requestCheckForDocumentInBatch(\"" + documentIdentifier + "\");");
     }
 
     public static String buildStringOfBatchCheckRequestOptions(

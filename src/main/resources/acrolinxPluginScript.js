@@ -64,10 +64,10 @@ window.acrolinxPlugin =
         }
     }
   },
-  requestBackgroundCheckForDocument: function(documentIdentifier){
+  requestCheckForDocumentInBatch: function(documentIdentifier){
      var content = getContentForDocumentP(documentIdentifier);
      var checkOptions = JSON.parse(getCheckOptionsForDocumentP(documentIdentifier));
-     acrolinxSidebar.checkDocumentInBackground(documentIdentifier, content, checkOptions);
+     acrolinxSidebar.checkDocumentInBatch(documentIdentifier, content, checkOptions);
 
   },
   openDocumentInEditor: function(documentIdentifier){

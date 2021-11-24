@@ -291,13 +291,13 @@ abstract class AcrolinxSidebarPlugin
         // Not used ...
     }
 
-    public synchronized void requestBackgroundCheckForDocument(String documentIdentifier)
+    public synchronized void requestCheckForDocumentInBatch(String documentIdentifier)
     {
-        logger.debug("requestBackgroundCheckForRef is called.");
+        logger.debug("requestCheckForDocumentInBatch is called.");
         final String contentToCheck = ((AcrolinxIntegration) client).getContentForDocument(documentIdentifier);
         CheckOptions referenceCheckOptions = ((AcrolinxIntegration) client).getCheckOptionsForDocument(
                 documentIdentifier);
-        this.checkDocumentInBackground(documentIdentifier, contentToCheck, referenceCheckOptions);
+        this.checkDocumentInBatch(documentIdentifier, contentToCheck, referenceCheckOptions);
     }
 
     public synchronized void openDocumentInEditor(String documentIdentifier)
@@ -322,10 +322,10 @@ abstract class AcrolinxSidebarPlugin
         });
     }
 
-    public synchronized void checkDocumentInBackground(final String documentIdentifier, final String documentContent,
+    public synchronized void checkDocumentInBatch(final String documentIdentifier, final String documentContent,
             final CheckOptions options)
     {
-        logger.debug("checkDocumentInBackground is called.");
+        logger.debug("checkDocumentInBatch is called.");
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 final String nameVariableReference = "documentIdentifier";
@@ -333,7 +333,7 @@ abstract class AcrolinxSidebarPlugin
                 final JSObject jsObject = getWindowObject();
                 jsObject.setMember(nameVariableReference, documentIdentifier);
                 jsObject.setMember(nameVariableContent, documentContent);
-                jsObject.eval("acrolinxSidebar.checkDocumentInBackground(documentIdentifier, documentContent, "
+                jsObject.eval("acrolinxSidebar.checkDocumentInBatch(documentIdentifier, documentContent, "
                         + options.toString() + ");");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);

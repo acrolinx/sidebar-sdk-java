@@ -209,10 +209,10 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     }
 
     @Override
-    public void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options)
+    public void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options)
     {
         if (sidebarJFX != null) {
-            sidebarJFX.checkDocumentInBackground(documentIdentifier, documentContent, options);
+            sidebarJFX.checkDocumentInBatch(documentIdentifier, documentContent, options);
         }
     }
 

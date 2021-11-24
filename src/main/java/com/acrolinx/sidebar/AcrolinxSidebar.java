@@ -100,6 +100,6 @@ public interface AcrolinxSidebar
      * @param options
      */
 
-    void checkDocumentInBackground(String documentIdentifier, String documentContent, CheckOptions options);
+    void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options);
 
 }
