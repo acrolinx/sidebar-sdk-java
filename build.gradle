@@ -23,7 +23,10 @@ plugins {
 	id 'com.github.ben-manes.versions' version '0.39.0'
 
 	id "com.moowork.node" version "1.3.1"
-	id "com.diffplug.swt.nativedeps" version "3.33.1"
+
+	// Latest diffplug seems broken. Probably will never be fixed
+	// https://github.com/diffplug/spotless/issues/873#issuecomment-855351681
+	id "com.diffplug.swt.nativedeps" version "3.26.1"
 	id "org.owasp.dependencycheck" version "6.5.0.1"
 
 	id 'com.github.hierynomus.license' version '0.15.0'
@@ -40,7 +43,7 @@ sonarqube {
 		property "sonar.organization", "acrolinx"
 		property "sonar.projectKey", "acrolinx_sidebar-sdk-java"
 		property "sonar.exclusions", "src/test/**/*.java"
-		property "sonar.login", sonarToken
+		property "sonar.host.url", "https://sonarcloud.io"
 	}
 }
 

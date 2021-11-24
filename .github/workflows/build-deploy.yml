@@ -27,7 +27,7 @@ jobs:
       ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
       ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.SONATYPE_PW }}
       ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.SONATYPE_USERNAME }}
-      ORG_GRADLE_PROJECT_sonarToken: ${{ secrets.SONARCLOUD_TOKEN }}
+      ORG_GRADLE_PROJECT_SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -45,7 +45,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: '8'
+          java-version: '11'
           java-package: 'jdk+fx'
 
       # Build an Test Gradle Project
