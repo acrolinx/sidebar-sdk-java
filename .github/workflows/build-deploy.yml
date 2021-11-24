@@ -39,20 +39,6 @@ jobs:
       - name: Keep Action Alive
         uses: gautamkrishnar/keepalive-workflow@545bece52b22933e4228319348e34d61736514e1
 
-      # Sonar Cloud Scan
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v1.6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
-        with:
-          args: >
-            -Dsonar.organization=acrolinx-gl
-            -Dsonar.projectKey=acrolinx_sidebar-sdk-java
-            -Dsonar.sources=src/
-            -Dsonar.test.exclusions=tests/**
-            -Dsonar.tests=tests/
-
       # Using Java 8 from Eclipse Foundation
       - name: Setup Java
         uses: actions/setup-java@v2
