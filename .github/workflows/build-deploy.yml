@@ -27,6 +27,7 @@ jobs:
       ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
       ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.SONATYPE_PW }}
       ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.SONATYPE_USERNAME }}
+      ORG_GRADLE_PROJECT_sonarToken: ${{ secrets.SONARCLOUD_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
