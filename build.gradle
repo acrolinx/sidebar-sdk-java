@@ -72,7 +72,7 @@ repositories {
 	}
 }
 
-def buildNumber = System.getenv('TRAVIS_BUILD_NUMBER');
+def buildNumber = System.getenv('BUILD_NUMBER');
 
 def buildVersion = buildNumber != null ? buildNumber : 123
 
