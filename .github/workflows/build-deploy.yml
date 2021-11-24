@@ -21,7 +21,7 @@ jobs:
       ACROLINX_API_USERNAME: ${{ secrets.ACROLINX_API_USERNAME }}
       ACROLINX_API_TOKEN: ${{ secrets.ACROLINX_API_TOKEN }}
       ACROLINX_API_SSO_TOKEN: ${{ secrets.ACROLINX_API_SSO_TOKEN }}
-      ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
+      ORG_GRADLE_PROJECT_signingPassword: "Invalid"
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
       ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
       ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
