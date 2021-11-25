@@ -3,7 +3,6 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.acrolinx.client/sidebar-sdk)](https://search.maven.org/artifact/com.acrolinx.client/sidebar-sdk)
 ![Build Status](https://github.com/acrolinx/sidebar-sdk-java/actions/workflows/build-deploy.yml/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=acrolinx_sidebar-sdk-java&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=acrolinx_sidebar-sdk-java)
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=acrolinx_sidebar-sdk-java)
 
 This is a library for integrating the [Acrolinx](https://www.acrolinx.com/) Sidebar
 into different Java UI framework-based applications (JFX, Swing, and SWT).
