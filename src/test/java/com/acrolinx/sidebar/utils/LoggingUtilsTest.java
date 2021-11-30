@@ -98,11 +98,11 @@ public class LoggingUtilsTest
     }
 
     @Test
-    public void getLogFileWhenNoLoggingIsConfiguredReturnsNull() throws Exception
+    public void getLogFileWhenNoLoggingIsConfiguredReturnsEmpty() throws Exception
     {
         LoggingUtils.resetLoggingContext();
         final String logFileLocation = LoggingUtils.getLogFileLocation();
-        assertTrue(logFileLocation == null);
+        assertTrue(logFileLocation == "");
     }
 
 }

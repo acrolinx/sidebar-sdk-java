@@ -100,7 +100,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
         this.storage = storage;
         this.client = client;
-        this.browser = new Browser(parent, SWT.NONE);
+        this.browser = new Browser(parent, SWT.DEFAULT);
         initBrowser();
     }
 
@@ -113,7 +113,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
         this.storage = storage;
         this.client = client;
-        this.browser = new Browser(parent, SWT.NONE);
+        this.browser = new Browser(parent, SWT.DEFAULT);
         initBrowser();
     }
 

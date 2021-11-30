@@ -1,4 +1,5 @@
 import org.gradle.internal.jvm.Jvm
+import org.gradle.internal.os.OperatingSystem
 
 import java.time.Duration
 
@@ -23,10 +24,6 @@ plugins {
 	id 'com.github.ben-manes.versions' version '0.39.0'
 
 	id "com.moowork.node" version "1.3.1"
-
-	// Latest diffplug seems broken. Probably will never be fixed
-	// https://github.com/diffplug/spotless/issues/873#issuecomment-855351681
-	id "com.diffplug.swt.nativedeps" version "3.26.1"
 	id "org.owasp.dependencycheck" version "6.5.0.1"
 
 	id 'com.github.hierynomus.license' version '0.15.0'
@@ -84,6 +81,18 @@ def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
 def isMasterBranch = false
 
 def suppressionUrl = "https://raw.githubusercontent.com/acrolinx/sidebar-sdk-java/master/supressions.xml"
+
+switch ( OperatingSystem.current() ) {
+	case OperatingSystem.WINDOWS:
+		project.ext.swtNatives = "org.eclipse.swt.win32.win32.x86_64"
+		break
+	case OperatingSystem.LINUX:
+		project.ext.swtNatives = "org.eclipse.swt.gtk.linux.x86_64"
+		break
+	case OperatingSystem.MAC_OS:
+		project.ext.swtNatives = "org.eclipse.swt.cocoa.macosx.x86_64"
+		break
+}
 
 dependencyCheck {
 	cveValidForHours = 1
@@ -301,7 +310,7 @@ nexusPublishing {
 
 
 signing {
-	// required { isReleaseBuild }
+	required { isReleaseBuild }
 	def signingKey = findProperty("signingKey")
 	def signingPassword = findProperty("signingPassword")
 	useInMemoryPgpKeys(signingKey, signingPassword)
@@ -362,18 +371,20 @@ if (Integer.parseInt(Jvm.current().getJavaVersion().getMajorVersion()) >= 11) {
 
 dependencies {
 	// overwrite vulnerability in transitive dependencies...
-	compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.8'
-	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
-	compile group: 'org.bitbucket.cowwoc', name: 'diff-match-patch', version: '1.2'
-	compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.6'
-	compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.6'
-	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
-	compile group: 'commons-validator', name: 'commons-validator', version: '1.7'
-	compile group: 'commons-io', name: 'commons-io', version: '2.11.0'
-	compile group: 'org.jsoup', name: 'jsoup', version: '1.14.3'
-	compile 'com.google.guava:guava:31.0.1-jre'
+	implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+	implementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
+	implementation group: 'org.bitbucket.cowwoc', name: 'diff-match-patch', version: '1.2'
+	implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.6'
+	implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.6'
+	implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
+	implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
+	implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+	implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.3'
+	implementation 'com.google.guava:guava:31.0.1-jre'
+	implementation "org.eclipse.platform:$swtNatives:$SWT_VERSION"
 	testCompile group: 'junit', name: 'junit', version: '4.+'
+
 }
 
 // Vunerability fix for transitive library common-beanutils
@@ -383,6 +394,25 @@ configurations.all {
 				&& details.requested.name == "commons-beanutils"
 				&& details.requested.version == "1.9.2") {
 			details.useTarget("commons-beanutils:commons-beanutils:1.9.4")
+		}
+	}
+}
+
+configurations.all {
+	resolutionStrategy {
+		dependencySubstitution {
+			// The maven property ${osgi.platform} is not handled by Gradle
+			// so we replace the dependency, using the osgi platform from the project settings
+			def os = System.getProperty("os.name").toLowerCase()
+			if (os.contains("windows")) {
+				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') with module("org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:3.117.0")
+			}
+			else if (os.contains("linux")) {
+				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') with module("org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:3.117.0")
+			}
+			else if (os.contains("mac")) {
+				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') with module("org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:3.117.0")
+			}
 		}
 	}
 }

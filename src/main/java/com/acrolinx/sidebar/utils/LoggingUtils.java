@@ -94,7 +94,7 @@ public class LoggingUtils
      */
     public static String getLogFileLocation()
     {
-        String logFileLocation = null;
+        String logFileLocation = "";
         File clientLogFile;
         FileAppender<?> fileAppender = null;
         if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
@@ -119,6 +119,8 @@ public class LoggingUtils
         if (clientLogFile != null) {
             logFileLocation = clientLogFile.getPath();
         }
+
+        logFileLocation = logFileLocation.replace("\\", "/");
 
         return logFileLocation;
     }
