@@ -1,9 +1,9 @@
 name: Build and Deploy
 on:
   push:
-    branches: [ master, DITA_POC ]
+    branches: [ main, DITA_POC ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   schedule:
     - cron: "0 2 * * *" # Everyday at 2:00AM
   workflow_dispatch:
