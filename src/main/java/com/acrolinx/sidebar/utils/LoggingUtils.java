@@ -117,10 +117,8 @@ public class LoggingUtils
         }
 
         if (clientLogFile != null) {
-            logFileLocation = clientLogFile.getPath();
+            logFileLocation = clientLogFile.toURI().toString();
         }
-
-        logFileLocation = logFileLocation.replace("\\", "/");
 
         return logFileLocation;
     }

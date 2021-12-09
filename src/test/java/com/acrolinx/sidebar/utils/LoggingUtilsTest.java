@@ -4,6 +4,7 @@ package com.acrolinx.sidebar.utils;
 
 import static org.junit.Assert.assertTrue;
 
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -24,11 +25,12 @@ public class LoggingUtilsTest
     public void setupLogging() throws Exception
     {
         LoggingUtils.setupLogging("TEST");
-        final String logFileLocation = LoggingUtils.getLogFileLocation();
+        String logFileLocation = LoggingUtils.getLogFileLocation();
         Assert.assertTrue(logFileLocation != null);
         Assert.assertTrue(logFileLocation.contains("TEST"));
         ((LoggerContext) LoggerFactory.getILoggerFactory()).stop();
-        Files.deleteIfExists(Paths.get(logFileLocation));
+        logFileLocation = logFileLocation.substring(logFileLocation.indexOf("file") + 6); //remove file:/ from the URI
+        Files.deleteIfExists(Paths.get((new URI(logFileLocation)).getPath()));
     }
 
     @Test
@@ -42,9 +44,10 @@ public class LoggingUtilsTest
         assertTrue(level.toString().equalsIgnoreCase("INFO"));
         logger.debug("debug test");
         logger.warn("warning test");
-        final String logFileLocation = LoggingUtils.getLogFileLocation();
+        String logFileLocation = LoggingUtils.getLogFileLocation();
         Assert.assertTrue(logFileLocation != null);
-        final List<String> strings = Files.readAllLines(Paths.get(logFileLocation), Charsets.UTF_8);
+        logFileLocation = logFileLocation.substring(logFileLocation.indexOf("file") + 6); //remove file:/ from the URI
+        final List<String> strings = Files.readAllLines(Paths.get((new URI(logFileLocation)).getPath()), Charsets.UTF_8);
         strings.stream().forEach(string -> {
             assertTrue(string.contains("WARN"));
             assertTrue(string.contains("warning test"));
@@ -64,9 +67,10 @@ public class LoggingUtilsTest
         assertTrue(level.toString().equalsIgnoreCase("DEBUG"));
         final Logger logger = LoggerFactory.getLogger("LoggingUtilsTest");
         logger.debug("debug test1");
-        final String logFileLocation = LoggingUtils.getLogFileLocation();
+        String logFileLocation = LoggingUtils.getLogFileLocation();
         Assert.assertTrue(logFileLocation != null);
-        final List<String> strings = Files.readAllLines(Paths.get(logFileLocation), Charsets.UTF_8);
+        logFileLocation = logFileLocation.substring(logFileLocation.indexOf("file") + 6); //remove file:/ from the URI
+        final List<String> strings = Files.readAllLines(Paths.get((new URI(logFileLocation)).getPath()), Charsets.UTF_8);
         strings.stream().forEach(string -> {
             assertTrue(string.contains("DEBUG"));
             assertTrue(string.contains("debug test1"));
@@ -88,9 +92,10 @@ public class LoggingUtilsTest
                 Logger.ROOT_LOGGER_NAME);
         final Level level = root.getLevel();
         assertTrue(level.equals(Level.OFF));
-        final String logFileLocation = LoggingUtils.getLogFileLocation();
+        String logFileLocation = LoggingUtils.getLogFileLocation();
         Assert.assertTrue(logFileLocation != null);
-        final List<String> strings = Files.readAllLines(Paths.get(logFileLocation), Charsets.UTF_8);
+        logFileLocation = logFileLocation.substring(logFileLocation.indexOf("file") + 6); //remove file:/ from the URI
+        final List<String> strings = Files.readAllLines(Paths.get((new URI(logFileLocation)).getPath()), Charsets.UTF_8);
         strings.stream().forEach(string -> assertTrue("".equals(string)));
         ((LoggerContext) LoggerFactory.getILoggerFactory()).stop();
         Files.deleteIfExists(Paths.get(logFileLocation));
