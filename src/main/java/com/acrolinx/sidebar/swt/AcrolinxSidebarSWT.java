@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -392,10 +396,19 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     private Object openDocumentInEditor(Object argument)
     {
-        Boolean documentIsOpen = client.openDocumentInEditor(argument.toString());
-        if (!documentIsOpen) {
-            // TODO: Message to the sidebar ?
-        }
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        // DLS_DEAD_LOCAL_STORE suppressed in findbugs/excludeFilter.xml
+        Future<Boolean> future = executorService.submit(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception
+            {
+                Boolean documentIsOpen = client.openDocumentInEditor(argument.toString());
+                if (!documentIsOpen) {
+                    //ToDo: Send a message to the sidebar
+                }
+                return documentIsOpen;
+            }
+        });
         return null;
     }
 

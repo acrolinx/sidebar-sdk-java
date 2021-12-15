@@ -26,7 +26,6 @@ if(window.console && console.log){
       }
     }
     console.error = function(){
-      oldError.apply(this, arguments);
       var args = [].slice.apply(arguments);
       var msg = '';
       args.forEach(function(arg){
@@ -35,6 +34,7 @@ if(window.console && console.log){
       if(window.java) {
         java.error(msg);
       }
+      oldError.apply(this, arguments);
   }
 }
 

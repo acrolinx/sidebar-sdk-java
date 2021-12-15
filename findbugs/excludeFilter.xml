@@ -15,6 +15,11 @@
         <Package name="com.acrolinx.sidebar.utils"/>
         <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
     </Match>
+    <Match>
+        <Package name="com.acrolinx.sidebar.swt"/>
+        <Method name="openDocumentInEditor" />
+        <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+    </Match>
     <!-- All bugs in test classes, except for JUnit-specific bugs -->
     <Match>
         <Class name="~.*\.*Test" />
