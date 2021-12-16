@@ -311,11 +311,13 @@ abstract class AcrolinxSidebarPlugin
 
     public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions)
     {
-        final String js = buildStringOfCheckedRequestOptions(batchCheckRequestOptions);
+        final String js = batchCheckRequestOptions.toString();
         logger.info("initBatchCheck...");
         JFXUtils.invokeInJFXThread(() -> {
             try {
-                getWindowObject().eval("acrolinxSidebar.initBatchCheck([" + js + "])");
+                final JSObject windowObject = getWindowObject();
+                windowObject.setMember("batchCheckOptions", js);
+                windowObject.eval("acrolinxSidebar.initBatchCheck(batchCheckOptions)");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
             }
