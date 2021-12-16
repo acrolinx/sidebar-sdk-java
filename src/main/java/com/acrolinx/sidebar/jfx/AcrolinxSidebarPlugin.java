@@ -315,8 +315,7 @@ abstract class AcrolinxSidebarPlugin
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 final JSObject windowObject = getWindowObject();
-                windowObject.setMember("batchCheckOptions", batchCheckRequestOptions);
-                windowObject.eval("acrolinxSidebar.initBatchCheck(batchCheckOptions)");
+                windowObject.eval("acrolinxSidebar.initBatchCheck(" + batchCheckRequestOptions.toString() + ")");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
             }
