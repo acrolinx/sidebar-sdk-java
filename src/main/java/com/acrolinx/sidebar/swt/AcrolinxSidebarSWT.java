@@ -662,7 +662,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
     {
         String jsArgs = buildStringOfBatchCheckRequestOptions(batchCheckRequestOptions);
-        browser.execute("window.acrolinxSidebar.initBatchCheck([" + jsArgs + "]);");
+        browser.execute("window.acrolinxSidebar.initBatchCheck(" + batchCheckRequestOptions.toString() + ");");
     }
 
     @Override
