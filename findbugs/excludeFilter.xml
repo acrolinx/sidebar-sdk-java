@@ -20,6 +20,11 @@
         <Method name="openDocumentInEditor" />
         <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
     </Match>
+    <Match>
+        <Package name="com.acrolinx.sidebar.jfx"/>
+        <Method name="openDocumentInEditor" />
+        <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+    </Match>
     <!-- All bugs in test classes, except for JUnit-specific bugs -->
     <Match>
         <Class name="~.*\.*Test" />

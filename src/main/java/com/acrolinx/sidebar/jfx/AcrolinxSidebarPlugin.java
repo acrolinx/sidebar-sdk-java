@@ -14,7 +14,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -294,8 +294,8 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void requestCheckForDocumentInBatch(String documentIdentifier)
     {
         logger.debug("requestCheckForDocumentInBatch is called.");
-        final String contentToCheck = ((AcrolinxIntegration) client).getContentForDocument(documentIdentifier);
-        CheckOptions referenceCheckOptions = ((AcrolinxIntegration) client).getCheckOptionsForDocument(
+        final String contentToCheck = client.getContentForDocument(documentIdentifier);
+        CheckOptions referenceCheckOptions = client.getCheckOptionsForDocument(
                 documentIdentifier);
         this.checkDocumentInBatch(documentIdentifier, contentToCheck, referenceCheckOptions);
     }
@@ -303,10 +303,18 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void openDocumentInEditor(String documentIdentifier)
     {
         logger.debug("openDocumentInEditor is called...");
-        Boolean referenceIsOpen = ((AcrolinxIntegration) client).openDocumentInEditor(documentIdentifier);
-        if (!referenceIsOpen) {
-            logger.debug("openDocumentInEditor failed.");
-        }
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        Future<Boolean> future = executorService.submit(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception
+            {
+                Boolean documentIsOpen = client.openDocumentInEditor(documentIdentifier);
+                if (!documentIsOpen) {
+                    //ToDo: Send a message to the sidebar
+                }
+                return documentIsOpen;
+            }
+        });
     }
 
     public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions)
