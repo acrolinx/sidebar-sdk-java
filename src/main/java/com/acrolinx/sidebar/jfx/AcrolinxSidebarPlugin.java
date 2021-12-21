@@ -82,17 +82,22 @@ abstract class AcrolinxSidebarPlugin
     protected JSObject getWindowObject()
     {
         logger.info("Get window object from webview...");
-        JSObject jsobj = (JSObject) webView.getEngine().executeScript("window");
+        JSObject jsobj = null;
         int count = 0;
         while ((count < 6) && (jsobj == null)) {
             try {
-                logger.info("Window Object not present, retrying ...");
+                logger.info("Fetching Window object. Attempt: " + count);
+                count++;
                 TimeUnit.MILLISECONDS.sleep(500);
                 jsobj = (JSObject) webView.getEngine().executeScript("window");
-                count++;
             } catch (final InterruptedException e) {
-                Thread.currentThread().interrupt();
                 logger.error(e.getMessage(), e);
+                Thread.currentThread().interrupt();
+            } catch (final Exception e) {
+                // Window object might not be available in the first attempt and
+                // throws netscape.javascript.JSException: JavaScript execution terminated.
+                // The object becomes available on the next try
+                logger.warn("Window object not available. Trying again. Attempt: " + count);
             }
         }
         return jsobj;
