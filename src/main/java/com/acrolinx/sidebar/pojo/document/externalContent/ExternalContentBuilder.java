@@ -49,6 +49,18 @@ public class ExternalContentBuilder
     }
 
     /**
+     * External content which requires parsing.
+     *
+     * @param externalContentField
+     * @return
+     */
+    public ExternalContentBuilder addEntity(ExternalContentField externalContentField)
+    {
+        this.entities.add(externalContentField);
+        return this;
+    }
+
+    /**
      * Dita references like conref, keyref, conkeyref which represent a placeholder for external
      * content. Content will be parsed.
      *
@@ -62,6 +74,13 @@ public class ExternalContentBuilder
         return this;
     }
 
+    /**
+     * Dita references like conref, keyref, conkeyref which represent a placeholder for external
+     * content. Content will be parsed.
+     *
+     * @param externalContentField
+     * @return
+     */
     public ExternalContentBuilder addDitaReference(ExternalContentField externalContentField)
     {
         this.ditaReferences.add(externalContentField);
