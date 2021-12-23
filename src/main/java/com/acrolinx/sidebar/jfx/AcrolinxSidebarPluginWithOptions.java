@@ -6,6 +6,7 @@ package com.acrolinx.sidebar.jfx;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import javafx.scene.web.WebView;
 
@@ -39,8 +40,17 @@ public class AcrolinxSidebarPluginWithOptions extends AcrolinxSidebarPlugin
             }
         }
         if (batchCheck == true) {
-            List<BatchCheckRequestOptions> batchCheckRequestOptions = ((AcrolinxIntegration) client).extractReferences();
-            initBatchCheck(batchCheckRequestOptions);
+            final Future<Boolean> initBatchFuture = executorService.submit(() -> {
+                try {
+                    final List<BatchCheckRequestOptions> batchCheckRequestOptions = client.extractReferences();
+                    initBatchCheck(batchCheckRequestOptions);
+                    return true;
+                } catch (Exception e) {
+                    logger.error("Extracting references in Future Task failed", e.getMessage());
+                    return false;
+                }
+            });
+            logger.debug("Extracting references in Future task. Future task is running: " + !initBatchFuture.isDone());
         } else {
             final CheckContent checkContent = getCheckContentFromClient();
             logger.debug("Fetched check content including external content");

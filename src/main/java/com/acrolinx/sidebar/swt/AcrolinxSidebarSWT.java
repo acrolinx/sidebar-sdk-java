@@ -79,6 +79,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<Instant> checkStartTime = new AtomicReference<>();
     private GridData gridData;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(1);;
 
     public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration client)
     {
@@ -99,7 +100,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 "EditorAdapter client.getEditorAdapter should return null");
 
         LogMessages.logJavaVersionAndUIFramework(logger, "Java SWT");
-
         SecurityUtils.setUpEnvironment();
 
         this.storage = storage;
@@ -389,26 +389,33 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     private Object runBatchCheck()
     {
-        List<BatchCheckRequestOptions> references = client.extractReferences();
-        this.initBatchCheck(references);
+        Future<Boolean> initBatchCheckFuture = executorService.submit(() ->
+        {
+            try {
+                List<BatchCheckRequestOptions> references = client.extractReferences();
+                initBatchCheck(references);
+                return true;
+            } catch (Exception e) {
+                logger.error("Extracting references in Future Task failed", e.getMessage());
+                return false;
+            }
+        });
+
+        logger.debug("Extracting references in Future task. Future task is running: " + !initBatchCheckFuture.isDone());
         return null;
     }
 
     private Object openDocumentInEditor(Object argument)
     {
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
-        // DLS_DEAD_LOCAL_STORE suppressed in findbugs/excludeFilter.xml
-        Future<Boolean> future = executorService.submit(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception
-            {
-                Boolean documentIsOpen = client.openDocumentInEditor(argument.toString());
-                if (!documentIsOpen) {
-                    //ToDo: Send a message to the sidebar
-                }
-                return documentIsOpen;
+        Future<Boolean> openDocumentFuture = executorService.submit(() ->
+        {
+            Boolean documentIsOpen = client.openDocumentInEditor(argument.toString());
+            if (!documentIsOpen) {
+                // ToDo: Send a message to the sidebar
             }
+            return documentIsOpen;
         });
+        logger.debug("Opening Document in Future task. Future task is running: " + !openDocumentFuture.isDone());
         return null;
     }
 

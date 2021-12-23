@@ -56,6 +56,7 @@ abstract class AcrolinxSidebarPlugin
     private final AtomicReference<AcrolinxSidebarInitParameter> initParameters = new AtomicReference<>();
     protected Instant checkStartedTime;
     private WebView webView;
+    protected final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     protected AcrolinxSidebarPlugin(final AcrolinxIntegration client, final WebView webView)
     {
@@ -300,26 +301,22 @@ abstract class AcrolinxSidebarPlugin
     {
         logger.debug("requestCheckForDocumentInBatch is called.");
         final String contentToCheck = client.getContentForDocument(documentIdentifier);
-        CheckOptions referenceCheckOptions = client.getCheckOptionsForDocument(
-                documentIdentifier);
+        CheckOptions referenceCheckOptions = client.getCheckOptionsForDocument(documentIdentifier);
         this.checkDocumentInBatch(documentIdentifier, contentToCheck, referenceCheckOptions);
     }
 
     public synchronized void openDocumentInEditor(String documentIdentifier)
     {
         logger.debug("openDocumentInEditor is called...");
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
-        Future<Boolean> future = executorService.submit(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception
-            {
-                Boolean documentIsOpen = client.openDocumentInEditor(documentIdentifier);
-                if (!documentIsOpen) {
-                    //ToDo: Send a message to the sidebar
-                }
-                return documentIsOpen;
+        Future<Boolean> openDocumentFuture = executorService.submit(() ->
+        {
+            Boolean documentIsOpen = client.openDocumentInEditor(documentIdentifier);
+            if (!documentIsOpen) {
+                // ToDo: Send a message to the sidebar
             }
+            return documentIsOpen;
         });
+        logger.debug("Opening document in Future task. Future task is running: " + !openDocumentFuture.isDone());
     }
 
     public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions)
