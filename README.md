@@ -49,7 +49,7 @@ Before you start developing your own integration, you might benefit from looking
 
 ### Using the SDK
 
-Note that, if you are using Java version 11 or later you will need to provide the following modules JavaFX modules:
+Note that, if you’re using Java version 11 or later you’ll need to provide the following modules JavaFX modules:
 
 * "javafx.web"
 * "javafx.swing"
@@ -70,7 +70,7 @@ Note that, if you are using Java version 11 or later you will need to provide th
 1. Support for UI-frameworks:
     + JavaFX
     + Swing
-    + SWT
+    + SWT (For Windows WebView2 required for Sidebar version 15 or higher, other platforms will use default Browser)
 2. `LookupRangesDiff` - Provides [lookup](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-lookup.md)
   functionality.
 3. **Start page**: Provides an interactive way to sign in to Acrolinx with built-in error handling.
@@ -84,10 +84,10 @@ Note that, if you are using Java version 11 or later you will need to provide th
 5. Provides an `AcrolinxStorage` that can be used to persist Sidebar settings in the data store of the host editors.
    If not set, the SDK will default to the browsers LocalStorage.
    
-6. Provides `MultiSidebar` usage that can be used to create and manage multiple sidebars. Every document can get its own sidebar.
+6. Provides `MultiSidebar` usage that can be used to create and manage multiple Sidebars. Every document can get its own Sidebar.
    Helping preserve Acrolinx results switching between documents.
    
-7. Provides Batch Checking functionality to check a multiple documents with a single click. 
+7. Provides Batch Checking functionality to check multiple documents with a single click.
 
 ## SDK Architecture
 
