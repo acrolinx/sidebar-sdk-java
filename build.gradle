@@ -337,14 +337,12 @@ task createGithubReleaseTag {
 			println 'Finding tags'
 			if (!hasOldReleaseVersion) {
 				println 'is new release version'
-				grgit.tag.add(name: "release-${project.version}", message: "Releasing ${project.version}")
-				grgit.push(tags: true)
-				println 'Done releasing'
 			} else {
 				println 'This version was already released'
 			}
 		} else {
 			println 'NO RELEASE VERSION'
+			throw new GradleException('NO APPROPRIATE RELEASE VERSION')
 		}
 	}
 }
