@@ -82,5 +82,5 @@ jobs:
         if: steps.deploy.outputs.RELEASE == 'true'
         with:
           branch: gh-pages
-          folder: "docs/javadoc/"
+          folder: "docs/"
           

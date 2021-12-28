@@ -1,7 +1,7 @@
 name: Create Github Release
 
 on:
-  push:
+  create:
     tags:
       - "release-*.*.*"
 
