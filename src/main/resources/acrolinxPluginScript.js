@@ -55,20 +55,15 @@ window.acrolinxPlugin =
             acrolinxSidebar.onGlobalCheckRejected();
         } else {
             if (options && options.selection === true) {
-                acrolinxSidebar.checkGlobal(getTextP(),
-                        {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}, selection: JSON.parse(getCurrentSelectionRangesP())});
+               runCheckGlobalP("withCheckSelection")
             } else {
-                acrolinxSidebar.checkGlobal(getTextP(),
-                        {inputFormat: getInputFormatP(), externalContent: JSON.parse(getExternalContentP()), requestDescription: {documentReference: getDocUrlP()}});
+               runCheckGlobalP("withoutCheckSelection")
             }
         }
     }
   },
   requestCheckForDocumentInBatch: function(documentIdentifier){
-     var content = getContentForDocumentP(documentIdentifier);
-     var checkOptions = JSON.parse(getCheckOptionsForDocumentP(documentIdentifier));
-     acrolinxSidebar.checkDocumentInBatch(documentIdentifier, content, checkOptions);
-
+     requestCheckForDocumentInBatchP(documentIdentifier)
   },
   openDocumentInEditor: function(documentIdentifier){
      openDocumentInEditorP(documentIdentifier);

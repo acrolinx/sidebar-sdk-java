@@ -20,6 +20,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
@@ -225,15 +227,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "getTextP") {
-            @Override
-            public Object function(final Object[] arguments)
-            {
-                return getTextObject();
-            }
-
-        };
-
         new BrowserFunction(browser, "onInitFinishedNotificationP") {
             @Override
             public Object function(final Object[] arguments)
@@ -258,35 +251,19 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "getContentForDocumentP") {
+        new BrowserFunction(browser, "runCheckGlobalP") {
             @Override
             public Object function(final Object[] arguments)
             {
-                return getContentForDocument(arguments[0]);
+                return runCheckGlobal(arguments[0]);
             }
         };
 
-        new BrowserFunction(browser, "getCheckOptionsForDocumentP") {
+        new BrowserFunction(browser, "requestCheckForDocumentInBatchP") {
             @Override
             public Object function(final Object[] arguments)
             {
-                return getCheckOptionsForDocument(arguments[0]);
-            }
-        };
-
-        new BrowserFunction(browser, "getInputFormatP") {
-            @Override
-            public Object function(final Object[] arguments)
-            {
-                return client.getEditorAdapter().getInputFormat().toString();
-            }
-        };
-
-        new BrowserFunction(browser, "getExternalContentP") {
-            @Override
-            public Object function(final Object[] arguments)
-            {
-                return getExternalContentObject();
+                return requestCheckForDocumentInBatch(arguments[0]);
             }
         };
 
@@ -295,14 +272,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             public Object function(final Object[] arguments)
             {
                 return getOnCheckResultObject(arguments[0]);
-            }
-        };
-
-        new BrowserFunction(browser, "getCurrentSelectionRangesP") {
-            @Override
-            public Object function(final Object[] arguments)
-            {
-                return getCurrentSelectionRangesObject();
             }
         };
 
@@ -375,20 +344,20 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         loadScriptJS("acrolinxPluginScript.js");
     }
 
-    private String getContentForDocument(Object documentIdentifier)
+    private String requestCheckForDocumentInBatch(Object documentIdentifier)
     {
-        return client.getContentForDocument(documentIdentifier.toString());
-    }
-
-    private String getCheckOptionsForDocument(Object documentIdentifier)
-    {
+        String docIdJsonString = new Gson().toJson(documentIdentifier);
+        String contentForDocument = new Gson().toJson(client.getContentForDocument(documentIdentifier.toString()));
         CheckOptions checkOptions = client.getCheckOptionsForDocument(documentIdentifier.toString());
-        return checkOptions.toString();
+
+        browser.execute("acrolinxSidebar.checkDocumentInBatch(" + docIdJsonString + ", " + contentForDocument + ", "
+                + checkOptions.toString() + ");");
+        return "{\"message\": \"Called checkDocumentInBatch\"}";
     }
 
     private Object runBatchCheck()
     {
-        logger.debug("Extracting references");
+        logger.info("Extracting references");
         try {
             List<BatchCheckRequestOptions> references = client.extractReferences();
             initBatchCheck(references);
@@ -483,18 +452,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    protected String getCurrentSelectionRangesObject()
-    {
-        final List<IntRange> currentSelection = client.getEditorAdapter().getCurrentSelection();
-        if (currentSelection == null) {
-            return null;
-        } else {
-            final DocumentSelection selection = new DocumentSelection(currentSelection);
-            logger.debug("got selection ranges: " + selection.toString());
-            return selection.toString();
-        }
-    }
-
     protected Object getOnCheckResultObject(Object argument)
     {
         final Instant checkEndedTime = Instant.now();
@@ -516,16 +473,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             logger.error(e.getMessage());
         }
         return null;
-    }
-
-    protected String getExternalContentObject()
-    {
-        LogMessages.logExternalContentRequested(logger);
-        final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
-        if (externalContent == null) {
-            return null;
-        }
-        return externalContent.toString();
     }
 
     protected boolean getCanCheckObject()
@@ -552,16 +499,19 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    protected String getTextObject()
+    protected String runCheckGlobal(Object checkSelection)
     {
+        Boolean selectionRequested = checkSelection.toString().equals("withCheckSelection") ? true : false;
         LogMessages.logCheckRequested(logger);
         checkStartTime.set(Instant.now());
         final String requestText = client.getEditorAdapter().getContent();
+        String content = new Gson().toJson(requestText);
+        final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
         currentlyCheckedText.set(requestText);
-        if (Strings.isNullOrEmpty(requestText)) {
-            return "<unsupported/>";
-        }
-        return requestText;
+
+        final CheckOptions checkOptions = getCheckSettingsFromClient(selectionRequested, externalContent);
+        browser.execute("acrolinxSidebar.checkGlobal(" + content + "," + checkOptions.toString() + ");");
+        return "{\"message\": \"Check Global called\"}";
     }
 
     @SuppressWarnings("unused")
@@ -708,5 +658,21 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     public Boolean isVisible()
     {
         return this.browser.isVisible();
+    }
+
+    private CheckOptions getCheckSettingsFromClient(final boolean includeCheckSelectionRanges,
+            @Nullable ExternalContent externalContent)
+    {
+        InputFormat inputFormat = client.getEditorAdapter().getInputFormat();
+        String docRef = client.getEditorAdapter().getDocumentReference();
+        DocumentSelection selection = null;
+        if (includeCheckSelectionRanges) {
+            logger.debug("Including check selection ranges.");
+            final List<IntRange> currentSelection = client.getEditorAdapter().getCurrentSelection();
+            if (currentSelection != null) {
+                selection = new DocumentSelection(currentSelection);
+            }
+        }
+        return new CheckOptions(new RequestDescription(docRef), inputFormat, selection, externalContent);
     }
 }
