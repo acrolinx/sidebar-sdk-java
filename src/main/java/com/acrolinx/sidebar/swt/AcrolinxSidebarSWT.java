@@ -394,7 +394,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             initBatchCheck(references);
         } catch (Exception e) {
             logger.error("Initializing batch check failed" + e.getMessage());
-            logger.debug(e.getStackTrace().toString());
         }
         return null;
     }
