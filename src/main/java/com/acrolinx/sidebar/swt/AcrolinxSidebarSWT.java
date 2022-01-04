@@ -79,7 +79,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<Instant> checkStartTime = new AtomicReference<>();
     private GridData gridData;
-    private final ExecutorService executorService = Executors.newFixedThreadPool(1);;
 
     public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration client)
     {
@@ -389,26 +388,21 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     private Object runBatchCheck()
     {
-        Future<Boolean> initBatchCheckFuture = executorService.submit(() ->
-        {
-            try {
-                List<BatchCheckRequestOptions> references = client.extractReferences();
-                initBatchCheck(references);
-                return true;
-            } catch (Exception e) {
-                logger.error("Extracting references in Future Task failed", e.getMessage());
-                return false;
-            }
-        });
-
-        logger.debug("Extracting references in Future task. Future task is running: " + !initBatchCheckFuture.isDone());
+        logger.debug("Extracting references");
+        try {
+            List<BatchCheckRequestOptions> references = client.extractReferences();
+            initBatchCheck(references);
+        } catch (Exception e) {
+            logger.error("Initializing batch check failed" + e.getMessage());
+            logger.debug(e.getStackTrace().toString());
+        }
         return null;
     }
 
     private Object openDocumentInEditor(Object argument)
     {
-        Future<Boolean> openDocumentFuture = executorService.submit(() ->
-        {
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        Future<Boolean> openDocumentFuture = executorService.submit(() -> {
             Boolean documentIsOpen = client.openDocumentInEditor(argument.toString());
             if (!documentIsOpen) {
                 // ToDo: Send a message to the sidebar

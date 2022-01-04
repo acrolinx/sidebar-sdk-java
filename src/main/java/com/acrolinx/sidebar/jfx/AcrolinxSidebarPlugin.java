@@ -308,8 +308,7 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void openDocumentInEditor(String documentIdentifier)
     {
         logger.debug("openDocumentInEditor is called...");
-        Future<Boolean> openDocumentFuture = executorService.submit(() ->
-        {
+        Future<Boolean> openDocumentFuture = executorService.submit(() -> {
             Boolean documentIsOpen = client.openDocumentInEditor(documentIdentifier);
             if (!documentIsOpen) {
                 // ToDo: Send a message to the sidebar
