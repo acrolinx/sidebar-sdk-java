@@ -290,16 +290,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 return getReplaceRangesObject(arguments[1]);
             }
         };
-        new BrowserFunction(browser, "getDocUrlP") {
-            @Override
-            public Object function(final Object[] arguments)
-            {
-                final String documentRef = client.getEditorAdapter().getDocumentReference();
-                currentDocumentReference.set(documentRef);
-                return documentRef;
-            }
-
-        };
 
         new BrowserFunction(browser, "notifyAboutSidebarConfigurationP") {
             @Override
@@ -677,6 +667,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         InputFormat inputFormat = client.getEditorAdapter().getInputFormat();
         String docRef = client.getEditorAdapter().getDocumentReference();
+        currentDocumentReference.set(docRef);
         DocumentSelection selection = null;
         if (includeCheckSelectionRanges) {
             logger.debug("Including check selection ranges.");
