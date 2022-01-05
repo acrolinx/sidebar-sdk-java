@@ -344,14 +344,47 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         loadScriptJS("acrolinxPluginScript.js");
     }
 
+    private String runCheckGlobal(Object checkSelection)
+    {
+        Boolean selectionRequested = checkSelection.toString().equals("withCheckSelection") ? true : false;
+        logger.info("Check selection requested: " + selectionRequested);
+
+        LogMessages.logCheckRequested(logger);
+        checkStartTime.set(Instant.now());
+
+        final String requestText = client.getEditorAdapter().getContent();
+        currentlyCheckedText.set(requestText);
+        logger.debug("Request content: " + requestText);
+
+        final String content = new Gson().toJson(requestText);
+        logger.debug("Request content JSON compatible: " + content);
+
+        final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
+        logger.debug("External Content: " + externalContent.toString());
+
+        final CheckOptions checkOptions = getCheckSettingsFromClient(selectionRequested, externalContent);
+        logger.debug("Check options: " + checkOptions.toString());
+
+        browser.execute("acrolinxSidebar.checkGlobal(" + content + "," + checkOptions.toString() + ");");
+
+        return "{\"message\": \"Check Global called\"}";
+    }
+
     private String requestCheckForDocumentInBatch(Object documentIdentifier)
     {
-        String docIdJsonString = new Gson().toJson(documentIdentifier);
-        String contentForDocument = new Gson().toJson(client.getContentForDocument(documentIdentifier.toString()));
-        CheckOptions checkOptions = client.getCheckOptionsForDocument(documentIdentifier.toString());
+        final String docIdJsonString = new Gson().toJson(documentIdentifier);
+        logger.debug("Batch Check requested for: " + docIdJsonString);
+
+        final String contentForDocument = new Gson().toJson(
+                client.getContentForDocument(documentIdentifier.toString()));
+        logger.debug("Batch Check document content: " + contentForDocument);
+
+        final CheckOptions checkOptions = client.getCheckOptionsForDocument(documentIdentifier.toString());
+        logger.debug("Check ooptions for batch check document: " + checkOptions.toString());
 
         browser.execute("acrolinxSidebar.checkDocumentInBatch(" + docIdJsonString + ", " + contentForDocument + ", "
                 + checkOptions.toString() + ");");
+
         return "{\"message\": \"Called checkDocumentInBatch\"}";
     }
 
@@ -360,11 +393,18 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         logger.info("Extracting references");
         try {
             List<BatchCheckRequestOptions> references = client.extractReferences();
+            logger.debug("Batch check document list: " + references.toString());
             initBatchCheck(references);
         } catch (Exception e) {
             logger.error("Initializing batch check failed" + e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
+        browser.execute("window.acrolinxSidebar.initBatchCheck(" + batchCheckRequestOptions.toString() + ");");
     }
 
     private Object openDocumentInEditor(Object argument)
@@ -499,21 +539,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    protected String runCheckGlobal(Object checkSelection)
-    {
-        Boolean selectionRequested = checkSelection.toString().equals("withCheckSelection") ? true : false;
-        LogMessages.logCheckRequested(logger);
-        checkStartTime.set(Instant.now());
-        final String requestText = client.getEditorAdapter().getContent();
-        String content = new Gson().toJson(requestText);
-        final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
-        currentlyCheckedText.set(requestText);
-
-        final CheckOptions checkOptions = getCheckSettingsFromClient(selectionRequested, externalContent);
-        browser.execute("acrolinxSidebar.checkGlobal(" + content + "," + checkOptions.toString() + ");");
-        return "{\"message\": \"Check Global called\"}";
-    }
-
     @SuppressWarnings("unused")
     public Browser getSidebarBrowser()
     {
@@ -605,13 +630,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     @Override
     public void showMessage(SidebarMessage sidebarMessage)
     {
-
-    }
-
-    @Override
-    public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
-    {
-        browser.execute("window.acrolinxSidebar.initBatchCheck(" + batchCheckRequestOptions.toString() + ");");
+        logger.info("Message to be displayed on sidebar: " + sidebarMessage.toString());
+        browser.execute("window.acrolinxSidebar.showMessage(" + sidebarMessage.toString() + ")");
     }
 
     @Override
@@ -619,14 +639,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         // The document identifier should be a escaped string, otherwise it may break JS object.
         browser.execute("window.acrolinxSidebar.requestCheckForDocumentInBatch(\"" + documentIdentifier + "\");");
-    }
-
-    public static String buildStringOfBatchCheckRequestOptions(
-            final java.util.List<BatchCheckRequestOptions> batchCheckRequestOptions)
-    {
-        // TODO verify if that returns
-        return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(
-                Collectors.joining(", "));
     }
 
     @SuppressWarnings("WeakerAccess")
