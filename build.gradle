@@ -2,7 +2,6 @@ import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.os.OperatingSystem
 
 import java.time.Duration
-import java.util.stream.Node
 
 /*
 * Copyright (c) 2016-present Acrolinx GmbH
