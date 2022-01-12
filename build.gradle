@@ -2,6 +2,7 @@ import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.os.OperatingSystem
 
 import java.time.Duration
+import java.util.stream.Node
 
 /*
 * Copyright (c) 2016-present Acrolinx GmbH
@@ -102,7 +103,7 @@ task getIsMasterBranch {
 	proc.in.eachLine { line -> branch = line }
 	proc.err.eachLine { line -> println line }
 	proc.waitFor()
-	if (branch.startsWith('master')) {
+	if (branch.startsWith('main')) {
 		isMasterBranch = true
 	} else {
 		isMasterBranch = false
