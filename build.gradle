@@ -376,7 +376,9 @@ dependencies {
 	api group: 'commons-io', name: 'commons-io', version: '2.11.0'
 	api group: 'org.jsoup', name: 'jsoup', version: '1.14.3'
 	api 'com.google.guava:guava:31.0.1-jre'
-	api "org.eclipse.platform:$swtNatives:$SWT_VERSION"
+	compileOnly "org.eclipse.platform:$swtNatives:$SWT_VERSION"
+
+	testImplementation "org.eclipse.platform:$swtNatives:$SWT_VERSION"
 	testImplementation group: 'junit', name: 'junit', version: '4.+'
 
 }
