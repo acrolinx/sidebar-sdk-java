@@ -1,24 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-    <suppress>
-        <notes><![CDATA[
-      file name: org.eclipse.core.commands-3.9.400.v20190516-1358.jar
-      ]]></notes>
-        <packageUrl regex="true">^pkg:maven/eclipse\-swt\-deps/org\.eclipse\.core\.commands@.*$</packageUrl>
-        <cve>CVE-2021-41033</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: org.eclipse.equinox.common-3.10.400.v20190516-1504.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/eclipse\-swt\-deps/org\.eclipse\.equinox\.common@.*$</packageUrl>
-        <cve>CVE-2021-41033</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: org.eclipse.jface-3.16.0.v20190528-0922.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/eclipse\-swt\-deps/org\.eclipse\.jface@.*$</packageUrl>
-        <cve>CVE-2021-41033</cve>
-    </suppress>
-</suppressions>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd"></suppressions>

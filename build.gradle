@@ -1,11 +1,12 @@
-import org.gradle.internal.jvm.Jvm
-import org.gradle.internal.os.OperatingSystem
-
-import java.time.Duration
-
 /*
 * Copyright (c) 2016-present Acrolinx GmbH
 */
+
+import org.gradle.internal.jvm.Jvm
+import org.gradle.internal.os.OperatingSystem
+import java.time.Duration
+
+
 
 plugins {
 	id "idea"
@@ -442,8 +443,10 @@ dependencyCheck {
 processResources.dependsOn copyServerSelectorRessources
 processResources.dependsOn convertLocalizationEncoding
 licenseMain.dependsOn checkLicenseHeaders
+licenseMain.dependsOn copyServerSelectorRessources
 licenseTest.dependsOn checkLicenseHeaders
 jar.dependsOn 'downloadLicenses'
 jar.dependsOn createVersionPropertiesFile
 check.dependsOn dependencyCheckAnalyze
 test.dependsOn javadoc
+javadocJar.dependsOn javadoc
