@@ -89,6 +89,33 @@ Note that, if you’re using Java version 11 or later you’ll need to provide t
    
 7. Provides Batch Checking functionality to check multiple documents with a single click.
 
+### SWT Dependency Resolution
+If you want to use SWT UI framework:
+The maven property osgi.platform doesn't seem to be handled by gradle. Instead, you'll have to do a bit of special dependency resolution to correctly grab the platform specific dependencies.
+Create a variable `SWT_VERSION` specifying desired version eg: `SWT_VERSION=3.117.0`
+Add the following resolution to `build.gradle`
+```java
+configurations.all {
+ resolutionStrategy {
+  dependencySubstitution {
+    // The maven property ${osgi.platform} is not handled by Gradle
+    // so we replace the dependency, using the osgi platform from the project settings
+    def os = System.getProperty("os.name").toLowerCase()
+    if (os.contains("windows")) {
+        substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') with module("org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:$SWT_VERSION")
+    }
+    else if (os.contains("linux")) {
+        substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') with module("org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:$SWT_VERSION")
+    }
+    else if (os.contains("mac")) {
+        substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') with module("org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:$SWT_VERSION")
+    }
+  }
+ }
+}
+```
+
+
 ## SDK Architecture
 
 ![Java SDK Overview](img/SketchJavaSDKComponents.png)
