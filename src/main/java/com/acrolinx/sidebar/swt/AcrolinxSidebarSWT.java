@@ -350,7 +350,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         logger.debug("Request content JSON compatible: " + content);
 
         final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
-        logger.debug("External Content: " + externalContent.toString());
+        if (externalContent != null) {
+            logger.debug("External Content: " + externalContent.toString());
+        }
 
         final CheckOptions checkOptions = getCheckSettingsFromClient(selectionRequested, externalContent);
         logger.debug("Check options: " + checkOptions.toString());
