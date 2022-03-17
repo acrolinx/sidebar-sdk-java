@@ -101,6 +101,15 @@ Use dependency configuration as required (example: `implementation, api, compile
 
 * Dependency substitution configuration [Example Configuration](https://github.com/acrolinx/acrolinx-sidebar-demo-java/blob/80c8a26005722f9d07d79f041a6ff1fd2119d479/build.gradle#L85)
 
+### Using Sidebar v15 with SWT
+
+_Only for **Windows OS** based Integrations_
+
+If you choose to use Sidebar v15 with SWT, you additionally need to install the **WebView2 Runtime** on the user's system.
+
+This is required as Sidebar v15 **doesn't** support **Internet Explorer**.
+
+Follow the guidelines provided by Microsoft to install the [WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/).
 
 ## SDK Architecture
 
