@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 public class XMLLookupUtilsTest
 {
-    private static String XML_CONTENT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    private static final String XML_CONTENT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
             + "<bookstore xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
             + "           xsi:noNamespaceSchemaLocation=\"BookStore.xsd\">\n"
             + "    <book price=\"730.54\" ISBN=\"string\" publicationdate=\"2016-02-27\">\n"
@@ -100,7 +100,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void findOffsetInXmlStringByXpath1() {
+    public void findOffsetInXmlStringByXpathAdmonition() {
         String content = "<!DOCTYPE procedure PUBLIC \"-//Scania//DTD -//WINGS DTD 2.00//EN\" \"wings.dtd\"><procedure class=\"description\" original-language=\"sv-SE\" type=\"remove\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><wsm-description-title its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">9- och 13-litersmotor [XPI]</wsm-description-title><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8d699\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"environment\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">firrst Tänk på miljön, undvik middle  spill och använd uppsamlingskärl lasst</p></admonition><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8eb67\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"note\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">onee Använd hjullyftar för att förenkla twoo borttagningen fourr och ditsättningen av motorn threee</p></admonition></procedure>";
         IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content,
                 "//procedure[1]/admonition[1]/p[1]");
@@ -110,7 +110,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void findOffsetInXmlStringByXpath2() {
+    public void findOffsetInXmlStringByXpathAdmonition2() {
         String content = "<!DOCTYPE procedure PUBLIC \"-//Scania//DTD -//WINGS DTD 2.00//EN\" \"wings.dtd\"><procedure class=\"description\" original-language=\"sv-SE\" type=\"remove\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><wsm-description-title its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">9- och 13-litersmotor [XPI]</wsm-description-title><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8d699\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"environment\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">firrst Tänk på miljön, undvik middle  spill och använd uppsamlingskärl lasst</p></admonition><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8eb67\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"note\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">onee Använd hjullyftar för att förenkla twoo borttagningen fourr och ditsättningen av motorn threee</p></admonition></procedure>";
         IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content,
                 "//procedure[1]/admonition[2]/p[1]");
@@ -120,10 +120,18 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void findOffsetInXmlStringByXpath3() {
+    public void findOffsetInXmlStringByXpathSimple() {
         String content = "<x><y>Thiss iss tesst.</y></x>";
         IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content,
                 "//x[1]/y[1]");
         assertEquals("<y>Thiss iss tesst.</y>", content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
+    }
+
+    @Test
+    public void findOffsetInXmlStringByXpathRootElement() {
+        String content = "<x>The root element test</x>";
+        IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content,
+                "//x[1]");
+        assertEquals(content, content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
     }
 }
