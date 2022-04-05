@@ -51,7 +51,7 @@ public class XMLLookupUtils
             NodeList nodeList = (NodeList) xPath.compile(xpath).evaluate(doc, XPathConstants.NODESET);
 
             if (nodeList.getLength() == 0) {
-                throw new Exception("Xpath evaluation returned 0 nodes");
+                throw new IllegalStateException("Xpath evaluation returned 0 nodes");
             }
 
             String selectionTag = "acrolinxnode";
@@ -97,9 +97,9 @@ public class XMLLookupUtils
             endOffset = StringUtils.ordinalIndexOf(xmlContent, endTagInXML, occurrencesOfEndTag + 1) + endTagInXML.length();
 
         } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException e) {
-            logger.error("Unable to find offsets in XMl for xpath : " + xpath);
+            logger.error("Unable to find offsets in XMl for xpath : ".concat(xpath));
             logger.error(e.getMessage());
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             logger.error(e.getMessage());
         }
 
