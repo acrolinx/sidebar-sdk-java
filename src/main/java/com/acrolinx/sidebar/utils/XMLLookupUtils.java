@@ -5,7 +5,7 @@
 package com.acrolinx.sidebar.utils;
 
 import com.acrolinx.sidebar.pojo.document.IntRange;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 import org.slf4j.Logger;

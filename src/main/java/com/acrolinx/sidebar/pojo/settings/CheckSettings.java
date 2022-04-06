@@ -2,9 +2,9 @@
 
 package com.acrolinx.sidebar.pojo.settings;
 
-import org.apache.commons.lang.SerializationUtils;
 
 import com.google.gson.Gson;
+import org.apache.commons.lang3.SerializationUtils;
 
 @SuppressWarnings({"FieldCanBeLocal", "WeakerAccess", "unused"})
 public class CheckSettings
