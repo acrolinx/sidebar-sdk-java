@@ -4,15 +4,16 @@
 
 package com.acrolinx.sidebar.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import com.acrolinx.sidebar.pojo.document.IntRange;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
@@ -25,20 +26,13 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
-import org.jsoup.Jsoup;
-import org.jsoup.parser.Parser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.*;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-
-import com.acrolinx.sidebar.lookup.LookupRangesDiff;
-import com.acrolinx.sidebar.pojo.document.AbstractMatch;
-import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
-import com.acrolinx.sidebar.pojo.document.IntRange;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 public class XMLLookupUtils
 {
@@ -56,7 +50,13 @@ public class XMLLookupUtils
             XPath xPath = XPathFactory.newInstance().newXPath();
             NodeList nodeList = (NodeList) xPath.compile(xpath).evaluate(doc, XPathConstants.NODESET);
 
+            if (nodeList.getLength() == 0) {
+                throw new IllegalStateException("Xpath evaluation returned 0 nodes");
+            }
+
             String selectionTag = "acrolinxnode";
+            String nodeName = null;
+            boolean nodeHasAttributes = false;
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Node node = nodeList.item(i);
@@ -71,6 +71,8 @@ public class XMLLookupUtils
                         return new IntRange(xmlContent.indexOf(rootElementBegin),
                                 xmlContent.lastIndexOf(rootElementEnd) + rootElementEnd.length());
                     }
+                    nodeName = node.getNodeName();
+                    nodeHasAttributes = node.hasAttributes();
                     parentNode.insertBefore(acrolinxSelection, node);
                     acrolinxSelection.appendChild(node);
 
@@ -84,31 +86,21 @@ public class XMLLookupUtils
             endOffset = documentXML.indexOf(endTag) - startTag.length();
             documentXML = documentXML.replace(startTag, "").replace(endTag, "");
 
-            final LookupRangesDiff lookupRangesDiff = new LookupRangesDiff();
-            // Adding/Subtracting 2 is a precautionary measure.
-            final AcrolinxMatch acrolinxMatchStart = new AcrolinxMatch(new IntRange(startOffset, startOffset + 2), "");
-            final AcrolinxMatch acrolinxMatchEnd = new AcrolinxMatch(new IntRange(endOffset - 2, endOffset), "");
 
-            final ArrayList<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
-            acrolinxMatches.add(acrolinxMatchStart);
-            acrolinxMatches.add(acrolinxMatchEnd);
+            String startTagInXML = "<" + nodeName + (nodeHasAttributes ? " " : ">");
+            final int occurrencesOfStartTag = StringUtils.countMatches(documentXML.substring(0, startOffset), startTagInXML);
 
-            final Optional<List<? extends AbstractMatch>> matchesWithCorrectedRanges = lookupRangesDiff.getMatchesWithCorrectedRanges(
-                    documentXML, xmlContent, acrolinxMatches);
+            String endTagInXML = "</" + nodeName + ">";
+            final int occurrencesOfEndTag = StringUtils.countMatches(documentXML.substring(0, endOffset), endTagInXML) - 1;
 
-            if (matchesWithCorrectedRanges.isPresent()) {
-                final List<? extends AbstractMatch> abstractMatches = matchesWithCorrectedRanges.get();
-                if (abstractMatches.size() == 2) {
-                    startOffset = abstractMatches.get(0).getRange().getMinimumInteger();
-                    endOffset = abstractMatches.get(1).getRange().getMaximumInteger();
-                }
-            }
-
-            logger.info("Check Selection Offsets: (" + startOffset + "," + endOffset + ")");
+            startOffset = StringUtils.ordinalIndexOf(xmlContent, startTagInXML, occurrencesOfStartTag + 1);
+            endOffset = StringUtils.ordinalIndexOf(xmlContent, endTagInXML, occurrencesOfEndTag + 1) + endTagInXML.length();
 
         } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException e) {
-            logger.warn("Unable to find offsets in XMl for xpath : " + xpath);
-            logger.warn(e.getMessage());
+            logger.error("Unable to find offsets in XMl for xpath : ".concat(xpath));
+            logger.error(e.getMessage());
+        } catch (IllegalStateException e) {
+            logger.error(e.getMessage());
         }
 
         if (startOffset < 0 || endOffset < 0) {
@@ -140,7 +132,7 @@ public class XMLLookupUtils
         try {
             logger.debug("Applying transformation to XML.");
             transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty(OutputKeys.INDENT, "no");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");

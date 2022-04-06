@@ -2,7 +2,7 @@
 
 package com.acrolinx.sidebar.utils;
 
-import org.apache.commons.lang.time.DurationFormatUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.slf4j.Logger;
 
 /**

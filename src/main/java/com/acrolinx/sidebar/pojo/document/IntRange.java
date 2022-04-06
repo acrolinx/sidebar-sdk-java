@@ -2,9 +2,11 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
+import org.apache.commons.lang3.text.StrBuilder;
+import org.apache.commons.text.TextStringBuilder;
+
 import java.io.Serializable;
 
-import org.apache.commons.lang.text.StrBuilder;
 
 @SuppressWarnings("WeakerAccess")
 public class IntRange implements Serializable
@@ -37,7 +39,7 @@ public class IntRange implements Serializable
     @Override
     public String toString()
     {
-        final StrBuilder buf = new StrBuilder(32);
+        final TextStringBuilder buf = new TextStringBuilder(32);
         buf.append("Range[");
         buf.append(getMinimumInteger());
         buf.append(',');
