@@ -25,7 +25,7 @@ To get an impression what the Sidebar looks like in existing integrations, have 
 
 ## Prerequisites
 
-Please contact [Acrolinx SDK support](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/sdk-support.md)
+Please contact [Acrolinx SDK support](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/sdk-support.md)
 for consulting and getting your integration certified.
 This sample works with a test license on an internal Acrolinx URL.
 This license is only meant for demonstration and developing purposes.
@@ -74,7 +74,7 @@ Note that, if you’re using Java version 11 or later you’ll need to provide t
 2. `LookupRangesDiff` - Provides [lookup](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-lookup.md)
   functionality.
 3. **Start page**: Provides an interactive way to sign in to Acrolinx with built-in error handling.
-4. Provides [logging](https://github.com/acrolinx/sidebar-sdk-dotnet/blob/master/Acrolinx.Sidebar/Util/Logging/Logger.cs).
+4. Provides [logging](https://github.com/acrolinx/sidebar-sdk-dotnet/blob/main/Acrolinx.Sidebar/Util/Logging/Logger.cs).
    Logging can be activated via:
 
     ```java
@@ -119,10 +119,10 @@ Follow the guidelines provided by Microsoft to install the [WebView2 Runtime](ht
 
 ### Branches and Releasing
 
-1. Please add new features using the `master` branch, or submit a pull request.
+1. Please add new features using the `main` branch, or submit a pull request.
 
    ```bash
-   git checkout master
+   git checkout main
    # make your changes
    git commit
    git push
