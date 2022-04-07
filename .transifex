@@ -1,5 +1,5 @@
 project         sidebar-java-sdk
-branches        master
+branches        main
 
 
 file src/main/resources/localization/JavaSDK.properties
