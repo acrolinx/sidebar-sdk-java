@@ -30,7 +30,7 @@ public class IconUtils
 
     public static InputStream getAcrolinxIcon_48_48_AsStream()
     {
-        return IconUtils.class.getResourceAsStream("/icons/acrolinxIcon24px@2px.png");
+        return IconUtils.class.getResourceAsStream("/icons/acrolinxIcon24px@2x.png");
     }
 
     public static URL getAcrolinxIcon_16_16_URL()
