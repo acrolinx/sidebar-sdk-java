@@ -2,18 +2,22 @@
 
 package com.acrolinx.sidebar.swt;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
+import com.acrolinx.sidebar.localization.LocalizedStrings;
+import com.acrolinx.sidebar.localization.Localizer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.utils.AcrolinxException;
+import org.eclipse.swt.widgets.Composite;
 
 // TODO: Hide default view on addition of first sidebar.
 public class AcrolinxMultiViewSidebarSWT
@@ -22,7 +26,7 @@ public class AcrolinxMultiViewSidebarSWT
     private AcrolinxStorage acrolinxStorage;
     private final Composite container;
     private final StackLayout stackLayout;
-
+    private CLabel noFileOpenedLabel;
     private final Map<String, AcrolinxSidebarSWT> sidebarSWTMap = new HashMap<>();
 
     /**
@@ -37,6 +41,8 @@ public class AcrolinxMultiViewSidebarSWT
         this.stackLayout = new StackLayout();
         this.container.setLayout(this.stackLayout);
         this.acrolinxStorage = storage;
+        createDefaultSidebar();
+        showDefaultSidebar();
     }
 
     /**
@@ -51,15 +57,11 @@ public class AcrolinxMultiViewSidebarSWT
         this.stackLayout = new StackLayout();
         this.container.setLayout(this.stackLayout);
         this.acrolinxStorage = storage;
+        createDefaultSidebar();
+        showDefaultSidebar();
     }
 
-    /**
-     * Creates default empty view in SWT Composite when no sidebar needs to be shown
-     */
-    public void createDefaultSidebar()
-    {
-        // TODO: Create default view (Show Acrolinx Image or some text).
-    }
+
 
     /**
      *
@@ -138,15 +140,24 @@ public class AcrolinxMultiViewSidebarSWT
     }
 
     /**
+     * Creates default empty view with CLabel informing the user about having to open a file before being able to interact with acrolinx
+     */
+    private void createDefaultSidebar() {
+        noFileOpenedLabel = new CLabel (this.container, SWT.WRAP);
+        noFileOpenedLabel.setText(Localizer.getInstance().getText(LocalizedStrings.NO_CHECK_CONTENT_AVAILABLE_MESSAGE));
+        noFileOpenedLabel.setMargins(5,5,0,5);
+    }
+
+    /**
      * Show the default sidebar view.
      */
     private void showDefaultSidebar()
     {
-        // TODO: Show default view
+        this.stackLayout.topControl = noFileOpenedLabel;
     }
 
     /**
-     * Set visibility of all the sidebars in tha mep to false
+     * Set visibility of all the sidebars in that map to false
      */
     private void hideAllSidebars()
     {
