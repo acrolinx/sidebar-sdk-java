@@ -50,7 +50,7 @@ public class IconUtils
 
     public static URL getAcrolinxIcon_48_48_URL()
     {
-        return IconUtils.class.getResource("/icons/acrolinxIcon24px@2px.png");
+        return IconUtils.class.getResource("/icons/acrolinxIcon24px@2x.png");
     }
 
     /**
