@@ -9,10 +9,11 @@ import java.awt.event.ComponentListener;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.web.WebView;
+import com.acrolinx.sidebar.localization.LocalizedStrings;
+import com.acrolinx.sidebar.localization.Localizer;
+import com.acrolinx.sidebar.utils.IconUtils;
+import javafx.geometry.Pos;
+import javafx.scene.*;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.AcrolinxMultiViewSidebarInterface;
@@ -20,11 +21,18 @@ import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.jfx.AcrolinxSidebarJFX;
 import com.acrolinx.sidebar.jfx.JFXUtils;
 import com.acrolinx.sidebar.utils.AcrolinxException;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.web.WebView;
 
 public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implements AcrolinxMultiViewSidebarInterface
 {
 
-    private Map<String, AcrolinxSidebarJFX> sidebars = new ConcurrentHashMap<>();
+    private final Map<String, AcrolinxSidebarJFX> sidebars = new ConcurrentHashMap<>();
 
     /**
      *
@@ -33,6 +41,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration)
     {
         super(integration);
+        showEmptyMessage();
     }
 
     /**
@@ -43,6 +52,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration, AcrolinxStorage storage)
     {
         super(integration, storage);
+        showEmptyMessage();
     }
 
     @Override
@@ -111,7 +121,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
                 scene = new Scene(webview);
             }
             if (!sidebars.containsKey(documentId)) {
-                sidebars.put(documentId, (AcrolinxSidebarJFX) sidebarJFX);
+                sidebars.put(documentId, sidebarJFX);
             }
             setScene(scene);
             setVisible(true);
@@ -155,12 +165,35 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             throw new AcrolinxException("Sidebar doesn't exist for the given document Id");
         }
         if (sidebars.isEmpty()) {
-            JFXUtils.invokeInJFXThread(() -> {
-                setVisible(false);
-                sidebarJFX = null;
-            });
-
+            JFXUtils.invokeInJFXThread(() -> sidebarJFX = null);
+            showEmptyMessage();
         }
+    }
+
+    public void showEmptyMessage() {
+        JFXUtils.invokeInJFXThread(() -> {
+            Scene scene = getScene();
+            if (scene == null) {
+                setScene(new Scene(new Group()));
+                scene = getScene();
+            }
+
+            Image acrolinxCheckIcon = new Image(IconUtils.getAcrolinxIcon_48_48_AsStream());
+            ImageView imageView = new ImageView(acrolinxCheckIcon);
+
+            Label label = new Label(Localizer.getInstance().getText(LocalizedStrings.NO_CHECK_CONTENT_AVAILABLE_MESSAGE));
+            label.setTextAlignment(TextAlignment.CENTER);
+            label.setWrapText(true);
+            Font defaultFont = Font.getDefault();
+            label.setFont(new Font(defaultFont.getSize() * 2));
+
+            VBox messageContainer = new VBox();
+            messageContainer.setAlignment(Pos.CENTER);
+            messageContainer.getChildren().addAll(imageView, label);
+
+            scene.setRoot(messageContainer);
+            setVisible(true);
+        });
     }
 
 }
