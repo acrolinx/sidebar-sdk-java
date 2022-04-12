@@ -44,5 +44,19 @@ public enum LocalizedStrings
         {
             return "MESSAGE.JAVASDK.NOTHING_AVAILABLE_FOR_CHECKING";
         }
+    },
+    DITA_CAN_NOT_CHECK_UNRESOLVED_FILES_TITLE
+    {
+        @Override
+        public String toString() {
+            return "MESSAGE.JAVASDK.DITA.CAN_NOT_CHECK_UNRESOLVED_FILES.TITLE";
+        }
+    },
+    DITA_CAN_NOT_CHECK_UNRESOLVED_FILES_BODY
+    {
+        @Override
+        public String toString() {
+            return "MESSAGE.JAVASDK.DITA.CAN_NOT_CHECK_UNRESOLVED_FILES.BODY";
+        }
     }
 }
