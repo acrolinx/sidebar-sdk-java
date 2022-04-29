@@ -2,12 +2,17 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
+
+import java.util.List;
+
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class AcrolinxMatch extends AbstractMatch
 {
     private final String content;
     private IntRange extractedRange;
     private IntRange range;
+    private List<ExternalContentMatch> externalContentMatches;
 
     public AcrolinxMatch(final IntRange range, final String content)
     {
@@ -20,6 +25,13 @@ public class AcrolinxMatch extends AbstractMatch
         this.range = range;
         this.extractedRange = extractedRange;
         this.content = content;
+    }
+
+    public AcrolinxMatch(final IntRange range, final String content, final List<ExternalContentMatch> externalContentMatches)
+    {
+        this.content = content;
+        this.range = range;
+        this.externalContentMatches = externalContentMatches;
     }
 
     @Override
@@ -52,6 +64,10 @@ public class AcrolinxMatch extends AbstractMatch
         }
     }
 
+    public List<ExternalContentMatch> getExternalContentMatches() {
+        return externalContentMatches;
+    }
+
     @Override
     public AbstractMatch copy()
     {
@@ -66,4 +82,5 @@ public class AcrolinxMatch extends AbstractMatch
             return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), content);
         }
     }
+
 }
