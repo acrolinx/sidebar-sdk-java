@@ -27,6 +27,14 @@ public class AcrolinxMatch extends AbstractMatch
         this.content = content;
     }
 
+    public AcrolinxMatch(final IntRange range, final IntRange extractedRange, final String content, final List<ExternalContentMatch> externalContentMatches)
+    {
+        this.range = range;
+        this.extractedRange = extractedRange;
+        this.content = content;
+        this.externalContentMatches = externalContentMatches;
+    }
+
     public AcrolinxMatch(final IntRange range, final String content, final List<ExternalContentMatch> externalContentMatches)
     {
         this.content = content;
@@ -65,7 +73,7 @@ public class AcrolinxMatch extends AbstractMatch
     }
 
     public List<ExternalContentMatch> getExternalContentMatches() {
-        return externalContentMatches;
+        return this.externalContentMatches;
     }
 
     @Override
