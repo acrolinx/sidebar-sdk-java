@@ -2,18 +2,29 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class CheckedDocumentPart
 {
     private final String checkId;
     private final IntRange range;
+    private List<ExternalContentMatch> externalContent;
 
     public CheckedDocumentPart(String checkId, IntRange range)
     {
         this.checkId = checkId;
         this.range = range;
+    }
+
+    public CheckedDocumentPart(String checkId, IntRange range, List<ExternalContentMatch> externalContent)
+    {
+        this.checkId = checkId;
+        this.range = range;
+        this.externalContent = externalContent;
     }
 
     public String getCheckId()
@@ -26,6 +37,10 @@ public class CheckedDocumentPart
         return range;
     }
 
+    public List<ExternalContentMatch> getExternalContent() {
+        return externalContent;
+    }
+
     @Override
     public String toString()
     {
@@ -33,6 +48,7 @@ public class CheckedDocumentPart
         return gson.toJson(this);
     }
 
+    //TODO: Include external content matches
     public String getAsJS()
     {
         return "{checkId: \"" + checkId + "\", range:[" + range.getMinimumInteger() + "," + range.getMaximumInteger()

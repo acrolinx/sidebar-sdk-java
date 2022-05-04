@@ -210,10 +210,19 @@ abstract class AcrolinxSidebarPlugin
 
     public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches)
     {
-        final List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map((match) -> new CheckedDocumentPart(
-                currentCheckId.get(),
-                new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()))).collect(
-                        Collectors.toList());
+        final List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map((match) -> {
+        if(((AcrolinxMatchWithReplacement) match).getExternalContentMatches() != null)
+        {
+            return new CheckedDocumentPart(
+                        currentCheckId.get(),
+                        new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
+                        ((AcrolinxMatch) match).getExternalContentMatches()
+                        );
+        }
+            return new CheckedDocumentPart(
+            currentCheckId.get(),
+            new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()));
+        }).collect(Collectors.toList());
         invalidateRanges(invalidDocumentParts);
     }
 
