@@ -70,7 +70,12 @@ class JSToJavaConverter
             final IntRange range = getIntRangeFromJSString(((JSObject) o.getSlot(i)).getMember(RANGE).toString());
             final String surface = "" + ((JSObject) o.getSlot(i)).getMember(CONTENT);
             final String replacement = "" + ((JSObject) o.getSlot(i)).getMember(REPLACEMENT);
-            acrolinxMatches.add(new AcrolinxMatchWithReplacement(surface, range, replacement));
+            if(((JSObject) o.getSlot(0)).getMember(EXTERNAL_CONTENT_MATCHES).toString().equals(UNDEFINED)) {
+                acrolinxMatches.add(new AcrolinxMatchWithReplacement(surface, range, replacement));
+            } else {
+                final JSObject externalContentMatches = (JSObject) ((JSObject) o.getSlot(i)).getMember(EXTERNAL_CONTENT_MATCHES);
+                acrolinxMatches.add(new AcrolinxMatchWithReplacement(surface, range, replacement, getExternalContentMatchFromJSObject(externalContentMatches)));
+            }
         }
         return Collections.unmodifiableList(acrolinxMatches);
     }
