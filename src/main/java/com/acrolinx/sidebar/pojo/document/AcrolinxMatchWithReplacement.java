@@ -2,6 +2,10 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
+
+import java.util.List;
+
 public class AcrolinxMatchWithReplacement extends AcrolinxMatch
 {
     private String replacement;
@@ -12,9 +16,21 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
         this.replacement = replacement;
     }
 
+    public AcrolinxMatchWithReplacement(String content, IntRange range, String replacement, List<ExternalContentMatch> externalContentMatches)
+    {
+        super(range, content, externalContentMatches);
+        this.replacement = replacement;
+    }
+
     public AcrolinxMatchWithReplacement(IntRange range, IntRange extractedRange, String content, String replacement)
     {
         super(range, extractedRange, content);
+        this.replacement = replacement;
+    }
+
+    public AcrolinxMatchWithReplacement(IntRange range, IntRange extractedRange, String content, String replacement, List<ExternalContentMatch> externalContentMatches)
+    {
+        super(range, extractedRange, content, externalContentMatches);
         this.replacement = replacement;
     }
 
