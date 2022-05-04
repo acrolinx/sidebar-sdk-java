@@ -4,6 +4,7 @@
 package com.acrolinx.sidebar.pojo.document.externalContent;
 
 import com.acrolinx.sidebar.pojo.document.IntRange;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -32,6 +33,12 @@ public class ExternalContentMatch {
 
     public IntRange getRange() {
         return range;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new Gson().toJson(this);
     }
 
     public List<ExternalContentMatch> getExternalContentMatches() {
