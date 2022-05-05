@@ -3,7 +3,6 @@
  */
 package com.acrolinx.sidebar.pojo.document.externalContent;
 
-import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -12,15 +11,25 @@ public class ExternalContentMatch {
 
     private final String id;
     private final String type;
-    private IntRange range;
+    private final int originalBegin;
+    private final int originalEnd;
     private final List<ExternalContentMatch> externalContentMatches;
 
 
-    public ExternalContentMatch(String id, String type, IntRange range, List<ExternalContentMatch> externalContentMatches) {
+    public ExternalContentMatch(String id, String type, int originalBegin, int originalEnd, List<ExternalContentMatch> externalContentMatches) {
         this.id = id;
         this.type = type;
-        this.range = range;
+        this.originalBegin = originalBegin;
+        this.originalEnd = originalEnd;
         this.externalContentMatches = externalContentMatches;
+    }
+
+    public ExternalContentMatch(String id, String type, int originalBegin, int originalEnd) {
+        this.id = id;
+        this.type = type;
+        this.originalBegin = originalBegin;
+        this.originalEnd = originalEnd;
+        this.externalContentMatches = null;
     }
 
     public String getId() {
@@ -31,8 +40,16 @@ public class ExternalContentMatch {
         return type;
     }
 
-    public IntRange getRange() {
-        return range;
+    public int getOriginalBegin() {
+        return originalBegin;
+    }
+
+    public int getOriginalEnd() {
+        return originalEnd;
+    }
+
+    public List<ExternalContentMatch> getExternalContentMatches() {
+        return externalContentMatches;
     }
 
     @Override
@@ -41,7 +58,4 @@ public class ExternalContentMatch {
         return new Gson().toJson(this);
     }
 
-    public List<ExternalContentMatch> getExternalContentMatches() {
-        return externalContentMatches;
-    }
 }
