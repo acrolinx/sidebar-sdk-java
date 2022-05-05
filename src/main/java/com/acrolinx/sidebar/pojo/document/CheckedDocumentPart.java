@@ -48,9 +48,12 @@ public class CheckedDocumentPart
         return gson.toJson(this);
     }
 
-    //TODO: Include external content matches
     public String getAsJS()
     {
+        if(externalContent != null) {
+            return "{checkId: \"" + checkId + "\", range:[" + range.getMinimumInteger() + "," + range.getMaximumInteger()
+                    + "], externalContentMatches:" + externalContent.toString() + "}";
+        }
         return "{checkId: \"" + checkId + "\", range:[" + range.getMinimumInteger() + "," + range.getMaximumInteger()
                 + "]}";
     }
