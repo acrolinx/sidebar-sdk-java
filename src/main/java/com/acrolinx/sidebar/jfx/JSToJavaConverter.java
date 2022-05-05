@@ -161,14 +161,14 @@ class JSToJavaConverter
 
             final String id = "" + ((JSObject) o.getSlot(i)).getMember(ID);
             final String type = "" + ((JSObject) o.getSlot(i)).getMember(TYPE);
-            final IntRange range = new IntRange(Integer.parseInt((((JSObject) o.getSlot(i)).getMember(ORIGINAL_BEGIN).toString())),
-                    Integer.parseInt((((JSObject) o.getSlot(i)).getMember(ORIGINAL_END).toString())));;
+            final int originalBegin = Integer.parseInt((((JSObject) o.getSlot(i)).getMember(ORIGINAL_BEGIN).toString()));
+            final int originalEnd = Integer.parseInt((((JSObject) o.getSlot(i)).getMember(ORIGINAL_END).toString()));
 
             final JSObject externalContentMatchesJSObj = ((JSObject) ((JSObject) o.getSlot(i)).getMember(EXTERNAL_CONTENT_MATCHES));
             if(!(externalContentMatchesJSObj.toString().equals(UNDEFINED)) && Integer.parseInt(externalContentMatchesJSObj.getMember(LENGTH).toString()) > 0) {
                 nestedExternalContentMatches = getExternalContentMatchFromJSObject(externalContentMatchesJSObj);
             }
-            externalContentMatchesList.add(new ExternalContentMatch(id, type, range, nestedExternalContentMatches));
+            externalContentMatchesList.add(new ExternalContentMatch(id, type, originalBegin, originalEnd, nestedExternalContentMatches));
         }
         return Collections.unmodifiableList(externalContentMatchesList);
     }
