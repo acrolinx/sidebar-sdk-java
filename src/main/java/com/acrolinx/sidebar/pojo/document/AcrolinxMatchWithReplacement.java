@@ -73,8 +73,19 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
         if (getExtractedRange() != null) {
             int minRange = super.getExtractedRange().getMinimumInteger();
             int maxRange = super.getExtractedRange().getMaximumInteger();
+
+            if(this.getExternalContentMatches() != null) {
+                final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
+                return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(),
+                        getReplacement(), externalContentMatches);
+            }
             return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(),
                     getReplacement());
+        }
+
+        if(this.getExternalContentMatches() != null) {
+            final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
+            return new AcrolinxMatchWithReplacement(content, range, getReplacement(), externalContentMatches);
         }
         return new AcrolinxMatchWithReplacement(content, range, getReplacement());
     }
