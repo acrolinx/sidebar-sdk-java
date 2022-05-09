@@ -85,8 +85,16 @@ public class AcrolinxMatch extends AbstractMatch
             final int eRangeMin = this.extractedRange.getMinimumInteger();
             final int eRangeMax = this.extractedRange.getMaximumInteger();
 
+            if(this.getExternalContentMatches() != null) {
+                final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
+                return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), new IntRange(eRangeMin, eRangeMax), content, externalContentMatches);
+            }
             return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), new IntRange(eRangeMin, eRangeMax), content);
         } else {
+            if(this.getExternalContentMatches() != null) {
+                final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
+                return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), content, externalContentMatches);
+            }
             return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), content);
         }
     }
