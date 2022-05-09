@@ -3,6 +3,7 @@
  */
 package com.acrolinx.sidebar.pojo.document.externalContent;
 
+import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -40,12 +41,21 @@ public class ExternalContentMatch {
         return type;
     }
 
-    public int getOriginalBegin() {
-        return originalBegin;
+    public IntRange getRange()
+    {
+        final IntRange range = new IntRange(this.originalBegin, this.originalEnd);
+        return range;
     }
 
-    public int getOriginalEnd() {
-        return originalEnd;
+    public ExternalContentMatch setRange(final IntRange range)
+    {
+        final int originalBegin = range.getMinimumInteger();
+        final int originalEnd = range.getMaximumInteger();
+
+        if(this.externalContentMatches != null) {
+            return new ExternalContentMatch(this.id, this.type, originalBegin, originalEnd, this.getExternalContentMatches());
+        }
+        return new ExternalContentMatch(this.id, this.type, originalBegin, originalEnd);
     }
 
     public List<ExternalContentMatch> getExternalContentMatches() {
