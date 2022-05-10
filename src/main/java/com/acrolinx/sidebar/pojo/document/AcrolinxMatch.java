@@ -22,23 +22,19 @@ public class AcrolinxMatch extends AbstractMatch
 
     public AcrolinxMatch(final IntRange range, final IntRange extractedRange, final String content)
     {
-        this.range = range;
+        this(range, content);
         this.extractedRange = extractedRange;
-        this.content = content;
     }
 
     public AcrolinxMatch(final IntRange range, final IntRange extractedRange, final String content, final List<ExternalContentMatch> externalContentMatches)
     {
-        this.range = range;
-        this.extractedRange = extractedRange;
-        this.content = content;
+        this(range, extractedRange, content);
         this.externalContentMatches = externalContentMatches;
     }
 
     public AcrolinxMatch(final IntRange range, final String content, final List<ExternalContentMatch> externalContentMatches)
     {
-        this.content = content;
-        this.range = range;
+        this(range, content);
         this.externalContentMatches = externalContentMatches;
     }
 

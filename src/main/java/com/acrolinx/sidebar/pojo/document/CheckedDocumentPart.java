@@ -22,8 +22,7 @@ public class CheckedDocumentPart
 
     public CheckedDocumentPart(String checkId, IntRange range, List<ExternalContentMatch> externalContent)
     {
-        this.checkId = checkId;
-        this.range = range;
+        this(checkId, range);
         this.externalContent = externalContent;
     }
 
