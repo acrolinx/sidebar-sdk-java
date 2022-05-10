@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2020-present Acrolinx GmbH
+ *  Copyright (c) 2022-present Acrolinx GmbH
  */
 package com.acrolinx.sidebar.pojo.document.externalContent;
 
@@ -14,14 +14,11 @@ public class ExternalContentMatch {
     private final String type;
     private final int originalBegin;
     private final int originalEnd;
-    private final List<ExternalContentMatch> externalContentMatches;
+    private List<ExternalContentMatch> externalContentMatches;
 
 
     public ExternalContentMatch(String id, String type, int originalBegin, int originalEnd, List<ExternalContentMatch> externalContentMatches) {
-        this.id = id;
-        this.type = type;
-        this.originalBegin = originalBegin;
-        this.originalEnd = originalEnd;
+        this(id, type, originalBegin, originalEnd);
         this.externalContentMatches = externalContentMatches;
     }
 
