@@ -71,7 +71,7 @@ public class AcrolinxMatch extends AbstractMatch
 
             if(this.getExternalContentMatches() != null) {
                 final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
-                new AcrolinxMatch(range, content, externalContentMatches);
+                return new AcrolinxMatch(range, content, externalContentMatches);
             }
             return new AcrolinxMatch(range, content);
         }
