@@ -158,15 +158,16 @@ class JSToJavaConverter
         final List<ExternalContentMatch> externalContentMatchesList = new ArrayList<>();
         List<ExternalContentMatch> nestedExternalContentMatches = new ArrayList<>();
         for (int i = 0; i < Integer.parseInt(length); i++) {
+            JSObject slotI = (JSObject) o.getSlot(i);
 
-            final String id = "" + ((JSObject) o.getSlot(i)).getMember(ID);
-            final String type = "" + ((JSObject) o.getSlot(i)).getMember(TYPE);
-            final int originalBegin = Integer.parseInt((((JSObject) o.getSlot(i)).getMember(ORIGINAL_BEGIN).toString()));
-            final int originalEnd = Integer.parseInt((((JSObject) o.getSlot(i)).getMember(ORIGINAL_END).toString()));
+            final String id = "" + slotI.getMember(ID);
+            final String type = "" + slotI.getMember(TYPE);
+            final int originalBegin = Integer.parseInt((slotI.getMember(ORIGINAL_BEGIN).toString()));
+            final int originalEnd = Integer.parseInt((slotI.getMember(ORIGINAL_END).toString()));
 
-            final JSObject externalContentMatchesJSObj = ((JSObject) ((JSObject) o.getSlot(i)).getMember(EXTERNAL_CONTENT_MATCHES));
-            if(!(externalContentMatchesJSObj.toString().equals(UNDEFINED)) && Integer.parseInt(externalContentMatchesJSObj.getMember(LENGTH).toString()) > 0) {
-                nestedExternalContentMatches = getExternalContentMatchFromJSObject(externalContentMatchesJSObj);
+            final Object externalContentMatchesJSObj = slotI.getMember(EXTERNAL_CONTENT_MATCHES);
+            if(!(externalContentMatchesJSObj.equals(UNDEFINED)) && Integer.parseInt(((JSObject) externalContentMatchesJSObj).getMember(LENGTH).toString()) > 0) {
+                nestedExternalContentMatches = getExternalContentMatchFromJSObject((JSObject) externalContentMatchesJSObj);
             }
             externalContentMatchesList.add(new ExternalContentMatch(id, type, originalBegin, originalEnd, nestedExternalContentMatches));
         }
