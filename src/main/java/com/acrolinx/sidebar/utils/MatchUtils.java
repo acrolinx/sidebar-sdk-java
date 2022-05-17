@@ -5,6 +5,7 @@ package com.acrolinx.sidebar.utils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +27,21 @@ public class MatchUtils
             boolean isTag = matchContent.matches("</?\\w+.*?>");
             logger.debug("Is match a tag: " + isTag);
             return !isTag;
+
+        }).collect(Collectors.toList());
+    }
+
+    public static List<? extends AbstractMatch> filterDangerousMatchesAllowReferencedContent(List<? extends AbstractMatch> list,
+                                                                       String lastCheckedContent)
+    {
+        return list.stream().filter(m -> {
+            String matchContent = lastCheckedContent.substring(m.getRange().getMinimumInteger(),
+                    m.getRange().getMaximumInteger());
+            logger.debug("Checking if match is a tag");
+            boolean hasReferencedContent = (m instanceof AcrolinxMatch) && ((AcrolinxMatch) m).getExternalContentMatches() != null && ((AcrolinxMatch) m).getExternalContentMatches().size() > 0;
+            boolean isTag = matchContent.matches("</?\\w+.*?>");
+            logger.debug("Is match a tag: " + isTag);
+            return !isTag || hasReferencedContent;
 
         }).collect(Collectors.toList());
     }
