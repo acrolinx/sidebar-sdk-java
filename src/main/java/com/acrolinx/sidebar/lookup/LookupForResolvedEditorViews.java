@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
@@ -152,6 +154,8 @@ public class LookupForResolvedEditorViews
                     mappedRanges.add(match);
                 } else if (contentNode.getAsXMLFragment() != null) {
                     // Try to lookup xml fragment in document.
+                    boolean hasExternalContentMatches = (match instanceof  AcrolinxMatch) && ((AcrolinxMatch) match).getExternalContentMatches() != null && ((AcrolinxMatch) match).getExternalContentMatches().size() > 0;
+                    if(!hasExternalContentMatches) {
                     if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get())) {
                         nodeAsXML.set(contentNode.getAsXMLFragment());
                         diffs.set(Lookup.getDiffs(currentDocumentContent, contentNode.getAsXMLFragment()));
@@ -160,8 +164,17 @@ public class LookupForResolvedEditorViews
                     Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
                             match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
                     // Diff xml fragment with node content fragment.
+
                     correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
-                            startOffset, textContent, rangeContent, range));
+                            startOffset , textContent, rangeContent,range));
+                    }
+                    if(hasExternalContentMatches) {
+                        ExternalContentMatch eC = ((AcrolinxMatch) match).getExternalContentMatches().get(0);
+
+                        diffXMLFragmentWithNodeContentFragment(match, contentNode,
+                                startOffset, textContent, rangeContent, eC.getRange());
+                    }
+
                 }
             }
         });
