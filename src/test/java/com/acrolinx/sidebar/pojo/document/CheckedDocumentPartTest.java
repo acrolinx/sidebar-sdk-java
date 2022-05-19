@@ -25,7 +25,7 @@ public class CheckedDocumentPartTest
                 new ArrayList<ExternalContentMatch>(Arrays.asList(reference1))));
 
         CheckedDocumentPart partWithExternalContent = new CheckedDocumentPart("id0", new IntRange(2, 3), externalContentMatches);
-        assertEquals("{checkId: \"id0\", range:[2,3], externalContentMatches:[{" +
+        assertEquals("{checkId: \"id0\", range:[2,3], externalContent:[{" +
                 "\"id\":\"overview.dita\"," +
                 "\"type\":\"ditaReferences\",\"originalBegin\":25,\"originalEnd\":35,\"externalContentMatches\":[{\"id\":\"chapter11.dita\",\"type\":\"ditaReferences\",\"originalBegin\":75,\"originalEnd\":90}]}]}", partWithExternalContent.getAsJS());
     }
