@@ -40,19 +40,15 @@ public class ExternalContentMatch {
 
     public IntRange getRange()
     {
-        final IntRange range = new IntRange(this.originalBegin, this.originalEnd);
-        return range;
+        return new IntRange(this.originalBegin, this.originalEnd);
     }
 
     public ExternalContentMatch setRange(final IntRange range)
     {
-        final int originalBegin = range.getMinimumInteger();
-        final int originalEnd = range.getMaximumInteger();
-
         if(this.externalContentMatches != null) {
-            return new ExternalContentMatch(this.id, this.type, originalBegin, originalEnd, this.getExternalContentMatches());
+            return new ExternalContentMatch(this.id, this.type, range.getMinimumInteger(), range.getMaximumInteger(), this.getExternalContentMatches());
         }
-        return new ExternalContentMatch(this.id, this.type, originalBegin, originalEnd);
+        return new ExternalContentMatch(this.id, this.type, range.getMinimumInteger(), range.getMaximumInteger());
     }
 
     public List<ExternalContentMatch> getExternalContentMatches() {
