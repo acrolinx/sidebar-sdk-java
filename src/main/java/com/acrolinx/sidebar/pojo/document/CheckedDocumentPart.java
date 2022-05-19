@@ -51,7 +51,7 @@ public class CheckedDocumentPart
     {
         if(externalContent != null) {
             return "{checkId: \"" + checkId + "\", range:[" + range.getMinimumInteger() + "," + range.getMaximumInteger()
-                    + "], externalContentMatches:" + externalContent.toString() + "}";
+                    + "], externalContent:" + externalContent.toString() + "}";
         }
         return "{checkId: \"" + checkId + "\", range:[" + range.getMinimumInteger() + "," + range.getMaximumInteger()
                 + "]}";
