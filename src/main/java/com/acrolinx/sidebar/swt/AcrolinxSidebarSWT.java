@@ -77,6 +77,10 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private final AtomicReference<String> currentlyCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocumentReference = new AtomicReference<>("");
+    private final AtomicReference<ExternalContent> lastCheckedExternalContent = new AtomicReference<>();
+
+    private final AtomicReference<ExternalContent> currentExternalContent = new AtomicReference<>();
+
     protected final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<Instant> checkStartTime = new AtomicReference<>();
@@ -350,6 +354,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         logger.debug("Request content JSON compatible: " + content);
 
         final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
+        currentExternalContent.set(externalContent);
         if (externalContent != null) {
             logger.debug("External Content: " + externalContent.toString());
         }
@@ -499,6 +504,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 currentCheckId.set(result.getCheckedDocumentPart().getCheckId());
                 lastCheckedDocumentReference.set(currentDocumentReference.get());
                 lastCheckedText.set(currentlyCheckedText.get());
+                lastCheckedExternalContent.set(currentExternalContent.get());
                 client.onCheckResult(result);
             }
         } catch (final Exception e) {
@@ -615,6 +621,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             return lastCheckedDocumentReference.get();
         }
         return null;
+    }
+
+    public ExternalContent getLastCheckedExternalContent()
+    {
+        return lastCheckedExternalContent.get();
     }
 
     @Override

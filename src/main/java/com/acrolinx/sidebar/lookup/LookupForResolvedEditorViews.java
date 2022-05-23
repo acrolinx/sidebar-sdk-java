@@ -156,17 +156,17 @@ public class LookupForResolvedEditorViews
                     // Try to lookup xml fragment in document.
                     boolean hasExternalContentMatches = (match instanceof  AcrolinxMatch) && ((AcrolinxMatch) match).getExternalContentMatches() != null && ((AcrolinxMatch) match).getExternalContentMatches().size() > 0;
                     if(!hasExternalContentMatches) {
-                    if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get())) {
-                        nodeAsXML.set(contentNode.getAsXMLFragment());
-                        diffs.set(Lookup.getDiffs(currentDocumentContent, contentNode.getAsXMLFragment()));
-                        offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
-                    }
-                    Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
-                            match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
-                    // Diff xml fragment with node content fragment.
+                        if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get())) {
+                            nodeAsXML.set(contentNode.getAsXMLFragment());
+                            diffs.set(Lookup.getDiffs(currentDocumentContent, contentNode.getAsXMLFragment()));
+                            offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
+                        }
+                        Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
+                                match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
+                        // Diff xml fragment with node content fragment.
 
-                    correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
-                            startOffset , textContent, rangeContent,range));
+                        correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
+                                startOffset , textContent, rangeContent,range));
                     }
                     if(hasExternalContentMatches) {
                         ExternalContentMatch eC = ((AcrolinxMatch) match).getExternalContentMatches().get(0);

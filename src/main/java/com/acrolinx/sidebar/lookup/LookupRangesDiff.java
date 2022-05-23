@@ -56,6 +56,7 @@ public class LookupRangesDiff extends LookupRanges
             if (!acrolinxMatch.hasExternalContentMatches())
                 return match;
 
+            //todo: this needs to become recursive for multiple levels of referenced content
             List<ExternalContentMatch> externalContentMatches = acrolinxMatch.getExternalContentMatches();
             List<ExternalContentMatch> correctedMatches = getExternalContentMatchesWithCorrectedRanges(externalContentMatches,
                     checkedExternalContent, changedExternalContent);
@@ -67,13 +68,12 @@ public class LookupRangesDiff extends LookupRanges
 
     public List<ExternalContentMatch> getExternalContentMatchesWithCorrectedRanges( List<ExternalContentMatch> matches, ExternalContent checkedText, ExternalContent changedText
                                                                                               ) {
-        List<ExternalContentField> checkedDitaReferences = checkedText.getDitaReferences();
-        List<ExternalContentField> changedDitaReferences = changedText.getDitaReferences();
-
+        List<ExternalContentField> checkedExternalContent = checkedText.getAll();
+        List<ExternalContentField> changedExternalContent = changedText.getAll();
 
         return matches.stream().map((match) -> {
-            Optional<ExternalContentField> optionalCheckedField = checkedDitaReferences.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
-            Optional<ExternalContentField> optionalChangedField = changedDitaReferences.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
+            Optional<ExternalContentField> optionalCheckedField = checkedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
+            Optional<ExternalContentField> optionalChangedField = changedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
 
             if(!optionalCheckedField.isPresent() || !optionalChangedField.isPresent()) return match;
 
@@ -93,6 +93,9 @@ public class LookupRangesDiff extends LookupRanges
             }
         }).collect(Collectors.toList());
     }
+
+ 
+
 
     public static Optional<Integer> getOffSetDiffStart(String originalVersion, String changedVersion,
             int offsetInOriginalVersion)
