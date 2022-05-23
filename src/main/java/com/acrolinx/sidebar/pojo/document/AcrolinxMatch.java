@@ -77,6 +77,10 @@ public class AcrolinxMatch extends AbstractMatch
         }
     }
 
+    public boolean hasExternalContentMatches () {
+        return this.externalContentMatches != null && this.getExternalContentMatches().size() > 0;
+    }
+
     public List<ExternalContentMatch> getExternalContentMatches() {
         return this.externalContentMatches;
     }
