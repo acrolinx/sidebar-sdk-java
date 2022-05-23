@@ -48,7 +48,9 @@ abstract class AcrolinxSidebarPlugin
     final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarPlugin.class);
     private final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocument = new AtomicReference<>("");
+    private final AtomicReference<ExternalContent> lastCheckedExternalContent = new AtomicReference<>();
     private final AtomicReference<String> currentlyCheckedDocument = new AtomicReference<>("");
+    private final AtomicReference<ExternalContent> currentlyCheckedExternalContent = new AtomicReference<>();
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<InputFormat> inputFormatRef = new AtomicReference<>();
     private final AtomicReference<String> lastCheckedDocumentReference = new AtomicReference<>("");
@@ -149,6 +151,8 @@ abstract class AcrolinxSidebarPlugin
                 checkContent.getExternalContent());
 
         currentlyCheckedDocument.set(checkContent.getContent());
+        currentlyCheckedExternalContent.set(checkContent.getExternalContent());
+
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 logger.info(checkOptions.toString());
@@ -187,6 +191,7 @@ abstract class AcrolinxSidebarPlugin
             currentCheckId.set(checkResult.getCheckedDocumentPart().getCheckId());
             lastCheckedDocumentReference.set(currentDocumentReference.get());
             lastCheckedDocument.set(currentlyCheckedDocument.get());
+            lastCheckedExternalContent.set(currentlyCheckedExternalContent.get());
             client.onCheckResult(checkResult);
         }
     }
@@ -297,6 +302,13 @@ abstract class AcrolinxSidebarPlugin
     {
         if ((this.lastCheckedDocument.get() != null) && !"".equals(this.lastCheckedDocument.get())) {
             return this.lastCheckedDocument.get();
+        }
+        return null;
+    }
+
+    public ExternalContent getLastCheckedExternalContent() {
+        if (this.lastCheckedExternalContent.get() != null) {
+            return this.lastCheckedExternalContent.get();
         }
         return null;
     }
