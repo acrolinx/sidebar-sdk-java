@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
+import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,9 +22,13 @@ public class MatchUtils
             String lastCheckedContent)
     {
         return list.stream().filter(m -> {
+            //todo: does the external content contain a tags that are not external content matches?
+            if ( (m instanceof AcrolinxMatch) && ((AcrolinxMatch) m).hasExternalContentMatches()) return true;
             String matchContent = lastCheckedContent.substring(m.getRange().getMinimumInteger(),
                     m.getRange().getMaximumInteger());
             logger.debug("Checking if match is a tag");
+
+
             boolean isTag = matchContent.matches("</?\\w+.*?>");
             logger.debug("Is match a tag: " + isTag);
             return !isTag;
@@ -31,20 +36,6 @@ public class MatchUtils
         }).collect(Collectors.toList());
     }
 
-    public static List<? extends AbstractMatch> filterDangerousMatchesAllowReferencedContent(List<? extends AbstractMatch> list,
-                                                                       String lastCheckedContent)
-    {
-        return list.stream().filter(m -> {
-            String matchContent = lastCheckedContent.substring(m.getRange().getMinimumInteger(),
-                    m.getRange().getMaximumInteger());
-            logger.debug("Checking if match is a tag");
-            boolean hasReferencedContent = (m instanceof AcrolinxMatch) && ((AcrolinxMatch) m).getExternalContentMatches() != null && ((AcrolinxMatch) m).getExternalContentMatches().size() > 0;
-            boolean isTag = matchContent.matches("</?\\w+.*?>");
-            logger.debug("Is match a tag: " + isTag);
-            return !isTag || hasReferencedContent;
-
-        }).collect(Collectors.toList());
-    }
 
     public static <T extends AbstractMatch> List<T> sortByOffsetDesc(final List<T> matches)
     {

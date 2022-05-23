@@ -4,7 +4,9 @@
 
 package com.acrolinx.sidebar.pojo.document.externalContent;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.google.gson.Gson;
 
@@ -39,6 +41,12 @@ public class ExternalContent
     public List<ExternalContentField> getDitaReferences()
     {
         return ditaReferences;
+    }
+
+    public List<ExternalContentField> getAll() {
+        List<ExternalContentField> emptyList =  new ArrayList<>();
+        Stream.of(textReplacements,entities,ditaReferences).forEach(emptyList::addAll);
+        return emptyList;
     }
 
     public String getContentForReference(String reference)
