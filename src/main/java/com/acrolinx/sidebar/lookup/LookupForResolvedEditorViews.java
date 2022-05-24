@@ -154,7 +154,7 @@ public class LookupForResolvedEditorViews
                     mappedRanges.add(match);
                 } else if (contentNode.getAsXMLFragment() != null) {
                     // Try to lookup xml fragment in document.
-                    boolean hasExternalContentMatches = (match instanceof  AcrolinxMatch) && ((AcrolinxMatch) match).getExternalContentMatches() != null && ((AcrolinxMatch) match).getExternalContentMatches().size() > 0;
+                    boolean hasExternalContentMatches = (match instanceof  AcrolinxMatch) && ((AcrolinxMatch) match).hasExternalContentMatches();
                     if(!hasExternalContentMatches) {
                         if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get())) {
                             nodeAsXML.set(contentNode.getAsXMLFragment());
@@ -168,11 +168,12 @@ public class LookupForResolvedEditorViews
                         correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
                                 startOffset , textContent, rangeContent,range));
                     }
-                    if(hasExternalContentMatches) {
-                        ExternalContentMatch eC = ((AcrolinxMatch) match).getExternalContentMatches().get(0);
+                    else {
+                        //todo: Is this get(0) ok?
+                        ExternalContentMatch externalContentMatch = ((AcrolinxMatch) match).getExternalContentMatches().get(0);
 
                         diffXMLFragmentWithNodeContentFragment(match, contentNode,
-                                startOffset, textContent, rangeContent, eC.getRange());
+                                startOffset, textContent, rangeContent, externalContentMatch.getRange());
                     }
 
                 }
