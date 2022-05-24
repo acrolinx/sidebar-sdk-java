@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.acrolinx.sidebar.localization.LocalizedStrings;
 import com.acrolinx.sidebar.localization.Localizer;
 import com.acrolinx.sidebar.utils.IconUtils;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 
@@ -190,6 +191,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             VBox messageContainer = new VBox();
             messageContainer.setAlignment(Pos.CENTER);
             messageContainer.getChildren().addAll(imageView, label);
+            messageContainer.setPadding(new Insets(0,defaultFont.getSize(),0, defaultFont.getSize()));
 
             scene.setRoot(messageContainer);
             setVisible(true);
