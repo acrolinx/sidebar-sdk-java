@@ -16,6 +16,7 @@ public class ExternalContentBuilder
     private List<ExternalContentField> textReplacements = new ArrayList<>();
     private List<ExternalContentField> entities = new ArrayList<>();
     private List<ExternalContentField> ditaReferences = new ArrayList<>();
+    private List<ExternalContentField> xincludeReferences = new ArrayList<>();
 
     public ExternalContentBuilder()
     {
@@ -88,13 +89,26 @@ public class ExternalContentBuilder
     }
 
     /**
+     * XInclude references
+     *
+     * @param id Key of referenced entity
+     * @param content Resolved content of entity
+     * @return ExternalContentBuilder
+     */
+    public ExternalContentBuilder addXIncludeReference(String id, String content)
+    {
+        this.xincludeReferences.add(new ExternalContentField(id, content));
+        return this;
+    }
+
+    /**
      * Get the external content object.
      *
      * @return ExternalContent
      */
     public ExternalContent build()
     {
-        return new ExternalContent(textReplacements, entities, ditaReferences);
+        return new ExternalContent(textReplacements, entities, ditaReferences, xincludeReferences);
 
     }
 
