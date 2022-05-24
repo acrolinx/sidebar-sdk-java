@@ -44,9 +44,9 @@ public class ExternalContent
     }
 
     public List<ExternalContentField> getAll() {
-        List<ExternalContentField> emptyList =  new ArrayList<>();
-        Stream.of(textReplacements,entities,ditaReferences).forEach(emptyList::addAll);
-        return emptyList;
+        List<ExternalContentField> flattenedList =  new ArrayList<>();
+        Stream.of(textReplacements,entities,ditaReferences).forEach(flattenedList::addAll);
+        return flattenedList;
     }
 
     public String getContentForReference(String reference)

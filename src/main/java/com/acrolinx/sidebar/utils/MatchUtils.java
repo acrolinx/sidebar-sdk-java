@@ -22,7 +22,7 @@ public class MatchUtils
             String lastCheckedContent)
     {
         return list.stream().filter(m -> {
-            //todo: does the external content contain a tags that are not external content matches?
+            //todo: does the external content contain tags that are not external content matches?
             if ( (m instanceof AcrolinxMatch) && ((AcrolinxMatch) m).hasExternalContentMatches()) return true;
             String matchContent = lastCheckedContent.substring(m.getRange().getMinimumInteger(),
                     m.getRange().getMaximumInteger());
