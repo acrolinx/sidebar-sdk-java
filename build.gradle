@@ -447,6 +447,6 @@ licenseMain.dependsOn copyServerSelectorRessources
 licenseTest.dependsOn checkLicenseHeaders
 jar.dependsOn 'downloadLicenses'
 jar.dependsOn createVersionPropertiesFile
-// check.dependsOn dependencyCheckAnalyze
+check.dependsOn dependencyCheckAnalyze
 test.dependsOn javadoc
 javadocJar.dependsOn javadoc
