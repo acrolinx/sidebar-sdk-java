@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Optional;
 
-import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
+import com.acrolinx.sidebar.utils.DiffMatchPatch;
 import org.junit.Test;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")

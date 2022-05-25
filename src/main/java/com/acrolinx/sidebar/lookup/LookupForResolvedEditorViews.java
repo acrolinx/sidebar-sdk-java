@@ -6,11 +6,13 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
@@ -152,16 +154,28 @@ public class LookupForResolvedEditorViews
                     mappedRanges.add(match);
                 } else if (contentNode.getAsXMLFragment() != null) {
                     // Try to lookup xml fragment in document.
-                    if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get())) {
-                        nodeAsXML.set(contentNode.getAsXMLFragment());
-                        diffs.set(Lookup.getDiffs(currentDocumentContent, contentNode.getAsXMLFragment()));
-                        offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
+                    boolean hasExternalContentMatches = (match instanceof  AcrolinxMatch) && ((AcrolinxMatch) match).hasExternalContentMatches();
+                    if(!hasExternalContentMatches) {
+                        if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get())) {
+                            nodeAsXML.set(contentNode.getAsXMLFragment());
+                            diffs.set(Lookup.getDiffs(currentDocumentContent, contentNode.getAsXMLFragment()));
+                            offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
+                        }
+                        Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
+                                match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
+                        // Diff xml fragment with node content fragment.
+
+                        correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
+                                startOffset , textContent, rangeContent,range));
                     }
-                    Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
-                            match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
-                    // Diff xml fragment with node content fragment.
-                    correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
-                            startOffset, textContent, rangeContent, range));
+                    else {
+                        //todo: Is this get(0) ok?
+                        ExternalContentMatch externalContentMatch = ((AcrolinxMatch) match).getExternalContentMatches().get(0);
+
+                        diffXMLFragmentWithNodeContentFragment(match, contentNode,
+                                startOffset, textContent, rangeContent, externalContentMatch.getRange());
+                    }
+
                 }
             }
         });

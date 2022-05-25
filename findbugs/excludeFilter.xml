@@ -22,4 +22,7 @@
             <Bug code="IJU" />
         </Not>
     </Match>
+    <Match>
+        <Class name="com.acrolinx.sidebar.utils.DiffMatchPatch" />
+    </Match>
 </FindBugsFilter>
