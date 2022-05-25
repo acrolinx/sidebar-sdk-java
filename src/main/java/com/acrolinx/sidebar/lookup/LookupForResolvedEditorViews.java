@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.acrolinx.sidebar.utils.DiffMatchPatch;
@@ -189,7 +189,7 @@ public class LookupForResolvedEditorViews
         List<DiffMatchPatch.Diff> diffsNode = Lookup.getDiffs(contentNode.getAsXMLFragment(), textContent);
         List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffsNode);
 
-        String rangeContentEscaped = StringEscapeUtils.escapeXml(rangeContent);
+        String rangeContentEscaped = StringEscapeUtils.escapeXml10(rangeContent);
         logger.debug("Range Content escaped:" + rangeContentEscaped);
         // Deal with HTML entity
         if (!rangeContent.equals(rangeContentEscaped) && match.getRange().getMaximumInteger()
@@ -208,7 +208,7 @@ public class LookupForResolvedEditorViews
             String textContent, String rangeContent, IntRange range, String rangeContentEscaped)
     {
         logger.debug("Has to find HTML entity " + rangeContentEscaped);
-        String cleanedAndEscapedTextContent = StringEscapeUtils.escapeXml(textContent).replace(whitespaceCharacter, "");
+        String cleanedAndEscapedTextContent = StringEscapeUtils.escapeXml10(textContent).replace(whitespaceCharacter, "");
 
         logger.debug("Cleaned and escaped Text Content:" + cleanedAndEscapedTextContent);
 
