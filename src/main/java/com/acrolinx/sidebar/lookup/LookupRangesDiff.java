@@ -12,11 +12,11 @@ import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentField;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
-import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 
 import com.acrolinx.sidebar.LookupRanges;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.IntRange;
+import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
 @SuppressWarnings("WeakerAccess")
 public class LookupRangesDiff extends LookupRanges
