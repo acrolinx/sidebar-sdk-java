@@ -47,7 +47,7 @@ public class LookupRangesDiff extends LookupRanges
         return Optional.of(Collections.unmodifiableList(returnValues));
     }
 
-    public List<? extends AbstractMatch> getMatchesWithCorrectedExternalMatches(List<? extends AbstractMatch> matches ,ExternalContent checkedExternalContent,ExternalContent changedExternalContent) {
+    public List<? extends AbstractMatch> getMatchesIncludingCorrectedExternalMatches(ExternalContent checkedExternalContent,ExternalContent changedExternalContent, List<? extends AbstractMatch> matches) {
         return matches.stream().map((match) -> {
             if (!(match instanceof AcrolinxMatch))
                 return match;
