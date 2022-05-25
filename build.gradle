@@ -40,7 +40,7 @@ sonarqube {
 	properties {
 		property "sonar.organization", "acrolinx"
 		property "sonar.projectKey", "acrolinx_sidebar-sdk-java"
-		property "sonar.exclusions", "src/test/**/*.java"
+		property "sonar.exclusions", "src/test/**/*.java, src/main/java/com/acrolinx/sidebar/utils/DiffMatchPatch.java"
 		property "sonar.host.url", "https://sonarcloud.io"
 	}
 }
