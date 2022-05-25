@@ -47,15 +47,13 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
             int maxRange = super.getExtractedRange().getMaximumInteger();
 
             if(this.getExternalContentMatches() != null) {
-                final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
-                return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(), replacement, externalContentMatches);
+                return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(), replacement, this.getExternalContentMatches());
             }
             return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(), replacement);
         }
 
         if(this.getExternalContentMatches() != null) {
-            final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
-            return new AcrolinxMatchWithReplacement(getContent(), range, replacement, externalContentMatches);
+            return new AcrolinxMatchWithReplacement(getContent(), range, replacement, this.getExternalContentMatches());
         }
         return new AcrolinxMatchWithReplacement(getContent(), range, replacement);
     }
@@ -70,15 +68,13 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
             int maxRange = super.getExtractedRange().getMaximumInteger();
 
             if(this.getExternalContentMatches() != null) {
-                final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
-                return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(), replacement, externalContentMatches);
+                return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(), replacement, this.getExternalContentMatches());
             }
             return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(), replacement);
         }
 
         if(this.getExternalContentMatches() != null) {
-            final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
-            return new AcrolinxMatchWithReplacement(getContent(), range, replacement, externalContentMatches);
+            return new AcrolinxMatchWithReplacement(getContent(), range, replacement, this.getExternalContentMatches());
         }
         return new AcrolinxMatchWithReplacement(getContent(), range, replacement);
     }
