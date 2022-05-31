@@ -202,7 +202,7 @@ public class LookupForResolvedEditorViews
     private int findFragmentEndOffsetInCurrentDocument(ContentNode contentNode, AbstractMatch match, String currentDocumentContent)
     {
         final int contentFragmentLength = contentNode.getAsXMLFragment().length();
-        final int matchEndOffset = match.getRange().getMinimumInteger();
+        final int matchEndOffset = match.getRange().getMaximumInteger();
 
         if (currentDocumentContent.length() > (matchEndOffset + contentFragmentLength)) {
             return matchEndOffset + contentFragmentLength;
