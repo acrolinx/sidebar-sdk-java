@@ -156,13 +156,20 @@ public class LookupForResolvedEditorViews
                     // Try to lookup xml fragment in document.
                     boolean hasExternalContentMatches = (match instanceof  AcrolinxMatch) && ((AcrolinxMatch) match).hasExternalContentMatches();
                     if(!hasExternalContentMatches) {
+                        final int fragmentStartOffsetInCurrentDocument = findFragmentStartOffsetInCurrentDocument(contentNode, match);
+                        final int fragmentEndOffsetInCurrentDocument = findFragmentEndOffsetInCurrentDocument(contentNode, match, currentDocumentContent);
+                        final String relativeFragment = currentDocumentContent.substring(fragmentStartOffsetInCurrentDocument, fragmentEndOffsetInCurrentDocument);
+
+
                         if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get())) {
                             nodeAsXML.set(contentNode.getAsXMLFragment());
-                            diffs.set(Lookup.getDiffs(currentDocumentContent, contentNode.getAsXMLFragment()));
+                            diffs.set(Lookup.getDiffs(relativeFragment, contentNode.getAsXMLFragment()));
                             offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
                         }
+
                         Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
-                                match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
+                                match.getRange().getMinimumInteger() - fragmentStartOffsetInCurrentDocument,
+                                match.getRange().getMaximumInteger() - fragmentStartOffsetInCurrentDocument);
                         // Diff xml fragment with node content fragment.
 
                         correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
@@ -179,6 +186,28 @@ public class LookupForResolvedEditorViews
                 }
             }
         });
+    }
+
+    private int findFragmentStartOffsetInCurrentDocument(ContentNode contentNode, AbstractMatch match)
+    {
+        final int contentFragmentLength = contentNode.getAsXMLFragment().length();
+        final int matchStartOffset = match.getRange().getMinimumInteger();
+
+        if (contentFragmentLength > matchStartOffset) {
+            return matchStartOffset - contentFragmentLength;
+        }
+        return matchStartOffset;
+    }
+
+    private int findFragmentEndOffsetInCurrentDocument(ContentNode contentNode, AbstractMatch match, String currentDocumentContent)
+    {
+        final int contentFragmentLength = contentNode.getAsXMLFragment().length();
+        final int matchEndOffset = match.getRange().getMinimumInteger();
+
+        if (currentDocumentContent.length() > (matchEndOffset + contentFragmentLength)) {
+            return matchEndOffset + contentFragmentLength;
+        }
+        return matchEndOffset;
     }
 
     private void diffXMLFragmentWithNodeContentFragment(AbstractMatch match, ContentNode contentNode, int startOffset,
