@@ -8,6 +8,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -190,6 +191,14 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
             return sidebarJFX.getLastCheckedDocument();
         }
         return "";
+    }
+
+    public ExternalContent getLastCheckedExternalContent()
+    {
+        if(sidebarJFX != null) {
+            return sidebarJFX.getLastCheckedExternalContent();
+        }
+        return null;
     }
 
     @Override
