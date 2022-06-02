@@ -5,6 +5,8 @@ package com.acrolinx.sidebar.utils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
+import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,15 +22,20 @@ public class MatchUtils
             String lastCheckedContent)
     {
         return list.stream().filter(m -> {
+            //todo: does the external content contain tags that are not external content matches?
+            if ( (m instanceof AcrolinxMatch) && ((AcrolinxMatch) m).hasExternalContentMatches()) return true;
             String matchContent = lastCheckedContent.substring(m.getRange().getMinimumInteger(),
                     m.getRange().getMaximumInteger());
             logger.debug("Checking if match is a tag");
+
+
             boolean isTag = matchContent.matches("</?\\w+.*?>");
             logger.debug("Is match a tag: " + isTag);
             return !isTag;
 
         }).collect(Collectors.toList());
     }
+
 
     public static <T extends AbstractMatch> List<T> sortByOffsetDesc(final List<T> matches)
     {

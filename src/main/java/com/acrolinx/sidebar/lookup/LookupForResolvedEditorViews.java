@@ -6,11 +6,13 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import org.apache.commons.lang3.StringUtils;
-import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
+import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
@@ -152,16 +154,28 @@ public class LookupForResolvedEditorViews
                     mappedRanges.add(match);
                 } else if (contentNode.getAsXMLFragment() != null) {
                     // Try to lookup xml fragment in document.
-                    if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get())) {
-                        nodeAsXML.set(contentNode.getAsXMLFragment());
-                        diffs.set(Lookup.getDiffs(currentDocumentContent, contentNode.getAsXMLFragment()));
-                        offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
+                    boolean hasExternalContentMatches = (match instanceof  AcrolinxMatch) && ((AcrolinxMatch) match).hasExternalContentMatches();
+                    if(!hasExternalContentMatches) {
+                        if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get())) {
+                            nodeAsXML.set(contentNode.getAsXMLFragment());
+                            diffs.set(Lookup.getDiffs(currentDocumentContent, contentNode.getAsXMLFragment()));
+                            offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
+                        }
+                        Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
+                                match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
+                        // Diff xml fragment with node content fragment.
+
+                        correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
+                                startOffset , textContent, rangeContent,range));
                     }
-                    Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
-                            match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
-                    // Diff xml fragment with node content fragment.
-                    correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
-                            startOffset, textContent, rangeContent, range));
+                    else {
+                        //todo: Is this get(0) ok?
+                        ExternalContentMatch externalContentMatch = ((AcrolinxMatch) match).getExternalContentMatches().get(0);
+
+                        diffXMLFragmentWithNodeContentFragment(match, contentNode,
+                                startOffset, textContent, rangeContent, externalContentMatch.getRange());
+                    }
+
                 }
             }
         });
@@ -175,7 +189,7 @@ public class LookupForResolvedEditorViews
         List<DiffMatchPatch.Diff> diffsNode = Lookup.getDiffs(contentNode.getAsXMLFragment(), textContent);
         List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffsNode);
 
-        String rangeContentEscaped = StringEscapeUtils.escapeXml(rangeContent);
+        String rangeContentEscaped = StringEscapeUtils.escapeXml10(rangeContent);
         logger.debug("Range Content escaped:" + rangeContentEscaped);
         // Deal with HTML entity
         if (!rangeContent.equals(rangeContentEscaped) && match.getRange().getMaximumInteger()
@@ -194,7 +208,7 @@ public class LookupForResolvedEditorViews
             String textContent, String rangeContent, IntRange range, String rangeContentEscaped)
     {
         logger.debug("Has to find HTML entity " + rangeContentEscaped);
-        String cleanedAndEscapedTextContent = StringEscapeUtils.escapeXml(textContent).replace(whitespaceCharacter, "");
+        String cleanedAndEscapedTextContent = StringEscapeUtils.escapeXml10(textContent).replace(whitespaceCharacter, "");
 
         logger.debug("Cleaned and escaped Text Content:" + cleanedAndEscapedTextContent);
 

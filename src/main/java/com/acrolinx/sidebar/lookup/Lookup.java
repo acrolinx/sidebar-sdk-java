@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
+import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
 import com.acrolinx.sidebar.pojo.document.IntRange;
 
@@ -68,9 +68,9 @@ public class Lookup
     public static List<DiffMatchPatch.Diff> getDiffs(String checkedText, String changedText)
     {
         DiffMatchPatch differ = new DiffMatchPatch();
-        differ.diffTimeout = 5;
-        LinkedList<DiffMatchPatch.Diff> diffs = differ.diffMain(checkedText, changedText);
-        differ.diffCleanupSemanticLossless(diffs);
+        differ.Diff_Timeout = 5;
+        LinkedList<DiffMatchPatch.Diff> diffs = differ.diff_main(checkedText, changedText);
+        differ.diff_cleanupSemanticLossless(diffs);
         return Collections.unmodifiableList(diffs);
     }
 
