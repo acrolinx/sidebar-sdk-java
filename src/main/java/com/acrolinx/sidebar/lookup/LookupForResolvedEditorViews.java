@@ -130,7 +130,9 @@ public class LookupForResolvedEditorViews
     private void lookupMatchInContentNode(LookupForResolvedViewsHelper utils, List<? extends AbstractMatch> matches,
             String currentDocumentContent)
     {
+
         AtomicReference<String> nodeAsXML = new AtomicReference<>();
+        AtomicReference<String> oldRelativFragment = new AtomicReference<>();
         AtomicReference<List<DiffMatchPatch.Diff>> diffs = new AtomicReference<>();
         AtomicReference<List<OffsetAlign>> offsetAligns = new AtomicReference<>();
 
@@ -161,7 +163,8 @@ public class LookupForResolvedEditorViews
                         final String relativeFragment = currentDocumentContent.substring(fragmentStartOffsetInCurrentDocument, fragmentEndOffsetInCurrentDocument);
 
 
-                        if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get())) {
+                        if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get()) || !relativeFragment.equalsIgnoreCase(oldRelativFragment.get())) {
+                            oldRelativFragment.set(relativeFragment);
                             nodeAsXML.set(contentNode.getAsXMLFragment());
                             diffs.set(Lookup.getDiffs(relativeFragment, contentNode.getAsXMLFragment()));
                             offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
@@ -193,7 +196,7 @@ public class LookupForResolvedEditorViews
         final int contentFragmentLength = contentNode.getAsXMLFragment().length();
         final int matchStartOffset = match.getRange().getMinimumInteger();
 
-        if (contentFragmentLength > matchStartOffset) {
+        if (contentFragmentLength < matchStartOffset) {
             return matchStartOffset - contentFragmentLength;
         }
         return matchStartOffset;
