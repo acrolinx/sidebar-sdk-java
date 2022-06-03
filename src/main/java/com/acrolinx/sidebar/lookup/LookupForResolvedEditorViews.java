@@ -166,7 +166,7 @@ public class LookupForResolvedEditorViews
                         if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get()) || !relativeFragment.equalsIgnoreCase(oldRelativFragment.get())) {
                             oldRelativFragment.set(relativeFragment);
                             nodeAsXML.set(contentNode.getAsXMLFragment());
-                            diffs.set(Lookup.getDiffs(relativeFragment, contentNode.getAsXMLFragment()));
+                            diffs.set(Lookup.getDiffs(relativeFragment, nodeAsXML.get()));
                             offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
                         }
 
@@ -199,7 +199,7 @@ public class LookupForResolvedEditorViews
         if (contentFragmentLength < matchStartOffset) {
             return matchStartOffset - contentFragmentLength;
         }
-        return matchStartOffset;
+        return 0;
     }
 
     private int findFragmentEndOffsetInCurrentDocument(ContentNode contentNode, AbstractMatch match, String currentDocumentContent)
@@ -210,7 +210,7 @@ public class LookupForResolvedEditorViews
         if (currentDocumentContent.length() > (matchEndOffset + contentFragmentLength)) {
             return matchEndOffset + contentFragmentLength;
         }
-        return matchEndOffset;
+        return currentDocumentContent.length();
     }
 
     private void diffXMLFragmentWithNodeContentFragment(AbstractMatch match, ContentNode contentNode, int startOffset,
