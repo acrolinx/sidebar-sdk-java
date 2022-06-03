@@ -130,7 +130,9 @@ public class LookupForResolvedEditorViews
     private void lookupMatchInContentNode(LookupForResolvedViewsHelper utils, List<? extends AbstractMatch> matches,
             String currentDocumentContent)
     {
+
         AtomicReference<String> nodeAsXML = new AtomicReference<>();
+        AtomicReference<String> oldRelativFragment = new AtomicReference<>();
         AtomicReference<List<DiffMatchPatch.Diff>> diffs = new AtomicReference<>();
         AtomicReference<List<OffsetAlign>> offsetAligns = new AtomicReference<>();
 
@@ -156,13 +158,21 @@ public class LookupForResolvedEditorViews
                     // Try to lookup xml fragment in document.
                     boolean hasExternalContentMatches = (match instanceof  AcrolinxMatch) && ((AcrolinxMatch) match).hasExternalContentMatches();
                     if(!hasExternalContentMatches) {
-                        if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get())) {
+                        final int fragmentStartOffsetInCurrentDocument = findFragmentStartOffsetInCurrentDocument(contentNode, match);
+                        final int fragmentEndOffsetInCurrentDocument = findFragmentEndOffsetInCurrentDocument(contentNode, match, currentDocumentContent);
+                        final String relativeFragment = currentDocumentContent.substring(fragmentStartOffsetInCurrentDocument, fragmentEndOffsetInCurrentDocument);
+
+
+                        if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get()) || !relativeFragment.equalsIgnoreCase(oldRelativFragment.get())) {
+                            oldRelativFragment.set(relativeFragment);
                             nodeAsXML.set(contentNode.getAsXMLFragment());
-                            diffs.set(Lookup.getDiffs(currentDocumentContent, contentNode.getAsXMLFragment()));
+                            diffs.set(Lookup.getDiffs(relativeFragment, nodeAsXML.get()));
                             offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
                         }
+
                         Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
-                                match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
+                                match.getRange().getMinimumInteger() - fragmentStartOffsetInCurrentDocument,
+                                match.getRange().getMaximumInteger() - fragmentStartOffsetInCurrentDocument);
                         // Diff xml fragment with node content fragment.
 
                         correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
@@ -179,6 +189,28 @@ public class LookupForResolvedEditorViews
                 }
             }
         });
+    }
+
+    private int findFragmentStartOffsetInCurrentDocument(ContentNode contentNode, AbstractMatch match)
+    {
+        final int contentFragmentLength = contentNode.getAsXMLFragment().length();
+        final int matchStartOffset = match.getRange().getMinimumInteger();
+
+        if (contentFragmentLength < matchStartOffset) {
+            return matchStartOffset - contentFragmentLength;
+        }
+        return 0;
+    }
+
+    private int findFragmentEndOffsetInCurrentDocument(ContentNode contentNode, AbstractMatch match, String currentDocumentContent)
+    {
+        final int contentFragmentLength = contentNode.getAsXMLFragment().length();
+        final int matchEndOffset = match.getRange().getMaximumInteger();
+
+        if (currentDocumentContent.length() > (matchEndOffset + contentFragmentLength)) {
+            return matchEndOffset + contentFragmentLength;
+        }
+        return currentDocumentContent.length();
     }
 
     private void diffXMLFragmentWithNodeContentFragment(AbstractMatch match, ContentNode contentNode, int startOffset,

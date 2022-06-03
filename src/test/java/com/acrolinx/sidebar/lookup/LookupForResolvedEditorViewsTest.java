@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -621,4 +622,73 @@ public class LookupForResolvedEditorViewsTest
 
     }
 
+    /***
+     * This test covers the rare edge case where the contentnode's content appears twice in the document
+     * and the matchcontent also appears once in referenced content.
+     */
+    @Test
+    public void testLookupOnFileWithRepeatedSameContentAndReferences()
+    {
+        final String matchContent = "mistaake";
+        final String contentNodeString = " "+matchContent+" "+matchContent;
+        final String contentNodeXMLString = "<p>"+contentNodeString+"</p>";
+
+        final String authorViewContentBeforeContentNodeString = "Instructions for Authors.\n"
+                +" " +matchContent+"\n"
+                +contentNodeString+"\n";
+        final String authorViewContent = authorViewContentBeforeContentNodeString + contentNodeString;
+
+        final String documentContentBeforeContentNode = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<!DOCTYPE topic PUBLIC \"-//OASIS//DTD DITA Topic//EN\" \"topic.dtd\">\n"
+                + "<topic id=\"topic_icd_txy_3db\">\n" + "<title>Instructions for Authors.</title>\n"
+                + "    <body>\n<p conref=\"mistake-conref\"/>"+contentNodeXMLString;
+        final String documentContentAfterContentNode = "    </body>\n" + "</topic>\n";
+        final String documentContent = documentContentBeforeContentNode + contentNodeXMLString +documentContentAfterContentNode;
+        ContentNode contentNode = new ContentNode() {
+            @Override
+            public int getStartOffset()
+            {
+                return authorViewContentBeforeContentNodeString.length();
+            }
+
+            @Override
+            public int getEndOffset()
+            {
+                return authorViewContentBeforeContentNodeString.length() + contentNodeString.length();
+            }
+
+            @Override
+            public String getContent()
+            {
+                return contentNodeString;
+            }
+
+            @Override
+            public String getAsXMLFragment()
+            {
+                return contentNodeXMLString;
+            }
+        };
+
+        Assert.assertTrue(
+                authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()).equalsIgnoreCase(
+                        contentNode.getContent()));
+
+          ArrayList<AcrolinxMatch> matches = new ArrayList<>();
+
+        int pTagAndWhiteSpace = 4;
+        matches.add(new AcrolinxMatch(new IntRange(documentContentBeforeContentNode.length()+pTagAndWhiteSpace, documentContentBeforeContentNode.length()+pTagAndWhiteSpace+matchContent.length()), matchContent));
+
+        LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+                documentContent, authorViewContent, offset -> contentNode);
+
+        Assert.assertTrue(abstractMatches.isPresent());
+        AbstractMatch onlyMatch = abstractMatches.get().get(0);
+        Assert.assertEquals(onlyMatch.getContent(),authorViewContent.substring(onlyMatch.getRange().getMinimumInteger(),
+                onlyMatch.getRange().getMaximumInteger()));
+        Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1,onlyMatch.getRange().getMinimumInteger());
+        Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1+matchContent.length(),onlyMatch.getRange().getMaximumInteger());
+
+    }
 }
