@@ -140,7 +140,8 @@ public class AcrolinxMultiViewSidebarSWT
     }
 
     /**
-     * Creates default empty view with CLabel informing the user about having to open a file before being able to interact with acrolinx
+     * Creates default empty view with CLabel informing the user about having to open a file
+     * before being able to interact with acrolinx
      */
     private void createDefaultSidebar() {
         noFileOpenedLabel = new CLabel (this.container, SWT.WRAP);
