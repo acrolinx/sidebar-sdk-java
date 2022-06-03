@@ -623,8 +623,8 @@ public class LookupForResolvedEditorViewsTest
     }
 
     /***
-     * This tests the rare edge case were the contented node paragraph appears twice in the document
-     * and the word count of the match is confused by the matchContent also appearing through referenced content.
+     * This tests the rare edge case where the contentnode's content appears twice in the document
+     * and the matchcontent also appears once in referenced content.
      */
     @Test
     public void testLookupOnFileWithRepeatedSameContentAndReferences()
