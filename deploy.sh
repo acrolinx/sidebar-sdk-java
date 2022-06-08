@@ -22,7 +22,7 @@ getProperty()
 PROJECT_VERSION=$(getProperty "currentVersion")
 echo "Current Version: $PROJECT_VERSION"
 
-if [[ "$PROJECT_VERSION" == *"SNAPSHOT"* ]]; then
+if ! [[ "$PROJECT_VERSION" =~ ^[0-9]+((.[0-9]+)?)+$ ]]; then
     echo "Publishing snapshot version to snapshot repo..."
     if ./gradlew publishToSonatype; then
         echo "Published snapshot version to snapshot repo..."
