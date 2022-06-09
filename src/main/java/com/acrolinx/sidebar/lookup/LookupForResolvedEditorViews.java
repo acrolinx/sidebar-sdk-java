@@ -181,9 +181,14 @@ public class LookupForResolvedEditorViews
                     else {
                         //todo: Is this get(0) ok?
                         ExternalContentMatch externalContentMatch = ((AcrolinxMatch) match).getExternalContentMatches().get(0);
+                        IntRange range = externalContentMatch.getRange();
+                        while (externalContentMatch.getExternalContentMatches().size() > 0) {
+                            externalContentMatch = externalContentMatch.getExternalContentMatches().get(0);
+                            range = new IntRange(range.getMinimumInteger() + externalContentMatch.getRange().getMinimumInteger(), range.getMinimumInteger() + externalContentMatch.getRange().getMaximumInteger());
+                        }
 
                         diffXMLFragmentWithNodeContentFragment(match, contentNode,
-                                startOffset, textContent, rangeContent, externalContentMatch.getRange());
+                                startOffset, textContent, rangeContent, range);
                     }
 
                 }
