@@ -58,6 +58,7 @@ public class LookupRangesDiff extends LookupRanges
 
             //todo: this needs to become recursive for multiple levels of referenced content
             List<ExternalContentMatch> externalContentMatches = acrolinxMatch.getExternalContentMatches();
+
             List<ExternalContentMatch> correctedMatches = getExternalContentMatchesWithCorrectedRanges(externalContentMatches,
                     checkedExternalContent, changedExternalContent);
 
@@ -72,26 +73,37 @@ public class LookupRangesDiff extends LookupRanges
         List<ExternalContentField> changedExternalContent = changedText.getAll();
 
         return matches.stream().map((match) -> {
-            Optional<ExternalContentField> optionalCheckedField = checkedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
-            Optional<ExternalContentField> optionalChangedField = changedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
 
-            if(!optionalCheckedField.isPresent() || !optionalChangedField.isPresent()) return match;
-
-            ExternalContentField checkedField = optionalCheckedField.get();
-            ExternalContentField changedField = optionalChangedField.get();
-
-            List<DiffMatchPatch.Diff> diffs = Lookup.getDiffs(checkedField.getContent(), changedField.getContent());
-            List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffs);
-
-            Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs, offsetMappingArray,
-                    match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
-
-            if (correctedMatch.isPresent()) {
-                return match.setRange(correctedMatch.get());
-            } else {
-                return match;
+            if(match.getExternalContentMatches().size() > 0) {
+               List<ExternalContentMatch> newMatches = getExternalContentMatchesWithCorrectedRanges(match.getExternalContentMatches(),checkedText,changedText);
+               match.setExternalContentMatches(newMatches);
             }
+
+            return adJustMatch(match,checkedExternalContent,changedExternalContent);
+
         }).collect(Collectors.toList());
+    }
+
+    public ExternalContentMatch adJustMatch(ExternalContentMatch match, List<ExternalContentField> checkedExternalContent,List<ExternalContentField> changedExternalContent) {
+        Optional<ExternalContentField> optionalCheckedField = checkedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
+        Optional<ExternalContentField> optionalChangedField = changedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
+
+        if(!optionalCheckedField.isPresent() || !optionalChangedField.isPresent()) return match;
+
+        ExternalContentField checkedField = optionalCheckedField.get();
+        ExternalContentField changedField = optionalChangedField.get();
+
+        List<DiffMatchPatch.Diff> diffs = Lookup.getDiffs(checkedField.getContent(), changedField.getContent());
+        List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffs);
+
+        Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs, offsetMappingArray,
+                match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
+
+        if (correctedMatch.isPresent()) {
+            return match.setRange(correctedMatch.get());
+        } else {
+            return match;
+        }
     }
 
  

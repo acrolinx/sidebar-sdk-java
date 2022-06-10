@@ -55,6 +55,10 @@ public class ExternalContentMatch {
         return externalContentMatches;
     }
 
+    public void setExternalContentMatches( List<ExternalContentMatch> newList) {
+        externalContentMatches = newList;
+    }
+
     @Override
     public String toString()
     {
