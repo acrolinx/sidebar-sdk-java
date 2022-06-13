@@ -17,10 +17,13 @@ import com.acrolinx.sidebar.LookupRanges;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.utils.DiffMatchPatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("WeakerAccess")
 public class LookupRangesDiff extends LookupRanges
 {
+   private Logger logger = LoggerFactory.getLogger(LookupRangesDiff.class);
 
     @Override
     public Optional<List<? extends AbstractMatch>> getMatchesWithCorrectedRanges(String checkedText, String changedText,
@@ -56,7 +59,6 @@ public class LookupRangesDiff extends LookupRanges
             if (!acrolinxMatch.hasExternalContentMatches())
                 return match;
 
-            //todo: this needs to become recursive for multiple levels of referenced content
             List<ExternalContentMatch> externalContentMatches = acrolinxMatch.getExternalContentMatches();
 
             List<ExternalContentMatch> correctedMatches = getExternalContentMatchesWithCorrectedRanges(externalContentMatches,
@@ -102,6 +104,7 @@ public class LookupRangesDiff extends LookupRanges
         if (correctedMatch.isPresent()) {
             return match.setRange(correctedMatch.get());
         } else {
+            logger.warn("Could not adjust external Content Match");
             return match;
         }
     }

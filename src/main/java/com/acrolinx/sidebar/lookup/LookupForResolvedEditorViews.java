@@ -162,9 +162,8 @@ public class LookupForResolvedEditorViews
                 if (xmlTree.getUnresolvedContent() == "") return;
                 String contentNodeXMLString;
                     // Try to lookup xml fragment in document.
-                boolean hasExternalContentMatches = (match instanceof  AcrolinxMatch) && ((AcrolinxMatch) match).hasExternalContentMatches();
                 Optional<IntRange> correctedMatchRange;
-                if(!hasExternalContentMatches) {
+                if(!match.hasExternalContentMatches()) {
                     contentNodeXMLString = xmlTree.getUnresolvedContent();
                     final int fragmentStartOffsetInCurrentDocument = findFragmentStartOffsetInCurrentDocument(contentNodeXMLString, match);
                     final int fragmentEndOffsetInCurrentDocument = findFragmentEndOffsetInCurrentDocument(contentNodeXMLString, match, currentDocumentContent);
@@ -193,7 +192,7 @@ public class LookupForResolvedEditorViews
         });
     }
 
-    private Optional<IntRange> calcCorrectedMatch(AcrolinxMatch match, ReferenceTreeNode xmlTree) {
+    private Optional<IntRange> calcCorrectedMatch(AbstractMatch match, ReferenceTreeNode xmlTree) {
         if(!match.hasExternalContentMatches()) {
             logger.error("calcCorrectedMatch was called despite match not having ExternalContentMatches");
             return Optional.empty();
@@ -205,26 +204,27 @@ public class LookupForResolvedEditorViews
         ExternalContentMatch nextExternalContentMatch = match.getExternalContentMatches().get(0);
         IntRange externalContentRange = nextExternalContentMatch.getRange();
         int totalDelta = 0;
-        ReferenceTreeNode referencedContentContextNode = xmlTree.referenceChildren.get(0);
+        ReferenceTreeNode referencedContentTreeNode = xmlTree.referenceChildren.get(0);
 
-        while(referencedContentContextNode != null && nextExternalContentMatch != null) {
+        while(referencedContentTreeNode != null && nextExternalContentMatch != null) {
             externalContentRange = nextExternalContentMatch.getRange();
             int externalContentRangeMinimum = externalContentRange.getMinimumInteger();
-            List<ReferenceTreeNode> referenceChildren = referencedContentContextNode.referenceChildren;
+            List<ReferenceTreeNode> referenceChildren = referencedContentTreeNode.referenceChildren;
 
             for(int i = 0; i < referenceChildren.size() && externalContentRangeMinimum > referenceChildren.get(i).getStartOffsetInParent(); i++) {
-                ReferenceTreeNode child = referencedContentContextNode.referenceChildren.get(i);
+                ReferenceTreeNode child = referencedContentTreeNode.referenceChildren.get(i);
                 int referenceTagLength = child.getReferencingTag().length();
                 int resolvedContentLength = child.getResolvedContent().length();
                 int delta = resolvedContentLength-referenceTagLength;
                 totalDelta += delta;
             }
+
             totalDelta += externalContentRangeMinimum;
 
             if (nextExternalContentMatch.getExternalContentMatches().size() > 0) {
                 Optional<ReferenceTreeNode> optionalReferenceTreeNode = referenceChildren.stream().filter( n -> n.getStartOffsetInParent() == externalContentRangeMinimum).findFirst();
                 if(optionalReferenceTreeNode.isPresent()) {
-                    referencedContentContextNode = optionalReferenceTreeNode.get();
+                    referencedContentTreeNode = optionalReferenceTreeNode.get();
                 } else {
                     return Optional.empty();
                 }
