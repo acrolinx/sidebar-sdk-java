@@ -155,7 +155,7 @@ abstract class AcrolinxSidebarPlugin
 
         JFXUtils.invokeInJFXThread(() -> {
             try {
-                logger.info(checkOptions.toString());
+                logger.debug(checkOptions.toString());
                 final String nameVariableCheckText = "checkText";
                 final JSObject jsObject = getWindowObject();
                 jsObject.setMember(nameVariableCheckText, checkContent.getContent());
