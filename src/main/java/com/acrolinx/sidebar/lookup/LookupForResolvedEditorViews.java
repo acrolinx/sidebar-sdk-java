@@ -124,7 +124,7 @@ public class LookupForResolvedEditorViews
                     + ("".equals(match.getContent()) || match.getContent().equalsIgnoreCase(" ")));
             boolean matchLineBreakOrTab = match.getContent().matches("[\\n\\r\\t]+");
             logger.debug("match content is linebreak or tab? " + matchLineBreakOrTab);
-            return (("".equals(match.getContent()) || match.getContent().equals(" ") || matchLineBreakOrTab) && ignore);
+            return (("".equals(match.getContent()) || match.getContent().equals(" ")  || matchLineBreakOrTab) && ignore);
         }).collect(Collectors.toList());
     }
 
@@ -148,7 +148,7 @@ public class LookupForResolvedEditorViews
             logger.debug("Get node startOffset: " + contentNode.getStartOffset());
             String textContent = contentNode.getContent();
             String rangeContent = match.getContent();
-            if (StringUtils.countMatches(textContent, rangeContent) == 1) {
+            if (StringUtils.countMatches(textContent, rangeContent) == 1 && (!match.hasExternalContentMatches() || match.getExternalContentMatches().size() < 2)) {
                 int i = textContent.indexOf(rangeContent);
                 AbstractMatch copy = match.setRange(
                         new IntRange(startOffset + i, startOffset + i + rangeContent.length()));
@@ -377,20 +377,21 @@ public class LookupForResolvedEditorViews
             String resolvedViewContent)
     {
         matches.forEach(match -> {
-            if (match.getContent().length() > 1) {
-                String contentUpToMatch = currentDocumentContent.substring(0,
-                        match.getRange().getMaximumInteger()).replaceAll("</?\\w+.*?>", "");
-                int occurrence = StringUtils.countMatches(contentUpToMatch, match.getContent());
-                int ordinalIndex = StringUtils.ordinalIndexOf(resolvedViewContent, match.getContent(), occurrence);
+            if (match.getContent().length() <= 0) return;
+            if (match.hasExternalContentMatches()) return;
 
-                if (ordinalIndex > 0) {
-                    AbstractMatch copy = match.setRange(
-                            new IntRange(ordinalIndex, ordinalIndex + match.getContent().length()));
-                    logForDebugFoundContent(match);
-                    logForDebugCurrentRanges(copy);
-                    newRanges.add(copy);
-                    mappedRanges.add(match);
-                }
+            String contentUpToMatch = currentDocumentContent.substring(0,
+                    match.getRange().getMaximumInteger()).replaceAll("</?\\w+.*?>", "");
+            int occurrence = StringUtils.countMatches(contentUpToMatch, match.getContent());
+            int ordinalIndex = StringUtils.ordinalIndexOf(resolvedViewContent, match.getContent(), occurrence);
+
+            if (ordinalIndex > 0) {
+                AbstractMatch copy = match.setRange(
+                        new IntRange(ordinalIndex, ordinalIndex + match.getContent().length()));
+                logForDebugFoundContent(match);
+                logForDebugCurrentRanges(copy);
+                newRanges.add(copy);
+                mappedRanges.add(match);
             }
         });
     }
