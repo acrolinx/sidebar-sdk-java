@@ -228,7 +228,6 @@ public class LookupForResolvedEditorViews
                 } else {
                     return Optional.empty();
                 }
-                //todo: Is this get(0) ok?
                 nextExternalContentMatch = nextExternalContentMatch.getExternalContentMatches().get(0);
             } else {
                 nextExternalContentMatch = null;
