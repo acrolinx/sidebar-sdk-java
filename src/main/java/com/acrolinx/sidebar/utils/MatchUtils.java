@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.acrolinx.sidebar.pojo.document.ExternalAbstractMatch;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentField;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import org.slf4j.Logger;
@@ -31,8 +32,8 @@ public class MatchUtils
     {
         return list.stream().filter(m -> {
             //todo: does the external content contain tags that are not external content matches?
-            if (m.hasExternalContentMatches()) {
-                return isExternalContentMatchAXMLTag(m,lastCheckedExternalContent);
+            if (m instanceof ExternalAbstractMatch && ((ExternalAbstractMatch) m).hasExternalContentMatches()) {
+                return isExternalContentMatchAXMLTag((ExternalAbstractMatch) m,lastCheckedExternalContent);
             }
             String matchContent = lastCheckedContent.substring(m.getRange().getMinimumInteger(),
                     m.getRange().getMaximumInteger());
@@ -45,7 +46,7 @@ public class MatchUtils
         }).collect(Collectors.toList());
     }
 
-    public static boolean isExternalContentMatchAXMLTag(AbstractMatch match, List<ExternalContentField> lastCheckedExternalContent) {
+    public static boolean isExternalContentMatchAXMLTag(ExternalAbstractMatch match, List<ExternalContentField> lastCheckedExternalContent) {
         ExternalContentMatch externalContentMatch = match.getExternalContentMatches().get(0);
         while (externalContentMatch.getExternalContentMatches().size() > 0) {
             externalContentMatch = externalContentMatch.getExternalContentMatches().get(0);

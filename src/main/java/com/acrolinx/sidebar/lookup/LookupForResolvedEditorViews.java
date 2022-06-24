@@ -7,17 +7,13 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
+import com.acrolinx.sidebar.pojo.document.*;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.acrolinx.sidebar.utils.DiffMatchPatch;
-
-import com.acrolinx.sidebar.pojo.document.AbstractMatch;
-import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
-import com.acrolinx.sidebar.pojo.document.IntRange;
 
 @SuppressWarnings("WeakerAccess")
 public class LookupForResolvedEditorViews
@@ -148,7 +144,7 @@ public class LookupForResolvedEditorViews
             logger.debug("Get node startOffset: " + contentNode.getStartOffset());
             String textContent = contentNode.getContent();
             String rangeContent = match.getContent();
-            if (StringUtils.countMatches(textContent, rangeContent) == 1 && (!match.hasExternalContentMatches() || match.getExternalContentMatches().size() < 2)) {
+            if (StringUtils.countMatches(textContent, rangeContent) == 1 && (!(match instanceof ExternalAbstractMatch) ||!((ExternalAbstractMatch) match).hasExternalContentMatches() || ((ExternalAbstractMatch) match).getExternalContentMatches().size() < 2)) {
                 int i = textContent.indexOf(rangeContent);
                 AbstractMatch copy = match.setRange(
                         new IntRange(startOffset + i, startOffset + i + rangeContent.length()));
@@ -160,7 +156,7 @@ public class LookupForResolvedEditorViews
                 String contentNodeXMLString;
                     // Try to lookup xml fragment in document.
                 Optional<IntRange> correctedMatchRange;
-                if(!match.hasExternalContentMatches()) {
+                if(match instanceof ExternalAbstractMatch && !((ExternalAbstractMatch) match).hasExternalContentMatches()) {
                     contentNodeXMLString = contentNode.getAsXMLFragment();
                     if (contentNodeXMLString == "") return;
                     final int fragmentStartOffsetInCurrentDocument = findFragmentStartOffsetInCurrentDocument(contentNodeXMLString, match);
@@ -182,7 +178,7 @@ public class LookupForResolvedEditorViews
                    if (contentNode instanceof ExternalContentNode) {
                        ReferenceTreeNode xmlTree = ((ExternalContentNode) contentNode).getReferenceTree();
                        contentNodeXMLString = xmlTree.getResolvedContent();
-                       correctedMatchRange = calcCorrectedMatch(match,xmlTree);
+                       correctedMatchRange = calcCorrectedMatch((ExternalAbstractMatch) match,xmlTree);
                    } else {
                        logger.error("Match has external content, but ContentNode is not of type ExternalContentNode");
                        return;
@@ -196,7 +192,13 @@ public class LookupForResolvedEditorViews
         });
     }
 
-    private Optional<IntRange> calcCorrectedMatch(AbstractMatch match, ReferenceTreeNode xmlTree) {
+    /**
+     *  Calcs Match offset as when the match and external content would just be part of the document
+     * @param match
+     * @param xmlTree
+     * @return
+     */
+    private Optional<IntRange> calcCorrectedMatch(ExternalAbstractMatch match, ReferenceTreeNode xmlTree) {
         if(!match.hasExternalContentMatches()) {
             logger.error("calcCorrectedMatch was called despite match not having ExternalContentMatches");
             return Optional.empty();
@@ -381,7 +383,7 @@ public class LookupForResolvedEditorViews
     {
         matches.forEach(match -> {
             if (match.getContent().length() <= 0) return;
-            if (match.hasExternalContentMatches()) return;
+            if (match instanceof ExternalAbstractMatch && ((ExternalAbstractMatch) match).hasExternalContentMatches()) return;
 
             String contentUpToMatch = currentDocumentContent.substring(0,
                     match.getRange().getMaximumInteger()).replaceAll("</?\\w+.*?>", "");
