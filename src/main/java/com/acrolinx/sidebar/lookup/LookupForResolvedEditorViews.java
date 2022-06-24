@@ -156,9 +156,9 @@ public class LookupForResolvedEditorViews
                 String contentNodeXMLString;
                     // Try to lookup xml fragment in document.
                 Optional<IntRange> correctedMatchRange;
-                if(match instanceof ExternalAbstractMatch && !((ExternalAbstractMatch) match).hasExternalContentMatches()) {
+                if(!(match instanceof ExternalAbstractMatch) || !((ExternalAbstractMatch) match).hasExternalContentMatches()) {
                     contentNodeXMLString = contentNode.getAsXMLFragment();
-                    if (contentNodeXMLString == "") return;
+                    if (contentNodeXMLString == "" || contentNodeXMLString == null) return;
                     final int fragmentStartOffsetInCurrentDocument = findFragmentStartOffsetInCurrentDocument(contentNodeXMLString, match);
                     final int fragmentEndOffsetInCurrentDocument = findFragmentEndOffsetInCurrentDocument(contentNodeXMLString, match, currentDocumentContent);
                     final String relativeFragment = currentDocumentContent.substring(fragmentStartOffsetInCurrentDocument, fragmentEndOffsetInCurrentDocument);

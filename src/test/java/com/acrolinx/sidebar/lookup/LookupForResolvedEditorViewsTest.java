@@ -108,13 +108,9 @@ public class LookupForResolvedEditorViewsTest
                     }
 
                     @Override
-                    public ReferenceTreeNode getAsXMLFragment()
+                    public String getAsXMLFragment()
                     {
-                        ReferenceTreeNode referenceTreeNode = new ReferenceTreeNode();
-                        String content =  "<p><b>a</b> <u>apple</u></p>";
-                        referenceTreeNode.setResolvedContent(content);
-                        referenceTreeNode.setUnresolvedContent(content);
-                        return referenceTreeNode;
+                        return "<p><b>a</b> <u>apple</u></p>";
                     }
                 });
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
@@ -176,12 +172,9 @@ public class LookupForResolvedEditorViewsTest
                     }
 
                     @Override
-                    public ReferenceTreeNode getAsXMLFragment()
+                    public String getAsXMLFragment()
                     {
-                        ReferenceTreeNode referenceTreeNode = new ReferenceTreeNode();
-                        referenceTreeNode.setUnresolvedContent("");
-                        referenceTreeNode.setResolvedContent("");
-                        return referenceTreeNode;
+                        return "";
                     }
                 });
 
@@ -227,11 +220,9 @@ public class LookupForResolvedEditorViewsTest
                     }
 
                     @Override
-                    public ReferenceTreeNode getAsXMLFragment()
+                    public String getAsXMLFragment()
                     {
-                        ReferenceTreeNode referenceTreeNode = new ReferenceTreeNode();
-                        referenceTreeNode.setUnresolvedContent("");
-                        return referenceTreeNode;
+                        return "";
                     }
                 });
 
@@ -276,11 +267,9 @@ public class LookupForResolvedEditorViewsTest
                     }
 
                     @Override
-                    public ReferenceTreeNode getAsXMLFragment()
+                    public String getAsXMLFragment()
                     {
-                        ReferenceTreeNode referenceTreeNode = new ReferenceTreeNode();
-                        referenceTreeNode.setUnresolvedContent("");
-                        return referenceTreeNode;
+                        return "";
                     }
                 });
 
@@ -373,10 +362,9 @@ public class LookupForResolvedEditorViewsTest
             }
 
             @Override
-            public ReferenceTreeNode getAsXMLFragment()
+            public String getAsXMLFragment()
             {
-                ReferenceTreeNode referenceTreeNode = new ReferenceTreeNode();
-                String content = "<glossdef><?oxy_comment_end?> The flowers are very seasobable. Flower blooming in\n"
+                return "<glossdef><?oxy_comment_end?> The flowers are very seasobable. Flower blooming in\n"
                         + "        <?oxy_comment_start author=\"shroti_kapartiwar\" timestamp=\"20170906T162356+0530\" comment=\"new line written\"?>winter<?oxy_comment_end?>\n"
                         + "        are very brigth and fresh. new data new line starts in div this mastake <sub>test</sub> page\n"
                         + "            <sup>spalling.</sup><table frame=\"all\" rowsep=\"1\" colsep=\"1\" id=\"table_lvy_4pv_t1b\">\n"
@@ -394,10 +382,6 @@ public class LookupForResolvedEditorViewsTest
                         + "                    <row>\n" + "                        <entry>wastee</entry>\n"
                         + "                        <entry>wastee</entry>\n" + "                    </row>\n"
                         + "                </tbody>\n" + "            </tgroup>\n" + "        </table></glossdef>";
-                referenceTreeNode.setUnresolvedContent(content);
-                referenceTreeNode.setResolvedContent(content);
-
-                return referenceTreeNode;
             }
         };
 
@@ -530,11 +514,9 @@ public class LookupForResolvedEditorViewsTest
             }
 
             @Override
-            public ReferenceTreeNode getAsXMLFragment()
+            public String getAsXMLFragment()
             {
-                ReferenceTreeNode referenceTreeNode = new ReferenceTreeNode();
-
-                String unresolvedContent = "<glossdef><?oxy_comment_end?> The flowers are very seasobable. Flower blooming in\n"
+                return "<glossdef><?oxy_comment_end?> The flowers are very seasobable. Flower blooming in\n"
                         + "        <?oxy_comment_start author=\"shroti_kapartiwar\" timestamp=\"20170906T162356+0530\" comment=\"new line written\"?>winter<?oxy_comment_end?>\n"
                         + "        are very brigth and fresh. new data new line starts in div this mastake <sub>test</sub> page\n"
                         + "            <sup>spalling.</sup><table frame=\"all\" rowsep=\"1\" colsep=\"1\" id=\"table_lvy_4pv_t1b\">\n"
@@ -552,9 +534,6 @@ public class LookupForResolvedEditorViewsTest
                         + "                    <row>\n" + "                        <entry>wastee</entry>\n"
                         + "                        <entry>wastee</entry>\n" + "                    </row>\n"
                         + "                </tbody>\n" + "            </tgroup>\n" + "        </table></glossdef>";
-                referenceTreeNode.setUnresolvedContent(unresolvedContent);
-                referenceTreeNode.setResolvedContent(unresolvedContent);
-                return referenceTreeNode;
             }
         };
 
@@ -574,7 +553,7 @@ public class LookupForResolvedEditorViewsTest
             System.out.println(match.getRange().getMinimumInteger() + ", " + match.getRange().getMaximumInteger());
         });
 
-        Assert.assertTrue(matchesNew.size() == 7);
+        Assert.assertEquals(7,matchesNew.size());
 
         matchesNew.stream().forEach(
                 match -> Assert.assertTrue(rest_lookUpEditor.substring(match.getRange().getMinimumInteger(),
@@ -612,13 +591,9 @@ public class LookupForResolvedEditorViewsTest
             }
 
             @Override
-            public ReferenceTreeNode getAsXMLFragment()
+            public String getAsXMLFragment()
             {
-                ReferenceTreeNode referenceTreeNode = new ReferenceTreeNode();
-                String content = "<p>The &lt;caar&gt; is &lt;nicce&gt;.</p>";
-                referenceTreeNode.setUnresolvedContent(content);
-                referenceTreeNode.setResolvedContent(content);
-                return referenceTreeNode;
+                return"<p>The &lt;caar&gt; is &lt;nicce&gt;.</p>";
             }
         };
 
@@ -689,12 +664,9 @@ public class LookupForResolvedEditorViewsTest
             }
 
             @Override
-            public ReferenceTreeNode getAsXMLFragment()
+            public String getAsXMLFragment()
             {
-                ReferenceTreeNode referenceTreeNode = new ReferenceTreeNode();
-                referenceTreeNode.setUnresolvedContent(contentNodeXMLString);
-                referenceTreeNode.setResolvedContent(contentNodeString);
-                return referenceTreeNode;
+                return contentNodeXMLString;
             }
         };
 
