@@ -263,7 +263,7 @@ public class LookupForResolvedEditorViews
     {
         logger.debug(contentNodeXMLString);
         logger.debug(textContent);
-
+        textContent = textContent.replaceAll("\u0000"," ");
         List<DiffMatchPatch.Diff> diffsNode = Lookup.getDiffs(contentNodeXMLString, textContent);
         List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffsNode);
 
