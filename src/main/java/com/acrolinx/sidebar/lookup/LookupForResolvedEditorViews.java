@@ -157,14 +157,12 @@ public class LookupForResolvedEditorViews
                 newRanges.add(copy);
                 mappedRanges.add(match);
             } else {
-
-                ReferenceTreeNode xmlTree = contentNode.getAsXMLFragment();
-                if (xmlTree.getUnresolvedContent() == "") return;
                 String contentNodeXMLString;
                     // Try to lookup xml fragment in document.
                 Optional<IntRange> correctedMatchRange;
                 if(!match.hasExternalContentMatches()) {
-                    contentNodeXMLString = xmlTree.getUnresolvedContent();
+                    contentNodeXMLString = contentNode.getAsXMLFragment();
+                    if (contentNodeXMLString == "") return;
                     final int fragmentStartOffsetInCurrentDocument = findFragmentStartOffsetInCurrentDocument(contentNodeXMLString, match);
                     final int fragmentEndOffsetInCurrentDocument = findFragmentEndOffsetInCurrentDocument(contentNodeXMLString, match, currentDocumentContent);
                     final String relativeFragment = currentDocumentContent.substring(fragmentStartOffsetInCurrentDocument, fragmentEndOffsetInCurrentDocument);
@@ -181,8 +179,14 @@ public class LookupForResolvedEditorViews
                             match.getRange().getMinimumInteger() - fragmentStartOffsetInCurrentDocument,
                             match.getRange().getMaximumInteger() - fragmentStartOffsetInCurrentDocument);
                 } else {
-                   contentNodeXMLString = xmlTree.getResolvedContent();
-                   correctedMatchRange = calcCorrectedMatch((AcrolinxMatch) match,xmlTree);
+                   if (contentNode instanceof ExternalContentNode) {
+                       ReferenceTreeNode xmlTree = ((ExternalContentNode) contentNode).getReferenceTree();
+                       contentNodeXMLString = xmlTree.getResolvedContent();
+                       correctedMatchRange = calcCorrectedMatch(match,xmlTree);
+                   } else {
+                       logger.error("Match has external content, but ContentNode is not of type ExternalContentNode");
+                       return;
+                   }
                 }
                 correctedMatchRange.ifPresent(range ->
                         diffXMLFragmentWithNodeContentFragment(match, contentNodeXMLString,

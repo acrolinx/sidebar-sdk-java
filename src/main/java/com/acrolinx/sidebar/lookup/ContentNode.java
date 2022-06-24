@@ -10,5 +10,6 @@ public interface ContentNode
 
     String getContent();
 
-    ReferenceTreeNode getAsXMLFragment();
+    String getAsXMLFragment();
 }
+
