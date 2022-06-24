@@ -382,7 +382,7 @@ public class LookupForResolvedEditorViews
             String resolvedViewContent)
     {
         matches.forEach(match -> {
-            if (match.getContent().length() <= 0) return;
+            if (match.getContent().length() <= 1) return;
             if (match instanceof ExternalAbstractMatch && ((ExternalAbstractMatch) match).hasExternalContentMatches()) return;
 
             String contentUpToMatch = currentDocumentContent.substring(0,
