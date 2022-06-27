@@ -158,7 +158,7 @@ public class LookupForResolvedEditorViews
                 Optional<IntRange> correctedMatchRange;
                 if(!(match instanceof ExternalAbstractMatch) || !((ExternalAbstractMatch) match).hasExternalContentMatches()) {
                     contentNodeXMLString = contentNode.getAsXMLFragment();
-                    if (contentNodeXMLString == "" || contentNodeXMLString == null) return;
+                    if (contentNodeXMLString.equals("") || contentNodeXMLString == null) return;
                     final int fragmentStartOffsetInCurrentDocument = findFragmentStartOffsetInCurrentDocument(contentNodeXMLString, match);
                     final int fragmentEndOffsetInCurrentDocument = findFragmentEndOffsetInCurrentDocument(contentNodeXMLString, match, currentDocumentContent);
                     final String relativeFragment = currentDocumentContent.substring(fragmentStartOffsetInCurrentDocument, fragmentEndOffsetInCurrentDocument);
