@@ -48,7 +48,7 @@ public class MatchUtils
 
     public static boolean isExternalContentMatchAXMLTag(ExternalAbstractMatch match, List<ExternalContentField> lastCheckedExternalContent) {
         ExternalContentMatch externalContentMatch = match.getExternalContentMatches().get(0);
-        while (externalContentMatch.getExternalContentMatches().size() > 0) {
+        while (!externalContentMatch.getExternalContentMatches().isEmpty()) {
             externalContentMatch = externalContentMatch.getExternalContentMatches().get(0);
         }
         final String externalContentId = externalContentMatch.getId();

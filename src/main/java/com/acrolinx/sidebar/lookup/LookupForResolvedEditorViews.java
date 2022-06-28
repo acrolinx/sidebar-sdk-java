@@ -2,7 +2,7 @@
 
 package com.acrolinx.sidebar.lookup;
 
-import java.sql.Ref;
+
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -203,7 +203,7 @@ public class LookupForResolvedEditorViews
             logger.error("calcCorrectedMatch was called despite match not having ExternalContentMatches");
             return Optional.empty();
         }
-        if(xmlTree.referenceChildren.size() == 0) {
+        if(xmlTree.referenceChildren.isEmpty()) {
             logger.warn("No reference Children while match has external ContentMatches");
             return Optional.empty();
         }
@@ -227,7 +227,9 @@ public class LookupForResolvedEditorViews
 
             totalDelta += externalContentRangeMinimum;
 
-            if (nextExternalContentMatch.getExternalContentMatches().size() > 0) {
+            if (nextExternalContentMatch.getExternalContentMatches().isEmpty()) {
+                nextExternalContentMatch = null;
+            } else {
                 Optional<ReferenceTreeNode> optionalReferenceTreeNode = referenceChildren.stream().filter( n -> n.getStartOffsetInParent() == externalContentRangeMinimum).findFirst();
                 if(optionalReferenceTreeNode.isPresent()) {
                     referencedContentTreeNode = optionalReferenceTreeNode.get();
@@ -235,8 +237,6 @@ public class LookupForResolvedEditorViews
                     return Optional.empty();
                 }
                 nextExternalContentMatch = nextExternalContentMatch.getExternalContentMatches().get(0);
-            } else {
-                nextExternalContentMatch = null;
             }
         }
         return Optional.of(new IntRange(totalDelta, totalDelta + externalContentRange.getMaximumInteger() - externalContentRange.getMinimumInteger()));
@@ -269,7 +269,7 @@ public class LookupForResolvedEditorViews
     {
         logger.debug(contentNodeXMLString);
         logger.debug(textContent);
-        textContent = textContent.replaceAll("\u0000"," ");
+        textContent = textContent.replace("\u0000"," ");
         List<DiffMatchPatch.Diff> diffsNode = Lookup.getDiffs(contentNodeXMLString, textContent);
         List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffsNode);
 

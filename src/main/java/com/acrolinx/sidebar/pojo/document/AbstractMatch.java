@@ -2,11 +2,6 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class AbstractMatch
 {
 
@@ -17,9 +12,4 @@ public abstract class AbstractMatch
     public abstract AbstractMatch setRange(IntRange range);
 
     public abstract AbstractMatch copy();
-
-
-
 }
-
-

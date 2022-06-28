@@ -76,7 +76,7 @@ public class LookupRangesDiff extends LookupRanges
 
         return matches.stream().map((match) -> {
 
-            if(match.getExternalContentMatches().size() > 0) {
+            if(!match.getExternalContentMatches().isEmpty()) {
                List<ExternalContentMatch> newMatches = getExternalContentMatchesWithCorrectedRanges(match.getExternalContentMatches(),checkedText,changedText);
                match.setExternalContentMatches(newMatches);
             }
