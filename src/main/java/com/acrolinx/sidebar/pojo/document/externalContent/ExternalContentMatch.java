@@ -6,6 +6,7 @@ package com.acrolinx.sidebar.pojo.document.externalContent;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExternalContentMatch {
@@ -19,7 +20,11 @@ public class ExternalContentMatch {
 
     public ExternalContentMatch(String id, String type, int originalBegin, int originalEnd, List<ExternalContentMatch> externalContentMatches) {
         this(id, type, originalBegin, originalEnd);
-        this.externalContentMatches = externalContentMatches;
+        if(externalContentMatches == null) {
+            this.externalContentMatches = new ArrayList<>();
+        } else {
+            this.externalContentMatches = externalContentMatches;
+        }
     }
 
     public ExternalContentMatch(String id, String type, int originalBegin, int originalEnd) {
@@ -27,7 +32,7 @@ public class ExternalContentMatch {
         this.type = type;
         this.originalBegin = originalBegin;
         this.originalEnd = originalEnd;
-        this.externalContentMatches = null;
+        this.externalContentMatches = new ArrayList<>();
     }
 
     public String getId() {
@@ -56,7 +61,11 @@ public class ExternalContentMatch {
     }
 
     public void setExternalContentMatches( List<ExternalContentMatch> newList) {
-        externalContentMatches = newList;
+        if(newList == null) {
+            this.externalContentMatches = new ArrayList<>();
+        } else {
+            this.externalContentMatches = new ArrayList<>();
+        }
     }
 
     @Override
