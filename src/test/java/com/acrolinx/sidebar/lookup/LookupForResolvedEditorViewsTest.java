@@ -693,15 +693,98 @@ public class LookupForResolvedEditorViewsTest
 
     }
 
-    /***
-     * This test covers the rare edge case where the contentnode's content appears twice in the document
-     * and the matchcontent also appears once in referenced content.
-     */
+
     @Test
-    public void testLookupReferencedContent()
+    public void testLookupInReferencedContent()
     {
         final String matchContent = "mistaake";
         final String contentNodeString = " "+matchContent+" ";
+        final String contentNodeResolvedXMLString = "<p>"+contentNodeString+"</p>";
+
+        final String authorViewContentBeforeContentNodeString = "Instructions for Authors.\n";
+        final String authorViewContent = authorViewContentBeforeContentNodeString + contentNodeString +"\n";
+        final String referencedContentTag = "<p conref=\"mistake-conref\"/>";
+
+        final String documentContentBeforeContentNode = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<!DOCTYPE topic PUBLIC \"-//OASIS//DTD DITA Topic//EN\" \"topic.dtd\">\n"
+                + "<topic id=\"topic_icd_txy_3db\">\n" + "<title>Instructions for Authors.</title>\n"
+                + "    <body>\n";
+        final String documentContentAfterContentNode = "\n    </body>\n" + "</topic>\n";
+        final String documentContent = documentContentBeforeContentNode + referencedContentTag +documentContentAfterContentNode;
+        ContentNode contentNode = new ExternalContentNode() {
+            @Override
+            public ReferenceTreeNode getReferenceTree() {
+                ReferenceTreeNode r = new ReferenceTreeNode();
+                r.setUnresolvedContent(referencedContentTag);
+                r.setResolvedContent(contentNodeResolvedXMLString);
+
+                ReferenceTreeNode externalContentNode = new ReferenceTreeNode();
+                externalContentNode.setResolvedContent(contentNodeResolvedXMLString);
+                externalContentNode.setUnresolvedContent(contentNodeResolvedXMLString);
+                externalContentNode.setStartOffsetInParent(0);
+                externalContentNode.setReferencingTag(referencedContentTag);
+                r.referenceChildren.add(externalContentNode);
+                return r;
+            }
+
+            @Override
+            public int getStartOffset()
+            {
+                return authorViewContentBeforeContentNodeString.length();
+            }
+
+            @Override
+            public int getEndOffset()
+            {
+                return authorViewContentBeforeContentNodeString.length() + contentNodeString.length();
+            }
+
+            @Override
+            public String getContent()
+            {
+                return contentNodeString;
+            }
+
+            @Override
+            public String getAsXMLFragment()
+            {
+                return referencedContentTag;
+            }
+
+        };
+
+        Assert.assertTrue(
+                authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()).equalsIgnoreCase(
+                        contentNode.getContent()));
+
+        ArrayList<AcrolinxMatch> matches = new ArrayList<>();
+
+        int pTagAndWhiteSpace = 4;
+        List<ExternalContentMatch> externalContentMatches = new ArrayList<>();
+        ExternalContentMatch externalContentMatch = new ExternalContentMatch("id","dita",pTagAndWhiteSpace,pTagAndWhiteSpace+matchContent.length());
+        externalContentMatches.add(externalContentMatch);
+        matches.add(new AcrolinxMatch(new IntRange(documentContentBeforeContentNode.length(), documentContentBeforeContentNode.length()+referencedContentTag.length()), matchContent,externalContentMatches));
+
+        LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+                documentContent, authorViewContent, offset -> contentNode);
+
+        Assert.assertTrue(abstractMatches.isPresent());
+        AbstractMatch onlyMatch = abstractMatches.get().get(0);
+        IntRange matchRange = onlyMatch.getRange();
+        Assert.assertEquals(onlyMatch.getContent(),authorViewContent.substring(matchRange.getMinimumInteger(),
+                matchRange.getMaximumInteger()));
+        Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1,matchRange.getMinimumInteger());
+        Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1+matchContent.length(),matchRange.getMaximumInteger());
+
+    }
+
+
+    @Test
+    public void testLookupDuplicationInReferencedContent()
+    {
+        final String matchContent = "mistaake";
+        final String contentNodeString = " "+matchContent+" "+matchContent;
         final String contentNodeResolvedXMLString = "<p>"+contentNodeString+"</p>";
 
         final String authorViewContentBeforeContentNodeString = "Instructions for Authors.\n";
