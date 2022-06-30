@@ -64,7 +64,7 @@ public class ExternalContentMatch {
         if(newList == null) {
             this.externalContentMatches = new ArrayList<>();
         } else {
-            this.externalContentMatches = new ArrayList<>();
+            this.externalContentMatches = newList;
         }
     }
 
