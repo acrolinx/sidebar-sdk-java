@@ -4,6 +4,7 @@ package com.acrolinx.sidebar.pojo.document;
 
 public abstract class AbstractMatch
 {
+
     public abstract IntRange getRange();
 
     public abstract String getContent();

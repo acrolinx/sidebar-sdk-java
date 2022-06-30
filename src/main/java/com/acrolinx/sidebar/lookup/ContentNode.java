@@ -12,3 +12,4 @@ public interface ContentNode
 
     String getAsXMLFragment();
 }
+

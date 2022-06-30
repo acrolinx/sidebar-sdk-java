@@ -2,21 +2,18 @@
 
 package com.acrolinx.sidebar.lookup;
 
+
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
+import com.acrolinx.sidebar.pojo.document.*;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.acrolinx.sidebar.utils.DiffMatchPatch;
-
-import com.acrolinx.sidebar.pojo.document.AbstractMatch;
-import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
-import com.acrolinx.sidebar.pojo.document.IntRange;
 
 @SuppressWarnings("WeakerAccess")
 public class LookupForResolvedEditorViews
@@ -123,7 +120,7 @@ public class LookupForResolvedEditorViews
                     + ("".equals(match.getContent()) || match.getContent().equalsIgnoreCase(" ")));
             boolean matchLineBreakOrTab = match.getContent().matches("[\\n\\r\\t]+");
             logger.debug("match content is linebreak or tab? " + matchLineBreakOrTab);
-            return (("".equals(match.getContent()) || match.getContent().equals(" ") || matchLineBreakOrTab) && ignore);
+            return (("".equals(match.getContent()) || match.getContent().equals(" ")  || matchLineBreakOrTab) && ignore);
         }).collect(Collectors.toList());
     }
 
@@ -140,60 +137,114 @@ public class LookupForResolvedEditorViews
             logger.debug("Mapping range for: " + match.getRange().toString() + ", (" + match.getContent() + ")");
             ContentNode contentNode = utils.getContentNodeForOffsetInCurrentDocument(
                     match.getRange().getMinimumInteger());
-            if (contentNode != null && contentNode.getContent() != null) {
-                int startOffset = contentNode.getStartOffset();
-                logger.debug("Lookup in node: " + contentNode.getContent());
-                logger.debug("Get node startOffset: " + contentNode.getStartOffset());
-                String textContent = contentNode.getContent();
-                String rangeContent = match.getContent();
-                if (StringUtils.countMatches(textContent, rangeContent) == 1) {
-                    int i = textContent.indexOf(rangeContent);
-                    AbstractMatch copy = match.setRange(
-                            new IntRange(startOffset + i, startOffset + i + rangeContent.length()));
-                    logger.debug("Found range for content by matching Strings: " + match.getContent());
-                    logForDebugCurrentRanges(copy);
-                    newRanges.add(copy);
-                    mappedRanges.add(match);
-                } else if (contentNode.getAsXMLFragment() != null) {
+            if (contentNode == null || contentNode.getContent() == null) return;
+
+            int startOffset = contentNode.getStartOffset();
+            logger.debug("Lookup in node: " + contentNode.getContent());
+            logger.debug("Get node startOffset: " + contentNode.getStartOffset());
+            String textContent = contentNode.getContent();
+            String rangeContent = match.getContent();
+            if (StringUtils.countMatches(textContent, rangeContent) == 1 && (!(match instanceof ExternalAbstractMatch) ||!((ExternalAbstractMatch) match).hasExternalContentMatches() || ((ExternalAbstractMatch) match).getExternalContentMatches().size() < 2)) {
+                int i = textContent.indexOf(rangeContent);
+                AbstractMatch copy = match.setRange(
+                        new IntRange(startOffset + i, startOffset + i + rangeContent.length()));
+                logger.debug("Found range for content by matching Strings: " + match.getContent());
+                logForDebugCurrentRanges(copy);
+                newRanges.add(copy);
+                mappedRanges.add(match);
+            } else {
+                String contentNodeXMLString;
                     // Try to lookup xml fragment in document.
-                    boolean hasExternalContentMatches = (match instanceof  AcrolinxMatch) && ((AcrolinxMatch) match).hasExternalContentMatches();
-                    if(!hasExternalContentMatches) {
-                        final int fragmentStartOffsetInCurrentDocument = findFragmentStartOffsetInCurrentDocument(contentNode, match);
-                        final int fragmentEndOffsetInCurrentDocument = findFragmentEndOffsetInCurrentDocument(contentNode, match, currentDocumentContent);
-                        final String relativeFragment = currentDocumentContent.substring(fragmentStartOffsetInCurrentDocument, fragmentEndOffsetInCurrentDocument);
+                Optional<IntRange> correctedMatchRange;
+                if(!(match instanceof ExternalAbstractMatch) || !((ExternalAbstractMatch) match).hasExternalContentMatches()) {
+                    contentNodeXMLString = contentNode.getAsXMLFragment();
+                    if (contentNodeXMLString == null || contentNodeXMLString.equals("") ) return;
+                    final int fragmentStartOffsetInCurrentDocument = findFragmentStartOffsetInCurrentDocument(contentNodeXMLString, match);
+                    final int fragmentEndOffsetInCurrentDocument = findFragmentEndOffsetInCurrentDocument(contentNodeXMLString, match, currentDocumentContent);
+                    final String relativeFragment = currentDocumentContent.substring(fragmentStartOffsetInCurrentDocument, fragmentEndOffsetInCurrentDocument);
 
 
-                        if (!contentNode.getAsXMLFragment().equalsIgnoreCase(nodeAsXML.get()) || !relativeFragment.equalsIgnoreCase(oldRelativFragment.get())) {
-                            oldRelativFragment.set(relativeFragment);
-                            nodeAsXML.set(contentNode.getAsXMLFragment());
-                            diffs.set(Lookup.getDiffs(relativeFragment, nodeAsXML.get()));
-                            offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
-                        }
-
-                        Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
-                                match.getRange().getMinimumInteger() - fragmentStartOffsetInCurrentDocument,
-                                match.getRange().getMaximumInteger() - fragmentStartOffsetInCurrentDocument);
-                        // Diff xml fragment with node content fragment.
-
-                        correctedMatch.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match, contentNode,
-                                startOffset , textContent, rangeContent,range));
-                    }
-                    else {
-                        //todo: Is this get(0) ok?
-                        ExternalContentMatch externalContentMatch = ((AcrolinxMatch) match).getExternalContentMatches().get(0);
-
-                        diffXMLFragmentWithNodeContentFragment(match, contentNode,
-                                startOffset, textContent, rangeContent, externalContentMatch.getRange());
+                    if (!contentNodeXMLString.equalsIgnoreCase(nodeAsXML.get()) || !relativeFragment.equalsIgnoreCase(oldRelativFragment.get())) {
+                        oldRelativFragment.set(relativeFragment);
+                        nodeAsXML.set(contentNodeXMLString);
+                        diffs.set(Lookup.getDiffs(relativeFragment, nodeAsXML.get()));
+                        offsetAligns.set(Lookup.createOffsetMappingArray(diffs.get()));
                     }
 
+                    correctedMatchRange = Lookup.getCorrectedMatch(diffs.get(), offsetAligns.get(),
+                            match.getRange().getMinimumInteger() - fragmentStartOffsetInCurrentDocument,
+                            match.getRange().getMaximumInteger() - fragmentStartOffsetInCurrentDocument);
+                } else {
+                   if (contentNode instanceof ExternalContentNode) {
+                       ReferenceTreeNode xmlTree = ((ExternalContentNode) contentNode).getReferenceTree();
+                       contentNodeXMLString = xmlTree.getResolvedContent();
+                       correctedMatchRange = calcCorrectedMatch((ExternalAbstractMatch) match,xmlTree);
+                   } else {
+                       logger.error("Match has external content, but ContentNode is not of type ExternalContentNode");
+                       return;
+                   }
                 }
+                correctedMatchRange.ifPresent(range ->
+                        diffXMLFragmentWithNodeContentFragment(match, contentNodeXMLString,
+                                startOffset, textContent, rangeContent, range));
             }
+
         });
     }
 
-    private int findFragmentStartOffsetInCurrentDocument(ContentNode contentNode, AbstractMatch match)
+    /**
+     *  Calcs Match offset as when the match and external content would just be part of the document
+     * @param match
+     * @param xmlTree
+     * @return
+     */
+    private Optional<IntRange> calcCorrectedMatch(ExternalAbstractMatch match, ReferenceTreeNode xmlTree) {
+        if(!match.hasExternalContentMatches()) {
+            logger.error("calcCorrectedMatch was called despite match not having ExternalContentMatches");
+            return Optional.empty();
+        }
+        if(xmlTree.referenceChildren.isEmpty()) {
+            logger.warn("No reference Children while match has external ContentMatches");
+            return Optional.empty();
+        }
+        ExternalContentMatch nextExternalContentMatch = match.getExternalContentMatches().get(0);
+        IntRange externalContentRange = nextExternalContentMatch.getRange();
+        int totalDelta = 0;
+        ReferenceTreeNode referencedContentTreeNode = xmlTree.referenceChildren.get(0);
+
+        while(referencedContentTreeNode != null && nextExternalContentMatch != null) {
+            externalContentRange = nextExternalContentMatch.getRange();
+            int externalContentRangeMinimum = externalContentRange.getMinimumInteger();
+            List<ReferenceTreeNode> referenceChildren = referencedContentTreeNode.referenceChildren;
+
+            for(int i = 0; i < referenceChildren.size() && externalContentRangeMinimum > referenceChildren.get(i).getStartOffsetInParent(); i++) {
+                ReferenceTreeNode child = referencedContentTreeNode.referenceChildren.get(i);
+                int referenceTagLength = child.getReferencingTag().length();
+                int resolvedContentLength = child.getResolvedContent().length();
+                int delta = resolvedContentLength-referenceTagLength;
+                totalDelta += delta;
+            }
+
+            totalDelta += externalContentRangeMinimum;
+
+            if (nextExternalContentMatch.getExternalContentMatches().isEmpty()) {
+                nextExternalContentMatch = null;
+            } else {
+                Optional<ReferenceTreeNode> optionalReferenceTreeNode = referenceChildren.stream().filter( n -> n.getStartOffsetInParent() == externalContentRangeMinimum).findFirst();
+                if(optionalReferenceTreeNode.isPresent()) {
+                    referencedContentTreeNode = optionalReferenceTreeNode.get();
+                } else {
+                    return Optional.empty();
+                }
+                nextExternalContentMatch = nextExternalContentMatch.getExternalContentMatches().get(0);
+            }
+        }
+        return Optional.of(new IntRange(totalDelta, totalDelta + externalContentRange.getMaximumInteger() - externalContentRange.getMinimumInteger()));
+    }
+
+    private int findFragmentStartOffsetInCurrentDocument(String contentNodeXMLString, AbstractMatch match)
     {
-        final int contentFragmentLength = contentNode.getAsXMLFragment().length();
+        final int contentFragmentLength = contentNodeXMLString.length();
         final int matchStartOffset = match.getRange().getMinimumInteger();
 
         if (contentFragmentLength < matchStartOffset) {
@@ -202,9 +253,9 @@ public class LookupForResolvedEditorViews
         return 0;
     }
 
-    private int findFragmentEndOffsetInCurrentDocument(ContentNode contentNode, AbstractMatch match, String currentDocumentContent)
+    private int findFragmentEndOffsetInCurrentDocument(String contentNodeXMLString, AbstractMatch match, String currentDocumentContent)
     {
-        final int contentFragmentLength = contentNode.getAsXMLFragment().length();
+        final int contentFragmentLength = contentNodeXMLString.length();
         final int matchEndOffset = match.getRange().getMaximumInteger();
 
         if (currentDocumentContent.length() > (matchEndOffset + contentFragmentLength)) {
@@ -213,12 +264,13 @@ public class LookupForResolvedEditorViews
         return currentDocumentContent.length();
     }
 
-    private void diffXMLFragmentWithNodeContentFragment(AbstractMatch match, ContentNode contentNode, int startOffset,
+    private void diffXMLFragmentWithNodeContentFragment(AbstractMatch match, String contentNodeXMLString, int startOffset,
             String textContent, String rangeContent, IntRange range)
     {
-        logger.debug(contentNode.getAsXMLFragment());
+        logger.debug(contentNodeXMLString);
         logger.debug(textContent);
-        List<DiffMatchPatch.Diff> diffsNode = Lookup.getDiffs(contentNode.getAsXMLFragment(), textContent);
+        textContent = textContent.replace("\u0000"," ");
+        List<DiffMatchPatch.Diff> diffsNode = Lookup.getDiffs(contentNodeXMLString, textContent);
         List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffsNode);
 
         String rangeContentEscaped = StringEscapeUtils.escapeXml10(rangeContent);
@@ -226,7 +278,7 @@ public class LookupForResolvedEditorViews
         // Deal with HTML entity
         if (!rangeContent.equals(rangeContentEscaped) && match.getRange().getMaximumInteger()
                 - match.getRange().getMinimumInteger() == rangeContentEscaped.length()) {
-            findRangeForHTMLEntity(match, contentNode, startOffset, textContent, rangeContent, range,
+            findRangeForHTMLEntity(match, contentNodeXMLString, startOffset, textContent, rangeContent, range,
                     rangeContentEscaped);
         } else {
             Optional<IntRange> finalMatch = Lookup.getCorrectedMatch(diffsNode, offsetMappingArray,
@@ -236,7 +288,7 @@ public class LookupForResolvedEditorViews
         }
     }
 
-    private void findRangeForHTMLEntity(AbstractMatch match, ContentNode contentNode, int startOffset,
+    private void findRangeForHTMLEntity(AbstractMatch match, String contentNodeXMLString, int startOffset,
             String textContent, String rangeContent, IntRange range, String rangeContentEscaped)
     {
         logger.debug("Has to find HTML entity " + rangeContentEscaped);
@@ -244,7 +296,7 @@ public class LookupForResolvedEditorViews
 
         logger.debug("Cleaned and escaped Text Content:" + cleanedAndEscapedTextContent);
 
-        List<DiffMatchPatch.Diff> diffsNodeForEntity = Lookup.getDiffs(contentNode.getAsXMLFragment(),
+        List<DiffMatchPatch.Diff> diffsNodeForEntity = Lookup.getDiffs(contentNodeXMLString,
                 cleanedAndEscapedTextContent);
         List<OffsetAlign> offsetMappingArrayForEntity = Lookup.createOffsetMappingArray(diffsNodeForEntity);
 
@@ -254,15 +306,15 @@ public class LookupForResolvedEditorViews
             logger.debug("Mapped to offset: " + value);
             logger.debug("range min in is: " + range.getMinimumInteger());
             if ((range.getMinimumInteger() + value) >= 0) {
-                findRangeInResolvedText(match, contentNode, startOffset, textContent, rangeContent, range, value);
+                findRangeInResolvedText(match, contentNodeXMLString, startOffset, textContent, rangeContent, range, value);
             }
         });
     }
 
-    private void findRangeInResolvedText(AbstractMatch match, ContentNode contentNode, int startOffset,
+    private void findRangeInResolvedText(AbstractMatch match, String contentNodeXMLString, int startOffset,
             String textContent, String rangeContent, IntRange range, Integer value)
     {
-        String textContentUpToMatch = contentNode.getAsXMLFragment().substring(0, range.getMinimumInteger());
+        String textContentUpToMatch = contentNodeXMLString.substring(0, range.getMinimumInteger());
         logger.debug("Text Content up to Match: " + textContentUpToMatch);
         String textContentUpToMatchUnescaped = StringEscapeUtils.unescapeXml(textContentUpToMatch);
         logger.debug("Text content up to match unescaped: " + textContentUpToMatchUnescaped);
@@ -330,20 +382,21 @@ public class LookupForResolvedEditorViews
             String resolvedViewContent)
     {
         matches.forEach(match -> {
-            if (match.getContent().length() > 1) {
-                String contentUpToMatch = currentDocumentContent.substring(0,
-                        match.getRange().getMaximumInteger()).replaceAll("</?\\w+.*?>", "");
-                int occurrence = StringUtils.countMatches(contentUpToMatch, match.getContent());
-                int ordinalIndex = StringUtils.ordinalIndexOf(resolvedViewContent, match.getContent(), occurrence);
+            if (match.getContent().length() <= 1) return;
+            if (match instanceof ExternalAbstractMatch && ((ExternalAbstractMatch) match).hasExternalContentMatches()) return;
 
-                if (ordinalIndex > 0) {
-                    AbstractMatch copy = match.setRange(
-                            new IntRange(ordinalIndex, ordinalIndex + match.getContent().length()));
-                    logForDebugFoundContent(match);
-                    logForDebugCurrentRanges(copy);
-                    newRanges.add(copy);
-                    mappedRanges.add(match);
-                }
+            String contentUpToMatch = currentDocumentContent.substring(0,
+                    match.getRange().getMaximumInteger()).replaceAll("</?\\w+.*?>", "");
+            int occurrence = StringUtils.countMatches(contentUpToMatch, match.getContent());
+            int ordinalIndex = StringUtils.ordinalIndexOf(resolvedViewContent, match.getContent(), occurrence);
+
+            if (ordinalIndex > 0) {
+                AbstractMatch copy = match.setRange(
+                        new IntRange(ordinalIndex, ordinalIndex + match.getContent().length()));
+                logForDebugFoundContent(match);
+                logForDebugCurrentRanges(copy);
+                newRanges.add(copy);
+                mappedRanges.add(match);
             }
         });
     }

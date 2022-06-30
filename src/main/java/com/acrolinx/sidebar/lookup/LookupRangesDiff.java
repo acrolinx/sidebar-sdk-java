@@ -17,10 +17,13 @@ import com.acrolinx.sidebar.LookupRanges;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.utils.DiffMatchPatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("WeakerAccess")
 public class LookupRangesDiff extends LookupRanges
 {
+   private Logger logger = LoggerFactory.getLogger(LookupRangesDiff.class);
 
     @Override
     public Optional<List<? extends AbstractMatch>> getMatchesWithCorrectedRanges(String checkedText, String changedText,
@@ -56,8 +59,8 @@ public class LookupRangesDiff extends LookupRanges
             if (!acrolinxMatch.hasExternalContentMatches())
                 return match;
 
-            //todo: this needs to become recursive for multiple levels of referenced content
             List<ExternalContentMatch> externalContentMatches = acrolinxMatch.getExternalContentMatches();
+
             List<ExternalContentMatch> correctedMatches = getExternalContentMatchesWithCorrectedRanges(externalContentMatches,
                     checkedExternalContent, changedExternalContent);
 
@@ -72,26 +75,38 @@ public class LookupRangesDiff extends LookupRanges
         List<ExternalContentField> changedExternalContent = changedText.getAll();
 
         return matches.stream().map((match) -> {
-            Optional<ExternalContentField> optionalCheckedField = checkedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
-            Optional<ExternalContentField> optionalChangedField = changedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
 
-            if(!optionalCheckedField.isPresent() || !optionalChangedField.isPresent()) return match;
-
-            ExternalContentField checkedField = optionalCheckedField.get();
-            ExternalContentField changedField = optionalChangedField.get();
-
-            List<DiffMatchPatch.Diff> diffs = Lookup.getDiffs(checkedField.getContent(), changedField.getContent());
-            List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffs);
-
-            Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs, offsetMappingArray,
-                    match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
-
-            if (correctedMatch.isPresent()) {
-                return match.setRange(correctedMatch.get());
-            } else {
-                return match;
+            if(!match.getExternalContentMatches().isEmpty()) {
+               List<ExternalContentMatch> newMatches = getExternalContentMatchesWithCorrectedRanges(match.getExternalContentMatches(),checkedText,changedText);
+               match.setExternalContentMatches(newMatches);
             }
+
+            return adJustMatch(match,checkedExternalContent,changedExternalContent);
+
         }).collect(Collectors.toList());
+    }
+
+    public ExternalContentMatch adJustMatch(ExternalContentMatch match, List<ExternalContentField> checkedExternalContent,List<ExternalContentField> changedExternalContent) {
+        Optional<ExternalContentField> optionalCheckedField = checkedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
+        Optional<ExternalContentField> optionalChangedField = changedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
+
+        if(!optionalCheckedField.isPresent() || !optionalChangedField.isPresent()) return match;
+
+        ExternalContentField checkedField = optionalCheckedField.get();
+        ExternalContentField changedField = optionalChangedField.get();
+
+        List<DiffMatchPatch.Diff> diffs = Lookup.getDiffs(checkedField.getContent(), changedField.getContent());
+        List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffs);
+
+        Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs, offsetMappingArray,
+                match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
+
+        if (correctedMatch.isPresent()) {
+            return match.setRange(correctedMatch.get());
+        } else {
+            logger.warn("Could not adjust external Content Match");
+            return match;
+        }
     }
 
  

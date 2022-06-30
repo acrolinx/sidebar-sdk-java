@@ -6,9 +6,8 @@ import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 
 import java.util.List;
 
-//todo: Refactor for Matches with External Matches
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class AcrolinxMatch extends AbstractMatch
+public class AcrolinxMatch extends ExternalAbstractMatch
 {
     private final String content;
     private IntRange extractedRange;
@@ -77,11 +76,12 @@ public class AcrolinxMatch extends AbstractMatch
             return new AcrolinxMatch(range, content);
         }
     }
-
+    @Override
     public boolean hasExternalContentMatches () {
         return this.externalContentMatches != null && this.getExternalContentMatches().size() > 0;
     }
 
+    @Override
     public List<ExternalContentMatch> getExternalContentMatches() {
         return this.externalContentMatches;
     }

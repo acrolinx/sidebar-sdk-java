@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -174,7 +175,7 @@ public class LookupForResolvedEditorViewsTest
                     @Override
                     public String getAsXMLFragment()
                     {
-                        return null;
+                        return "";
                     }
                 });
 
@@ -222,7 +223,7 @@ public class LookupForResolvedEditorViewsTest
                     @Override
                     public String getAsXMLFragment()
                     {
-                        return null;
+                        return "";
                     }
                 });
 
@@ -269,7 +270,7 @@ public class LookupForResolvedEditorViewsTest
                     @Override
                     public String getAsXMLFragment()
                     {
-                        return null;
+                        return "";
                     }
                 });
 
@@ -553,7 +554,7 @@ public class LookupForResolvedEditorViewsTest
             System.out.println(match.getRange().getMinimumInteger() + ", " + match.getRange().getMaximumInteger());
         });
 
-        Assert.assertTrue(matchesNew.size() == 7);
+        Assert.assertEquals(7,matchesNew.size());
 
         matchesNew.stream().forEach(
                 match -> Assert.assertTrue(rest_lookUpEditor.substring(match.getRange().getMinimumInteger(),
@@ -593,7 +594,7 @@ public class LookupForResolvedEditorViewsTest
             @Override
             public String getAsXMLFragment()
             {
-                return "<p>The &lt;caar&gt; is &lt;nicce&gt;.</p>";
+                return"<p>The &lt;caar&gt; is &lt;nicce&gt;.</p>";
             }
         };
 
@@ -689,6 +690,283 @@ public class LookupForResolvedEditorViewsTest
                 onlyMatch.getRange().getMaximumInteger()));
         Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1,onlyMatch.getRange().getMinimumInteger());
         Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1+matchContent.length(),onlyMatch.getRange().getMaximumInteger());
+
+    }
+
+
+    @Test
+    public void testLookupInReferencedContent()
+    {
+        final String matchContent = "mistaake";
+        final String contentNodeString = " "+matchContent+" ";
+        final String contentNodeResolvedXMLString = "<p>"+contentNodeString+"</p>";
+
+        final String authorViewContentBeforeContentNodeString = "Instructions for Authors.\n";
+        final String authorViewContent = authorViewContentBeforeContentNodeString + contentNodeString +"\n";
+        final String referencedContentTag = "<p conref=\"mistake-conref\"/>";
+
+        final String documentContentBeforeContentNode = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<!DOCTYPE topic PUBLIC \"-//OASIS//DTD DITA Topic//EN\" \"topic.dtd\">\n"
+                + "<topic id=\"topic_icd_txy_3db\">\n" + "<title>Instructions for Authors.</title>\n"
+                + "    <body>\n";
+        final String documentContentAfterContentNode = "\n    </body>\n" + "</topic>\n";
+        final String documentContent = documentContentBeforeContentNode + referencedContentTag +documentContentAfterContentNode;
+        ContentNode contentNode = new ExternalContentNode() {
+            @Override
+            public ReferenceTreeNode getReferenceTree() {
+                ReferenceTreeNode r = new ReferenceTreeNode();
+                r.setUnresolvedContent(referencedContentTag);
+                r.setResolvedContent(contentNodeResolvedXMLString);
+
+                ReferenceTreeNode externalContentNode = new ReferenceTreeNode();
+                externalContentNode.setResolvedContent(contentNodeResolvedXMLString);
+                externalContentNode.setUnresolvedContent(contentNodeResolvedXMLString);
+                externalContentNode.setStartOffsetInParent(0);
+                externalContentNode.setReferencingTag(referencedContentTag);
+                r.referenceChildren.add(externalContentNode);
+                return r;
+            }
+
+            @Override
+            public int getStartOffset()
+            {
+                return authorViewContentBeforeContentNodeString.length();
+            }
+
+            @Override
+            public int getEndOffset()
+            {
+                return authorViewContentBeforeContentNodeString.length() + contentNodeString.length();
+            }
+
+            @Override
+            public String getContent()
+            {
+                return contentNodeString;
+            }
+
+            @Override
+            public String getAsXMLFragment()
+            {
+                return referencedContentTag;
+            }
+
+        };
+
+        Assert.assertTrue(
+                authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()).equalsIgnoreCase(
+                        contentNode.getContent()));
+
+        ArrayList<AcrolinxMatch> matches = new ArrayList<>();
+
+        int pTagAndWhiteSpace = 4;
+        List<ExternalContentMatch> externalContentMatches = new ArrayList<>();
+        ExternalContentMatch externalContentMatch = new ExternalContentMatch("id","dita",pTagAndWhiteSpace,pTagAndWhiteSpace+matchContent.length());
+        externalContentMatches.add(externalContentMatch);
+        matches.add(new AcrolinxMatch(new IntRange(documentContentBeforeContentNode.length(), documentContentBeforeContentNode.length()+referencedContentTag.length()), matchContent,externalContentMatches));
+
+        LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+                documentContent, authorViewContent, offset -> contentNode);
+
+        Assert.assertTrue(abstractMatches.isPresent());
+        AbstractMatch onlyMatch = abstractMatches.get().get(0);
+        IntRange matchRange = onlyMatch.getRange();
+        Assert.assertEquals(onlyMatch.getContent(),authorViewContent.substring(matchRange.getMinimumInteger(),
+                matchRange.getMaximumInteger()));
+        Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1,matchRange.getMinimumInteger());
+        Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1+matchContent.length(),matchRange.getMaximumInteger());
+
+    }
+
+
+    @Test
+    public void testLookupDuplicationInReferencedContent()
+    {
+        final String matchContent = "mistaake";
+        final String contentNodeString = " "+matchContent+" "+matchContent;
+        final String contentNodeResolvedXMLString = "<p>"+contentNodeString+"</p>";
+
+        final String authorViewContentBeforeContentNodeString = "Instructions for Authors.\n";
+        final String authorViewContent = authorViewContentBeforeContentNodeString + contentNodeString +"\n";
+        final String referencedContentTag = "<p conref=\"mistake-conref\"/>";
+
+        final String documentContentBeforeContentNode = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<!DOCTYPE topic PUBLIC \"-//OASIS//DTD DITA Topic//EN\" \"topic.dtd\">\n"
+                + "<topic id=\"topic_icd_txy_3db\">\n" + "<title>Instructions for Authors.</title>\n"
+                + "    <body>\n";
+        final String documentContentAfterContentNode = "\n    </body>\n" + "</topic>\n";
+        final String documentContent = documentContentBeforeContentNode + referencedContentTag +documentContentAfterContentNode;
+        ContentNode contentNode = new ExternalContentNode() {
+            @Override
+            public ReferenceTreeNode getReferenceTree() {
+                ReferenceTreeNode r = new ReferenceTreeNode();
+                r.setUnresolvedContent(referencedContentTag);
+                r.setResolvedContent(contentNodeResolvedXMLString);
+
+                ReferenceTreeNode externalContentNode = new ReferenceTreeNode();
+                externalContentNode.setResolvedContent(contentNodeResolvedXMLString);
+                externalContentNode.setUnresolvedContent(contentNodeResolvedXMLString);
+                externalContentNode.setStartOffsetInParent(0);
+                externalContentNode.setReferencingTag(referencedContentTag);
+                r.referenceChildren.add(externalContentNode);
+                return r;
+            }
+
+            @Override
+            public int getStartOffset()
+            {
+                return authorViewContentBeforeContentNodeString.length();
+            }
+
+            @Override
+            public int getEndOffset()
+            {
+                return authorViewContentBeforeContentNodeString.length() + contentNodeString.length();
+            }
+
+            @Override
+            public String getContent()
+            {
+                return contentNodeString;
+            }
+
+            @Override
+            public String getAsXMLFragment()
+            {
+                return referencedContentTag;
+            }
+
+        };
+
+        Assert.assertTrue(
+                authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()).equalsIgnoreCase(
+                        contentNode.getContent()));
+
+        ArrayList<AcrolinxMatch> matches = new ArrayList<>();
+
+        int pTagAndWhiteSpace = 4;
+        List<ExternalContentMatch> externalContentMatches = new ArrayList<>();
+        ExternalContentMatch externalContentMatch = new ExternalContentMatch("id","dita",pTagAndWhiteSpace,pTagAndWhiteSpace+matchContent.length());
+        externalContentMatches.add(externalContentMatch);
+        matches.add(new AcrolinxMatch(new IntRange(documentContentBeforeContentNode.length(), documentContentBeforeContentNode.length()+referencedContentTag.length()), matchContent,externalContentMatches));
+
+        LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+                documentContent, authorViewContent, offset -> contentNode);
+
+        Assert.assertTrue(abstractMatches.isPresent());
+        AbstractMatch onlyMatch = abstractMatches.get().get(0);
+        IntRange matchRange = onlyMatch.getRange();
+        Assert.assertEquals(onlyMatch.getContent(),authorViewContent.substring(matchRange.getMinimumInteger(),
+                matchRange.getMaximumInteger()));
+        Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1,matchRange.getMinimumInteger());
+        Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1+matchContent.length(),matchRange.getMaximumInteger());
+
+    }
+
+
+    @Test
+    public void testLookupDuplicationInSecondReferencedContentLevel()
+    {
+        final String matchContent = "mistaake";
+        final String contentNodeString = " "+matchContent+" "+matchContent;
+        final String contentNodeResolvedXMLString = "<div><p>"+contentNodeString+"</p></div>";
+
+        final String authorViewContentBeforeContentNodeString = "Instructions for Authors.\n";
+        final String authorViewContent = authorViewContentBeforeContentNodeString + contentNodeString +"\n";
+        final String referencedContentTag = "<div conref=\"mistake-conref\"/>";
+        final String secondReferencedContentTag = "<p conref=\"mistake-2-conref\"/>";
+
+
+        final String documentContentBeforeContentNode = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<!DOCTYPE topic PUBLIC \"-//OASIS//DTD DITA Topic//EN\" \"topic.dtd\">\n"
+                + "<topic id=\"topic_icd_txy_3db\">\n" + "<title>Instructions for Authors.</title>\n"
+                + "    <body>\n";
+        final String documentContentAfterContentNode = "\n    </body>\n" + "</topic>\n";
+        final String documentContent = documentContentBeforeContentNode + referencedContentTag +documentContentAfterContentNode;
+        ContentNode contentNode = new ExternalContentNode() {
+            @Override
+            public ReferenceTreeNode getReferenceTree() {
+                ReferenceTreeNode r = new ReferenceTreeNode();
+                r.setUnresolvedContent(referencedContentTag);
+                r.setResolvedContent(contentNodeResolvedXMLString);
+
+                ReferenceTreeNode externalContentNode = new ReferenceTreeNode();
+                externalContentNode.setResolvedContent(contentNodeResolvedXMLString);
+                externalContentNode.setUnresolvedContent("<div>"+secondReferencedContentTag+"</div>");
+                externalContentNode.setStartOffsetInParent(0);
+                externalContentNode.setReferencingTag(referencedContentTag);
+
+                ReferenceTreeNode externalContentChildNode = new ReferenceTreeNode();
+                String firstLevelSubstring =contentNodeResolvedXMLString.substring(5,contentNodeResolvedXMLString.length()-6);
+                externalContentChildNode.setResolvedContent(firstLevelSubstring);
+                externalContentChildNode.setUnresolvedContent(firstLevelSubstring);
+                externalContentChildNode.setReferencingTag(secondReferencedContentTag);
+                externalContentChildNode.setStartOffsetInParent(5);
+
+
+                externalContentNode.referenceChildren.add(externalContentChildNode);
+                r.referenceChildren.add(externalContentNode);
+                return r;
+            }
+
+            @Override
+            public int getStartOffset()
+            {
+                return authorViewContentBeforeContentNodeString.length();
+            }
+
+            @Override
+            public int getEndOffset()
+            {
+                return authorViewContentBeforeContentNodeString.length() + contentNodeString.length();
+            }
+
+            @Override
+            public String getContent()
+            {
+                return contentNodeString;
+            }
+
+            @Override
+            public String getAsXMLFragment()
+            {
+                return referencedContentTag;
+            }
+
+        };
+
+        Assert.assertTrue(
+                authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()).equalsIgnoreCase(
+                        contentNode.getContent()));
+
+        ArrayList<AcrolinxMatch> matches = new ArrayList<>();
+
+        int divTag = 5;
+        int pTag = 3;
+        int pTagAndWhiteSpace = pTag+1;
+        List<ExternalContentMatch> nestedExternalContentMatches = new ArrayList<>();
+        ExternalContentMatch nestedContentMatch = new ExternalContentMatch("id2","dita",pTagAndWhiteSpace,pTagAndWhiteSpace+matchContent.length());
+        nestedExternalContentMatches.add(nestedContentMatch);
+
+        List<ExternalContentMatch> externalContentMatches = new ArrayList<>();
+        ExternalContentMatch externalContentMatch = new ExternalContentMatch("id","dita",divTag,divTag+secondReferencedContentTag.length(),nestedExternalContentMatches);
+
+        externalContentMatches.add(externalContentMatch);
+        matches.add(new AcrolinxMatch(new IntRange(documentContentBeforeContentNode.length(), documentContentBeforeContentNode.length()+referencedContentTag.length()), matchContent,externalContentMatches));
+
+        LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+                documentContent, authorViewContent, offset -> contentNode);
+
+        Assert.assertTrue(abstractMatches.isPresent());
+        AbstractMatch onlyMatch = abstractMatches.get().get(0);
+        IntRange matchRange = onlyMatch.getRange();
+        Assert.assertEquals(onlyMatch.getContent(),authorViewContent.substring(matchRange.getMinimumInteger(),
+                matchRange.getMaximumInteger()));
+        Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1,matchRange.getMinimumInteger());
+        Assert.assertEquals(authorViewContentBeforeContentNodeString.length()+1+matchContent.length(),matchRange.getMaximumInteger());
 
     }
 }
