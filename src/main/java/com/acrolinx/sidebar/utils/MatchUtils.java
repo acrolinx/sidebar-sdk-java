@@ -46,6 +46,7 @@ public class MatchUtils
         }).collect(Collectors.toList());
     }
 
+    @java.lang.SuppressWarnings("java:S5852")
     public static boolean isExternalContentMatchAXMLTag(ExternalAbstractMatch match, List<ExternalContentField> lastCheckedExternalContent) {
         ExternalContentMatch externalContentMatch = match.getExternalContentMatches().get(0);
         while (!externalContentMatch.getExternalContentMatches().isEmpty()) {
