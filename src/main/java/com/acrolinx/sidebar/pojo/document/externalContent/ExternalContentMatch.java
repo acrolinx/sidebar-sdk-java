@@ -20,10 +20,10 @@ public class ExternalContentMatch {
 
     public ExternalContentMatch(String id, String type, int originalBegin, int originalEnd, List<ExternalContentMatch> externalContentMatches) {
         this(id, type, originalBegin, originalEnd);
-        if(externalContentMatches == null) {
-            this.externalContentMatches = new ArrayList<>();
-        } else {
+        if(externalContentMatches != null) {
             this.externalContentMatches = externalContentMatches;
+        } else {
+            this.externalContentMatches = new ArrayList<>();
         }
     }
 
@@ -50,13 +50,13 @@ public class ExternalContentMatch {
 
     public ExternalContentMatch setRange(final IntRange range)
     {
-        if(this.externalContentMatches != null) {
-            return new ExternalContentMatch(this.id, this.type, range.getMinimumInteger(), range.getMaximumInteger(), this.getExternalContentMatches());
-        }
-        return new ExternalContentMatch(this.id, this.type, range.getMinimumInteger(), range.getMaximumInteger());
+        return new ExternalContentMatch(this.id, this.type, range.getMinimumInteger(), range.getMaximumInteger(), this.getExternalContentMatches());
     }
 
     public List<ExternalContentMatch> getExternalContentMatches() {
+        if (externalContentMatches == null) {
+            externalContentMatches = new ArrayList<>();
+        }
         return externalContentMatches;
     }
 
