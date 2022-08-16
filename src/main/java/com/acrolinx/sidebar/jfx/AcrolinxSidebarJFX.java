@@ -5,6 +5,9 @@ package com.acrolinx.sidebar.jfx;
 import java.util.List;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
+import com.acrolinx.sidebar.swt.Cluster;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.CacheHint;
@@ -43,6 +46,8 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
 
     protected final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
 
+    private List<Cluster> allClusters;
+
     public AcrolinxSidebarJFX(final AcrolinxIntegration integration)
     {
         this(integration, null);
@@ -75,6 +80,8 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         webEngine.getLoadWorker().exceptionProperty().addListener(
                 (ov, t, t1) -> logger.error("webEngine exception: " + t1.getMessage()));
 
+
+
         if (sidebarUrl != null) {
             logger.info("Loading: " + sidebarUrl);
             webEngine.load(sidebarUrl);
@@ -82,6 +89,18 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             // if sidebar url is not available show log file location
             webEngine.loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
         }
+    }
+
+    public void callReuse() {
+        JFXUtils.invokeInJFXThread(() -> {
+            try {
+                logger.info("about to call reuse");
+                acrolinxSidebarPlugin.getWindowObject().eval("acrolinxSidebar.callReuse();");
+                logger.info("called reuse");
+            } catch (Exception e) {
+                logger.error(e.toString());
+            }
+        });
     }
 
     private void getChangeListener(final ObservableValue<? extends Worker.State> observedValue,
@@ -104,6 +123,8 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             webEngine.loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
         }
     }
+
+
 
     protected void injectAcrolinxPlugin(AcrolinxStorage storage)
     {
@@ -244,5 +265,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).checkDocumentInBatch(documentIdentifier, documentContent,
                 options);
     }
+
+    public List<Cluster> getAllClusters() {
+        return acrolinxSidebarPlugin.getAllClusters();
+    }
+
 
 }

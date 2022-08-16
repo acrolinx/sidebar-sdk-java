@@ -9,6 +9,9 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
+import com.acrolinx.sidebar.swt.Cluster;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -16,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.web.WebView;
 
+import netscape.javascript.JSObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +52,8 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     protected transient final AcrolinxIntegration integration;
 
     protected transient final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
+
+
 
     public AcrolinxSidebarSwing(final AcrolinxIntegration integration)
     {
@@ -228,5 +234,13 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     public AcrolinxSidebarJFX getSidebarJFX()
     {
         return this.sidebarJFX;
+    }
+
+    public void reactToReuse() {
+        sidebarJFX.callReuse();
+    }
+
+    public List<Cluster> getAllClusters() {
+        return sidebarJFX.getAllClusters();
     }
 }

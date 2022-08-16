@@ -13,12 +13,23 @@ import javafx.scene.web.WebView;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AcrolinxReuseSwing extends JFXPanel {
+
+    private WebEngine webEngine;
 
     public AcrolinxReuseSwing() {
         super();
         showReuseWindow();
+    }
+
+    public void showPrefferedPhrases(List<String> phrases) {
+        String finalString = "'" + phrases.stream().map(p -> "<p>" + p + "</p>").collect(Collectors.joining()) +"'";
+        JFXUtils.invokeInJFXThread(() -> {
+            this.webEngine.executeScript("document.fillDiv3(" + finalString + ");");
+        });
     }
 
     public void showReuseWindow() {
@@ -27,7 +38,7 @@ public class AcrolinxReuseSwing extends JFXPanel {
             GridPane.setHgrow(webview, Priority.ALWAYS);
             GridPane.setVgrow(webview, Priority.ALWAYS);
             webview.setPrefWidth(300);
-            final WebEngine webEngine = webview.getEngine();
+            this.webEngine = webview.getEngine();
 
             Scene scene = new Scene(webview);
             setScene(scene);
@@ -35,14 +46,44 @@ public class AcrolinxReuseSwing extends JFXPanel {
             webEngine.executeScript(""
                     + "let elemDiv = document.createElement('div');"
                     + "let elemDiv2 = document.createElement('div');"
-                    + "elemDiv.innerText = 'This is an example suggested sentence.';"
+                    + "elemDiv.addEventListener(\"keydown\",function(event) {"
+                    + "console.log(event.keyCode);"
+                    + "window.logMessage(\"Key has been pressed\");"
+                    + "if (event.keyCode === 13) {"
+                    + "elemDiv.style.backgroundColor =  (elemDiv.style.backgroundColor === 'red' ? 'white':'red');"
+                    + "}"
+                    + "if (event.key === 'ArrowDown') {"
+                    + "event.currentTarget.nextElementSibling && event.currentTarget.nextElementSibling.focus();"
+                    + "}"
+                    + "if (event.key === 'ArrowUp') {"
+                    + "event.currentTarget.previousElementSibling && event.currentTarget.previousElementSibling.focus();"
+                    + "}"
+                    + "});"
+                    + "elemDiv2.addEventListener(\"keydown\",function(event) {"
+                    + "logMessage(\"Key has been pressed\");"
+                    + "if (event.keyCode === 13) {"
+                    + "elemDiv2.style.backgroundColor =  (elemDiv2.style.backgroundColor === 'red' ? 'white':'red');"
+                    + "}"
+                    + "if (event.key === 'ArrowDown') {"
+                    + "event.currentTarget.nextElementSibling && event.currentTarget.nextElementSibling.focus();"
+                    + "}"
+                    + "if (event.key === 'ArrowUp') {"
+                    + "event.currentTarget.previousElementSibling && event.currentTarget.previousElementSibling.focus();"
+                    + "}"
+                    + "});"
+                    + "elemDiv.innerText = 'This is an example suggested sentence. Bro';"
                     + "elemDiv2.innerText = 'This is another example suggested sentence.';"
                     + "elemDiv.style.cssText='color:blue;text-decoration: underline;cursor: pointer;';"
                     + "elemDiv2.style.cssText='color:blue;text-decoration: underline;cursor: pointer;';"
                     + "elemDiv.tabIndex = 1;"
                     + "elemDiv2.tabIndex = 2;"
                     + "document.body.appendChild(elemDiv);"
-                    + "document.body.appendChild(elemDiv2);");
+                    + "let elemDiv3 = document.createElement('div');"
+                    + "document.body.appendChild(elemDiv2);"
+                    + "document.fillDiv3 = function(innerText) {"
+                    + "elemDiv3.innerHTML = innerText;"
+                    + "};"
+                    + "document.body.appendChild(elemDiv3);");
         });
     }
 }

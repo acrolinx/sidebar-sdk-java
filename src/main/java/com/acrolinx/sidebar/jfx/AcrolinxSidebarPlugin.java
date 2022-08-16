@@ -18,6 +18,9 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import com.acrolinx.sidebar.swt.Cluster;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.scene.web.WebView;
 
 import javax.annotation.Nullable;
@@ -60,6 +63,8 @@ abstract class AcrolinxSidebarPlugin
     private WebView webView;
     protected final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
+    private List<Cluster> allClusters;
+
     protected AcrolinxSidebarPlugin(final AcrolinxIntegration client, final WebView webView)
     {
         Preconditions.checkNotNull(client, "Workspace should not be null");
@@ -67,9 +72,13 @@ abstract class AcrolinxSidebarPlugin
         this.client = client;
         this.webView = webView;
         logger.debug("Injecting Acrolinx Plugin.");
+
         JFXUtils.invokeInJFXThread(() -> {
             try {
-                getWindowObject().setMember("acrolinxPlugin", this);
+               JSObject window =  getWindowObject();
+               window.setMember("acrolinxPlugin", this);
+               webView.getEngine().executeScript("window.reuseTestFunction = window.acrolinxPlugin.parseAllClusters;");
+                logger.info("did set window.reuseTestFunction!");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
             }
@@ -378,5 +387,24 @@ abstract class AcrolinxSidebarPlugin
         return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(
                 Collectors.joining(", "));
     }
+
+    public List<Cluster> getAllClusters() {
+        return allClusters;
+    }
+
+    public synchronized void parseAllClusters(final Object arguments)
+    {
+        logger.info("Java Script: " + arguments);
+        try {
+            allClusters = new Gson().fromJson((String) arguments,
+                    new TypeToken<List<Cluster>>() {}.getType());
+            logger.info("Java Script: " + arguments);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }
