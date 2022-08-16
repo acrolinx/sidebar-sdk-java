@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -55,7 +54,6 @@ import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.acrolinx.sidebar.utils.StartPageInstaller;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -85,6 +83,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<Instant> checkStartTime = new AtomicReference<>();
     private GridData gridData;
+
+    private List<Cluster> allClusters;
 
     public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration client)
     {
@@ -124,6 +124,10 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         this.client = client;
         this.browser = new Browser(parent, SWT.DEFAULT);
         initBrowser();
+    }
+
+    public List<Cluster> getAllClusters() {
+        return allClusters;
     }
 
     private void initBrowser()
@@ -203,8 +207,31 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
+    public void reactToReuse() {
+        System.out.println("React to reuse!");
+
+        browser.execute("acrolinxSidebar.callReuse();");
+        System.out.println("Browser called without error in sdk");
+    }
+
     protected void initSidebar()
     {
+        new BrowserFunction(browser, "reuseTestFunction") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                System.out.println("Java Script: " + arguments[0]);
+                try {
+                    allClusters = new Gson().fromJson((String) arguments[0],
+                            new TypeToken<List<Cluster>>() {}.getType());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }
+
+                return null;
+            }
+        };
         new BrowserFunction(browser, "overwriteJSLoggingInfoP") {
             @Override
             public Object function(final Object[] arguments)
