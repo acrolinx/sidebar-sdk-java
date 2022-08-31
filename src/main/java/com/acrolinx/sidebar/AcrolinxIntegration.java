@@ -85,4 +85,6 @@ public interface AcrolinxIntegration
      */
     String getContentForDocument(String documentIdentifier);
 
+
+    void onReuseSearchSuggestions(List<String> suggestions);
 }
