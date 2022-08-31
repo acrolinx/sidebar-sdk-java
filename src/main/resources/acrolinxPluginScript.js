@@ -91,6 +91,12 @@ window.acrolinxPlugin =
   },
   parseAllClusters: function(clusters) {
     reuseTestFunction(clusters);
+  },
+  reusePrefixSearch: function(prefix) {
+    reusePrefixSearchP(prefix);
+  },
+  onReusePrefixSearchFinished: function(result) {
+    onReusePrefixSearchFinishedP(result);
   }
 }
 })();

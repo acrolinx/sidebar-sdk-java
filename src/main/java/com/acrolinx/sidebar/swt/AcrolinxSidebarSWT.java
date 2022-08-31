@@ -290,6 +290,22 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
+        new BrowserFunction(browser, "reusePrefixSearchP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return reusePrefixSearch(arguments[0]);
+            }
+        };
+
+        new BrowserFunction(browser, "onReusePrefixSearchFinishedP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                return getReusePrefixSearchSuggestions(arguments[0]);
+            }
+        };
+
         new BrowserFunction(browser, "runCheckGlobalP") {
             @Override
             public Object function(final Object[] arguments)
@@ -402,6 +418,17 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return "{\"message\": \"Check Global called\"}";
     }
 
+    private Object reusePrefixSearch(Object prefix)
+    {
+        final String searchPrefix = new Gson().toJson(prefix);
+        logger.debug("Prefix Check requested for: " + searchPrefix);
+
+        browser.execute("acrolinxSidebar.reusePrefixSearch(" + searchPrefix + ");");
+        return null;
+    }
+
+
+
     private String requestCheckForDocumentInBatch(Object documentIdentifier)
     {
         final String docIdJsonString = new Gson().toJson(documentIdentifier);
@@ -500,6 +527,14 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         final List<AcrolinxMatch> result = match.stream().map(AcrolinxMatchFromJSON::getAsAcrolinxMatch).collect(
                 Collectors.toCollection(ArrayList::new));
         client.getEditorAdapter().selectRanges(currentCheckId.get(), Collections.unmodifiableList(result));
+        return null;
+    }
+
+    private Object getReusePrefixSearchSuggestions(Object result)
+    {
+        final List<String> suggestions = new Gson().fromJson((String) result,
+                new TypeToken<List<String>>() {}.getType());
+        client.onReuseSearchSuggestions(suggestions); //Add this method to AcrolinxIntegration
         return null;
     }
 
