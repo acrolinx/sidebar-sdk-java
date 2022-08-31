@@ -77,8 +77,6 @@ abstract class AcrolinxSidebarPlugin
             try {
                JSObject window =  getWindowObject();
                window.setMember("acrolinxPlugin", this);
-               webView.getEngine().executeScript("window.reuseTestFunction = window.acrolinxPlugin.parseAllClusters;");
-                logger.info("did set window.reuseTestFunction!");
             } catch (final Exception e) {
                 logger.error(e.getMessage(), e);
             }

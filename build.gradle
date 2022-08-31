@@ -152,8 +152,23 @@ task copyServerSelectorRessources(type: Copy, dependsOn: npm_install) {
 		subDir.mkdirs()
 		// assert subDir.exists()
 	}
-	from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline')
+	from('C:\\Users\\jhorn\\code\\sidebar-startpage\\dist\\dist-offline')
 	into('src/main/resources/server-selector')
+}
+
+task copyReusePanelRessources(type: Copy, dependsOn: npm_install) {
+	doFirst {
+		def mainDir = new File('src/main/resources')
+		def subDir = new File(mainDir, 'reuse-panel')
+		if (subDir.exists()) {
+			def result = subDir.deleteDir()
+			assert result
+		}
+		subDir.mkdirs()
+		// assert subDir.exists()
+	}
+	from('C:\\Users\\jhorn\\code\\java\\intellij\\test\\website')
+	into('src/main/resources/reuse-panel')
 }
 
 task convertLocalizationEncoding() {
@@ -441,9 +456,11 @@ dependencyCheck {
 
 //noinspection GroovyAssignabilityCheck,GroovyAssignabilityCheck
 processResources.dependsOn copyServerSelectorRessources
+processResources.dependsOn copyReusePanelRessources
 processResources.dependsOn convertLocalizationEncoding
 licenseMain.dependsOn checkLicenseHeaders
 licenseMain.dependsOn copyServerSelectorRessources
+licenseMain.dependsOn copyReusePanelRessources
 licenseTest.dependsOn checkLicenseHeaders
 jar.dependsOn 'downloadLicenses'
 jar.dependsOn createVersionPropertiesFile

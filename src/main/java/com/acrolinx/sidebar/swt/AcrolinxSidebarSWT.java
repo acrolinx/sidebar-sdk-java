@@ -127,7 +127,31 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     }
 
     public List<Cluster> getAllClusters() {
-        return allClusters;
+        List<Cluster> a = new ArrayList<>();
+        List<String> deprecatedPhrases = new ArrayList<>();
+        deprecatedPhrases.add("Digga!");
+        deprecatedPhrases.add("Jo!");
+        deprecatedPhrases.add("Inshallaw!");
+
+        List<String> reuseDomains = new ArrayList<>();
+        reuseDomains.add("domain1");
+
+        a.add(new Cluster("cluster1","Hallo",deprecatedPhrases,true,reuseDomains,"hochdeutsche Ansprache","de"));
+
+        List<String> deprecatedPhrases2 = new ArrayList<>();
+        deprecatedPhrases2.add("Whazz up?");
+        deprecatedPhrases2.add("Wie läufts?");
+        deprecatedPhrases2.add("Rollst du?");
+        deprecatedPhrases2.add("Wie geht es ihnen?");
+
+        List<String> reuseDomains2 = new ArrayList<>();
+        reuseDomains2.add("domain2");
+
+        a.add(new Cluster("cluster2","Wie geht es Ihnen?",deprecatedPhrases2,true,reuseDomains2,"hochdeutsche frage","de"));
+        a.add(new Cluster("cluster3","Wie geht es Ihnen heute?",deprecatedPhrases2,true,reuseDomains2,"hochdeutsche frage","de"));
+        a.add(new Cluster("cluster4","Wie geht es Ihnen jetzt?",deprecatedPhrases2,true,reuseDomains2,"hochdeutsche frage","de"));
+
+        return a;
     }
 
     private void initBrowser()
@@ -195,7 +219,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        loadScriptJS("localStorageScript.js");
+        SWTUtils.loadScriptJS(browser,"localStorageScript.js");
     }
 
     private Object getSetItemObject(Object[] arguments)
@@ -362,7 +386,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        loadScriptJS("acrolinxPluginScript.js");
+        SWTUtils.loadScriptJS(browser, "acrolinxPluginScript.js");
     }
 
     private String runCheckGlobal(Object checkSelection)
@@ -445,28 +469,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    protected void loadScriptJS(String script)
-    {
-        try {
-            final ClassLoader classLoader = this.getClass().getClassLoader();
-            final InputStream inputStream = classLoader.getResourceAsStream(script);
-            final BufferedReader reader;
-            if (inputStream != null) {
-                reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-                String line;
-                final StringBuilder sb = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line).append("\n");
-                }
-                final String scriptLoaded = sb.toString();
-                reader.close();
-                browser.evaluate(scriptLoaded);
-            }
 
-        } catch (final Exception e) {
-            logger.error(e.getMessage());
-        }
-    }
 
     protected Object getOpenLogFileObject()
     {

@@ -9,6 +9,7 @@ import java.awt.event.ComponentListener;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.acrolinx.sidebar.AcrolinxSidebar;
 import com.acrolinx.sidebar.localization.LocalizedStrings;
 import com.acrolinx.sidebar.localization.Localizer;
 import com.acrolinx.sidebar.utils.IconUtils;
@@ -169,6 +170,11 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             JFXUtils.invokeInJFXThread(() -> sidebarJFX = null);
             showEmptyMessage();
         }
+    }
+
+    @Override
+    public AcrolinxSidebar getActiveSidebar() {
+        return sidebarJFX;
     }
 
     public void showEmptyMessage() {

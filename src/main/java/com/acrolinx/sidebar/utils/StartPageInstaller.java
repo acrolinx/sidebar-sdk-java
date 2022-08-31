@@ -73,7 +73,7 @@ public class StartPageInstaller
                         Files.createDirectories(parent);
                     }
                     asset = StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
-                    if ((asset != null) && !Files.exists(assetFile)) {
+                    if ((asset != null) && (true || !Files.exists(assetFile))) {
                         Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
                     }
                 }
@@ -132,6 +132,6 @@ public class StartPageInstaller
 
     public static boolean isExportRequired(final AcrolinxSidebarInitParameter initParam)
     {
-        return initParam.getShowServerSelector() || Strings.isNullOrEmpty(initParam.getSidebarUrl());
+        return true || initParam.getShowServerSelector() || Strings.isNullOrEmpty(initParam.getSidebarUrl());
     }
 }

@@ -2,6 +2,7 @@
 
 package com.acrolinx.sidebar.jfx;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
@@ -267,7 +268,31 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     public List<Cluster> getAllClusters() {
-        return acrolinxSidebarPlugin.getAllClusters();
+        List<Cluster> a = new ArrayList<>();
+        List<String> deprecatedPhrases = new ArrayList<>();
+        deprecatedPhrases.add("Digga!");
+        deprecatedPhrases.add("Jo!");
+        deprecatedPhrases.add("Inshallaw!");
+
+        List<String> reuseDomains = new ArrayList<>();
+        reuseDomains.add("domain1");
+
+        a.add(new Cluster("cluster1","Hallo",deprecatedPhrases,true,reuseDomains,"hochdeutsche Ansprache","de"));
+
+        List<String> deprecatedPhrases2 = new ArrayList<>();
+        deprecatedPhrases2.add("Whazz up?");
+        deprecatedPhrases2.add("Wie läufts?");
+        deprecatedPhrases2.add("Rollst du?");
+        deprecatedPhrases2.add("Wie geht es ihnen?");
+
+        List<String> reuseDomains2 = new ArrayList<>();
+        reuseDomains2.add("domain2");
+
+
+        a.add(new Cluster("cluster2","Wie geht es Ihnen?",deprecatedPhrases2,true,reuseDomains2,"hochdeutsche frage","de"));
+        a.add(new Cluster("cluster3","Wie geht es Ihnen heute?",deprecatedPhrases2,true,reuseDomains2,"hochdeutsche frage","de"));
+        a.add(new Cluster("cluster4","Wie geht es Ihnen jetzt?",deprecatedPhrases2,true,reuseDomains2,"hochdeutsche frage","de"));
+        return a;
     }
 
 
