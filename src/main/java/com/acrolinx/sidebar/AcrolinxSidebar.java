@@ -10,6 +10,7 @@ import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
+import com.acrolinx.sidebar.swt.Cluster;
 
 /**
  * These commands are available to interact with the Acrolinx Sidebar.
@@ -101,5 +102,6 @@ public interface AcrolinxSidebar
      */
 
     void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options);
+    public List<Cluster> getAllClusters();
 
 }

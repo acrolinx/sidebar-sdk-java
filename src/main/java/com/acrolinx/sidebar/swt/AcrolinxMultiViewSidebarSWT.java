@@ -6,6 +6,7 @@ package com.acrolinx.sidebar.swt;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.acrolinx.sidebar.AcrolinxMultiViewSidebarInterface;
 import com.acrolinx.sidebar.localization.LocalizedStrings;
 import com.acrolinx.sidebar.localization.Localizer;
 import org.eclipse.swt.SWT;
@@ -20,7 +21,7 @@ import com.acrolinx.sidebar.utils.AcrolinxException;
 import org.eclipse.swt.widgets.Composite;
 
 // TODO: Hide default view on addition of first sidebar.
-public class AcrolinxMultiViewSidebarSWT
+public class AcrolinxMultiViewSidebarSWT implements AcrolinxMultiViewSidebarInterface
 {
 
     private AcrolinxStorage acrolinxStorage;
@@ -87,6 +88,11 @@ public class AcrolinxMultiViewSidebarSWT
         this.stackLayout.topControl = acrolinxSidebarSWT.browser;
         container.layout(true, true);
         acrolinxSidebarSWT.setVisible(true);
+    }
+
+    @Override
+    public void addSidebar(AcrolinxIntegration client, String documentId) throws AcrolinxException {
+        addSidebar(documentId,client);
     }
 
     /**

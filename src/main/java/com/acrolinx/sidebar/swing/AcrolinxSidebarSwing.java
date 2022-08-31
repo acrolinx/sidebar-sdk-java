@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
@@ -241,6 +242,9 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     }
 
     public List<Cluster> getAllClusters() {
-        return sidebarJFX.getAllClusters();
+
+
+
+        return sidebarJFX != null? sidebarJFX.getAllClusters():null;
     }
 }

@@ -88,6 +88,9 @@ window.acrolinxPlugin =
   },
   openLogFile: function(){
     openLogFileP();
+  },
+  parseAllClusters: function(clusters) {
+    reuseTestFunction(clusters);
   }
 }
 })();

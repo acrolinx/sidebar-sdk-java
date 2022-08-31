@@ -39,4 +39,6 @@ public interface AcrolinxMultiViewSidebarInterface
      * @throws AcrolinxException
      */
     void removeSidebar(String documentId) throws AcrolinxException;
+
+    AcrolinxSidebar getActiveSidebar();
 }
