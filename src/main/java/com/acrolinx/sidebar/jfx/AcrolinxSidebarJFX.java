@@ -267,6 +267,12 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                 options);
     }
 
+    @Override
+    public void reusePrefixSearch(String prefix)
+    {
+
+    }
+
     public List<Cluster> getAllClusters() {
         List<Cluster> a = new ArrayList<>();
         List<String> deprecatedPhrases = new ArrayList<>();

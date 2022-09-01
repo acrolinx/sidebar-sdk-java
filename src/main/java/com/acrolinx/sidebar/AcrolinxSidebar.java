@@ -104,4 +104,6 @@ public interface AcrolinxSidebar
     void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options);
     public List<Cluster> getAllClusters();
 
+    void reusePrefixSearch(String prefix);
+
 }

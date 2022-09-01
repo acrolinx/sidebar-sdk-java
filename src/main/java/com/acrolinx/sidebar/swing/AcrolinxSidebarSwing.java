@@ -232,6 +232,12 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         }
     }
 
+    @Override
+    public void reusePrefixSearch(String prefix)
+    {
+
+    }
+
     public AcrolinxSidebarJFX getSidebarJFX()
     {
         return this.sidebarJFX;
