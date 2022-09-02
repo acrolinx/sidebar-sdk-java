@@ -241,10 +241,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         sidebarJFX.callReuse();
     }
 
-    public List<Cluster> getAllClusters() {
-
-
-
-        return sidebarJFX != null? sidebarJFX.getAllClusters():null;
+    public List<String> getPhrases(String original) {
+        return sidebarJFX != null? sidebarJFX.getPhrases(original):null;
     }
 }
