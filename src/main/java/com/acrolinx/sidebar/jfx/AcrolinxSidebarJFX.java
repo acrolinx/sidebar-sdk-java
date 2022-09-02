@@ -82,6 +82,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                 (ov, t, t1) -> logger.error("webEngine exception: " + t1.getMessage()));
 
 
+
         if (sidebarUrl != null) {
             logger.info("Loading: " + sidebarUrl);
             webEngine.load(sidebarUrl);
@@ -195,6 +196,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     public void invalidateRanges(final List<CheckedDocumentPart> invalidCheckedDocumentRanges)
     {
         acrolinxSidebarPlugin.invalidateRanges(invalidCheckedDocumentRanges);
+
     }
 
     @Override
@@ -265,6 +267,12 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                 options);
     }
 
+    @Override
+    public void reusePrefixSearch(String prefix)
+    {
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).reusePrefixSearch(prefix);
+    }
+
     public List<String> getPhrases(String original) {
         List<String> phrases = new ArrayList<>();
         phrases.add("Hallo");
@@ -273,5 +281,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         phrases.add("Wie geht es Ihnen jetzt?");
         return phrases;
     }
+
 
 }

@@ -115,6 +115,16 @@ class JSToJavaConverter
         return new CheckResult(new CheckedDocumentPart(checkId, range), embedCheckInformation, inputFormat);
     }
 
+    static List<String> getReuseSuggestionsFromJSObject(final JSObject o)
+    {
+        final String length = "" + o.getMember(LENGTH);
+        List<String> reuseSuggestions = new ArrayList<>();
+        for (int i = 0; i < Integer.parseInt(length); i++) {
+            reuseSuggestions.add((String) o.getSlot(i));
+        }
+        return Collections.unmodifiableList(reuseSuggestions);
+    }
+
     private static Map<String, String> getEmbedCheckInformationFromJSString(final JSObject embedCheckInformation)
     {
         final String length = "" + embedCheckInformation.getMember(LENGTH);

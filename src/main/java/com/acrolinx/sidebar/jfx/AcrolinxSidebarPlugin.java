@@ -25,6 +25,7 @@ import javafx.scene.web.WebView;
 
 import javax.annotation.Nullable;
 
+import netscape.javascript.JSException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -203,6 +204,17 @@ abstract class AcrolinxSidebarPlugin
         }
     }
 
+    public synchronized void onReusePrefixSearchResult(final JSObject o)
+    {
+
+        final List<String> reuseSuggestions = JSToJavaConverter.getReuseSuggestionsFromJSObject(o);
+        if (reuseSuggestions.isEmpty()) {
+            logger.info("Prefix Search finished with no suggestions.");
+        } else {
+            client.onReuseSearchSuggestions(reuseSuggestions);
+        }
+    }
+
     public synchronized void selectRanges(final String checkID, final JSObject o)
     {
         LogMessages.logSelectingRange(logger);
@@ -377,6 +389,19 @@ abstract class AcrolinxSidebarPlugin
             }
         });
 
+    }
+
+    public synchronized void reusePrefixSearch(final String prefix)
+    {
+        logger.debug("reusePrefixSearch is called.");
+        try {
+            final String nameVariablePrefix = "prefix";
+            final JSObject jsObject = getWindowObject();
+            jsObject.setMember(nameVariablePrefix, prefix);
+            jsObject.eval("acrolinxSidebar.reusePrefixSearch(prefix);");
+        } catch (final Exception e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
     private static String buildStringOfCheckedRequestOptions(

@@ -91,6 +91,9 @@ window.acrolinxPlugin =
   },
   parseAllClusters: function(clusters) {
     reuseTestFunction(clusters);
+  },
+  onReusePrefixSearchResult: function(result) {
+    onReusePrefixSearchResultP(result);
   }
 }
 })();
