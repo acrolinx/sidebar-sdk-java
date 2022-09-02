@@ -290,7 +290,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "onReusePrefixSearchFinishedP") {
+        new BrowserFunction(browser, "onReusePrefixSearchResultP") {
             @Override
             public Object function(final Object[] arguments)
             {

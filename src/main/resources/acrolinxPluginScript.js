@@ -92,8 +92,8 @@ window.acrolinxPlugin =
   parseAllClusters: function(clusters) {
     reuseTestFunction(clusters);
   },
-  onReusePrefixSearchFinished: function(result) {
-    onReusePrefixSearchFinishedP(result);
+  onReusePrefixSearchResult: function(result) {
+    onReusePrefixSearchResultP(result);
   }
 }
 })();
