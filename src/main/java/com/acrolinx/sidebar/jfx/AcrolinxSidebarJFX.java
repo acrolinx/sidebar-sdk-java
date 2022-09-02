@@ -270,7 +270,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     @Override
     public void reusePrefixSearch(String prefix)
     {
-
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).reusePrefixSearch(prefix);
     }
 
     public List<Cluster> getAllClusters() {
