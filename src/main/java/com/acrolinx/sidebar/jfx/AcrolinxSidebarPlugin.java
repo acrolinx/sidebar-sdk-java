@@ -393,15 +393,18 @@ abstract class AcrolinxSidebarPlugin
 
     public synchronized void reusePrefixSearch(final String prefix)
     {
+
         logger.debug("reusePrefixSearch is called.");
-        try {
-            final String nameVariablePrefix = "prefix";
-            final JSObject jsObject = getWindowObject();
-            jsObject.setMember(nameVariablePrefix, prefix);
-            jsObject.eval("acrolinxSidebar.reusePrefixSearch(prefix);");
-        } catch (final Exception e) {
-            logger.error(e.getMessage(), e);
-        }
+        JFXUtils.invokeInJFXThread(() -> {
+            try {
+                final String nameVariablePrefix = "prefix";
+                final JSObject jsObject = getWindowObject();
+                jsObject.setMember(nameVariablePrefix, prefix);
+                jsObject.eval("acrolinxSidebar.reusePrefixSearch(prefix);");
+            } catch (final Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
     }
 
     private static String buildStringOfCheckedRequestOptions(
