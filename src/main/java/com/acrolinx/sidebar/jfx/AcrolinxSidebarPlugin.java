@@ -210,9 +210,8 @@ abstract class AcrolinxSidebarPlugin
         final List<String> reuseSuggestions = JSToJavaConverter.getReuseSuggestionsFromJSObject(o);
         if (reuseSuggestions.isEmpty()) {
             logger.info("Prefix Search finished with no suggestions.");
-        } else {
-            client.onReuseSearchSuggestions(reuseSuggestions);
         }
+        client.onReuseSearchSuggestions(reuseSuggestions);
     }
 
     public synchronized void selectRanges(final String checkID, final JSObject o)
