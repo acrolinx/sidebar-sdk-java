@@ -77,4 +77,9 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
         browser.execute("window.postMessage({'phrases':"+ phrasesList + ",'original':'"+original+"'},'*')");
 
     }
+
+    @Override
+    public void setLoading(boolean loading) {
+        browser.execute("window.postMessage({'loading':"+ (loading? "true":"false" )+"},'*')");
+    }
 }
