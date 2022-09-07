@@ -87,9 +87,7 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
     }
 
     public void handlePhraseSelection(String phrase) {
-       if( phraseSelectionHandler != null) {
-           phraseSelectionHandler.onPhraseSelected(phrase);
-       }
+       if( phraseSelectionHandler != null)
     }
 
     @Override
@@ -105,6 +103,13 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
         String phrasesList = "[" + preferredPhrases.stream().map(p -> "'"+ p +"'" ).collect(Collectors.joining(",")) +"]";
         JFXUtils.invokeInJFXThread(() -> {
             getWindowObject().eval("postMessage({'phrases':"+ phrasesList + ",'original':'"+original+"'},'*')");
+        });
+    }
+
+    @Override
+    public void setLoading(boolean loading) {
+        JFXUtils.invokeInJFXThread(() -> {
+            getWindowObject().eval("postMessage({'loading':"+(loading? "true":"false" ) +"},'*')");
         });
     }
 }
