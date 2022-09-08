@@ -2,13 +2,10 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.swt.Cluster;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.CacheHint;
@@ -92,17 +89,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         }
     }
 
-    public void callReuse() {
-        JFXUtils.invokeInJFXThread(() -> {
-            try {
-                logger.info("about to call reuse");
-                acrolinxSidebarPlugin.getWindowObject().eval("acrolinxSidebar.callReuse();");
-                logger.info("called reuse");
-            } catch (Exception e) {
-                logger.error(e.toString());
-            }
-        });
-    }
+
 
     private void getChangeListener(final ObservableValue<? extends Worker.State> observedValue,
             final Worker.State oldState, final Worker.State newState, final AcrolinxStorage storage)
@@ -271,15 +258,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     public void reusePrefixSearch(String prefix)
     {
         ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).reusePrefixSearch(prefix);
-    }
-
-    public List<String> getPhrases(String original) {
-        List<String> phrases = new ArrayList<>();
-        phrases.add("Hallo");
-        phrases.add("Wie geht es Ihnen?");
-        phrases.add("Wie geht es Ihnen heute?");
-        phrases.add("Wie geht es Ihnen jetzt?");
-        return phrases;
     }
 
 
