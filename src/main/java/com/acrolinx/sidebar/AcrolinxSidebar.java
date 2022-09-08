@@ -102,8 +102,6 @@ public interface AcrolinxSidebar
      */
 
     void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options);
-    public List<String> getPhrases(String original);
-
     void reusePrefixSearch(String prefix);
 
 }

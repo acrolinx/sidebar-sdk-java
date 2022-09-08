@@ -524,9 +524,21 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     private Object getReusePrefixSearchSuggestions(Object result)
     {
-        final List<String> suggestions = new Gson().fromJson((String) result,
-                new TypeToken<List<String>>() {}.getType());
-        client.onReuseSearchSuggestions(suggestions); //Add this method to AcrolinxIntegration
+        try {
+            List<String> suggestions = new ArrayList<>();
+            if(result instanceof Object[]) {
+                Object[] list = (Object[]) result;
+                for (int i = 0; i < list.length;i++) {
+                    Object a = list[i];
+                    if(a instanceof String) {
+                        suggestions.add((String) a);
+                    }
+                }
+            }
+            client.onReuseSearchSuggestions(suggestions); //Add this method to AcrolinxIntegration
+        } catch(Exception e) {
+            logger.error(e.toString());
+        }
         return null;
     }
 
