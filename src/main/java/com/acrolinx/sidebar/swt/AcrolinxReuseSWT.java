@@ -79,7 +79,8 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
     }
 
     @Override
-    public void setLoading(boolean loading) {
-        browser.execute("window.postMessage({'loading':"+ (loading? "true":"false" )+"},'*')");
+    public void setLoading(boolean loading, String queriedPhrase) {
+        browser.execute("window.postMessage({'loading':"+ (loading? "true":"false" )+",'queriedPhrase':'"+queriedPhrase+"'},'*')");
+        browser.refresh();
     }
 }
