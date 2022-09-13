@@ -237,6 +237,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     public void reusePrefixSearch(String prefix)
     {
+        logger.info("Started reusePrefixSearch at: "+System.currentTimeMillis());
         if(sidebarJFX != null) {
             sidebarJFX.reusePrefixSearch(prefix);
         }

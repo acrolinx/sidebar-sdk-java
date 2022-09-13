@@ -29,6 +29,8 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
 
     private PhraseSelectionHandler phraseSelectionHandler;
 
+
+
     public final static String file = "C:\\Users\\jhorn\\code\\java\\intellij\\reuse-environment\\website\\index.html";
 
     public AcrolinxReuseSwing(PhraseSelectionHandler phraseSelectionHandler) {
@@ -61,7 +63,7 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
 
     public void showReuseWindow() {
         JFXUtils.invokeInJFXThread(() -> {
-            webView = new WebView();;
+            webView = new WebView();
             GridPane.setHgrow(webView, Priority.ALWAYS);
             GridPane.setVgrow(webView, Priority.ALWAYS);
             webView.setPrefWidth(300);
@@ -92,6 +94,12 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
        }
     }
 
+    public void logMessage(String message) {
+        if (phraseSelectionHandler != null) {
+            phraseSelectionHandler.logMessage(message);
+        }
+    }
+
     @Override
     public void showPreferredPhrases(List<String> preferredPhrases) {
         String phrasesList = "[" + preferredPhrases.stream().map(p -> "'"+ p +"'" ).collect(Collectors.joining(",")) +"]";
@@ -109,9 +117,10 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
     }
 
     @Override
-    public void setLoading(boolean loading) {
+    public void setLoading(boolean loading, String queriedPhrase) {
         JFXUtils.invokeInJFXThread(() -> {
-            getWindowObject().eval("postMessage({'loading':"+(loading? "true":"false" ) +"},'*')");
+            getWindowObject().eval("postMessage({'loading':"+(loading? "true":"false" ) +",'queriedPhrase':'"+queriedPhrase+"'},'*')");
+            repaint();
         });
     }
 }
