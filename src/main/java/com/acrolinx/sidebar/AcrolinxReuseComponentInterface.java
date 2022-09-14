@@ -12,4 +12,7 @@ public interface AcrolinxReuseComponentInterface {
     public void showPreferredPhrasesAndOriginal(List<String> preferredPhrases, String original);
 
     public void setLoading(boolean loading,String queriedPhrase);
+
+    public void setCurrentSentence(String currentSentence);
+    public void queryCurrentSentence();
 }
