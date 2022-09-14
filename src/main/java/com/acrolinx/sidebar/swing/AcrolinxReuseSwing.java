@@ -115,7 +115,20 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
     public void setLoading(boolean loading, String queriedPhrase) {
         JFXUtils.invokeInJFXThread(() -> {
             getWindowObject().eval("postMessage({'loading':"+(loading? "true":"false" ) +",'queriedPhrase':'"+queriedPhrase+"'},'*')");
-            repaint();
         });
+    }
+
+    @Override
+    public void setCurrentSentence(String currentSentence) {
+        JFXUtils.invokeInJFXThread(() -> {
+            getWindowObject().("postMessage({'currentSentence':'" +currentSentence +"'},'*')");
+        });
+    }
+
+    @Override
+    public void queryCurrentSentence() {
+        if(phraseSelectionHandler != null) {
+            phraseSelectionHandler.queryCurrentSentence();
+        }
     }
 }

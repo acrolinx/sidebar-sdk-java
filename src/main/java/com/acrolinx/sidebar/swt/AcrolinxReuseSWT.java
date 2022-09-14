@@ -5,6 +5,7 @@ package com.acrolinx.sidebar.swt;
 
 
 import com.acrolinx.sidebar.AcrolinxReuseComponentInterface;
+import com.acrolinx.sidebar.jfx.JFXUtils;
 import com.acrolinx.sidebar.swing.PhraseSelectionHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -82,5 +83,17 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
     public void setLoading(boolean loading, String queriedPhrase) {
         browser.execute("window.postMessage({'loading':"+ (loading? "true":"false" )+",'queriedPhrase':'"+queriedPhrase+"'},'*')");
         browser.refresh();
+    }
+
+    @Override
+    public void setCurrentSentence(String currentSentence) {
+        browser.execute("postMessage({'currentSentence':'" +currentSentence +"'},'*')");
+    }
+
+    @Override
+    public void queryCurrentSentence() {
+        if(phraseSelectionHandler != null) {
+            phraseSelectionHandler.queryCurrentSentence();
+        }
     }
 }
