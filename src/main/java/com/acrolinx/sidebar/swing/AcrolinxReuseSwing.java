@@ -94,11 +94,6 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
        }
     }
 
-    public void logMessage(String message) {
-        if (phraseSelectionHandler != null) {
-            phraseSelectionHandler.logMessage(message);
-        }
-    }
 
     @Override
     public void showPreferredPhrases(List<String> preferredPhrases) {
