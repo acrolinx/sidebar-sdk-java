@@ -2,11 +2,7 @@
 
 package com.acrolinx.sidebar.swt;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -21,6 +17,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.acrolinx.sidebar.reuse.QueryInfo;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
@@ -83,8 +80,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<Instant> checkStartTime = new AtomicReference<>();
     private GridData gridData;
-
-    private List<Cluster> allClusters;
 
     public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration client)
     {
@@ -224,22 +219,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     protected void initSidebar()
     {
-        new BrowserFunction(browser, "reuseTestFunction") {
-            @Override
-            public Object function(final Object[] arguments)
-            {
-                System.out.println("Java Script: " + arguments[0]);
-                try {
-                    allClusters = new Gson().fromJson((String) arguments[0],
-                            new TypeToken<List<Cluster>>() {}.getType());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-
-                return null;
-            }
-        };
         new BrowserFunction(browser, "overwriteJSLoggingInfoP") {
             @Override
             public Object function(final Object[] arguments)
@@ -411,9 +390,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     }
 
     @Override
-    public void reusePrefixSearch(String prefix)  //Not a browser function (only plugin functions should be browser functions)
+    public void reusePrefixSearch(QueryInfo queryInfo)  //Not a browser function (only plugin functions should be browser functions)
     {
-        final String searchPrefix = new Gson().toJson(prefix);
+        final String searchPrefix = new Gson().toJson(queryInfo.getQueryString());
         logger.debug("Prefix Check requested for: " + searchPrefix);
 
         browser.execute("acrolinxSidebar.reusePrefixSearch(" + searchPrefix + ");");

@@ -4,8 +4,8 @@ package com.acrolinx.sidebar.jfx;
 
 import java.util.List;
 
+import com.acrolinx.sidebar.reuse.QueryInfo;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import com.acrolinx.sidebar.swt.Cluster;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.CacheHint;
@@ -43,8 +43,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     protected final AcrolinxIntegration integration;
 
     protected final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
-
-    private List<Cluster> allClusters;
 
     public AcrolinxSidebarJFX(final AcrolinxIntegration integration)
     {
@@ -255,9 +253,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public void reusePrefixSearch(String prefix)
+    public void reusePrefixSearch(QueryInfo queryInfo)
     {
-        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).reusePrefixSearch(prefix);
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).reusePrefixSearch(queryInfo.getQueryString());
     }
 
 

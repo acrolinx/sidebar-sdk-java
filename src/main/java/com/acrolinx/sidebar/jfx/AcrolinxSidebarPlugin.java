@@ -18,14 +18,10 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import com.acrolinx.sidebar.swt.Cluster;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import javafx.scene.web.WebView;
 
 import javax.annotation.Nullable;
 
-import netscape.javascript.JSException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,8 +59,6 @@ abstract class AcrolinxSidebarPlugin
     protected Instant checkStartedTime;
     private WebView webView;
     protected final ExecutorService executorService = Executors.newFixedThreadPool(1);
-
-    private List<Cluster> allClusters;
 
     protected AcrolinxSidebarPlugin(final AcrolinxIntegration client, final WebView webView)
     {
@@ -413,23 +407,6 @@ abstract class AcrolinxSidebarPlugin
                 Collectors.joining(", "));
     }
 
-    public List<Cluster> getAllClusters() {
-        return allClusters;
-    }
-
-    public synchronized void parseAllClusters(final Object arguments)
-    {
-        logger.info("Java Script: " + arguments);
-        try {
-            allClusters = new Gson().fromJson((String) arguments,
-                    new TypeToken<List<Cluster>>() {}.getType());
-            logger.info("Java Script: " + arguments);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        }
-    }
 
 
 }
