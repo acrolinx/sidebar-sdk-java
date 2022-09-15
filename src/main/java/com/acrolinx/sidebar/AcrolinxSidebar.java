@@ -4,13 +4,13 @@ package com.acrolinx.sidebar;
 
 import java.util.List;
 
+import com.acrolinx.sidebar.reuse.QueryInfo;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
-import com.acrolinx.sidebar.swt.Cluster;
 
 /**
  * These commands are available to interact with the Acrolinx Sidebar.
@@ -102,6 +102,6 @@ public interface AcrolinxSidebar
      */
 
     void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options);
-    void reusePrefixSearch(String prefix);
+    void reusePrefixSearch(QueryInfo queryInfo);
 
 }

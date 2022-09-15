@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
+import com.acrolinx.sidebar.reuse.QueryInfo;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -235,11 +236,10 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
 
     @Override
-    public void reusePrefixSearch(String prefix)
+    public void reusePrefixSearch(QueryInfo queryInfo)
     {
-        logger.info("Started reusePrefixSearch at: "+System.currentTimeMillis());
         if(sidebarJFX != null) {
-            sidebarJFX.reusePrefixSearch(prefix);
+            sidebarJFX.reusePrefixSearch(queryInfo);
         }
     }
 
