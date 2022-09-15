@@ -121,7 +121,7 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
     @Override
     public void setCurrentSentence(String currentSentence) {
         JFXUtils.invokeInJFXThread(() -> {
-            getWindowObject().("postMessage({'currentSentence':'" +currentSentence +"'},'*')");
+            getWindowObject().eval("postMessage({'currentSentence':'" +currentSentence +"'},'*')");
         });
     }
 
