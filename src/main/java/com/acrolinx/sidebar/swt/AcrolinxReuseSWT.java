@@ -6,6 +6,7 @@ package com.acrolinx.sidebar.swt;
 
 import com.acrolinx.sidebar.AcrolinxReuseComponentInterface;
 import com.acrolinx.sidebar.jfx.JFXUtils;
+import com.acrolinx.sidebar.reuse.ReuseState;
 import com.acrolinx.sidebar.swing.PhraseSelectionHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -14,10 +15,10 @@ import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
 
@@ -26,6 +27,13 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
     private final GridData gridData;
 
     private final PhraseSelectionHandler phraseSelectionHandler;
+
+    protected final Logger logger = LoggerFactory.getLogger(AcrolinxReuseSWT.class);
+
+
+    public void setReuseState(ReuseState reuseState) {
+        browser.execute("window.postMessage("+reuseState.toJSON()+",'*')");
+    }
 
 
     public AcrolinxReuseSWT(Composite parent, PhraseSelectionHandler phraseSelectionHandler) {
@@ -44,12 +52,20 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
             public void completed(final ProgressEvent event)
             {
                 System.out.println("complete!");
-                new BrowserFunction(browser, "handlePhraseSelection") {
+                new BrowserFunction(browser, "handlePhraseSelectionP") {
                     @Override
                     public Object function(final Object[] arguments)
                     {
                         phraseSelectionHandler.onPhraseSelected((String) arguments[0]);
                         System.out.println("Browser message:" + arguments[0]);
+                        return null;
+                    }
+                };
+                new BrowserFunction(browser, "logP") {
+                    @Override
+                    public Object function(final Object[] arguments)
+                    {
+                        logger.info((String) arguments[0]);
                         return null;
                     }
                 };
@@ -66,29 +82,29 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
         browser.setUrl(file.toURI().toString());
     }
 
-    @Override
-    public void showPreferredPhrases(List<String> preferredPhrases) {
-        String phrasesList = "[" + preferredPhrases.stream().map(p -> "'"+ p +"'" ).collect(Collectors.joining(",")) +"]";
-        browser.execute("window.postMessage({'phrases':"+ phrasesList + "},'*')");
-    }
-
-    @Override
-    public void showPreferredPhrasesAndOriginal(List<String> preferredPhrases, String original) {
-        String phrasesList = "[" + preferredPhrases.stream().map(p -> "'"+ p +"'" ).collect(Collectors.joining(",")) +"]";
-        browser.execute("window.postMessage({'phrases':"+ phrasesList + ",'original':'"+original+"'},'*')");
-
-    }
-
-    @Override
-    public void setLoading(boolean loading, String queriedPhrase) {
-        browser.execute("window.postMessage({'loading':"+ (loading? "true":"false" )+",'queriedPhrase':'"+queriedPhrase+"'},'*')");
-        browser.refresh();
-    }
-
-    @Override
-    public void setCurrentSentence(String currentSentence) {
-        browser.execute("postMessage({'currentSentence':'" +currentSentence +"'},'*')");
-    }
+//    @Override
+//    public void showPreferredPhrases(List<String> preferredPhrases) {
+//        String phrasesList = "[" + preferredPhrases.stream().map(p -> "'"+ p +"'" ).collect(Collectors.joining(",")) +"]";
+//        browser.execute("window.postMessage({'phrases':"+ phrasesList + "},'*')");
+//    }
+//
+//    @Override
+//    public void showPreferredPhrasesAndOriginal(List<String> preferredPhrases, String original) {
+//        String phrasesList = "[" + preferredPhrases.stream().map(p -> "'"+ p +"'" ).collect(Collectors.joining(",")) +"]";
+//        browser.execute("window.postMessage({'phrases':"+ phrasesList + ",'original':'"+original+"'},'*')");
+//
+//    }
+//
+//    @Override
+//    public void setLoading(boolean loading, String queriedPhrase) {
+//        browser.execute("window.postMessage({'loading':"+ (loading? "true":"false" )+",'queriedPhrase':'"+queriedPhrase+"'},'*')");
+//        browser.refresh();
+//    }
+//
+//    @Override
+//    public void setCurrentSentence(String currentSentence) {
+//        browser.execute("postMessage({'currentSentence':'" +currentSentence +"'},'*')");
+//    }
 
     @Override
     public void queryCurrentSentence() {
