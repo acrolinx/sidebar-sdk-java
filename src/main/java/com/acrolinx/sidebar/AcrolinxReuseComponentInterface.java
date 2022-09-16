@@ -3,16 +3,19 @@
  */
 package com.acrolinx.sidebar;
 
-import java.util.List;
+import com.acrolinx.sidebar.reuse.ReuseState;
+
 
 public interface AcrolinxReuseComponentInterface {
 
-    public void showPreferredPhrases(List<String> preferredPhrases);
+//    public void showPreferredPhrases(List<String> preferredPhrases);
+//
+//    public void showPreferredPhrasesAndOriginal(List<String> preferredPhrases, String original);
+//
+//    public void setLoading(boolean loading,String queriedPhrase);
+//
+//    public void setCurrentSentence(String currentSentence);
+    void queryCurrentSentence();
 
-    public void showPreferredPhrasesAndOriginal(List<String> preferredPhrases, String original);
-
-    public void setLoading(boolean loading,String queriedPhrase);
-
-    public void setCurrentSentence(String currentSentence);
-    public void queryCurrentSentence();
+    void setReuseState(ReuseState reuseState);
 }

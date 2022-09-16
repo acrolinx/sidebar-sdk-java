@@ -5,6 +5,8 @@ package com.acrolinx.sidebar.swing;
 
 import com.acrolinx.sidebar.AcrolinxReuseComponentInterface;
 import com.acrolinx.sidebar.jfx.JFXUtils;
+import com.acrolinx.sidebar.reuse.ReuseState;
+import com.acrolinx.sidebar.swt.AcrolinxReuseSWT;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -13,6 +15,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -26,10 +30,9 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
     private WebEngine webEngine;
 
     private WebView webView;
+    private final Logger logger = LoggerFactory.getLogger(AcrolinxReuseSwing.class);
 
     private PhraseSelectionHandler phraseSelectionHandler;
-
-
 
     public final static String file = "C:\\Users\\jhorn\\code\\java\\intellij\\reuse-environment\\website\\index.html";
 
@@ -59,6 +62,8 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
         return jsobj;
     }
 
+    private JSObject window;
+
 
 
     public void showReuseWindow() {
@@ -78,7 +83,8 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
                 if (newState == Worker.State.SUCCEEDED) {
                     // new page has loaded, process:
                     JFXUtils.invokeInJFXThread(() -> {
-                        getWindowObject().setMember("reuseAdapter", this);
+                        window = getWindowObject();
+                        window.setMember("reuseAdapter", this);
                     });
                 }
             });
@@ -96,32 +102,9 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
 
 
     @Override
-    public void showPreferredPhrases(List<String> preferredPhrases) {
-        String phrasesList = "[" + preferredPhrases.stream().map(p -> "'"+ p +"'" ).collect(Collectors.joining(",")) +"]";
+    public void setReuseState(ReuseState reuseState) {
         JFXUtils.invokeInJFXThread(() -> {
-            getWindowObject().eval("postMessage({'phrases':"+ phrasesList + "},'*')");
-        });
-    }
-
-    @Override
-    public void showPreferredPhrasesAndOriginal(List<String> preferredPhrases, String original) {
-        String phrasesList = "[" + preferredPhrases.stream().map(p -> "'"+ p +"'" ).collect(Collectors.joining(",")) +"]";
-        JFXUtils.invokeInJFXThread(() -> {
-            getWindowObject().eval("postMessage({'phrases':"+ phrasesList + ",'original':'"+original+"'},'*')");
-        });
-    }
-
-    @Override
-    public void setLoading(boolean loading, String queriedPhrase) {
-        JFXUtils.invokeInJFXThread(() -> {
-            getWindowObject().eval("postMessage({'loading':"+(loading? "true":"false" ) +",'queriedPhrase':'"+queriedPhrase+"'},'*')");
-        });
-    }
-
-    @Override
-    public void setCurrentSentence(String currentSentence) {
-        JFXUtils.invokeInJFXThread(() -> {
-            getWindowObject().eval("postMessage({'currentSentence':'" +currentSentence +"'},'*')");
+            window.eval("postMessage(" + reuseState.toJSON() + ",'*')");
         });
     }
 
@@ -130,5 +113,9 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
         if(phraseSelectionHandler != null) {
             phraseSelectionHandler.queryCurrentSentence();
         }
+    }
+
+    public void log(String log) {
+        logger.info(log);
     }
 }
