@@ -6,7 +6,7 @@ package com.acrolinx.sidebar.swing;
 import com.acrolinx.sidebar.AcrolinxReuseComponentInterface;
 import com.acrolinx.sidebar.jfx.JFXUtils;
 import com.acrolinx.sidebar.reuse.ReuseState;
-import com.acrolinx.sidebar.swt.AcrolinxReuseSWT;
+import com.acrolinx.sidebar.utils.ReusePanelInstaller;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -17,13 +17,8 @@ import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+
 
 public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseComponentInterface {
 
@@ -34,10 +29,15 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
 
     private PhraseSelectionHandler phraseSelectionHandler;
 
-    public final static String file = "C:\\Users\\jhorn\\code\\java\\intellij\\reuse-environment\\website\\index.html";
+//    public final static String file = "C:\\Workspace\\working\\2022\\ReusePrototype\\reuse-panel\\website\\index.html";
 
     public AcrolinxReuseSwing(PhraseSelectionHandler phraseSelectionHandler) {
         super();
+        try {
+            ReusePanelInstaller.exportReusePanelResources();
+        } catch (final Exception e) {
+            logger.error("Error while exporting reuse panel resources: ", e.getMessage());
+        }
         showReuseWindow();
         this.phraseSelectionHandler = phraseSelectionHandler;
     }
@@ -77,7 +77,6 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
             Scene scene = new Scene(webView);
             setScene(scene);
             setVisible(true);
-            File file = new File(AcrolinxReuseSwing.file);
 
             webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
                 if (newState == Worker.State.SUCCEEDED) {
@@ -89,7 +88,7 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
                 }
             });
 
-            webEngine.load(file.toURI().toString());
+            webEngine.load(ReusePanelInstaller.getReusePanelURL());
 
         });
     }

@@ -167,7 +167,7 @@ task copyReusePanelRessources(type: Copy, dependsOn: npm_install) {
 		subDir.mkdirs()
 		// assert subDir.exists()
 	}
-	from('C:\\Users\\jhorn\\code\\java\\intellij\\test\\website')
+	from('node_modules/@acrolinx/reuse-panel/dist')
 	into('src/main/resources/reuse-panel')
 }
 
