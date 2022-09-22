@@ -2,17 +2,21 @@ package com.acrolinx.sidebar.reuse;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReuseState {
 
+    public static final ReuseState emptyReuseState = new ReuseState("",new ArrayList<>(),"","",false);
 
+    private final String message;
     private final boolean loading;
     private final List<String> preferredPhrases;
     private final String originalPhrase;
     private final String currentSentence;
 
-    public ReuseState( List<String> preferredPhrases, String originalPhrase, String currentSentence,boolean loading) {
+    public ReuseState(String message, List<String> preferredPhrases, String originalPhrase, String currentSentence, boolean loading) {
+        this.message = message;
         this.loading = loading;
         this.preferredPhrases = preferredPhrases;
         this.originalPhrase = originalPhrase;
@@ -35,13 +39,18 @@ public class ReuseState {
         return currentSentence;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
     public String toJSON() {
         String phrasesJSON = preferredPhrases.size() > 0 ? "['"+ StringUtils.join(preferredPhrases,"','")+"']":"[]";
         String preferredPhrasesJSON = "'phrases':"+phrasesJSON;
         String loadingJSON = "'loading':" + (loading ? "true":"false");
         String originalPhraseJSON = "'originalPhrase':'"+originalPhrase+"'";
         String currentSentenceJSON = "'currentSentence':'"+currentSentence+"'";
-        String[] jsons = {preferredPhrasesJSON,loadingJSON,originalPhraseJSON,currentSentenceJSON};
+        String messageJSON = "'message':'"+message+"'";
+        String[] jsons = {preferredPhrasesJSON,loadingJSON,originalPhraseJSON,currentSentenceJSON,messageJSON};
 
         return "{"+StringUtils.join(jsons,",")+"}";
     }
