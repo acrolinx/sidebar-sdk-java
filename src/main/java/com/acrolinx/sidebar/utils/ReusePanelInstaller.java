@@ -34,7 +34,7 @@ public class ReusePanelInstaller
      * @throws URISyntaxException
      * @throws IOException
      */
-    static public void exportReusePanelResources() throws URISyntaxException, IOException
+    public static void exportReusePanelResources() throws URISyntaxException, IOException
     {
         InputStream asset;
         logger.info("Exporting Reuse Panel Resources.");
