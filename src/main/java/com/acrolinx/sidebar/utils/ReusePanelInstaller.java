@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-present Acrolinx GmbH */
+/* Copyright (c) 2022-present Acrolinx GmbH */
 
 package com.acrolinx.sidebar.utils;
 
