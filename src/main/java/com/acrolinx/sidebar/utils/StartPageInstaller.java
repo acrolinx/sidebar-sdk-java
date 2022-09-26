@@ -57,7 +57,7 @@ public class StartPageInstaller
      * @throws URISyntaxException
      * @throws IOException
      */
-    static public void exportStartPageResources() throws URISyntaxException, IOException
+    public static void exportStartPageResources() throws URISyntaxException, IOException
     {
         InputStream asset;
         logger.info("Exporting Server Selector Resources.");
