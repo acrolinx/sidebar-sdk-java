@@ -63,7 +63,7 @@ public class ReusePanelInstaller
         final Path userTempDirLocation = SidebarUtils.getUserTempDirLocation();
         final String osName = System.getProperty("os.name");
         Path acrolinxDir;
-        if (osName.toLowerCase().contains("mac") || osName.contains("windows")) {
+        if (osName.toLowerCase().contains("mac") || osName.toLowerCase().contains("darwin") || osName.contains("windows")) {
             acrolinxDir = userTempDirLocation.resolve("Acrolinx");
         } else {
             acrolinxDir = userTempDirLocation.resolve("acrolinx");
