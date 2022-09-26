@@ -30,6 +30,7 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       BUILD_NUMBER: ${{ github.run_number }}
+      GITLAB_REG_TOKEN: ${{ secrets.GITLAB_REG_TOKEN }}
 
     steps:
       - name: Checkout
