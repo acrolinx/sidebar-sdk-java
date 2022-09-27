@@ -3,11 +3,11 @@
  */
 package com.acrolinx.sidebar;
 
-import com.acrolinx.sidebar.reuse.ReuseState;
+import com.acrolinx.sidebar.reuse.ReusePanelState;
 
 
 public interface AcrolinxReuseComponentInterface {
     void queryCurrentSentence();
 
-    void setReuseState(ReuseState reuseState);
+    void setReuseState(ReusePanelState reusePanelState);
 }
