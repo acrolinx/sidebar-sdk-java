@@ -5,9 +5,9 @@ package com.acrolinx.sidebar.swt;
 
 
 import com.acrolinx.sidebar.AcrolinxReuseComponentInterface;
-import com.acrolinx.sidebar.jfx.JFXUtils;
 import com.acrolinx.sidebar.reuse.ReuseState;
 import com.acrolinx.sidebar.swing.PhraseSelectionHandler;
+import com.acrolinx.sidebar.utils.ReusePanelInstaller;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 
 public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
 
@@ -41,6 +40,11 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
         this.phraseSelectionHandler = phraseSelectionHandler;
         this.gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
         browser.setLayoutData(this.gridData);
+        try {
+            ReusePanelInstaller.exportReusePanelResources();
+        } catch (final Exception e) {
+            logger.error("Error while exporting reuse panel resources: ", e.getMessage());
+        }
         showReuseWindow();
     }
 
@@ -78,8 +82,7 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
                 // we only need completed event to be handled
             }
         });
-        File file = new File( "C:\\Users\\jhorn\\code\\java\\intellij\\reuse-environment\\website\\index.html");
-        browser.setUrl(file.toURI().toString());
+        browser.setUrl(ReusePanelInstaller.getReusePanelURL());
     }
 
 //    @Override
