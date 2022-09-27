@@ -152,7 +152,7 @@ task copyServerSelectorRessources(type: Copy, dependsOn: npm_install) {
 		subDir.mkdirs()
 		// assert subDir.exists()
 	}
-	from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline')
+	from('node_modules/@acrolinx/sidebar-startpage-reuse/dist/dist-offline')
 	into('src/main/resources/server-selector')
 }
 
