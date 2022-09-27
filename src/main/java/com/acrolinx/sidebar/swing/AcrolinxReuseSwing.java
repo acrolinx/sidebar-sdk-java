@@ -5,7 +5,7 @@ package com.acrolinx.sidebar.swing;
 
 import com.acrolinx.sidebar.AcrolinxReuseComponentInterface;
 import com.acrolinx.sidebar.jfx.JFXUtils;
-import com.acrolinx.sidebar.reuse.ReuseState;
+import com.acrolinx.sidebar.reuse.ReusePanelState;
 import com.acrolinx.sidebar.utils.ReusePanelInstaller;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.JFXPanel;
@@ -101,9 +101,9 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
 
 
     @Override
-    public void setReuseState(ReuseState reuseState) {
+    public void setReuseState(ReusePanelState reusePanelState) {
         JFXUtils.invokeInJFXThread(() -> {
-            window.eval("postMessage(" + reuseState.toJSON() + ",'*')");
+            window.eval("postMessage(" + reusePanelState.toJSON() + ",'*')");
         });
     }
 

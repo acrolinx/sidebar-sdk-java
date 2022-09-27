@@ -8,20 +8,20 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReuseState {
+public class ReusePanelState {
 
-    public static final ReuseState emptyReuseState = new ReuseState("",new ArrayList<>(),"","",false);
+    public static final ReusePanelState EMPTY_REUSE_PANEL_STATE = new ReusePanelState("",new ArrayList<>(),"","",false);
 
     private final String message;
     private final boolean loading;
-    private final List<String> preferredPhrases;
+    private final List<String> suggestions;
     private final String originalPhrase;
     private final String currentSentence;
 
-    public ReuseState(String message, List<String> preferredPhrases, String originalPhrase, String currentSentence, boolean loading) {
+    public ReusePanelState(String message, List<String> suggestions, String originalPhrase, String currentSentence, boolean loading) {
         this.message = message;
         this.loading = loading;
-        this.preferredPhrases = preferredPhrases;
+        this.suggestions = suggestions;
         this.originalPhrase = originalPhrase;
         this.currentSentence = currentSentence;
     }
@@ -30,8 +30,8 @@ public class ReuseState {
         return loading;
     }
 
-    public List<String> getPreferredPhrases() {
-        return preferredPhrases;
+    public List<String> getSuggestions() {
+        return suggestions;
     }
 
     public String getOriginalPhrase() {
@@ -47,7 +47,7 @@ public class ReuseState {
     }
 
     public String toJSON() {
-        String phrasesJSON = preferredPhrases.size() > 0 ? "['"+ StringUtils.join(preferredPhrases,"','")+"']":"[]";
+        String phrasesJSON = suggestions.size() > 0 ? "['"+ StringUtils.join(suggestions,"','")+"']":"[]";
         String preferredPhrasesJSON = "'phrases':"+phrasesJSON;
         String loadingJSON = "'loading':" + (loading ? "true":"false");
         String originalPhraseJSON = "'originalPhrase':'"+originalPhrase+"'";
