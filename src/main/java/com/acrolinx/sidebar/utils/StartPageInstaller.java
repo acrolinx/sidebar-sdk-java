@@ -132,6 +132,6 @@ public class StartPageInstaller
 
     public static boolean isExportRequired(final AcrolinxSidebarInitParameter initParam)
     {
-        return true || initParam.getShowServerSelector() || Strings.isNullOrEmpty(initParam.getSidebarUrl());
+        return initParam.getShowServerSelector() || Strings.isNullOrEmpty(initParam.getSidebarUrl());
     }
 }
