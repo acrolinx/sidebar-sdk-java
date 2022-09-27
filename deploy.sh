@@ -30,26 +30,4 @@ if ! [[ "$PROJECT_VERSION" =~ ^[0-9]+((.[0-9]+)?)+$ ]]; then
     else
         exit 1
     fi
-else
-    echo "Publishing release version to staging repo..."
-    if ./gradlew publishToSonatype; then
-        echo "Done with publish step."
-        echo "Starting close and release step"
-        if ./gradlew closeAndReleaseRepository; then
-            echo "Done with release step."
-            echo "Trying to create Github Release Tag"
-            if ./gradlew createGithubReleaseTag; then
-              echo "::set-output name=TAGNAME::release-$PROJECT_VERSION"
-              echo "::set-output name=RELEASE::true"
-              exit 0
-            else
-              echo "Can't create Github Release Tag. Please do manually."
-              exit 1
-            fi
-        else
-            exit 1
-        fi
-    else
-        exit 1
-    fi
 fi

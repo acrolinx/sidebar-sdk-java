@@ -1,7 +1,7 @@
 name: Build and Deploy
 on:
   push:
-    branches: [ main, DITA_POC ]
+    branches: [ main, DEV-30465-reusePrototype ]
   pull_request:
     branches: [ main ]
   schedule:
@@ -70,18 +70,4 @@ jobs:
         run: |
           chmod +x ./deploy.sh
           ./deploy.sh
-      # Push new tag
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.36.0
-        if: steps.deploy.outputs.RELEASE == 'true'
-        env:
-          CUSTOM_TAG: ${{ steps.deploy.outputs.TAGNAME }}
-
-      # Deploy Java Doc
-      - name: Deploy Java Doc
-        uses: JamesIves/github-pages-deploy-action@4.1.5
-        if: steps.deploy.outputs.RELEASE == 'true'
-        with:
-          branch: gh-pages
-          folder: "docs/"
           
