@@ -29,8 +29,6 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
 
     private PhraseSelectionHandler phraseSelectionHandler;
 
-//    public final static String file = "C:\\Workspace\\working\\2022\\ReusePrototype\\reuse-panel\\website\\index.html";
-
     public AcrolinxReuseSwing(PhraseSelectionHandler phraseSelectionHandler) {
         super();
         try {
