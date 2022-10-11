@@ -18,6 +18,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 
 public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
 
@@ -31,7 +33,8 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
 
 
     public void setReuseState(ReusePanelState reusePanelState) {
-        browser.execute("window.postMessage("+reusePanelState.toJSON()+",'*')");
+        ReusePanelState reusePanelState1 = new ReusePanelState(reusePanelState.getMessage(), reusePanelState.getSuggestions(),reusePanelState.getOriginalPhrase().replace("\u0000",""),reusePanelState.getCurrentSentence().replace("\u0000",""),reusePanelState.isLoading());
+        browser.execute("window.postMessage("+reusePanelState1.toJSON()+",'*')");
     }
 
 
