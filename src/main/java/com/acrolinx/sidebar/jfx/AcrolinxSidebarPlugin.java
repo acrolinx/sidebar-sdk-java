@@ -395,6 +395,7 @@ abstract class AcrolinxSidebarPlugin
                 jsObject.setMember(nameVariablePrefix, prefix);
                 jsObject.eval("acrolinxSidebar.reusePrefixSearch(prefix);");
             } catch (final Exception e) {
+                client.onReuseSearchError(e);
                 logger.error(e.getMessage(), e);
             }
         });

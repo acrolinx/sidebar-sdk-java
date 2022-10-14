@@ -87,4 +87,6 @@ public interface AcrolinxIntegration
 
 
     void onReuseSearchSuggestions(List<String> suggestions);
+
+    void onReuseSearchError(Exception e);
 }

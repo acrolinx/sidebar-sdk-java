@@ -76,8 +76,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         webEngine.getLoadWorker().exceptionProperty().addListener(
                 (ov, t, t1) -> logger.error("webEngine exception: " + t1.getMessage()));
 
-
-
         if (sidebarUrl != null) {
             logger.info("Loading: " + sidebarUrl);
             webEngine.load(sidebarUrl);

@@ -210,12 +210,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    public void reactToReuse() {
-        System.out.println("React to reuse!");
 
-        browser.execute("acrolinxSidebar.callReuse();");
-        System.out.println("Browser called without error in sdk");
-    }
 
     protected void initSidebar()
     {
@@ -395,7 +390,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         final String searchPrefix = new Gson().toJson(queryInfo.getQueryString());
         logger.debug("Prefix Check requested for: " + searchPrefix);
 
-        browser.execute("acrolinxSidebar.reusePrefixSearch(" + searchPrefix + ");");
+        try {
+            browser.evaluate("acrolinxSidebar.reusePrefixSearch(" + searchPrefix + ");");
+        } catch(Exception e) {
+            client.onReuseSearchError(e);
+        }
     }
 
 
