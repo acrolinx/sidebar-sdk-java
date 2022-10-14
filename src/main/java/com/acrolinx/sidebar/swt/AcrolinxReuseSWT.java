@@ -18,8 +18,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-
 
 public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
 
@@ -58,13 +56,11 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
             @Override
             public void completed(final ProgressEvent event)
             {
-                System.out.println("complete!");
                 new BrowserFunction(browser, "handlePhraseSelectionP") {
                     @Override
                     public Object function(final Object[] arguments)
                     {
                         phraseSelectionHandler.onPhraseSelected((String) arguments[0]);
-                        System.out.println("Browser message:" + arguments[0]);
                         return null;
                     }
                 };
