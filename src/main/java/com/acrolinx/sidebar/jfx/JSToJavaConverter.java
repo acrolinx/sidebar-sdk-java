@@ -5,6 +5,7 @@ package com.acrolinx.sidebar.jfx;
 import java.util.*;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
+import com.acrolinx.sidebar.reuse.ReuseSuggestion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -115,12 +116,14 @@ class JSToJavaConverter
         return new CheckResult(new CheckedDocumentPart(checkId, range), embedCheckInformation, inputFormat);
     }
 
-    static List<String> getReuseSuggestionsFromJSObject(final JSObject o)
+    static List<ReuseSuggestion> getReuseSuggestionsFromJSObject(final JSObject o)
     {
         final String length = "" + o.getMember(LENGTH);
-        List<String> reuseSuggestions = new ArrayList<>();
+        List<ReuseSuggestion> reuseSuggestions = new ArrayList<>();
         for (int i = 0; i < Integer.parseInt(length); i++) {
-            reuseSuggestions.add((String) o.getSlot(i));
+            JSObject jsObject = (JSObject) o.getSlot(i);
+            ReuseSuggestion reuseSuggestion = new ReuseSuggestion((String) jsObject.getMember("preferredPhrase"), (String) jsObject.getMember("description"));
+            reuseSuggestions.add(reuseSuggestion);
         }
         return Collections.unmodifiableList(reuseSuggestions);
     }

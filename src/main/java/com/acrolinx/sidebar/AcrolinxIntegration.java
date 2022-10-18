@@ -10,6 +10,7 @@ import com.acrolinx.sidebar.pojo.document.CheckResult;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
+import com.acrolinx.sidebar.reuse.ReuseSuggestion;
 
 /**
  * This interface needs be implemented to integrate Acrolinx with an editor or editing environment.
@@ -86,7 +87,7 @@ public interface AcrolinxIntegration
     String getContentForDocument(String documentIdentifier);
 
 
-    void onReuseSearchSuggestions(List<String> suggestions);
+    void onReuseSearchSuggestions(List<ReuseSuggestion> suggestions);
 
     void onReuseSearchError(Exception e);
 }

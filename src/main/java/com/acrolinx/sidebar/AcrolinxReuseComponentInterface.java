@@ -8,6 +8,5 @@ import com.acrolinx.sidebar.reuse.ReusePanelState;
 
 public interface AcrolinxReuseComponentInterface {
     void queryCurrentSentence();
-
     void setReuseState(ReusePanelState reusePanelState);
 }
