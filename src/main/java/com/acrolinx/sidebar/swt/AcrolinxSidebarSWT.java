@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.acrolinx.sidebar.reuse.QueryInfo;
+import com.acrolinx.sidebar.reuse.ReuseSuggestion;
+import com.acrolinx.sidebar.reuse.ReuseSuggestionFromJSON;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
@@ -503,17 +505,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private Object getReusePrefixSearchSuggestions(Object result)
     {
         try {
-            List<String> suggestions = new ArrayList<>();
-            if(result instanceof Object[]) {
-                Object[] list = (Object[]) result;
-                for (int i = 0; i < list.length;i++) {
-                    Object a = list[i];
-                    if(a instanceof String) {
-                        suggestions.add((String) a);
-                    }
-                }
-            }
-            client.onReuseSearchSuggestions(suggestions); //Add this method to AcrolinxIntegration
+            LogMessages.logSelectingRange(logger);
+            final List<ReuseSuggestionFromJSON> match = new Gson().fromJson((String) result,
+                    new TypeToken<List<ReuseSuggestionFromJSON>>() {}.getType());
+            final List<ReuseSuggestion> suggestionList = match.stream().map(ReuseSuggestionFromJSON::getSuggestion).collect(Collectors.toList());
+            client.onReuseSearchSuggestions(suggestionList); //Add this method to AcrolinxIntegration
         } catch(Exception e) {
             logger.error(e.toString());
         }

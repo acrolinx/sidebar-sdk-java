@@ -18,6 +18,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import com.acrolinx.sidebar.reuse.ReuseSuggestion;
 import javafx.scene.web.WebView;
 
 import javax.annotation.Nullable;
@@ -201,7 +202,7 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void onReusePrefixSearchResult(final JSObject o)
     {
 
-        final List<String> reuseSuggestions = JSToJavaConverter.getReuseSuggestionsFromJSObject(o);
+        final List<ReuseSuggestion> reuseSuggestions = JSToJavaConverter.getReuseSuggestionsFromJSObject(o);
         if (reuseSuggestions.isEmpty()) {
             logger.info("Prefix Search finished with no suggestions.");
         }
