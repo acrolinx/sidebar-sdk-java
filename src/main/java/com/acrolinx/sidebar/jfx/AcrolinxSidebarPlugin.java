@@ -18,7 +18,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import com.acrolinx.sidebar.reuse.ReuseSuggestion;
+import com.acrolinx.sidebar.reuse.ReuseResponse;
 import javafx.scene.web.WebView;
 
 import javax.annotation.Nullable;
@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.InputAdapterInterface;
-import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.*;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
@@ -201,12 +200,11 @@ abstract class AcrolinxSidebarPlugin
 
     public synchronized void onReusePrefixSearchResult(final JSObject o)
     {
-
-        final List<ReuseSuggestion> reuseSuggestions = JSToJavaConverter.getReuseSuggestionsFromJSObject(o);
-        if (reuseSuggestions.isEmpty()) {
+        final ReuseResponse reuseResponse = JSToJavaConverter.getReuseSuggestionsFromJSObject(o);
+        if (reuseResponse.getSuggestions().isEmpty()) {
             logger.info("Prefix Search finished with no suggestions.");
         }
-        client.onReuseSearchSuggestions(reuseSuggestions);
+        client.onReuseSearchSuggestions(reuseResponse);
     }
 
     public synchronized void selectRanges(final String checkID, final JSObject o)
@@ -394,7 +392,7 @@ abstract class AcrolinxSidebarPlugin
                 final String nameVariablePrefix = "prefix";
                 final JSObject jsObject = getWindowObject();
                 jsObject.setMember(nameVariablePrefix, prefix);
-                jsObject.eval("acrolinxSidebar.reusePrefixSearch(prefix);");
+                jsObject.eval("acrolinxSidebar.reusePrefixSearch('thisIsAnId',prefix);");
             } catch (final Exception e) {
                 client.onReuseSearchError(e);
                 logger.error(e.getMessage(), e);
