@@ -17,9 +17,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import com.acrolinx.sidebar.reuse.QueryInfo;
-import com.acrolinx.sidebar.reuse.ReuseSuggestion;
-import com.acrolinx.sidebar.reuse.ReuseSuggestionFromJSON;
+import com.acrolinx.sidebar.reuse.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
@@ -393,7 +391,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         logger.debug("Prefix Check requested for: " + searchPrefix);
 
         try {
-            browser.evaluate("acrolinxSidebar.reusePrefixSearch(" + searchPrefix + ");");
+            browser.evaluate("acrolinxSidebar.reusePrefixSearch('ThisIsAnId'," + searchPrefix + ");");
         } catch(Exception e) {
             client.onReuseSearchError(e);
         }
@@ -506,10 +504,10 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         try {
             LogMessages.logSelectingRange(logger);
-            final List<ReuseSuggestionFromJSON> match = new Gson().fromJson((String) result,
-                    new TypeToken<List<ReuseSuggestionFromJSON>>() {}.getType());
-            final List<ReuseSuggestion> suggestionList = match.stream().map(ReuseSuggestionFromJSON::getSuggestion).collect(Collectors.toList());
-            client.onReuseSearchSuggestions(suggestionList); //Add this method to AcrolinxIntegration
+            final ReuseResponseFromJSON responseFromJSON = new Gson().fromJson((String) result,
+                    new TypeToken<ReuseResponseFromJSON>() {}.getType());
+            final ReuseResponse reuseResponse = responseFromJSON.getReuseResponse();
+            client.onReuseSearchSuggestions(reuseResponse); //Add this method to AcrolinxIntegration
         } catch(Exception e) {
             logger.error(e.toString());
         }

@@ -5,6 +5,7 @@ package com.acrolinx.sidebar.jfx;
 import java.util.*;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
+import com.acrolinx.sidebar.reuse.ReuseResponse;
 import com.acrolinx.sidebar.reuse.ReuseSuggestion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,16 +117,19 @@ class JSToJavaConverter
         return new CheckResult(new CheckedDocumentPart(checkId, range), embedCheckInformation, inputFormat);
     }
 
-    static List<ReuseSuggestion> getReuseSuggestionsFromJSObject(final JSObject o)
+    static ReuseResponse getReuseSuggestionsFromJSObject(final JSObject o)
     {
-        final String length = "" + o.getMember(LENGTH);
+        String requestId = (String) o.getMember("requestId");
+        JSObject results = (JSObject) o.getMember("results");
+        final String length = "" + results.getMember(LENGTH);
         List<ReuseSuggestion> reuseSuggestions = new ArrayList<>();
         for (int i = 0; i < Integer.parseInt(length); i++) {
-            JSObject jsObject = (JSObject) o.getSlot(i);
+            JSObject jsObject = (JSObject) results.getSlot(i);
             ReuseSuggestion reuseSuggestion = new ReuseSuggestion((String) jsObject.getMember("preferredPhrase"), (String) jsObject.getMember("description"));
             reuseSuggestions.add(reuseSuggestion);
         }
-        return Collections.unmodifiableList(reuseSuggestions);
+        ReuseResponse reuseResponse = new ReuseResponse(requestId,reuseSuggestions);
+        return reuseResponse;
     }
 
     private static Map<String, String> getEmbedCheckInformationFromJSString(final JSObject embedCheckInformation)
