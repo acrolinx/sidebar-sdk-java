@@ -391,7 +391,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         logger.debug("Prefix Check requested for: " + searchPrefix);
 
         try {
-            browser.evaluate("acrolinxSidebar.reusePrefixSearch('ThisIsAnId'," + searchPrefix + ");");
+            browser.evaluate("acrolinxSidebar.reusePrefixSearch(" + searchPrefix + ");");
         } catch(Exception e) {
             client.onReuseSearchError(e);
         }
