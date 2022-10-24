@@ -352,6 +352,16 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
+        new BrowserFunction(browser, "onReusePrefixSearchFailedP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                client.onReusePrefixSearchFailed();
+                return null;
+            }
+        };
+
+
         SWTUtils.loadScriptJS(browser, "acrolinxPluginScript.js");
     }
 

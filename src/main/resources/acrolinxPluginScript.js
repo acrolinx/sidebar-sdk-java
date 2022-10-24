@@ -94,6 +94,9 @@ window.acrolinxPlugin =
   },
   onReusePrefixSearchResult: function(result) {
     onReusePrefixSearchResultP(result);
+  },
+  onReusePrefixSearchFailed: function() {
+    onReusePrefixSearchFailedP();
   }
 }
 })();
