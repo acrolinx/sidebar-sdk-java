@@ -3,6 +3,7 @@
  */
 package com.acrolinx.sidebar.reuse;
 
+@SuppressWarnings({"MismatchedReadAndWriteOfArray", "unused"})
 public class ReuseSuggestionFromJSON {
     private String preferredPhrase;
     private String description;
