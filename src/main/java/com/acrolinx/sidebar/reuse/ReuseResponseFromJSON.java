@@ -6,6 +6,7 @@ package com.acrolinx.sidebar.reuse;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings({"MismatchedReadAndWriteOfArray", "unused"})
 public class ReuseResponseFromJSON {
 
     private String requestID;
