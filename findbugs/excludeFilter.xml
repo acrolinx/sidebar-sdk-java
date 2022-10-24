@@ -25,4 +25,16 @@
     <Match>
         <Class name="com.acrolinx.sidebar.utils.DiffMatchPatch" />
     </Match>
+    <Match>
+        <Class name="com.acrolinx.sidebar.reuse.ReuseResponseFromJSON"/>
+        <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+    </Match>
+    <Match>
+        <Class name="com.acrolinx.sidebar.reuse.ReuseSuggestionFromJSON"/>
+        <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+    </Match>
+    <Match>
+        <Class name="com.acrolinx.sidebar.reuse.ReuseResponseFromJSON"/>
+        <Bug pattern="NP_UNWRITTEN_FIELD"/>
+    </Match>
 </FindBugsFilter>
