@@ -1,3 +1,6 @@
+/**
+ *  Copyright (c) 2022-present Acrolinx GmbH
+ */
 package com.acrolinx.sidebar.reuse;
 
 public class ReuseSuggestionFromJSON {
