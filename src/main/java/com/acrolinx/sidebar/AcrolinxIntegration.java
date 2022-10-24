@@ -90,4 +90,6 @@ public interface AcrolinxIntegration
     void onReuseSearchSuggestions(ReuseResponse reuseResponse);
 
     void onReuseSearchError(Exception e);
+
+    void onReusePrefixSearchFailed();
 }

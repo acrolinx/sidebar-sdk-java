@@ -400,6 +400,10 @@ abstract class AcrolinxSidebarPlugin
         });
     }
 
+    public synchronized void onReusePrefixSearchFailed() {
+        client.onReusePrefixSearchFailed();
+    }
+
     private static String buildStringOfCheckedRequestOptions(
             final List<BatchCheckRequestOptions> batchCheckRequestOptions)
     {
