@@ -3,6 +3,8 @@
  */
 package com.acrolinx.sidebar.reuse;
 
+import com.google.gson.Gson;
+
 public class ReuseSuggestion {
     private final String suggestion;
     private final String description;
@@ -21,6 +23,6 @@ public class ReuseSuggestion {
     }
 
     public String toJSON() {
-        return "{'suggestion':'"+getSuggestion()+"','description':'"+description+"'}";
+        return (new Gson()).toJson(this);
     }
 }

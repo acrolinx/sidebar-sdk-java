@@ -3,11 +3,10 @@
  */
 package com.acrolinx.sidebar.reuse;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReusePanelState {
 
@@ -47,15 +46,6 @@ public class ReusePanelState {
     }
 
     public String toJSON() {
-        List<String> suggestionJSONList = suggestions.stream().map( ReuseSuggestion::toJSON).collect(Collectors.toList());
-        String suggestionsJSONValue = suggestions.size() > 0 ? "["+ StringUtils.join(suggestionJSONList,",")+"]":"[]";
-        String suggestionsJSON = "'suggestions':"+suggestionsJSONValue;
-        String loadingJSON = "'loading':" + (loading ? "true":"false");
-        String searchStringJSON = "'searchString':'"+ searchString +"'";
-        String potentialNextSearchStringJSON = "'potentialNextSearchString':'"+ potentialNextSearchString +"'";
-        String messageJSON = "'message':'"+message+"'";
-        String[] jsons = {suggestionsJSON,loadingJSON,searchStringJSON,potentialNextSearchStringJSON,messageJSON};
-
-        return "{"+StringUtils.join(jsons,",")+"}";
+        return (new Gson()).toJson(this);
     }
 }
