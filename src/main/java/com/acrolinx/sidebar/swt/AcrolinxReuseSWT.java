@@ -72,6 +72,14 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
                         return null;
                     }
                 };
+                new BrowserFunction(browser, "closeReusePanelP") {
+                    @Override
+                    public Object function(final Object[] arguments)
+                    {
+                        closeReusePanel();
+                        return null;
+                    }
+                };
                 SWTUtils.loadScriptJS(browser,"reuseAdapter.js");
             }
 
@@ -82,6 +90,12 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
             }
         });
         browser.setUrl(ReusePanelInstaller.getReusePanelURL());
+    }
+
+    public void closeReusePanel() {
+        if(phraseSelectionHandler != null) {
+            phraseSelectionHandler.closeReusePanel();
+        }
     }
 
     @Override

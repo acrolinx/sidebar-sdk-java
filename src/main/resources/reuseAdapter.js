@@ -5,6 +5,9 @@
         },
         log: function(message) {
             logP(message)
+        },
+        closeReusePanel: function() {
+            closeReusePanelP()
         }
     };
 })();
