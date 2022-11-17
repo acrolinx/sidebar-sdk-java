@@ -31,8 +31,9 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
 
 
     public void setReuseState(ReusePanelState reusePanelState) {
-        ReusePanelState reusePanelState1 = new ReusePanelState(reusePanelState.getMessage(), reusePanelState.getSuggestions(),reusePanelState.getSearchString().replace("\u0000",""),reusePanelState.getPotentialNextSearchString().replace("\u0000",""),reusePanelState.isLoading());
-        browser.execute("window.postMessage("+reusePanelState1.toJSON()+",'*')");
+        reusePanelState = reusePanelState.changeSearchString(reusePanelState.getSearchString().replace("\u0000",""));
+        reusePanelState = reusePanelState.changeCurrentString(reusePanelState.getCurrentString().replace("\u0000",""));
+        browser.execute("window.postMessage("+reusePanelState.toJSON()+",'*')");
     }
 
 
