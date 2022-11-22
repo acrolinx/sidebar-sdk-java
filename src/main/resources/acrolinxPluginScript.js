@@ -98,11 +98,14 @@ window.acrolinxPlugin =
   onReusePrefixSearchFailed: function() {
     onReusePrefixSearchFailedP();
   },
-    openReusePanel: function() {
-        openReusePanelP();
-    },
-    onUiLanguageChanged: function(lang) {
-        onUiLanguageChangedP(lang);
-    }
+  openReusePanel: function() {
+    openReusePanelP();
+  },
+  onUiLanguageChanged: function(lang) {
+    onUiLanguageChangedP(lang);
+  },
+  onTargetChanged: function(supportsLive) {
+    onTargetChangedP(supportsLive);
+  }
 }
 })();
