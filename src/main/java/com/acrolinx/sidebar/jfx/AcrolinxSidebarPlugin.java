@@ -415,7 +415,10 @@ abstract class AcrolinxSidebarPlugin
 
     public synchronized void openReusePanel() {
         client.openReusePanel();
+    }
 
+    public synchronized void onTargetChanged(boolean supportsLive) {
+        client.onTargetChanged(supportsLive);
     }
 
     public synchronized void onUiLanguageChanged(String locale) {

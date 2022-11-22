@@ -97,4 +97,6 @@ public interface AcrolinxIntegration
     void openReusePanel();
 
     void onUILanguageChanged(Locale locale);
+
+    void onTargetChanged(boolean supportsLive);
 }

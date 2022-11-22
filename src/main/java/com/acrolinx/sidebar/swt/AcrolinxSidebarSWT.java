@@ -369,7 +369,16 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             @Override
             public Object function(final Object[] arguments)
             {
-                client.onUILanguageChanged(Locale.GERMAN);
+                client.onUILanguageChanged(new Locale((String) arguments[0]));
+                return null;
+            }
+        };
+
+        new BrowserFunction(browser, "onTargetChangedP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                client.onTargetChanged((boolean) arguments[0]);
                 return null;
             }
         };
