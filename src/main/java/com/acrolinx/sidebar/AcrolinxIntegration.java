@@ -3,6 +3,7 @@
 package com.acrolinx.sidebar;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import com.acrolinx.sidebar.pojo.SidebarError;
@@ -92,4 +93,8 @@ public interface AcrolinxIntegration
     void onReuseSearchError(Exception e);
 
     void onReusePrefixSearchFailed();
+
+    void openReusePanel();
+
+    void onUILanguageChanged(Locale locale);
 }

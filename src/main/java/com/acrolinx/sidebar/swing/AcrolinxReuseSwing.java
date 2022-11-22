@@ -61,10 +61,6 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
         return jsobj;
     }
 
-    private JSObject window;
-
-
-
     public void showReuseWindow() {
         JFXUtils.invokeInJFXThread(() -> {
             webView = new WebView();
@@ -81,7 +77,7 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
                 if (newState == Worker.State.SUCCEEDED) {
                     // new page has loaded, process:
                     JFXUtils.invokeInJFXThread(() -> {
-                        window = getWindowObject();
+                        JSObject window = getWindowObject();
                         window.setMember("reuseAdapter", this);
                     });
                 }
@@ -107,7 +103,7 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
     @Override
     public void setReuseState(ReusePanelState reusePanelState) {
         JFXUtils.invokeInJFXThread(() -> {
-            window.eval("postMessage(" + reusePanelState.toJSON() + ",'*')");
+            getWindowObject().eval("postMessage(" + reusePanelState.toJSON() + ",'*')");
         });
     }
 
