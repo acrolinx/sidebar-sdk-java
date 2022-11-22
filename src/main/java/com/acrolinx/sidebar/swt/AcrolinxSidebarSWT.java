@@ -5,10 +5,7 @@ package com.acrolinx.sidebar.swt;
 import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -360,6 +357,22 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 return null;
             }
         };
+        new BrowserFunction(browser, "openReusePanelP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                client.openReusePanel();
+                return null;
+            }
+        };
+        new BrowserFunction(browser, "onUiLanguageChangedP") {
+            @Override
+            public Object function(final Object[] arguments)
+            {
+                client.onUILanguageChanged(Locale.GERMAN);
+                return null;
+            }
+        };
 
 
         SWTUtils.loadScriptJS(browser, "acrolinxPluginScript.js");
@@ -406,8 +419,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             client.onReuseSearchError(e);
         }
     }
-
-
 
     private String requestCheckForDocumentInBatch(Object documentIdentifier)
     {

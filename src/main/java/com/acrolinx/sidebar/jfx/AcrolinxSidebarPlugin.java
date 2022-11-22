@@ -13,6 +13,7 @@ package com.acrolinx.sidebar.jfx;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -412,5 +413,12 @@ abstract class AcrolinxSidebarPlugin
     }
 
 
+    public synchronized void openReusePanel() {
+        client.openReusePanel();
 
+    }
+
+    public synchronized void onUiLanguageChanged(String locale) {
+        client.onUILanguageChanged(new Locale(locale));
+    }
 }
