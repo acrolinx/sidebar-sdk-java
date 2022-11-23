@@ -4,10 +4,10 @@
 package com.acrolinx.sidebar.swt;
 
 
-import com.acrolinx.sidebar.AcrolinxReuseComponentInterface;
-import com.acrolinx.sidebar.reuse.ReusePanelState;
+import com.acrolinx.sidebar.AcrolinxLiveComponentInterface;
+import com.acrolinx.sidebar.live.LivePanelState;
 import com.acrolinx.sidebar.swing.PhraseSelectionHandler;
-import com.acrolinx.sidebar.utils.ReusePanelInstaller;
+import com.acrolinx.sidebar.utils.LivePanelInstaller;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
+public class AcrolinxLiveSWT implements AcrolinxLiveComponentInterface {
 
     final Browser browser;
 
@@ -27,30 +27,30 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
 
     private final PhraseSelectionHandler phraseSelectionHandler;
 
-    protected final Logger logger = LoggerFactory.getLogger(AcrolinxReuseSWT.class);
+    protected final Logger logger = LoggerFactory.getLogger(AcrolinxLiveSWT.class);
 
 
-    public void setReuseState(ReusePanelState reusePanelState) {
-        reusePanelState = reusePanelState.changeSearchString(reusePanelState.getSearchString().replace("\u0000",""));
-        reusePanelState = reusePanelState.changeCurrentString(reusePanelState.getCurrentString().replace("\u0000",""));
-        browser.execute("window.postMessage("+reusePanelState.toJSON()+",'*')");
+    public void setLiveState(LivePanelState livePanelState) {
+        livePanelState = livePanelState.changeSearchString(livePanelState.getSearchString().replace("\u0000",""));
+        livePanelState = livePanelState.changeCurrentString(livePanelState.getCurrentString().replace("\u0000",""));
+        browser.execute("window.postMessage("+livePanelState.toJSON()+",'*')");
     }
 
 
-    public AcrolinxReuseSWT(Composite parent, PhraseSelectionHandler phraseSelectionHandler) {
+    public AcrolinxLiveSWT(Composite parent, PhraseSelectionHandler phraseSelectionHandler) {
         this.browser = new Browser(parent, SWT.DEFAULT);
         this.phraseSelectionHandler = phraseSelectionHandler;
         this.gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
         browser.setLayoutData(this.gridData);
         try {
-            ReusePanelInstaller.exportReusePanelResources();
+            LivePanelInstaller.exportLivePanelResources();
         } catch (final Exception e) {
-            logger.error("Error while exporting reuse panel resources: ", e.getMessage());
+            logger.error("Error while exporting live panel resources: ", e.getMessage());
         }
-        showReuseWindow();
+        showLiveWindow();
     }
 
-    public void showReuseWindow() {
+    public void showLiveWindow() {
         browser.setJavascriptEnabled(true);
 
         browser.addProgressListener(new ProgressListener() {
@@ -73,15 +73,15 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
                         return null;
                     }
                 };
-                new BrowserFunction(browser, "closeReusePanelP") {
+                new BrowserFunction(browser, "closeLivePanelP") {
                     @Override
                     public Object function(final Object[] arguments)
                     {
-                        closeReusePanel();
+                        closeLivePanel();
                         return null;
                     }
                 };
-                SWTUtils.loadScriptJS(browser,"reuseAdapter.js");
+                SWTUtils.loadScriptJS(browser,"liveAdapter.js");
             }
 
             @Override
@@ -90,19 +90,13 @@ public class AcrolinxReuseSWT implements AcrolinxReuseComponentInterface {
                 // we only need completed event to be handled
             }
         });
-        browser.setUrl(ReusePanelInstaller.getReusePanelURL());
+        browser.setUrl(LivePanelInstaller.getLivePanelURL());
     }
 
-    public void closeReusePanel() {
+    public void closeLivePanel() {
         if(phraseSelectionHandler != null) {
-            phraseSelectionHandler.closeReusePanel();
+            phraseSelectionHandler.closeLivePanel();
         }
     }
 
-    @Override
-    public void queryCurrentSentence() {
-        if(phraseSelectionHandler != null) {
-            phraseSelectionHandler.queryCurrentSentence();
-        }
-    }
 }

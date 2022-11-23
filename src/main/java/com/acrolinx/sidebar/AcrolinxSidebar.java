@@ -4,7 +4,7 @@ package com.acrolinx.sidebar;
 
 import java.util.List;
 
-import com.acrolinx.sidebar.reuse.QueryInfo;
+import com.acrolinx.sidebar.live.QueryInfo;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
@@ -102,6 +102,6 @@ public interface AcrolinxSidebar
      */
 
     void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options);
-    void reusePrefixSearch(QueryInfo queryInfo);
+    void livePrefixSearch(QueryInfo queryInfo);
 
 }

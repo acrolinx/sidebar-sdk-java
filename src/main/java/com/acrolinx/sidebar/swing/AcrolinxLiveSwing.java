@@ -3,10 +3,10 @@
  */
 package com.acrolinx.sidebar.swing;
 
-import com.acrolinx.sidebar.AcrolinxReuseComponentInterface;
+import com.acrolinx.sidebar.AcrolinxLiveComponentInterface;
 import com.acrolinx.sidebar.jfx.JFXUtils;
-import com.acrolinx.sidebar.reuse.ReusePanelState;
-import com.acrolinx.sidebar.utils.ReusePanelInstaller;
+import com.acrolinx.sidebar.live.LivePanelState;
+import com.acrolinx.sidebar.utils.LivePanelInstaller;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -21,23 +21,23 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 
 
-public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseComponentInterface {
+public class AcrolinxLiveSwing extends JFXPanel  implements AcrolinxLiveComponentInterface {
 
     private WebEngine webEngine;
 
     private WebView webView;
-    private final Logger logger = LoggerFactory.getLogger(AcrolinxReuseSwing.class);
+    private final Logger logger = LoggerFactory.getLogger(AcrolinxLiveSwing.class);
 
     private PhraseSelectionHandler phraseSelectionHandler;
 
-    public AcrolinxReuseSwing(PhraseSelectionHandler phraseSelectionHandler) {
+    public AcrolinxLiveSwing(PhraseSelectionHandler phraseSelectionHandler) {
         super();
         try {
-            ReusePanelInstaller.exportReusePanelResources();
+            LivePanelInstaller.exportLivePanelResources();
         } catch (final Exception e) {
-            logger.error("Error while exporting reuse panel resources: ", e.getMessage());
+            logger.error("Error while exporting live panel resources: ", e.getMessage());
         }
-        showReuseWindow();
+        showLiveWindow();
         this.phraseSelectionHandler = phraseSelectionHandler;
     }
 
@@ -61,7 +61,7 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
         return jsobj;
     }
 
-    public void showReuseWindow() {
+    public void showLiveWindow() {
         JFXUtils.invokeInJFXThread(() -> {
             webView = new WebView();
             GridPane.setHgrow(webView, Priority.ALWAYS);
@@ -78,12 +78,12 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
                     // new page has loaded, process:
                     JFXUtils.invokeInJFXThread(() -> {
                         JSObject window = getWindowObject();
-                        window.setMember("reuseAdapter", this);
+                        window.setMember("liveAdapter", this);
                     });
                 }
             });
 
-            webEngine.load(ReusePanelInstaller.getReusePanelURL());
+            webEngine.load(LivePanelInstaller.getLivePanelURL());
 
         });
     }
@@ -94,24 +94,17 @@ public class AcrolinxReuseSwing extends JFXPanel  implements AcrolinxReuseCompon
        }
     }
 
-    public void closeReusePanel() {
+    public void closeLivePanel() {
         if( phraseSelectionHandler != null) {
-            phraseSelectionHandler.closeReusePanel();
+            phraseSelectionHandler.closeLivePanel();
         }
     }
 
     @Override
-    public void setReuseState(ReusePanelState reusePanelState) {
+    public void setLiveState(LivePanelState livePanelState) {
         JFXUtils.invokeInJFXThread(() -> {
-            getWindowObject().eval("postMessage(" + reusePanelState.toJSON() + ",'*')");
+            getWindowObject().eval("postMessage(" + livePanelState.toJSON() + ",'*')");
         });
-    }
-
-    @Override
-    public void queryCurrentSentence() {
-        if(phraseSelectionHandler != null) {
-            phraseSelectionHandler.queryCurrentSentence();
-        }
     }
 
     public void log(String log) {

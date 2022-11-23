@@ -4,7 +4,7 @@ package com.acrolinx.sidebar.jfx;
 
 import java.util.List;
 
-import com.acrolinx.sidebar.reuse.QueryInfo;
+import com.acrolinx.sidebar.live.QueryInfo;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -251,9 +251,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public void reusePrefixSearch(QueryInfo queryInfo)
+    public void livePrefixSearch(QueryInfo queryInfo)
     {
-        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).reusePrefixSearch(queryInfo.getQueryString());
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).livePrefixSearch(queryInfo.getQueryString());
     }
 
 

@@ -11,7 +11,7 @@ import com.acrolinx.sidebar.pojo.document.CheckResult;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
-import com.acrolinx.sidebar.reuse.ReuseResponse;
+import com.acrolinx.sidebar.live.LiveResponse;
 
 /**
  * This interface needs be implemented to integrate Acrolinx with an editor or editing environment.
@@ -88,13 +88,13 @@ public interface AcrolinxIntegration
     String getContentForDocument(String documentIdentifier);
 
 
-    void onReuseSearchSuggestions(ReuseResponse reuseResponse);
+    void onLiveSearchSuggestions(LiveResponse reuseResponse);
 
-    void onReuseSearchError(Exception e);
+    void onLiveSearchError(Exception e);
 
-    void onReusePrefixSearchFailed();
+    void onLivePrefixSearchFailed();
 
-    void openReusePanel();
+    void openLivePanel();
 
     void onUILanguageChanged(Locale locale);
 

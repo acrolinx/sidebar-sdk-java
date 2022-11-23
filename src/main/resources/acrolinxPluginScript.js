@@ -89,17 +89,14 @@ window.acrolinxPlugin =
   openLogFile: function(){
     openLogFileP();
   },
-  parseAllClusters: function(clusters) {
-    reuseTestFunction(clusters);
-  },
   onReusePrefixSearchResult: function(result) {
-    onReusePrefixSearchResultP(result);
+    onLivePrefixSearchResultP(result);
   },
   onReusePrefixSearchFailed: function() {
-    onReusePrefixSearchFailedP();
+    onLivePrefixSearchFailedP();
   },
   openReusePanel: function() {
-    openReusePanelP();
+    openLivePanelP();
   },
   onUiLanguageChanged: function(lang) {
     onUiLanguageChangedP(lang);

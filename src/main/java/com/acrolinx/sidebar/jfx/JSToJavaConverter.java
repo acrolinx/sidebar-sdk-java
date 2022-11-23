@@ -4,9 +4,9 @@ package com.acrolinx.sidebar.jfx;
 
 import java.util.*;
 
+import com.acrolinx.sidebar.live.LiveResponse;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
-import com.acrolinx.sidebar.reuse.ReuseResponse;
-import com.acrolinx.sidebar.reuse.ReuseSuggestion;
+import com.acrolinx.sidebar.live.LiveSuggestion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -117,18 +117,18 @@ class JSToJavaConverter
         return new CheckResult(new CheckedDocumentPart(checkId, range), embedCheckInformation, inputFormat);
     }
 
-    static ReuseResponse getReuseSuggestionsFromJSObject(final JSObject o)
+    static LiveResponse getReuseSuggestionsFromJSObject(final JSObject o)
     {
         String requestId = (String) o.getMember("requestId");
         JSObject results = (JSObject) o.getMember("results");
         final String length = "" + results.getMember(LENGTH);
-        List<ReuseSuggestion> reuseSuggestions = new ArrayList<>();
+        List<LiveSuggestion> reuseSuggestions = new ArrayList<>();
         for (int i = 0; i < Integer.parseInt(length); i++) {
             JSObject jsObject = (JSObject) results.getSlot(i);
-            ReuseSuggestion reuseSuggestion = new ReuseSuggestion((String) jsObject.getMember("preferredPhrase"), (String) jsObject.getMember("description"));
+            LiveSuggestion reuseSuggestion = new LiveSuggestion((String) jsObject.getMember("preferredPhrase"), (String) jsObject.getMember("description"));
             reuseSuggestions.add(reuseSuggestion);
         }
-        ReuseResponse reuseResponse = new ReuseResponse(requestId,reuseSuggestions);
+        LiveResponse reuseResponse = new LiveResponse(requestId,reuseSuggestions);
         return reuseResponse;
     }
 

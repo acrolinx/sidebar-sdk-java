@@ -1,7 +1,7 @@
 /* Copyright (c) 2022-present Acrolinx GmbH */
-package com.acrolinx.sidebar.reuse;
+package com.acrolinx.sidebar.live;
 
-public enum ReuseMessage {
+public enum LiveMessage {
     SEARCH_FAILED("SEARCH_FAILED"),
     NO_SIDEBAR("NO_SIDEBAR"),
     NO_MESSAGE("NO_MESSAGE"),
@@ -13,7 +13,7 @@ public enum ReuseMessage {
     /**
      * @param text
      */
-    ReuseMessage(final String text) {
+    LiveMessage(final String text) {
         this.message = text;
     }
 
