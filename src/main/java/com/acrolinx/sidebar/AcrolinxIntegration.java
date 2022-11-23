@@ -88,7 +88,7 @@ public interface AcrolinxIntegration
     String getContentForDocument(String documentIdentifier);
 
 
-    void onLiveSearchSuggestions(LiveResponse reuseResponse);
+    void onLiveSearchSuggestions(LiveResponse liveResponse);
 
     void onLiveSearchError(Exception e);
 

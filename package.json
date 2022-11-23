@@ -2,7 +2,7 @@
   "name": "",
   "version": "1.0.0",
   "dependencies": {
-    "@acrolinx/reuse-panel": "^0.1.2",
+    "@acrolinx/live": "^1.0.0",
     "@acrolinx/sidebar-startpage-reuse": "^3.1.2"
   }
 }
