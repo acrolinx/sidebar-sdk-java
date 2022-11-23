@@ -261,11 +261,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "onLivePrefixSearchResultP") {
+        new BrowserFunction(browser, "onLiveSearchResultP") {
             @Override
             public Object function(final Object[] arguments)
             {
-                return getReusePrefixSearchSuggestions(arguments[0]);
+                return getLiveSearchSuggestions(arguments[0]);
             }
         };
 
@@ -349,11 +349,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "onLivePrefixSearchFailedP") {
+        new BrowserFunction(browser, "onLiveSearchFailedP") {
             @Override
             public Object function(final Object[] arguments)
             {
-                client.onLivePrefixSearchFailed();
+                client.onLiveSearchFailed();
                 return null;
             }
         };
@@ -417,13 +417,13 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     }
 
     @Override
-    public void livePrefixSearch(QueryInfo queryInfo)  //Not a browser function (only plugin functions should be browser functions)
+    public void liveSearch(QueryInfo queryInfo)  //Not a browser function (only plugin functions should be browser functions)
     {
-        final String searchPrefix = new Gson().toJson(queryInfo.getQueryString());
-        logger.debug("Prefix Check requested for: " + searchPrefix);
+        final String searchString = new Gson().toJson(queryInfo.getQueryString());
+        logger.debug("Live-Search requested for: " + searchString);
 
         try {
-            browser.evaluate("acrolinxSidebar.reusePrefixSearch(" + searchPrefix + ");");
+            browser.evaluate("acrolinxSidebar.liveSearch(" + searchString + ");");
         } catch(Exception e) {
             client.onLiveSearchError(e);
         }
@@ -530,7 +530,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    private Object getReusePrefixSearchSuggestions(Object result)
+    private Object getLiveSearchSuggestions(Object result)
     {
         try {
             LogMessages.logSelectingRange(logger);

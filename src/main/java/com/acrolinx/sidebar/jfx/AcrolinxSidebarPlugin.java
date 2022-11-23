@@ -199,7 +199,7 @@ abstract class AcrolinxSidebarPlugin
         }
     }
 
-    public synchronized void onLivePrefixSearchResult(final JSObject o)
+    public synchronized void onLiveSearchResult(final JSObject o)
     {
         final LiveResponse liveResponse = JSToJavaConverter.getLiveSuggestionsFromJSObject(o);
         if (liveResponse.getSuggestions().isEmpty()) {
@@ -384,16 +384,16 @@ abstract class AcrolinxSidebarPlugin
 
     }
 
-    public synchronized void livePrefixSearch(final String prefix)
+    public synchronized void liveSearch(final String prefix)
     {
 
-        logger.debug("livePrefixSearch is called.");
+        logger.debug("liveSearch is called.");
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 final String nameVariablePrefix = "prefix";
                 final JSObject jsObject = getWindowObject();
                 jsObject.setMember(nameVariablePrefix, prefix);
-                jsObject.eval("acrolinxSidebar.livePrefixSearch(prefix);");
+                jsObject.eval("acrolinxSidebar.liveSearch(prefix);");
             } catch (final Exception e) {
                 client.onLiveSearchError(e);
                 logger.error(e.getMessage(), e);
@@ -401,8 +401,8 @@ abstract class AcrolinxSidebarPlugin
         });
     }
 
-    public synchronized void onLivePrefixSearchFailed() {
-        client.onLivePrefixSearchFailed();
+    public synchronized void onLiveSearchFailed() {
+        client.onLiveSearchFailed();
     }
 
     private static String buildStringOfCheckedRequestOptions(
