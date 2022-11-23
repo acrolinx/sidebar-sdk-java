@@ -534,10 +534,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         try {
             LogMessages.logSelectingRange(logger);
-            final LiveResponseFromJSON responseFromJSON = new Gson().fromJson((String) result,
-                    new TypeToken<LiveResponseFromJSON>() {}.getType());
-            final LiveResponse liveResponse = responseFromJSON.getReuseResponse();
-            client.onLiveSearchSuggestions(liveResponse); //Add this method to AcrolinxIntegration
+            final LiveResponse responseFromJSON = new Gson().fromJson((String) result,
+                    new TypeToken<LiveResponse>() {}.getType());
+            client.onLiveSearchSuggestions(responseFromJSON); //Add this method to AcrolinxIntegration
         } catch(Exception e) {
             logger.error(e.toString());
         }
