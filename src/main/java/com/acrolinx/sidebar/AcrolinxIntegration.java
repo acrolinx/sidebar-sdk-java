@@ -92,7 +92,7 @@ public interface AcrolinxIntegration
 
     void onLiveSearchError(Exception e);
 
-    void onLivePrefixSearchFailed();
+    void onLiveSearchFailed();
 
     void openLivePanel();
 

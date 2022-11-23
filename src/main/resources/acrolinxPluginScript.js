@@ -89,11 +89,11 @@ window.acrolinxPlugin =
   openLogFile: function(){
     openLogFileP();
   },
-  onLivePrefixSearchResult: function(result) {
-    onLivePrefixSearchResultP(result);
+  onLiveSearchResult: function(result) {
+    onLiveSearchResultP(result);
   },
-  onLivePrefixSearchFailed: function() {
-    onLivePrefixSearchFailedP();
+  onLiveSearchFailed: function() {
+    onLiveSearchFailedP();
   },
   openLivePanel: function() {
     openLivePanelP();
