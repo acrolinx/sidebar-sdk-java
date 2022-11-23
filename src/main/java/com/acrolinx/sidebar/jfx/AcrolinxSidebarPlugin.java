@@ -19,7 +19,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import com.acrolinx.sidebar.reuse.ReuseResponse;
+import com.acrolinx.sidebar.live.LiveResponse;
 import javafx.scene.web.WebView;
 
 import javax.annotation.Nullable;
@@ -201,11 +201,11 @@ abstract class AcrolinxSidebarPlugin
 
     public synchronized void onReusePrefixSearchResult(final JSObject o)
     {
-        final ReuseResponse reuseResponse = JSToJavaConverter.getReuseSuggestionsFromJSObject(o);
+        final LiveResponse reuseResponse = JSToJavaConverter.getReuseSuggestionsFromJSObject(o);
         if (reuseResponse.getSuggestions().isEmpty()) {
             logger.info("Prefix Search finished with no suggestions.");
         }
-        client.onReuseSearchSuggestions(reuseResponse);
+        client.onLiveSearchSuggestions(reuseResponse);
     }
 
     public synchronized void selectRanges(final String checkID, final JSObject o)
@@ -384,7 +384,7 @@ abstract class AcrolinxSidebarPlugin
 
     }
 
-    public synchronized void reusePrefixSearch(final String prefix)
+    public synchronized void livePrefixSearch(final String prefix)
     {
 
         logger.debug("reusePrefixSearch is called.");
@@ -395,14 +395,14 @@ abstract class AcrolinxSidebarPlugin
                 jsObject.setMember(nameVariablePrefix, prefix);
                 jsObject.eval("acrolinxSidebar.reusePrefixSearch(prefix);");
             } catch (final Exception e) {
-                client.onReuseSearchError(e);
+                client.onLiveSearchError(e);
                 logger.error(e.getMessage(), e);
             }
         });
     }
 
     public synchronized void onReusePrefixSearchFailed() {
-        client.onReusePrefixSearchFailed();
+        client.onLivePrefixSearchFailed();
     }
 
     private static String buildStringOfCheckedRequestOptions(
@@ -414,7 +414,7 @@ abstract class AcrolinxSidebarPlugin
 
 
     public synchronized void openReusePanel() {
-        client.openReusePanel();
+        client.openLivePanel();
     }
 
     public synchronized void onTargetChanged(boolean supportsLive) {

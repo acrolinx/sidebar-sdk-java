@@ -15,7 +15,7 @@ docs/
 dependency-licenses/
 node_modules/
 server-selector
-reuse-panel
+acrolinx-live
 localization_iso-8859-1
 
 # local configuration file (for Android sdk path, etc)

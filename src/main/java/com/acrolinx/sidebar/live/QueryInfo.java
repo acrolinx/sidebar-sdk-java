@@ -1,7 +1,7 @@
 /**
  *  Copyright (c) 2022-present Acrolinx GmbH
  */
-package com.acrolinx.sidebar.reuse;
+package com.acrolinx.sidebar.live;
 
 public class QueryInfo {
 

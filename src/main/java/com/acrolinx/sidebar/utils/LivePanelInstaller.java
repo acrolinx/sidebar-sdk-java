@@ -17,30 +17,30 @@ import java.nio.file.StandardCopyOption;
 
 
 @SuppressWarnings("WeakerAccess")
-public class ReusePanelInstaller
+public class LivePanelInstaller
 {
-    private static final Logger logger = LoggerFactory.getLogger(ReusePanelInstaller.class);
-    private static final String REUSE_PANEL_DIR = "acrolinx_reuse_panel";
+    private static final Logger logger = LoggerFactory.getLogger(LivePanelInstaller.class);
+    private static final String LIVE_PANEL_DIR = "acrolinx_reuse_panel";
 
-    protected static String getReusePanelVersion()
+    protected static String getLivePanelVersion()
     {
-        //ToDo: Generate version.properties file in reuse-panel if needed
+        //ToDo: Generate version.properties file in live-panel if needed
         return "0.1.0";
     }
 
     /**
-     * Extracts the Acrolinx reuse panel to file system. Internal use only.
+     * Extracts the Acrolinx live panel to file system. Internal use only.
      * 
      * @throws URISyntaxException
      * @throws IOException
      */
-    public static void exportReusePanelResources() throws URISyntaxException, IOException
+    public static void exportLivePanelResources() throws URISyntaxException, IOException
     {
         InputStream asset;
-        logger.info("Exporting Reuse Panel Resources.");
-        final Path assetDir = getDefaultReusePanelInstallLocation();
+        logger.info("Exporting Live Panel Resources.");
+        final Path assetDir = getDefaultLivePanelInstallLocation();
         try (BufferedReader listFile = new BufferedReader(new InputStreamReader(
-                ReusePanelInstaller.class.getResourceAsStream("/reuse-panel/files.txt"), StandardCharsets.UTF_8))) {
+                LivePanelInstaller.class.getResourceAsStream("/acrolinx-live/files.txt"), StandardCharsets.UTF_8))) {
             String assetResource;
             while ((assetResource = listFile.readLine()) != null) {
                 final Path assetFile = assetDir.resolve(assetResource.substring(1, assetResource.length()));
@@ -49,7 +49,7 @@ public class ReusePanelInstaller
                     if ((parent != null) && !Files.exists(parent)) {
                         Files.createDirectories(parent);
                     }
-                    asset = ReusePanelInstaller.class.getResourceAsStream("/reuse-panel" + assetResource);
+                    asset = LivePanelInstaller.class.getResourceAsStream("/acrolinx-live" + assetResource);
                     if ((asset != null) && (true || !Files.exists(assetFile))) {
                         Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
                     }
@@ -58,7 +58,7 @@ public class ReusePanelInstaller
         }
     }
 
-    private static Path getDefaultReusePanelInstallLocation() throws URISyntaxException, IOException
+    private static Path getDefaultLivePanelInstallLocation() throws URISyntaxException, IOException
     {
         final Path userTempDirLocation = SidebarUtils.getUserTempDirLocation();
         final String osName = System.getProperty("os.name");
@@ -68,32 +68,32 @@ public class ReusePanelInstaller
         } else {
             acrolinxDir = userTempDirLocation.resolve("acrolinx");
         }
-        Path reusePanelDirectory = acrolinxDir.resolve(REUSE_PANEL_DIR + "_" + getReusePanelVersion());
-        if (!Files.exists(reusePanelDirectory)) {
-            reusePanelDirectory = Files.createDirectories(reusePanelDirectory);
-            logger.debug("Creating acrolinx reuse panel directory in: " + reusePanelDirectory.toString());
+        Path livePanelDirectory = acrolinxDir.resolve(LIVE_PANEL_DIR + "_" + getLivePanelVersion());
+        if (!Files.exists(livePanelDirectory)) {
+            livePanelDirectory = Files.createDirectories(livePanelDirectory);
+            logger.debug("Creating acrolinx live panel directory in: " + livePanelDirectory.toString());
         }
-        return reusePanelDirectory;
+        return livePanelDirectory;
     }
 
     /**
-     * Returns the URI to the extracted reuse panel.
+     * Returns the URI to the extracted live panel.
      * 
-     * @return Path to current reuse panel.
+     * @return Path to current live panel.
      * @throws IOException
      * @throws URISyntaxException
      */
-    public static String getReusePanelURL()
+    public static String getLivePanelURL()
     {
         try {
-            final Path assetDir = getDefaultReusePanelInstallLocation();
+            final Path assetDir = getDefaultLivePanelInstallLocation();
             if (!Files.exists(assetDir.resolve("index.html"))) {
-                logger.debug("Acrolinx reuse panel not present!");
-                exportReusePanelResources();
+                logger.debug("Acrolinx live panel not present!");
+                exportLivePanelResources();
             }
             return assetDir.toUri().toString() + "index.html";
         } catch (final Exception e) {
-            logger.error("Error getting reuse panel URL", e);
+            logger.error("Error getting live panel URL", e);
             return "";
         }
     }

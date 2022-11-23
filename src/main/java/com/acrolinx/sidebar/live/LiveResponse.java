@@ -1,16 +1,16 @@
 /**
  *  Copyright (c) 2022-present Acrolinx GmbH
  */
-package com.acrolinx.sidebar.reuse;
+package com.acrolinx.sidebar.live;
 
 import java.util.List;
 
-public class ReuseResponse {
+public class LiveResponse {
 
     private final String requestID;
-    private final List<ReuseSuggestion> suggestions;
+    private final List<LiveSuggestion> suggestions;
 
-    public ReuseResponse(String requestID, List<ReuseSuggestion> suggestions) {
+    public LiveResponse(String requestID, List<LiveSuggestion> suggestions) {
         this.requestID = requestID;
         this.suggestions = suggestions;
     }
@@ -19,7 +19,7 @@ public class ReuseResponse {
         return requestID;
     }
 
-    public List<ReuseSuggestion> getSuggestions() {
+    public List<LiveSuggestion> getSuggestions() {
         return suggestions;
     }
 
