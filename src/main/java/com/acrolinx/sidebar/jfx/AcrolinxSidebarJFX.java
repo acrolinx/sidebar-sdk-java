@@ -251,9 +251,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public void livePrefixSearch(QueryInfo queryInfo)
+    public void liveSearch(QueryInfo queryInfo)
     {
-        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).livePrefixSearch(queryInfo.getQueryString());
+        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).liveSearch(queryInfo.getQueryString());
     }
 
 
