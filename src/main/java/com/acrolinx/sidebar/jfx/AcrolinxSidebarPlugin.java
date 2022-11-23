@@ -199,7 +199,7 @@ abstract class AcrolinxSidebarPlugin
         }
     }
 
-    public synchronized void onReusePrefixSearchResult(final JSObject o)
+    public synchronized void onLivePrefixSearchResult(final JSObject o)
     {
         final LiveResponse liveResponse = JSToJavaConverter.getLiveSuggestionsFromJSObject(o);
         if (liveResponse.getSuggestions().isEmpty()) {
@@ -387,13 +387,13 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void livePrefixSearch(final String prefix)
     {
 
-        logger.debug("reusePrefixSearch is called.");
+        logger.debug("livePrefixSearch is called.");
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 final String nameVariablePrefix = "prefix";
                 final JSObject jsObject = getWindowObject();
                 jsObject.setMember(nameVariablePrefix, prefix);
-                jsObject.eval("acrolinxSidebar.reusePrefixSearch(prefix);");
+                jsObject.eval("acrolinxSidebar.livePrefixSearch(prefix);");
             } catch (final Exception e) {
                 client.onLiveSearchError(e);
                 logger.error(e.getMessage(), e);
@@ -401,7 +401,7 @@ abstract class AcrolinxSidebarPlugin
         });
     }
 
-    public synchronized void onReusePrefixSearchFailed() {
+    public synchronized void onLivePrefixSearchFailed() {
         client.onLivePrefixSearchFailed();
     }
 
@@ -413,7 +413,7 @@ abstract class AcrolinxSidebarPlugin
     }
 
 
-    public synchronized void openReusePanel() {
+    public synchronized void openLivePanel() {
         client.openLivePanel();
     }
 
