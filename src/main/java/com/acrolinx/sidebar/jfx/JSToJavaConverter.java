@@ -117,19 +117,19 @@ class JSToJavaConverter
         return new CheckResult(new CheckedDocumentPart(checkId, range), embedCheckInformation, inputFormat);
     }
 
-    static LiveResponse getReuseSuggestionsFromJSObject(final JSObject o)
+    static LiveResponse getLiveSuggestionsFromJSObject(final JSObject o)
     {
         String requestId = (String) o.getMember("requestId");
         JSObject results = (JSObject) o.getMember("results");
         final String length = "" + results.getMember(LENGTH);
-        List<LiveSuggestion> reuseSuggestions = new ArrayList<>();
+        List<LiveSuggestion> liveSuggestions = new ArrayList<>();
         for (int i = 0; i < Integer.parseInt(length); i++) {
             JSObject jsObject = (JSObject) results.getSlot(i);
-            LiveSuggestion reuseSuggestion = new LiveSuggestion((String) jsObject.getMember("preferredPhrase"), (String) jsObject.getMember("description"));
-            reuseSuggestions.add(reuseSuggestion);
+            LiveSuggestion liveSuggestion = new LiveSuggestion((String) jsObject.getMember("preferredPhrase"), (String) jsObject.getMember("description"));
+            liveSuggestions.add(liveSuggestion);
         }
-        LiveResponse reuseResponse = new LiveResponse(requestId,reuseSuggestions);
-        return reuseResponse;
+        LiveResponse liveResponse = new LiveResponse(requestId,liveSuggestions);
+        return liveResponse;
     }
 
     private static Map<String, String> getEmbedCheckInformationFromJSString(final JSObject embedCheckInformation)

@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class LivePanelState {
 
-    public static final LivePanelState EMPTY_REUSE_PANEL_STATE = new LivePanelState(LiveMessage.NO_MESSAGE,new ArrayList<>(),"","",false, Locale.ENGLISH);
+    public static final LivePanelState EMPTY_LIVE_PANEL_STATE = new LivePanelState(LiveMessage.NO_MESSAGE,new ArrayList<>(),"","",false, Locale.ENGLISH);
     private final LiveMessage message;
     private final boolean loading;
     private final List<LiveSuggestion> suggestions;
@@ -59,8 +59,8 @@ public class LivePanelState {
     public LivePanelState changeMessage(LiveMessage message) {
         return new LivePanelState(message,this.suggestions,this.searchString,this.currentString,this.loading,this.language);
     }
-    public LivePanelState changeSuggestions(List<LiveSuggestion> reuseSuggestions) {
-        return new LivePanelState(this.message,reuseSuggestions,this.searchString,this.currentString,this.loading,this.language);
+    public LivePanelState changeSuggestions(List<LiveSuggestion> liveSuggestions) {
+        return new LivePanelState(this.message,liveSuggestions,this.searchString,this.currentString,this.loading,this.language);
     }
     public LivePanelState changeSearchString(String searchString) {
         return new LivePanelState(this.message,this.suggestions,searchString,this.currentString,this.loading,this.language);

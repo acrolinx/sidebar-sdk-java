@@ -32,23 +32,23 @@ public class IconUtils
     {
         return IconUtils.class.getResourceAsStream("/icons/acrolinxIcon24px@2x.png");
     }
-    public static InputStream getAcrolinxReuseIcon_16_16_AsStream()
+    public static InputStream getAcrolinxLiveIcon_16_16_AsStream()
     {
-        return IconUtils.class.getResourceAsStream("/icons/acrolinxReuseIcon16px.png");
+        return IconUtils.class.getResourceAsStream("/icons/acrolinxLiveIcon16px.png");
     }
 
-    public static InputStream getAcrolinxReuseIcon_24_24_AsStream()
+    public static InputStream getAcrolinxLiveIcon_24_24_AsStream()
     {
-        return IconUtils.class.getResourceAsStream("/icons/acrolinxReuseIcon24px.png");
+        return IconUtils.class.getResourceAsStream("/icons/acrolinxLiveIcon24px.png");
     }
-    public static InputStream getAcrolinxReuseIcon_32_32_AsStream()
+    public static InputStream getAcrolinxLiveIcon_32_32_AsStream()
     {
-        return IconUtils.class.getResourceAsStream("/icons/acrolinxReuseIcon16px@2x.png");
+        return IconUtils.class.getResourceAsStream("/icons/acrolinxLiveIcon16px@2x.png");
     }
 
-    public static InputStream getAcrolinxReuseIcon_48_48_AsStream()
+    public static InputStream getAcrolinxLiveIcon_48_48_AsStream()
     {
-        return IconUtils.class.getResourceAsStream("/icons/acrolinxReuseIcon24px@2x.png");
+        return IconUtils.class.getResourceAsStream("/icons/acrolinxLiveIcon24px@2x.png");
     }
 
     public static URL getAcrolinxIcon_16_16_URL()
@@ -66,23 +66,23 @@ public class IconUtils
         return IconUtils.class.getResource("/icons/acrolinxIcon24px.png");
     }
 
-    public static URL getAcrolinxReuseIcon_16_16_URL()
+    public static URL getAcrolinxLiveIcon_16_16_URL()
     {
-        return IconUtils.class.getResource("/icons/acrolinxReuseIcon16px.png");
+        return IconUtils.class.getResource("/icons/acrolinxLiveIcon16px.png");
     }
 
-    public static URL getAcrolinxReuseIcon_24_24_URL()
+    public static URL getAcrolinxLiveIcon_24_24_URL()
     {
-        return IconUtils.class.getResource("/icons/acrolinxReuseIcon24px.png");
+        return IconUtils.class.getResource("/icons/acrolinxLiveIcon24px.png");
     }
 
-    public static URL getAcrolinxReuseIcon_32_32_URL()
+    public static URL getAcrolinxLiveIcon_32_32_URL()
     {
-        return IconUtils.class.getResource("/icons/acrolinxReuseIcon16px@2x.png");
+        return IconUtils.class.getResource("/icons/acrolinxLiveIcon16px@2x.png");
     }
-    public static URL getAcrolinxReuseIcon_48_48_URL()
+    public static URL getAcrolinxLiveIcon_48_48_URL()
     {
-        return IconUtils.class.getResource("/icons/acrolinxReuseIcon24px@2x.png");
+        return IconUtils.class.getResource("/icons/acrolinxLiveIcon24px@2x.png");
     }
 
 
@@ -108,35 +108,35 @@ public class IconUtils
     }
 
     /**
-     * This method loads a scaled instance of the reuse image for retina displays.
+     * This method loads a scaled instance of the live image for retina displays.
      */
-    public static Image getAcrolinxReuseIcon_16_16()
+    public static Image getAcrolinxLiveIcon_16_16()
     {
-        return Toolkit.getDefaultToolkit().getImage(getAcrolinxReuseIcon_16_16_URL());
+        return Toolkit.getDefaultToolkit().getImage(getAcrolinxLiveIcon_16_16_URL());
     }
 
     /**
-     * This method loads a scaled instance of the reuse image for retina displays.
+     * This method loads a scaled instance of the live image for retina displays.
      */
-    public static Image getAcrolinxReuseIcon_24_24()
+    public static Image getAcrolinxLiveIcon_24_24()
     {
-        return Toolkit.getDefaultToolkit().getImage(getAcrolinxReuseIcon_24_24_URL());
+        return Toolkit.getDefaultToolkit().getImage(getAcrolinxLiveIcon_24_24_URL());
     }
 
     /**
-     * This method loads a scaled instance of the reuse image for retina displays.
+     * This method loads a scaled instance of the live image for retina displays.
      */
-    public static Image getAcrolinxReuseIcon_32_32()
+    public static Image getAcrolinxLiveIcon_32_32()
     {
         return Toolkit.getDefaultToolkit().getImage(getAcrolinxIcon_32_32_URL());
     }
 
     /**
-     * This method loads a scaled instance of the reuse image for retina displays.
+     * This method loads a scaled instance of the live image for retina displays.
      */
-    public static Image getAcrolinxReuseIcon_48_48()
+    public static Image getAcrolinxLiveIcon_48_48()
     {
-        return Toolkit.getDefaultToolkit().getImage(getAcrolinxReuseIcon_48_48_URL());
+        return Toolkit.getDefaultToolkit().getImage(getAcrolinxLiveIcon_48_48_URL());
     }
 
 }

@@ -201,11 +201,11 @@ abstract class AcrolinxSidebarPlugin
 
     public synchronized void onReusePrefixSearchResult(final JSObject o)
     {
-        final LiveResponse reuseResponse = JSToJavaConverter.getReuseSuggestionsFromJSObject(o);
-        if (reuseResponse.getSuggestions().isEmpty()) {
+        final LiveResponse liveResponse = JSToJavaConverter.getLiveSuggestionsFromJSObject(o);
+        if (liveResponse.getSuggestions().isEmpty()) {
             logger.info("Prefix Search finished with no suggestions.");
         }
-        client.onLiveSearchSuggestions(reuseResponse);
+        client.onLiveSearchSuggestions(liveResponse);
     }
 
     public synchronized void selectRanges(final String checkID, final JSObject o)
