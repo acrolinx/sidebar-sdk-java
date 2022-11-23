@@ -235,10 +235,10 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
 
     @Override
-    public void livePrefixSearch(QueryInfo queryInfo)
+    public void liveSearch(QueryInfo queryInfo)
     {
         if(sidebarJFX != null) {
-            sidebarJFX.livePrefixSearch(queryInfo);
+            sidebarJFX.liveSearch(queryInfo);
         }
     }
 

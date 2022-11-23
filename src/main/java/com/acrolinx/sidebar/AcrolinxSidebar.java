@@ -102,6 +102,6 @@ public interface AcrolinxSidebar
      */
 
     void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options);
-    void livePrefixSearch(QueryInfo queryInfo);
+    void liveSearch(QueryInfo queryInfo);
 
 }
