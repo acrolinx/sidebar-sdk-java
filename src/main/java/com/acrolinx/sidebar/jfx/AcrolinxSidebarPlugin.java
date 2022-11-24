@@ -199,11 +199,11 @@ abstract class AcrolinxSidebarPlugin
         }
     }
 
-    public synchronized void onLiveSearchResult(final JSObject o)
+    public synchronized void onLiveSearchResults(final JSObject o)
     {
         final LiveResponse liveResponse = JSToJavaConverter.getLiveSuggestionsFromJSObject(o);
         if (liveResponse.getSuggestions().isEmpty()) {
-            logger.info("Prefix Search finished with no suggestions.");
+            logger.info("Search finished with no suggestions.");
         }
         client.onLiveSearchSuggestions(liveResponse);
     }

@@ -261,7 +261,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "onLiveSearchResultP") {
+        new BrowserFunction(browser, "onLiveSearchResultsP") {
             @Override
             public Object function(final Object[] arguments)
             {
