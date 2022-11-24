@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import com.acrolinx.sidebar.reuse.QueryInfo;
+import com.acrolinx.sidebar.live.QueryInfo;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -31,7 +31,6 @@ import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
-import com.acrolinx.sidebar.utils.AcrolinxException;
 import com.acrolinx.sidebar.utils.LogMessages;
 
 /**
@@ -236,10 +235,10 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
 
     @Override
-    public void reusePrefixSearch(QueryInfo queryInfo)
+    public void liveSearch(QueryInfo queryInfo)
     {
         if(sidebarJFX != null) {
-            sidebarJFX.reusePrefixSearch(queryInfo);
+            sidebarJFX.liveSearch(queryInfo);
         }
     }
 

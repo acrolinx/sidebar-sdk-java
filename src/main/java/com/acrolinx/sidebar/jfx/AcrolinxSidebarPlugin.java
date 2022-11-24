@@ -19,7 +19,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import com.acrolinx.sidebar.reuse.ReuseResponse;
+import com.acrolinx.sidebar.live.LiveResponse;
 import javafx.scene.web.WebView;
 
 import javax.annotation.Nullable;
@@ -199,13 +199,13 @@ abstract class AcrolinxSidebarPlugin
         }
     }
 
-    public synchronized void onReusePrefixSearchResult(final JSObject o)
+    public synchronized void onLiveSearchResults(final JSObject o)
     {
-        final ReuseResponse reuseResponse = JSToJavaConverter.getReuseSuggestionsFromJSObject(o);
-        if (reuseResponse.getSuggestions().isEmpty()) {
-            logger.info("Prefix Search finished with no suggestions.");
+        final LiveResponse liveResponse = JSToJavaConverter.getLiveSuggestionsFromJSObject(o);
+        if (liveResponse.getSuggestions().isEmpty()) {
+            logger.info("Search finished with no suggestions.");
         }
-        client.onReuseSearchSuggestions(reuseResponse);
+        client.onLiveSearchSuggestions(liveResponse);
     }
 
     public synchronized void selectRanges(final String checkID, final JSObject o)
@@ -384,25 +384,25 @@ abstract class AcrolinxSidebarPlugin
 
     }
 
-    public synchronized void reusePrefixSearch(final String prefix)
+    public synchronized void liveSearch(final String prefix)
     {
 
-        logger.debug("reusePrefixSearch is called.");
+        logger.debug("liveSearch is called.");
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 final String nameVariablePrefix = "prefix";
                 final JSObject jsObject = getWindowObject();
                 jsObject.setMember(nameVariablePrefix, prefix);
-                jsObject.eval("acrolinxSidebar.reusePrefixSearch(prefix);");
+                jsObject.eval("acrolinxSidebar.liveSearch(prefix);");
             } catch (final Exception e) {
-                client.onReuseSearchError(e);
+                client.onLiveSearchError(e);
                 logger.error(e.getMessage(), e);
             }
         });
     }
 
-    public synchronized void onReusePrefixSearchFailed() {
-        client.onReusePrefixSearchFailed();
+    public synchronized void onLiveSearchFailed() {
+        client.onLiveSearchFailed();
     }
 
     private static String buildStringOfCheckedRequestOptions(
@@ -413,8 +413,8 @@ abstract class AcrolinxSidebarPlugin
     }
 
 
-    public synchronized void openReusePanel() {
-        client.openReusePanel();
+    public synchronized void openLivePanel() {
+        client.openLivePanel();
     }
 
     public synchronized void onTargetChanged(boolean supportsLive) {

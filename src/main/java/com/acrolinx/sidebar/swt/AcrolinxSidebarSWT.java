@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import com.acrolinx.sidebar.reuse.*;
+import com.acrolinx.sidebar.live.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
@@ -261,11 +261,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "onReusePrefixSearchResultP") {
+        new BrowserFunction(browser, "onLiveSearchResultsP") {
             @Override
             public Object function(final Object[] arguments)
             {
-                return getReusePrefixSearchSuggestions(arguments[0]);
+                return getLiveSearchSuggestions(arguments[0]);
             }
         };
 
@@ -349,19 +349,19 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
-        new BrowserFunction(browser, "onReusePrefixSearchFailedP") {
+        new BrowserFunction(browser, "onLiveSearchFailedP") {
             @Override
             public Object function(final Object[] arguments)
             {
-                client.onReusePrefixSearchFailed();
+                client.onLiveSearchFailed();
                 return null;
             }
         };
-        new BrowserFunction(browser, "openReusePanelP") {
+        new BrowserFunction(browser, "openLivePanelP") {
             @Override
             public Object function(final Object[] arguments)
             {
-                client.openReusePanel();
+                client.openLivePanel();
                 return null;
             }
         };
@@ -417,15 +417,15 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     }
 
     @Override
-    public void reusePrefixSearch(QueryInfo queryInfo)  //Not a browser function (only plugin functions should be browser functions)
+    public void liveSearch(QueryInfo queryInfo)  //Not a browser function (only plugin functions should be browser functions)
     {
-        final String searchPrefix = new Gson().toJson(queryInfo.getQueryString());
-        logger.debug("Prefix Check requested for: " + searchPrefix);
+        final String searchString = new Gson().toJson(queryInfo.getQueryString());
+        logger.debug("Live-Search requested for: " + searchString);
 
         try {
-            browser.evaluate("acrolinxSidebar.reusePrefixSearch(" + searchPrefix + ");");
+            browser.evaluate("acrolinxSidebar.liveSearch(" + searchString + ");");
         } catch(Exception e) {
-            client.onReuseSearchError(e);
+            client.onLiveSearchError(e);
         }
     }
 
@@ -530,14 +530,13 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    private Object getReusePrefixSearchSuggestions(Object result)
+    private Object getLiveSearchSuggestions(Object result)
     {
         try {
             LogMessages.logSelectingRange(logger);
-            final ReuseResponseFromJSON responseFromJSON = new Gson().fromJson((String) result,
-                    new TypeToken<ReuseResponseFromJSON>() {}.getType());
-            final ReuseResponse reuseResponse = responseFromJSON.getReuseResponse();
-            client.onReuseSearchSuggestions(reuseResponse); //Add this method to AcrolinxIntegration
+            final LiveResponse responseFromJSON = new Gson().fromJson((String) result,
+                    new TypeToken<LiveResponse>() {}.getType());
+            client.onLiveSearchSuggestions(responseFromJSON); //Add this method to AcrolinxIntegration
         } catch(Exception e) {
             logger.error(e.toString());
         }

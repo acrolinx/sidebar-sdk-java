@@ -1,13 +1,13 @@
 (function(){
-    window.reuseAdapter = {
+    window.liveAdapter = {
         handlePhraseSelection: function(phrase) {
             handlePhraseSelection(phrase)
         },
         log: function(message) {
             logP(message)
         },
-        closeReusePanel: function() {
-            closeReusePanelP()
+        closeLivePanel: function() {
+            closeLivePanelP()
         }
     };
 })();

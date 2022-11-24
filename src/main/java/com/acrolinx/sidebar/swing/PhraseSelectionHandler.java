@@ -6,7 +6,5 @@ package com.acrolinx.sidebar.swing;
 public interface PhraseSelectionHandler {
     public void onPhraseSelected(String phrase);
 
-    public void queryCurrentSentence();
-
-    public void closeReusePanel();
+    public void closeLivePanel();
 }
