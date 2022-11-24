@@ -89,8 +89,8 @@ window.acrolinxPlugin =
   openLogFile: function(){
     openLogFileP();
   },
-  onLiveSearchResult: function(result) {
-    onLiveSearchResultP(result);
+  onLiveSearchResults: function(result) {
+    onLiveSearchResultsP(result);
   },
   onLiveSearchFailed: function() {
     onLiveSearchFailedP();
