@@ -9,6 +9,8 @@ public class PluginSupportedParameters
 
     private boolean supportsBatchChecks;
 
+    private boolean supportsLive;
+
     /**
      * This is supported only for minimum sidebar version 14.5.0.
      * 
@@ -26,6 +28,13 @@ public class PluginSupportedParameters
         this.supportsBatchChecks = supportsBatchChecks;
     }
 
+    public PluginSupportedParameters(boolean checkSelection,boolean supportsBatchChecks,boolean supportsLive)
+    {
+        this.checkSelection = checkSelection;
+        this.supportsBatchChecks = supportsBatchChecks;
+        this.supportsLive = supportsLive;
+    }
+
     public boolean isCheckSelection()
     {
         return checkSelection;
@@ -34,6 +43,10 @@ public class PluginSupportedParameters
     public boolean isBatchChecking()
     {
         return supportsBatchChecks;
+    }
+
+    public boolean isSupportingLive() {
+        return supportsLive;
     }
 
 }
