@@ -1,7 +1,7 @@
 (function(){
     window.liveAdapter = {
         handlePhraseSelection: function(phrase) {
-            handlePhraseSelection(phrase)
+            handlePhraseSelectionP(phrase)
         },
         log: function(message) {
             logP(message)
