@@ -367,7 +367,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 return null;
             }
         };
-        new BrowserFunction(browser, "onUiLanguageChangedP") {
+        new BrowserFunction(browser, "onUILanguageChangedP") {
             @Override
             public Object function(final Object[] arguments)
             {

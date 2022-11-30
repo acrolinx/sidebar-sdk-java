@@ -421,7 +421,7 @@ abstract class AcrolinxSidebarPlugin
         client.onTargetChanged(supportsLive);
     }
 
-    public synchronized void onUiLanguageChanged(String locale) {
+    public synchronized void onUILanguageChanged(String locale) {
         client.onUILanguageChanged(new Locale(locale));
     }
 }

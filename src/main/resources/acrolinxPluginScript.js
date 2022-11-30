@@ -98,8 +98,8 @@ window.acrolinxPlugin =
   openLivePanel: function() {
     openLivePanelP();
   },
-  onUiLanguageChanged: function(lang) {
-    onUiLanguageChangedP(lang);
+  onUILanguageChanged: function(lang) {
+    onUILanguageChangedP(lang);
   },
   onTargetChanged: function(supportsLive) {
     onTargetChangedP(supportsLive);
