@@ -26,15 +26,15 @@
         <Class name="com.acrolinx.sidebar.utils.DiffMatchPatch" />
     </Match>
     <Match>
-        <Class name="com.acrolinx.sidebar.live.LiveResponseFromJSON"/>
+        <Class name="com.acrolinx.sidebar.live.LiveResponseJSON"/>
         <Bug pattern="UWF_UNWRITTEN_FIELD"/>
     </Match>
     <Match>
-        <Class name="com.acrolinx.sidebar.live.LiveSuggestionFromJSON"/>
+        <Class name="com.acrolinx.sidebar.live.LiveSuggestionJSON"/>
         <Bug pattern="UWF_UNWRITTEN_FIELD"/>
     </Match>
     <Match>
-        <Class name="com.acrolinx.sidebar.live.LiveResponseFromJSON"/>
+        <Class name="com.acrolinx.sidebar.live.LiveResponseJSON"/>
         <Bug pattern="NP_UNWRITTEN_FIELD"/>
     </Match>
 </FindBugsFilter>
