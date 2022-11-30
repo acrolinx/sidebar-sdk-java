@@ -269,6 +269,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
         };
 
+
+
         new BrowserFunction(browser, "runCheckGlobalP") {
             @Override
             public Object function(final Object[] arguments)
@@ -534,11 +536,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         try {
             LogMessages.logSelectingRange(logger);
-            final LiveResponse responseFromJSON = new Gson().fromJson((String) result,
-                    new TypeToken<LiveResponse>() {}.getType());
-            client.onLiveSearchSuggestions(responseFromJSON); //Add this method to AcrolinxIntegration
+            final LiveResponseJSON responseFromJSON = new Gson().fromJson((String) result,
+                    new TypeToken<LiveResponseJSON>() {}.getType());
+            client.onLiveSearchSuggestions(responseFromJSON.toLiveResponse()); //Add this method to AcrolinxIntegration
         } catch(Exception e) {
-            logger.error(e.toString());
+            logger.error(e.getMessage());
         }
         return null;
     }
