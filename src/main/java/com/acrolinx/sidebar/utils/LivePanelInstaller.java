@@ -49,7 +49,7 @@ public class LivePanelInstaller
                         Files.createDirectories(parent);
                     }
                     try(InputStream asset = LivePanelInstaller.class.getResourceAsStream("/acrolinx-live" + assetResource)) {
-                        if ((asset != null) && (true || !Files.exists(assetFile))) {
+                        if (!Files.exists(assetFile)) {
                             Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
                         }
                     } catch (final Exception e) {
