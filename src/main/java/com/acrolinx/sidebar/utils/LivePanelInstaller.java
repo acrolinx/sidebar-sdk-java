@@ -36,11 +36,10 @@ public class LivePanelInstaller
      */
     public static void exportLivePanelResources() throws URISyntaxException, IOException
     {
-        InputStream asset;
         logger.info("Exporting Live Panel Resources.");
         final Path assetDir = getDefaultLivePanelInstallLocation();
-        try (BufferedReader listFile = new BufferedReader(new InputStreamReader(
-                LivePanelInstaller.class.getResourceAsStream("/acrolinx-live/files.txt"), StandardCharsets.UTF_8))) {
+        try(InputStreamReader inputStreamReader = new InputStreamReader(LivePanelInstaller.class.getResourceAsStream("/acrolinx-live/files.txt"), StandardCharsets.UTF_8);
+            BufferedReader listFile = new BufferedReader(inputStreamReader);)  {
             String assetResource;
             while ((assetResource = listFile.readLine()) != null) {
                 final Path assetFile = assetDir.resolve(assetResource.substring(1, assetResource.length()));
@@ -49,12 +48,17 @@ public class LivePanelInstaller
                     if ((parent != null) && !Files.exists(parent)) {
                         Files.createDirectories(parent);
                     }
-                    asset = LivePanelInstaller.class.getResourceAsStream("/acrolinx-live" + assetResource);
-                    if ((asset != null) && (true || !Files.exists(assetFile))) {
-                        Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
+                    try(InputStream asset = LivePanelInstaller.class.getResourceAsStream("/acrolinx-live" + assetResource)) {
+                        if ((asset != null) && (true || !Files.exists(assetFile))) {
+                            Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
+                        }
+                    } catch (final Exception e) {
+                        logger.error("Error in exportLivePanelResources", e);
                     }
                 }
             }
+        } catch (final Exception e) {
+            logger.error("Error in exportLivePanelResources", e);
         }
     }
 
