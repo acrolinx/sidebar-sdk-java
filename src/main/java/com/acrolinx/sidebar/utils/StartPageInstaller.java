@@ -59,11 +59,10 @@ public class StartPageInstaller
      */
     public static void exportStartPageResources() throws URISyntaxException, IOException
     {
-        InputStream asset;
         logger.info("Exporting Server Selector Resources.");
         final Path assetDir = getDefaultStartPageInstallLocation();
-        try (BufferedReader listFile = new BufferedReader(new InputStreamReader(
-                StartPageInstaller.class.getResourceAsStream("/server-selector/files.txt"), StandardCharsets.UTF_8))) {
+        try(InputStreamReader inputStreamReader = new InputStreamReader(StartPageInstaller.class.getResourceAsStream("/server-selector/files.txt"), StandardCharsets.UTF_8);
+            BufferedReader listFile = new BufferedReader(inputStreamReader);)  {
             String assetResource;
             while ((assetResource = listFile.readLine()) != null) {
                 final Path assetFile = assetDir.resolve(assetResource.substring(1, assetResource.length()));
@@ -72,12 +71,18 @@ public class StartPageInstaller
                     if ((parent != null) && !Files.exists(parent)) {
                         Files.createDirectories(parent);
                     }
-                    asset = StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
-                    if ((asset != null) && (true || !Files.exists(assetFile))) {
-                        Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
+                    try(InputStream asset = StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource)) {
+                        if (!Files.exists(assetFile)) {
+                            Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
+                        }
+                    } catch (final Exception e) {
+                        logger.error("Error while reading assets in server-selector", e);
                     }
                 }
             }
+        }
+        catch (final Exception e) {
+            logger.error("Error in exportStartPageResources", e);
         }
     }
 
