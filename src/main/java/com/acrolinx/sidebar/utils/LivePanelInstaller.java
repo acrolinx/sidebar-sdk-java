@@ -14,18 +14,39 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Properties;
 
 
 @SuppressWarnings("WeakerAccess")
 public class LivePanelInstaller
 {
     private static final Logger logger = LoggerFactory.getLogger(LivePanelInstaller.class);
-    private static final String LIVE_PANEL_DIR = "acrolinx_reuse_panel";
+    private static final String LIVE_PANEL_DIR = "acrolinx_live_panel";
 
     protected static String getLivePanelVersion()
     {
-        //ToDo: Generate version.properties file in live-panel if needed
-        return "0.1.0";
+        final String resourceName = "/acrolinx-live/version.properties";
+        final Properties props = new Properties();
+        final InputStream resourceStream = StartPageInstaller.class.getResourceAsStream(resourceName);
+        if (resourceStream != null) {
+            try {
+                props.load(resourceStream);
+                return (String) props.get("version");
+            } catch (final IOException e) {
+                logger.error("Could not read acrolinx live version!");
+                logger.error(e.getMessage());
+            } finally {
+                try {
+                    resourceStream.close();
+                } catch (final IOException e) {
+                    logger.debug("Could not close resource stream or stream already cleaned up!");
+                    logger.error(e.getMessage());
+                }
+            }
+        } else {
+            logger.error("Version properties file for acrolinx live not found!");
+        }
+        return null;
     }
 
     /**
