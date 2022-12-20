@@ -107,7 +107,18 @@ public class AcrolinxLiveSwing extends JFXPanel  implements AcrolinxLiveComponen
         });
     }
 
-    public void log(String log) {
-        logger.info(log);
+    public synchronized void logInfo(String log) {
+        logger.info("LivePanel: {}",log);
     }
+
+    public synchronized void logDebug(String log) {
+        logger.debug("LivePanel: {}",log);
+    }
+
+    public synchronized void openSidebar() {
+        if(phraseSelectionHandler != null) {
+            phraseSelectionHandler.openSidebar();
+        }
+    }
+
 }
