@@ -65,7 +65,7 @@ public class AcrolinxLiveSWT implements AcrolinxLiveComponentInterface {
                         return null;
                     }
                 };
-                new BrowserFunction(browser, "logP") {
+                new BrowserFunction(browser, "logInfoP") {
                     @Override
                     public Object function(final Object[] arguments)
                     {
@@ -73,11 +73,31 @@ public class AcrolinxLiveSWT implements AcrolinxLiveComponentInterface {
                         return null;
                     }
                 };
+                new BrowserFunction(browser, "logDebugP") {
+                    @Override
+                    public Object function(final Object[] arguments)
+                    {
+                        logger.debug((String) arguments[0]);
+                        return null;
+                    }
+                };
                 new BrowserFunction(browser, "closeLivePanelP") {
                     @Override
                     public Object function(final Object[] arguments)
                     {
-                        closeLivePanel();
+                        if(phraseSelectionHandler != null) {
+                            phraseSelectionHandler.closeLivePanel();
+                        }
+                        return null;
+                    }
+                };
+                new BrowserFunction(browser, "openSidebarP") {
+                    @Override
+                    public Object function(final Object[] arguments)
+                    {
+                        if(phraseSelectionHandler != null) {
+                            phraseSelectionHandler.openSidebar();
+                        }
                         return null;
                     }
                 };
@@ -91,12 +111,6 @@ public class AcrolinxLiveSWT implements AcrolinxLiveComponentInterface {
             }
         });
         browser.setUrl(LivePanelInstaller.getLivePanelURL());
-    }
-
-    public void closeLivePanel() {
-        if(phraseSelectionHandler != null) {
-            phraseSelectionHandler.closeLivePanel();
-        }
     }
 
 }

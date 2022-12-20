@@ -3,11 +3,17 @@
         handlePhraseSelection: function(phrase) {
             handlePhraseSelectionP(phrase)
         },
-        log: function(message) {
-            logP(message)
+        logInfo: function(message) {
+            logInfoP(message)
+        },
+        logDebug: function(message) {
+            logDebugP(message)
         },
         closeLivePanel: function() {
             closeLivePanelP()
+        },
+        openSidebar: function() {
+            openSidebarP()
         }
     };
 })();
