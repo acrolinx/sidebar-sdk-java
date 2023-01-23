@@ -1,7 +1,7 @@
 name: Build and Deploy
 on:
   push:
-    branches: [ main, DEV-30465-reusePrototype ]
+    branches: [ main, rebasedLive ]
   pull_request:
     branches: [ main ]
   schedule:
