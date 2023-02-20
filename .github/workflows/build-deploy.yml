@@ -54,7 +54,7 @@ jobs:
 
       # Build an Test Gradle Project
       - name: Build Gradle Project
-        run: ./gradlew build --info
+        run: ./gradlew build
 
       # Sonar Cloud Scan
       - name: Sonar Scan Project
