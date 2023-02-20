@@ -452,8 +452,6 @@ dependencyCheck {
 	suppressionFile=suppressionUrl
 }
 
-
-
 //npm_install.dependsOn npm_cache_clean
 
 //noinspection GroovyAssignabilityCheck,GroovyAssignabilityCheck
@@ -466,5 +464,6 @@ licenseMain.dependsOn copyLivePanelRessources
 licenseTest.dependsOn checkLicenseHeaders
 jar.dependsOn 'downloadLicenses'
 jar.dependsOn createVersionPropertiesFile
+check.dependsOn dependencyCheckAnalyze
 test.dependsOn javadoc
 javadocJar.dependsOn javadoc
