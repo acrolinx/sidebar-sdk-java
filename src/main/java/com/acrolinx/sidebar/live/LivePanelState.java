@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class LivePanelState {
 
-    public static final LivePanelState EMPTY_LIVE_PANEL_STATE = new LivePanelState(LiveMessage.NO_MESSAGE,new ArrayList<>(),"","",false, Locale.ENGLISH);
+    public static final LivePanelState EMPTY_LIVE_PANEL_STATE = new LivePanelState(LiveMessage.INIT_MESSAGE,new ArrayList<>(),"","",false, Locale.ENGLISH);
     private final LiveMessage message;
     private final boolean loading;
     private final List<LiveSuggestion> suggestions;
