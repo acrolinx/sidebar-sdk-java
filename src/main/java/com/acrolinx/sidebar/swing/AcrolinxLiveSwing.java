@@ -27,7 +27,6 @@ public class AcrolinxLiveSwing extends JFXPanel  implements AcrolinxLiveComponen
 
     private WebView webView;
     private final Logger logger = LoggerFactory.getLogger(AcrolinxLiveSwing.class);
-    private JSObject window = null;
 
     private PhraseSelectionHandler phraseSelectionHandler;
 
@@ -104,10 +103,7 @@ public class AcrolinxLiveSwing extends JFXPanel  implements AcrolinxLiveComponen
     @Override
     public void setLiveState(LivePanelState livePanelState) {
         JFXUtils.invokeInJFXThread(() -> {
-            if(window == null) {
-                window = getWindowObject();
-            }
-            window.eval("postMessage(" + livePanelState.toJSON() + ",'*')");
+            getWindowObject().eval("postMessage(" + livePanelState.toJSON() + ",'*')");
         });
     }
 
