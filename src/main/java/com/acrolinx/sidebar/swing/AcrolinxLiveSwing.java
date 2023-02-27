@@ -67,6 +67,7 @@ public class AcrolinxLiveSwing extends JFXPanel  implements AcrolinxLiveComponen
             GridPane.setHgrow(webView, Priority.ALWAYS);
             GridPane.setVgrow(webView, Priority.ALWAYS);
             webView.setPrefWidth(300);
+            webView.setContextMenuEnabled(false);
             webEngine = webView.getEngine();
 
             Scene scene = new Scene(webView);
