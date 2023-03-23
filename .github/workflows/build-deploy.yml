@@ -57,7 +57,7 @@ jobs:
 
       # Sonar Cloud Scan
       - name: Sonar Scan Project
-        run: ./gradlew sonarqube
+        run: ./gradlew sonar
 
       # Generate Docs
       - name: Create Java Doc
