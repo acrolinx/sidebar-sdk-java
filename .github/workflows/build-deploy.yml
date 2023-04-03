@@ -43,7 +43,7 @@ jobs:
       - name: Keep Action Alive
         uses: gautamkrishnar/keepalive-workflow@545bece52b22933e4228319348e34d61736514e1
 
-      # Using Java 8 from Eclipse Foundation
+      # Using Java from Eclipse Foundation
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
@@ -57,7 +57,7 @@ jobs:
 
       # Sonar Cloud Scan
       - name: Sonar Scan Project
-        run: ./gradlew sonarqube
+        run: ./gradlew sonar
 
       # Generate Docs
       - name: Create Java Doc

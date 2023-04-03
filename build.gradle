@@ -33,10 +33,14 @@ plugins {
 	id "com.github.spotbugs" version "5.0.4"
 
 	id "org.openjfx.javafxplugin" version "0.0.10" apply false
-	id "org.sonarqube" version "3.3"
+	id "org.sonarqube" version "4.0.0.2929"
 }
 
-sonarqube {
+node {
+	download = true
+}
+
+sonar {
 	properties {
 		property "sonar.organization", "acrolinx"
 		property "sonar.projectKey", "acrolinx_sidebar-sdk-java"
@@ -401,13 +405,13 @@ configurations.all {
 			// so we replace the dependency, using the osgi platform from the project settings
 			def os = System.getProperty("os.name").toLowerCase()
 			if (os.contains("windows")) {
-				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') with module("org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:$SWT_VERSION")
+				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:$SWT_VERSION")
 			}
 			else if (os.contains("linux")) {
-				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') with module("org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:$SWT_VERSION")
+				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:$SWT_VERSION")
 			}
 			else if (os.contains("mac")) {
-				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') with module("org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:$SWT_VERSION")
+				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:$SWT_VERSION")
 			}
 		}
 	}
