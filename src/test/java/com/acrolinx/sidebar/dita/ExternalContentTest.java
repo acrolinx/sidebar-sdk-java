@@ -71,8 +71,9 @@ public class ExternalContentTest
 
         final CheckContent checkContent = new CheckContent("<xml>This \"is a sentence.</xml>\n<t>tests</t>", content);
 
-        assertTrue(checkContent.toString().contains("content"));
-        assertTrue(checkContent.toString().contains("externalContent"));
+        String jsonString = checkContent.toString();
+        assertTrue(jsonString.contains("content"));
+        assertTrue(jsonString.contains("externalContent"));
     }
 
     @Test
@@ -88,10 +89,10 @@ public class ExternalContentTest
         final ExternalContent externalContent = new ExternalContentBuilder().build();
         final CheckContent checkContent = new CheckContent("This is a some sample", externalContent);
 
-        String string = checkContent.toString();
-        assertTrue(string.contains("content"));
-        assertTrue(string.contains("externalContent"));
-        assertTrue(string.contains("textReplacements"));
-        assertTrue(string.contains("entities"));
+        String jsonString = checkContent.toString();
+        assertTrue(jsonString.contains("content"));
+        assertTrue(jsonString.contains("externalContent"));
+        assertTrue(jsonString.contains("textReplacements"));
+        assertTrue(jsonString.contains("entities"));
     }
 }
