@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Test;
 
-@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class CheckResultTest
 {
     @Test
@@ -23,8 +22,9 @@ public class CheckResultTest
         final String inputFormat = "xml";
         final CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
         final String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
-        Assert.assertTrue(embedCheckDataAsProcessingInstruction.equalsIgnoreCase(
-                "<?acrolinxCheckData score=\"67\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" status=\"yellow\" ?>"));
+        Assert.assertEquals(
+                "<?acrolinxCheckData score=\"67\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" status=\"yellow\" ?>",
+                embedCheckDataAsProcessingInstruction);
     }
 
     @Test
@@ -38,8 +38,9 @@ public class CheckResultTest
         final String inputFormat = "html";
         final CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
         final String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
-        Assert.assertTrue(embedCheckDataAsProcessingInstruction.equalsIgnoreCase(
-                "<meta name=\"acrolinxCheckData\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" status=\"yellow\" score=\"67\" />"));
+        Assert.assertEquals(
+                "<meta name=\"acrolinxCheckData\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" status=\"yellow\" score=\"67\" />",
+                embedCheckDataAsProcessingInstruction);
     }
 
     @Test
@@ -53,9 +54,9 @@ public class CheckResultTest
         final String inputFormat = "markdown";
         final CheckResult result = new CheckResult(new CheckedDocumentPart("id", new IntRange(1, 1)), map, inputFormat);
         final String embedCheckDataAsProcessingInstruction = result.getEmbedCheckDataAsEmbeddableString().get();
-        System.out.println(embedCheckDataAsProcessingInstruction);
-        Assert.assertTrue(embedCheckDataAsProcessingInstruction.equalsIgnoreCase(
-                "<!-- acrolinxCheckData score=\"67\" status=\"yellow\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" -->"));
+        Assert.assertEquals(
+                "<!-- acrolinxCheckData score=\"67\" status=\"yellow\" TimeStarted=\"=2017-08-09T10:39:39Z\" scorecardURL=\"https://test-ssl.acrolinx.com/output/en/something_report.html\" -->",
+                embedCheckDataAsProcessingInstruction);
     }
 
     @Test

@@ -2,9 +2,11 @@
 
 package com.acrolinx.sidebar.utils;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -13,8 +15,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Charsets;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
@@ -26,7 +26,6 @@ public class LoggingUtilsTest
     {
         LoggingUtils.setupLogging("TEST");
         String logFileLocation = LoggingUtils.getLogFileLocation();
-        Assert.assertTrue(logFileLocation != null);
         Assert.assertTrue(logFileLocation.contains("TEST"));
         ((LoggerContext) LoggerFactory.getILoggerFactory()).stop();
         Files.deleteIfExists(Paths.get(new URI(logFileLocation)));
@@ -40,16 +39,19 @@ public class LoggingUtilsTest
         final ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(
                 Logger.ROOT_LOGGER_NAME);
         final Level level = root.getLevel();
-        assertTrue(level.toString().equalsIgnoreCase("INFO"));
+        assertEquals(Level.INFO, level);
+
         logger.debug("debug test");
         logger.warn("warning test");
         final String logFileLocation = LoggingUtils.getLogFileLocation();
-        Assert.assertTrue(logFileLocation != null);
-        final List<String> strings = Files.readAllLines(Paths.get(new URI(logFileLocation)), Charsets.UTF_8);
+        Assert.assertNotNull(logFileLocation);
+
+        final List<String> strings = Files.readAllLines(Paths.get(new URI(logFileLocation)), StandardCharsets.UTF_8);
         strings.stream().forEach(string -> {
             assertTrue(string.contains("WARN"));
             assertTrue(string.contains("warning test"));
         });
+
         ((LoggerContext) LoggerFactory.getILoggerFactory()).stop();
         Files.deleteIfExists(Paths.get(new URI(logFileLocation)));
     }
@@ -62,16 +64,19 @@ public class LoggingUtilsTest
         final ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(
                 Logger.ROOT_LOGGER_NAME);
         final Level level = root.getLevel();
-        assertTrue(level.toString().equalsIgnoreCase("DEBUG"));
+        assertEquals(Level.DEBUG, level);
+
         final Logger logger = LoggerFactory.getLogger("LoggingUtilsTest");
         logger.debug("debug test1");
         final String logFileLocation = LoggingUtils.getLogFileLocation();
-        Assert.assertTrue(logFileLocation != null);
-        final List<String> strings = Files.readAllLines(Paths.get(new URI(logFileLocation)), Charsets.UTF_8);
+        Assert.assertNotNull(logFileLocation);
+
+        final List<String> strings = Files.readAllLines(Paths.get(new URI(logFileLocation)), StandardCharsets.UTF_8);
         strings.stream().forEach(string -> {
             assertTrue(string.contains("DEBUG"));
             assertTrue(string.contains("debug test1"));
         });
+
         ((LoggerContext) LoggerFactory.getILoggerFactory()).stop();
         Files.deleteIfExists(Paths.get(new URI(logFileLocation)));
         System.clearProperty("acrolog.level");
@@ -88,22 +93,23 @@ public class LoggingUtilsTest
         final ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(
                 Logger.ROOT_LOGGER_NAME);
         final Level level = root.getLevel();
-        assertTrue(level.equals(Level.OFF));
+        assertEquals(Level.OFF, level);
+
         final String logFileLocation = LoggingUtils.getLogFileLocation();
-        Assert.assertTrue(logFileLocation != null);
-        final List<String> strings = Files.readAllLines(Paths.get(new URI(logFileLocation)), Charsets.UTF_8);
-        strings.stream().forEach(string -> assertTrue("".equals(string)));
+        Assert.assertNotNull(logFileLocation);
+
+        final List<String> strings = Files.readAllLines(Paths.get(new URI(logFileLocation)), StandardCharsets.UTF_8);
+        strings.stream().forEach(string -> assertEquals("", string));
         ((LoggerContext) LoggerFactory.getILoggerFactory()).stop();
         Files.deleteIfExists(Paths.get(new URI(logFileLocation)));
         System.clearProperty("acrolog.level");
     }
 
     @Test
-    public void getLogFileWhenNoLoggingIsConfiguredReturnsEmpty() throws Exception
+    public void getLogFileWhenNoLoggingIsConfiguredReturnsEmpty()
     {
         LoggingUtils.resetLoggingContext();
         final String logFileLocation = LoggingUtils.getLogFileLocation();
-        assertTrue(logFileLocation == "");
+        assertEquals("", logFileLocation);
     }
-
 }
