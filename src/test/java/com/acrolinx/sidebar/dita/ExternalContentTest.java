@@ -4,7 +4,9 @@
 
 package com.acrolinx.sidebar.dita;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,15 +14,15 @@ import java.util.UUID;
 import org.junit.Test;
 
 import com.acrolinx.sidebar.pojo.document.CheckContent;
-import com.acrolinx.sidebar.pojo.document.externalContent.*;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentBuilder;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentField;
 
 public class ExternalContentTest
 {
-
     @Test
     public void testBuildingExternalContent()
     {
-
         final ExternalContentBuilder externalContentBuilder = new ExternalContentBuilder();
 
         externalContentBuilder.addDitaReference(UUID.randomUUID().toString(), UUID.randomUUID().toString());
@@ -44,10 +46,6 @@ public class ExternalContentTest
         assertEquals(3, ditaReferences.size());
         assertEquals(3, entities.size());
         assertEquals(3, textReplacements.size());
-
-        assertNotNull(ditaReferences);
-        assertNotNull(entities);
-        assertNotNull(textReplacements);
 
         assertNotNull(content.toString());
     }
@@ -73,10 +71,6 @@ public class ExternalContentTest
 
         final CheckContent checkContent = new CheckContent("<xml>This \"is a sentence.</xml>\n<t>tests</t>", content);
 
-        assertNotNull(checkContent);
-
-        assertNotNull(checkContent.toString());
-
         assertTrue(checkContent.toString().contains("content"));
         assertTrue(checkContent.toString().contains("externalContent"));
     }
@@ -85,11 +79,7 @@ public class ExternalContentTest
     public void testExternalContentNotPresent()
     {
         final CheckContent checkContent = new CheckContent("This is a some sample", null);
-
-        assertNotNull(checkContent);
-
         assertTrue(checkContent.toString().contains("content"));
-
     }
 
     @Test
@@ -98,11 +88,10 @@ public class ExternalContentTest
         final ExternalContent externalContent = new ExternalContentBuilder().build();
         final CheckContent checkContent = new CheckContent("This is a some sample", externalContent);
 
-        assertNotNull(checkContent);
-
-        assertTrue(checkContent.toString().contains("content"));
-        assertTrue(checkContent.toString().contains("externalContent"));
-        assertTrue(checkContent.toString().contains("textReplacements"));
-        assertTrue(checkContent.toString().contains("entities"));
+        String string = checkContent.toString();
+        assertTrue(string.contains("content"));
+        assertTrue(string.contains("externalContent"));
+        assertTrue(string.contains("textReplacements"));
+        assertTrue(string.contains("entities"));
     }
 }

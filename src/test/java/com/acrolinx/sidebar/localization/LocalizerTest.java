@@ -10,28 +10,27 @@ import org.junit.Test;
 public class LocalizerTest
 {
     @Test
-    public void getText() throws Exception
+    public void getText()
     {
         Localizer.getInstance().changeLocale(Locale.ENGLISH);
         String text = Localizer.getInstance().getText(LocalizedStrings.SHOW_SIDEBAR_LABEL);
-        Assert.assertTrue(text.equalsIgnoreCase("Show Sidebar"));
+        Assert.assertEquals("Show Sidebar", text);
     }
 
     @Test
-    public void changeLocale() throws Exception
+    public void changeLocale()
     {
         Localizer.getInstance().changeLocale(Locale.GERMAN);
         String text = Localizer.getInstance().getText(LocalizedStrings.SHOW_SIDEBAR_LABEL);
-        Assert.assertTrue(text.equalsIgnoreCase("Sidebar anzeigen"));
+        Assert.assertEquals("Sidebar anzeigen", text);
     }
 
     @Test
-    public void changeLocaleToUnknown() throws Exception
+    public void changeLocaleToUnknown()
     {
         Localizer.getInstance().changeLocale(Locale.CHINESE);
         String text = Localizer.getInstance().getText(LocalizedStrings.SHOW_SIDEBAR_LABEL);
-        System.out.println(text);
-        Assert.assertTrue(text.equalsIgnoreCase("Show Sidebar"));
+        Assert.assertEquals("Show Sidebar", text);
     }
 
     @Test
@@ -39,6 +38,6 @@ public class LocalizerTest
     {
         Localizer.getInstance().changeLocale(Locale.GERMAN);
         String text = Localizer.getInstance().getText(LocalizedStrings.SHOW_SIDEBAR_TOOLTIP);
-        Assert.assertTrue(text.equalsIgnoreCase("Sidebar anzeigen"));
+        Assert.assertEquals("Sidebar anzeigen", text);
     }
 }

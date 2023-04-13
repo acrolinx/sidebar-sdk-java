@@ -32,7 +32,5 @@ public class MatchUtilsTest
         assertEquals("3", sortedMatches.get(1).getContent());
         assertEquals("2", sortedMatches.get(2).getContent());
         assertEquals("1", sortedMatches.get(3).getContent());
-
     }
-
 }

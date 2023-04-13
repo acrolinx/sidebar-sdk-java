@@ -2,6 +2,7 @@
 
 package com.acrolinx.sidebar.utils;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -10,40 +11,35 @@ import org.junit.Test;
 public class SidebarUtilsTest
 {
     @Test
-    public void isValidURLNullTest() throws Exception
+    public void isValidURLNullTest()
     {
-        boolean validURL = SidebarUtils.isValidURL(null);
-        assertTrue(!validURL);
+        assertFalse(SidebarUtils.isValidURL(null));
     }
 
     @Test
-    public void isValidURLLocalhostTest() throws Exception
+    public void isValidURLLocalhostTest()
     {
-        boolean validURL = SidebarUtils.isValidURL("http://sifnos");
-        assertTrue(validURL);
+        assertTrue(SidebarUtils.isValidURL("http://sifnos"));
     }
 
     @Test
-    public void isValidURLTEST() throws Exception
+    public void isValidURLTEST()
     {
-        boolean validURL = SidebarUtils.isValidURL("https://us-demo.acrolinx.cloud:443/dashboard.html");
-        assertTrue(validURL);
+        assertTrue(SidebarUtils.isValidURL("https://us-demo.acrolinx.cloud:443/dashboard.html"));
     }
 
     @Test
-    public void isValidURLTEST2() throws Exception
+    public void isValidURLTEST2()
     {
-        boolean validURL = SidebarUtils.isValidURL(
-                "https://acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html");
-        assertTrue(validURL);
+        assertTrue(SidebarUtils.isValidURL(
+                "https://acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html"));
     }
 
     @Test
-    public void isNOTValidURLTEST() throws Exception
+    public void isNOTValidURLTEST()
     {
-        boolean validURL = SidebarUtils.isValidURL(
-                "https:/acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html");
-        assertTrue(!validURL);
+        assertFalse(SidebarUtils.isValidURL(
+                "https:/acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html"));
     }
 
     @Test
@@ -54,5 +50,4 @@ public class SidebarUtilsTest
         assertNotNull(SidebarUtils.getPathOfCurrentJavaJRE());
         assertNotNull(SidebarUtils.getFullCurrentJavaVersionString());
     }
-
 }
