@@ -90,9 +90,9 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
             public void componentResized(final ComponentEvent e)
             {
                 logger.debug("Component resized");
-                logger.debug(getWidth() + " width");
+                logger.debug("{} width", getWidth());
                 final float i = (float) getWidth() / 300;
-                logger.debug(i + " Zoom");
+                logger.debug("{} Zoom", i);
                 sidebarJFX.setZoom(i);
             }
 

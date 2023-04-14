@@ -94,7 +94,7 @@ public class StartPageInstaller
         Path serverSelectorDirectory = acrolinxDir.resolve(SERVER_SELECTOR_DIR + "_" + getStartPageVersion());
         if (!Files.exists(serverSelectorDirectory)) {
             serverSelectorDirectory = Files.createDirectories(serverSelectorDirectory);
-            logger.debug("Creating acrolinx start page directory in: " + serverSelectorDirectory.toString());
+            logger.debug("Creating acrolinx start page directory in: {}", serverSelectorDirectory.toString());
         }
         return serverSelectorDirectory;
     }

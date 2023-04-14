@@ -58,7 +58,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         this.integration = integration;
         final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(integration.getInitParameters());
 
-        logger.debug("Trying to load sidebar url: " + sidebarUrl);
+        logger.debug("Trying to load sidebar url: {}", sidebarUrl);
         final WebView webView = getWebView();
         final WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
@@ -66,17 +66,17 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         webView.setCache(true);
         webView.setCacheHint(CacheHint.SPEED);
 
-        webEngine.setOnError((final WebErrorEvent arg0) -> logger.error("Error: " + arg0.getMessage()));
-        webEngine.setOnAlert((final WebEvent<String> arg0) -> logger.debug("Alert: " + arg0.getData()));
+        webEngine.setOnError((final WebErrorEvent arg0) -> logger.error("Error: {}", arg0.getMessage()));
+        webEngine.setOnAlert((final WebEvent<String> arg0) -> logger.debug("Alert: {}", arg0.getData()));
 
         webEngine.getLoadWorker().stateProperty().addListener((
                 final ObservableValue<? extends Worker.State> observedValue, final Worker.State oldState,
                 final Worker.State newState) -> this.getChangeListener(observedValue, oldState, newState, storage));
         webEngine.getLoadWorker().exceptionProperty().addListener(
-                (ov, t, t1) -> logger.error("webEngine exception: " + t1.getMessage()));
+                (ov, t, t1) -> logger.error("webEngine exception: {}", t1.getMessage()));
 
         if (sidebarUrl != null) {
-            logger.info("Loading: " + sidebarUrl);
+            logger.info("Loading: {}", sidebarUrl);
             webEngine.load(sidebarUrl);
         } else {
             // if sidebar url is not available show log file location
@@ -88,14 +88,14 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             final Worker.State oldState, final Worker.State newState, final AcrolinxStorage storage)
     {
 
-        logger.debug("state changed: " + observedValue.getValue() + ": " + oldState + " -> " + newState);
+        logger.debug("state changed: {} : {} -> {}", observedValue.getValue(), oldState, newState);
         if (newState == Worker.State.SUCCEEDED) {
             this.injectAcrolinxPlugin(storage);
         }
         if ("FAILED".equals("" + newState)) {
             final WebView webView = getWebView();
             final WebEngine webEngine = webView.getEngine();
-            logger.debug("New state: " + newState);
+            logger.debug("New state: {}", newState);
             // noinspection ThrowableResultOfMethodCallIgnored
             if (webEngine.getLoadWorker().getException() != null) {
                 // noinspection ThrowableResultOfMethodCallIgnored
@@ -109,7 +109,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     {
         final WebView webView = getWebView();
         final WebEngine webEngine = webView.getEngine();
-        logger.debug("Sidebar loaded from " + webEngine.getLocation());
+        logger.debug("Sidebar loaded from: {}", webEngine.getLocation());
         final JSObject jsobj = (JSObject) webEngine.executeScript("window");
         if (jsobj == null) {
             logger.error("Window Object null!");

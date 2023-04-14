@@ -10,18 +10,15 @@ import org.slf4j.LoggerFactory;
 /**
  * For internal use.
  */
-public class SecurityUtils
-{
+public class SecurityUtils {
     private static final Logger logger = LoggerFactory.getLogger(SecurityUtils.class);
     final private static String ACRO_PREFIX = "acrolinx_force_";
 
-    private static void logPropertyValue(String propertyName, String propertyValue)
-    {
-        logger.info("Property " + propertyName + " is set to " + propertyValue);
+    private static void logPropertyValue(String propertyName, String propertyValue) {
+        logger.info("Property {} is set to {}", propertyName, propertyValue);
     }
 
-    public static void setUpEnvironment()
-    {
+    public static void setUpEnvironment() {
         String propertyNameAllowHeaders = "sun.net.http.allowRestrictedHeaders";
         String propertyRH = System.getProperty(propertyNameAllowHeaders);
         logPropertyValue(propertyNameAllowHeaders, propertyRH);
@@ -39,10 +36,10 @@ public class SecurityUtils
             String key = k.toString().toLowerCase();
             if (key.startsWith(ACRO_PREFIX)) {
                 logger.info("Setting up environment properties enforced by configuration.");
-                logger.info(key + ": " + v.toString());
+                logger.info("{} : {}", key, v);
                 System.setProperty(key.substring(ACRO_PREFIX.length()), v.toString());
-                logger.info(key.substring(ACRO_PREFIX.length()) + ": "
-                        + System.getProperty(key.substring(ACRO_PREFIX.length())));
+                logger.info("{} : {}", key.substring(ACRO_PREFIX.length()),
+                        System.getProperty(key.substring(ACRO_PREFIX.length())));
             }
         });
     }

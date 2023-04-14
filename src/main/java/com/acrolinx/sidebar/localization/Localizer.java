@@ -48,7 +48,7 @@ public class Localizer
             ResourceBundle.Control utf8Control = new UTF8ResourceBundleControl();
             this.resourceBundle = ResourceBundle.getBundle("localization/JavaSDK", locale, utf8Control);
             this.currentLocale = locale;
-            logger.debug("Locale changed to: " + locale);
+            logger.debug("Locale changed to: {}", locale);
         } catch (MissingResourceException e) {
             logger.error("Could not find locale resources.");
             logger.error(e.getMessage());

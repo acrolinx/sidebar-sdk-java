@@ -97,7 +97,7 @@ public class XMLLookupUtils
             endOffset = StringUtils.ordinalIndexOf(xmlContent, endTagInXML, occurrencesOfEndTag + 1) + endTagInXML.length();
 
         } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException e) {
-            logger.error("Unable to find offsets in XMl for xpath : ".concat(xpath));
+            logger.error("Unable to find offsets in XMl for xpath: {}", xpath);
             logger.error(e.getMessage());
         } catch (IllegalStateException e) {
             logger.error(e.getMessage());

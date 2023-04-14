@@ -47,7 +47,7 @@ public class SidebarUtils
                 logger.error(e.getMessage());
             }
         } else {
-            logger.warn("Attempt to open invalid URL: " + url);
+            logger.warn("Attempt to open invalid URL: {}", url);
         }
     }
 
@@ -248,7 +248,7 @@ public class SidebarUtils
     private static boolean runCommand(final String command, final String args, final String file)
     {
 
-        logger.info("Trying to exec:\n   cmd = " + command + "\n   args = " + args + "\n   %s = " + file);
+        logger.info("Trying to exec:\n   cmd = {} \n   args = {} \n   %s = {}", command, args, file);
 
         final ArrayList<String> parts = new ArrayList<>();
         parts.add(command);

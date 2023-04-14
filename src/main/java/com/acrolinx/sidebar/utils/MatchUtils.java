@@ -40,7 +40,7 @@ public class MatchUtils
             logger.debug("Checking if match is a tag");
 
             boolean isTag = matchContent.matches("</?\\w+.*?>");
-            logger.debug("Is match a tag: " + isTag);
+            logger.debug("Is match a tag: {}", isTag);
             return !isTag;
 
         }).collect(Collectors.toList());
