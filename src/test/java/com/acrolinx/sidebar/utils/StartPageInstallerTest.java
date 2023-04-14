@@ -2,27 +2,27 @@
 
 package com.acrolinx.sidebar.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder;
 
-public class StartPageInstallerTest
+class StartPageInstallerTest
 {
     @Test
-    public void getServerSelectorVersion()
+    void getServerSelectorVersion()
     {
         final String serverSelectorVersion = StartPageInstaller.getStartPageVersion();
         assertNotNull(serverSelectorVersion);
     }
 
     @Test
-    public void prepareSidebarUrlWithStartPage() throws Exception
+    void prepareSidebarUrlWithStartPage() throws Exception
     {
         final AcrolinxSidebarInitParameterBuilder builder = new AcrolinxSidebarInitParameterBuilder("123",
                 new ArrayList<>());
@@ -33,7 +33,7 @@ public class StartPageInstallerTest
     }
 
     @Test
-    public void prepareSidebarUrlWithSidebar()
+    void prepareSidebarUrlWithSidebar()
     {
         final AcrolinxSidebarInitParameterBuilder builder = new AcrolinxSidebarInitParameterBuilder("123",
                 new ArrayList<>());
@@ -46,7 +46,7 @@ public class StartPageInstallerTest
     }
 
     @Test
-    public void prepareSidebarUrlWithStartPageIfSidebarUrlIsSetBut() throws Exception
+    void prepareSidebarUrlWithStartPageIfSidebarUrlIsSetBut() throws Exception
     {
         final AcrolinxSidebarInitParameterBuilder builder = new AcrolinxSidebarInitParameterBuilder("123",
                 new ArrayList<>());
@@ -59,7 +59,7 @@ public class StartPageInstallerTest
     }
 
     @Test
-    public void prepareSidebarUrlWithStartPageIfServerUrlIsSetButServerSelector() throws Exception
+    void prepareSidebarUrlWithStartPageIfServerUrlIsSetButServerSelector() throws Exception
     {
         final AcrolinxSidebarInitParameterBuilder builder = new AcrolinxSidebarInitParameterBuilder("123",
                 new ArrayList<>());
@@ -72,7 +72,7 @@ public class StartPageInstallerTest
     }
 
     @Test
-    public void prepareSidebarUrlWithStartPageIfServerUrlIsSet() throws Exception
+    void prepareSidebarUrlWithStartPageIfServerUrlIsSet() throws Exception
     {
         final AcrolinxSidebarInitParameterBuilder builder = new AcrolinxSidebarInitParameterBuilder("123",
                 new ArrayList<>());

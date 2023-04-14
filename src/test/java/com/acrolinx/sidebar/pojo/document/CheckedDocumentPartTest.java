@@ -2,20 +2,20 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 
-public class CheckedDocumentPartTest
+class CheckedDocumentPartTest
 {
     @Test
-    public void getAsJS()
+    void getAsJS()
     {
         CheckedDocumentPart part = new CheckedDocumentPart("id0", new IntRange(2, 3));
         assertEquals("{checkId: \"id0\", range:[2,3]}", part.getAsJS());

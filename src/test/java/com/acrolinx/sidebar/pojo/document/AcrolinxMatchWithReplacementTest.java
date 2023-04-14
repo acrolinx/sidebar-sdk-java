@@ -2,18 +2,18 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class AcrolinxMatchWithReplacementTest
+class AcrolinxMatchWithReplacementTest
 {
     @Test
-    public void copy()
+    void copy()
     {
         AcrolinxMatchWithReplacement acrolinxMatchWithReplacement = new AcrolinxMatchWithReplacement("test",
                 new IntRange(1, 4), "lala");
         AbstractMatch match = acrolinxMatchWithReplacement.setRange(new IntRange(5, 8));
-        Assert.assertEquals(4, acrolinxMatchWithReplacement.getRange().getMaximumInteger());
-        Assert.assertEquals(8, match.getRange().getMaximumInteger());
+        Assertions.assertEquals(4, acrolinxMatchWithReplacement.getRange().getMaximumInteger());
+        Assertions.assertEquals(8, match.getRange().getMaximumInteger());
     }
 }

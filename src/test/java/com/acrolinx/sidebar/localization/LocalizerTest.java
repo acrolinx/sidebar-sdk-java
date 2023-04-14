@@ -4,40 +4,40 @@ package com.acrolinx.sidebar.localization;
 
 import java.util.Locale;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class LocalizerTest
+class LocalizerTest
 {
     @Test
-    public void getText()
+    void getText()
     {
         Localizer.getInstance().changeLocale(Locale.ENGLISH);
         String text = Localizer.getInstance().getText(LocalizedStrings.SHOW_SIDEBAR_LABEL);
-        Assert.assertEquals("Show Sidebar", text);
+        Assertions.assertEquals("Show Sidebar", text);
     }
 
     @Test
-    public void changeLocale()
+    void changeLocale()
     {
         Localizer.getInstance().changeLocale(Locale.GERMAN);
         String text = Localizer.getInstance().getText(LocalizedStrings.SHOW_SIDEBAR_LABEL);
-        Assert.assertEquals("Sidebar anzeigen", text);
+        Assertions.assertEquals("Sidebar anzeigen", text);
     }
 
     @Test
-    public void changeLocaleToUnknown()
+    void changeLocaleToUnknown()
     {
         Localizer.getInstance().changeLocale(Locale.CHINESE);
         String text = Localizer.getInstance().getText(LocalizedStrings.SHOW_SIDEBAR_LABEL);
-        Assert.assertEquals("Show Sidebar", text);
+        Assertions.assertEquals("Show Sidebar", text);
     }
 
     @Test
-    public void testEncoding()
+    void testEncoding()
     {
         Localizer.getInstance().changeLocale(Locale.GERMAN);
         String text = Localizer.getInstance().getText(LocalizedStrings.SHOW_SIDEBAR_TOOLTIP);
-        Assert.assertEquals("Sidebar anzeigen", text);
+        Assertions.assertEquals("Sidebar anzeigen", text);
     }
 }
