@@ -4,20 +4,20 @@
 
 package com.acrolinx.sidebar.utils;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.google.common.collect.Lists;
 
-public class MatchUtilsTest
+class MatchUtilsTest
 {
     @Test
-    public void testSortByOffsetDesc()
+    void testSortByOffsetDesc()
     {
         final List<AcrolinxMatch> matches = Lists.newArrayList();
 

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
@@ -15,7 +15,7 @@ import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 
-public class LookupForResolvedEditorViewsTest
+class LookupForResolvedEditorViewsTest
 {
     private final static String textApple = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
             + "<!DOCTYPE task PUBLIC \"-//OASIS//DTD DITA General Task//EN\" \"generalTask.dtd\">\n"
@@ -79,7 +79,7 @@ public class LookupForResolvedEditorViewsTest
     private final static String restDitaEditor = "     new data new line starts in div this mastake  test  page  spalling.    tablee         wastee  wastee      wastee  wastee    wastee  wastee    wastee  wastee          tast                           ";
 
     @Test
-    public void testLookupIgnoreWhiteSpace()
+    void testLookupIgnoreWhiteSpace()
     {
         List<AcrolinxMatch> matches = new ArrayList<>();
         matches.add(new AcrolinxMatch(new IntRange(246, 247), "a"));
@@ -114,12 +114,12 @@ public class LookupForResolvedEditorViewsTest
                 });
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
         matchesNew.stream().forEach(
-                match -> Assert.assertEquals(appleEditorContent.substring(match.getRange().getMinimumInteger(),
+                match -> Assertions.assertEquals(appleEditorContent.substring(match.getRange().getMinimumInteger(),
                         match.getRange().getMaximumInteger()), match.getContent()));
     }
 
     @Test
-    public void testLookupIgnoreWhiteSpaceIgnoreWhitespaces()
+    void testLookupIgnoreWhiteSpaceIgnoreWhitespaces()
     {
         List<AcrolinxMatch> matches = new ArrayList<>();
         String replacement = "blooming in\n" + "                autumn is";
@@ -178,19 +178,20 @@ public class LookupForResolvedEditorViewsTest
                 });
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
-        Assert.assertEquals(7, matchesNew.size());
+        Assertions.assertEquals(7, matchesNew.size());
         matches.sort(new MatchComparator());
         matchesNew.stream().sorted(new MatchComparator()).forEach(
-                match -> Assert.assertEquals(autumnFlowersEditor.substring(match.getRange().getMinimumInteger(),
+                match -> Assertions.assertEquals(autumnFlowersEditor.substring(match.getRange().getMinimumInteger(),
                         match.getRange().getMaximumInteger()), match.getContent()));
 
         AbstractMatch abstractMatch = matchesNew.get(0);
-        Assert.assertEquals("blooming", abstractMatch.getContent());
-        Assert.assertEquals("blooming in autumn is", ((AcrolinxMatchWithReplacement) abstractMatch).getReplacement());
+        Assertions.assertEquals("blooming", abstractMatch.getContent());
+        Assertions.assertEquals("blooming in autumn is",
+                ((AcrolinxMatchWithReplacement) abstractMatch).getReplacement());
     }
 
     @Test
-    public void testLookupFindMatchInNode()
+    void testLookupFindMatchInNode()
     {
         List<AcrolinxMatch> matches = new ArrayList<>();
 
@@ -226,15 +227,15 @@ public class LookupForResolvedEditorViewsTest
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
 
-        Assert.assertEquals(1, matchesNew.size());
+        Assertions.assertEquals(1, matchesNew.size());
 
-        matchesNew.stream().forEach(match -> Assert.assertEquals(
+        matchesNew.stream().forEach(match -> Assertions.assertEquals(
                 restDitaEditor.substring(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
                 match.getContent()));
     }
 
     @Test
-    public void testLookupFindMatchInNode2()
+    void testLookupFindMatchInNode2()
     {
         List<AcrolinxMatch> matches = new ArrayList<>();
 
@@ -270,15 +271,15 @@ public class LookupForResolvedEditorViewsTest
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
 
-        Assert.assertEquals(1, matchesNew.size());
+        Assertions.assertEquals(1, matchesNew.size());
 
-        matchesNew.stream().forEach(match -> Assert.assertEquals(
+        matchesNew.stream().forEach(match -> Assertions.assertEquals(
                 restDitaEditor.substring(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
                 match.getContent()));
     }
 
     @Test
-    public void testLookupSpecialCases1()
+    void testLookupSpecialCases1()
     {
         final String rest_lookUpEditor = "    "
                 + " The flowers are very seasobable. Flower blooming in winter are very brigth and fresh. New data new line starts in div this mastake  test  page  spalling.   tablee         waste  waste      waste  waste    waste  waste    waste  waste     "
@@ -332,7 +333,7 @@ public class LookupForResolvedEditorViewsTest
         matches.add(new AcrolinxMatch(new IntRange(352, 362), "seasobable"));
 
         matches.stream().forEach(
-                match -> Assert.assertEquals(getRest_lookUpText.substring(match.getRange().getMinimumInteger(),
+                match -> Assertions.assertEquals(getRest_lookUpText.substring(match.getRange().getMinimumInteger(),
                         match.getRange().getMaximumInteger()), match.getContent()));
 
         ContentNode contentNode = new ContentNode() {
@@ -378,7 +379,7 @@ public class LookupForResolvedEditorViewsTest
             }
         };
 
-        Assert.assertEquals(rest_lookUpEditor.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
+        Assertions.assertEquals(rest_lookUpEditor.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
@@ -387,16 +388,16 @@ public class LookupForResolvedEditorViewsTest
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
 
-        Assert.assertEquals(3, matchesNew.size());
+        Assertions.assertEquals(3, matchesNew.size());
 
         matchesNew.stream().forEach(match -> {
-            Assert.assertEquals(rest_lookUpEditor.substring(match.getRange().getMinimumInteger(),
+            Assertions.assertEquals(rest_lookUpEditor.substring(match.getRange().getMinimumInteger(),
                     match.getRange().getMaximumInteger()), match.getContent());
         });
     }
 
     @Test
-    public void testLookupSpecialCasesDeletedNewLine()
+    void testLookupSpecialCasesDeletedNewLine()
     {
         final String rest_lookUpEditor = "    "
                 + " The flowers are very seasobable. Flower blooming in winter are very brigth and fresh. New data new line starts in div this mastake  test  page  spalling.   tablee         waste  waste      waste  waste    waste  waste    waste  waste     "
@@ -517,7 +518,7 @@ public class LookupForResolvedEditorViewsTest
             }
         };
 
-        Assert.assertEquals(rest_lookUpEditor.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
+        Assertions.assertEquals(rest_lookUpEditor.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
@@ -526,15 +527,15 @@ public class LookupForResolvedEditorViewsTest
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
 
-        Assert.assertEquals(7, matchesNew.size());
+        Assertions.assertEquals(7, matchesNew.size());
 
-        matchesNew.stream().forEach(match -> Assert.assertEquals(
+        matchesNew.stream().forEach(match -> Assertions.assertEquals(
                 rest_lookUpEditor.substring(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
                 match.getContent()));
     }
 
     @Test
-    public void testLookupIncludesHTMLEntities()
+    void testLookupIncludesHTMLEntities()
     {
         final String authorViewContent = "Instructions for Authors.\n"
                 + "Replace the values in < > appropriate values.\n" + "The <caar> is <nicce>.";
@@ -570,7 +571,7 @@ public class LookupForResolvedEditorViewsTest
             }
         };
 
-        Assert.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
+        Assertions.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
         List<AcrolinxMatch> matches = new ArrayList<>();
@@ -587,7 +588,7 @@ public class LookupForResolvedEditorViewsTest
         Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
                 documentContent, authorViewContent, offset -> contentNode);
 
-        abstractMatches.get().stream().forEach(match -> Assert.assertEquals(
+        abstractMatches.get().stream().forEach(match -> Assertions.assertEquals(
                 authorViewContent.substring(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
                 match.getContent()));
     }
@@ -597,7 +598,7 @@ public class LookupForResolvedEditorViewsTest
      * document and the matchcontent also appears once in referenced content.
      */
     @Test
-    public void testLookupOnFileWithRepeatedSameContentAndReferences()
+    void testLookupOnFileWithRepeatedSameContentAndReferences()
     {
         final String matchContent = "mistaake";
         final String contentNodeString = " " + matchContent + " " + matchContent;
@@ -640,7 +641,7 @@ public class LookupForResolvedEditorViewsTest
             }
         };
 
-        Assert.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
+        Assertions.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
         List<AcrolinxMatch> matches = new ArrayList<>();
@@ -656,16 +657,16 @@ public class LookupForResolvedEditorViewsTest
                 documentContent, authorViewContent, offset -> contentNode);
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
-        Assert.assertEquals(onlyMatch.getContent(), authorViewContent.substring(
+        Assertions.assertEquals(onlyMatch.getContent(), authorViewContent.substring(
                 onlyMatch.getRange().getMinimumInteger(), onlyMatch.getRange().getMaximumInteger()));
-        Assert.assertEquals(authorViewContentBeforeContentNodeString.length() + 1,
+        Assertions.assertEquals(authorViewContentBeforeContentNodeString.length() + 1,
                 onlyMatch.getRange().getMinimumInteger());
-        Assert.assertEquals(authorViewContentBeforeContentNodeString.length() + 1 + matchContent.length(),
+        Assertions.assertEquals(authorViewContentBeforeContentNodeString.length() + 1 + matchContent.length(),
                 onlyMatch.getRange().getMaximumInteger());
     }
 
     @Test
-    public void testLookupInReferencedContent()
+    void testLookupInReferencedContent()
     {
         final String matchContent = "mistaake";
         final String contentNodeString = " " + matchContent + " ";
@@ -723,7 +724,7 @@ public class LookupForResolvedEditorViewsTest
             }
         };
 
-        Assert.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
+        Assertions.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
         List<AcrolinxMatch> matches = new ArrayList<>();
@@ -744,15 +745,15 @@ public class LookupForResolvedEditorViewsTest
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
         IntRange matchRange = onlyMatch.getRange();
-        Assert.assertEquals(onlyMatch.getContent(),
+        Assertions.assertEquals(onlyMatch.getContent(),
                 authorViewContent.substring(matchRange.getMinimumInteger(), matchRange.getMaximumInteger()));
-        Assert.assertEquals(authorViewContentBeforeContentNodeString.length() + 1, matchRange.getMinimumInteger());
-        Assert.assertEquals(authorViewContentBeforeContentNodeString.length() + 1 + matchContent.length(),
+        Assertions.assertEquals(authorViewContentBeforeContentNodeString.length() + 1, matchRange.getMinimumInteger());
+        Assertions.assertEquals(authorViewContentBeforeContentNodeString.length() + 1 + matchContent.length(),
                 matchRange.getMaximumInteger());
     }
 
     @Test
-    public void testLookupDuplicationInReferencedContent()
+    void testLookupDuplicationInReferencedContent()
     {
         final String matchContent = "mistaake";
         final String contentNodeString = " " + matchContent + " " + matchContent;
@@ -810,7 +811,7 @@ public class LookupForResolvedEditorViewsTest
             }
         };
 
-        Assert.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
+        Assertions.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
         List<AcrolinxMatch> matches = new ArrayList<>();
@@ -831,15 +832,15 @@ public class LookupForResolvedEditorViewsTest
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
         IntRange matchRange = onlyMatch.getRange();
-        Assert.assertEquals(onlyMatch.getContent(),
+        Assertions.assertEquals(onlyMatch.getContent(),
                 authorViewContent.substring(matchRange.getMinimumInteger(), matchRange.getMaximumInteger()));
-        Assert.assertEquals(authorViewContentBeforeContentNodeString.length() + 1, matchRange.getMinimumInteger());
-        Assert.assertEquals(authorViewContentBeforeContentNodeString.length() + 1 + matchContent.length(),
+        Assertions.assertEquals(authorViewContentBeforeContentNodeString.length() + 1, matchRange.getMinimumInteger());
+        Assertions.assertEquals(authorViewContentBeforeContentNodeString.length() + 1 + matchContent.length(),
                 matchRange.getMaximumInteger());
     }
 
     @Test
-    public void testLookupDuplicationInSecondReferencedContentLevel()
+    void testLookupDuplicationInSecondReferencedContentLevel()
     {
         final String matchContent = "mistaake";
         final String contentNodeString = " " + matchContent + " " + matchContent;
@@ -908,7 +909,7 @@ public class LookupForResolvedEditorViewsTest
             }
         };
 
-        Assert.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
+        Assertions.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
         List<AcrolinxMatch> matches = new ArrayList<>();
@@ -937,10 +938,10 @@ public class LookupForResolvedEditorViewsTest
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
         IntRange matchRange = onlyMatch.getRange();
-        Assert.assertEquals(onlyMatch.getContent(),
+        Assertions.assertEquals(onlyMatch.getContent(),
                 authorViewContent.substring(matchRange.getMinimumInteger(), matchRange.getMaximumInteger()));
-        Assert.assertEquals(authorViewContentBeforeContentNodeString.length() + 1, matchRange.getMinimumInteger());
-        Assert.assertEquals(authorViewContentBeforeContentNodeString.length() + 1 + matchContent.length(),
+        Assertions.assertEquals(authorViewContentBeforeContentNodeString.length() + 1, matchRange.getMinimumInteger());
+        Assertions.assertEquals(authorViewContentBeforeContentNodeString.length() + 1 + matchContent.length(),
                 matchRange.getMaximumInteger());
     }
 }

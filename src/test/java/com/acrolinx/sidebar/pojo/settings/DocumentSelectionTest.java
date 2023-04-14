@@ -5,30 +5,30 @@ package com.acrolinx.sidebar.pojo.settings;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.acrolinx.sidebar.pojo.document.IntRange;
 
-public class DocumentSelectionTest
+class DocumentSelectionTest
 {
     @Test
-    public void convertDocumentSelection()
+    void convertDocumentSelection()
     {
         List<IntRange> intRanges = new ArrayList<>();
         intRanges.add(new IntRange(12, 12));
         intRanges.add(new IntRange(13, 14));
         intRanges.add(new IntRange(15, 16));
         DocumentSelection selection = new DocumentSelection(intRanges);
-        Assert.assertEquals("{\"ranges\":[[12,12],[13,14],[15,16]]}", selection.toString());
+        Assertions.assertEquals("{\"ranges\":[[12,12],[13,14],[15,16]]}", selection.toString());
     }
 
     @Test
-    public void testConvertToStringOneValueOnly()
+    void testConvertToStringOneValueOnly()
     {
         List<IntRange> intRanges = new ArrayList<>();
         intRanges.add(new IntRange(12, 12));
         DocumentSelection selection = new DocumentSelection(intRanges);
-        Assert.assertEquals("{\"ranges\":[[12,12]]}", selection.toString());
+        Assertions.assertEquals("{\"ranges\":[[12,12]]}", selection.toString());
     }
 }

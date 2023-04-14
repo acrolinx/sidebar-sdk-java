@@ -4,19 +4,19 @@ package com.acrolinx.sidebar.lookup;
 
 import static com.acrolinx.sidebar.lookup.Lookup.createOffsetMappingArray;
 import static com.acrolinx.sidebar.lookup.Lookup.getDiffs;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
-public class LookupTest
+class LookupTest
 {
     @Test
-    public void offsetDiffIsNullForEqualStrings()
+    void offsetDiffIsNullForEqualStrings()
     {
         String first = "TEST";
         String second = "TEST";
@@ -30,7 +30,7 @@ public class LookupTest
     }
 
     @Test
-    public void offsetDiffIsCalculatedProperlyForInsertion()
+    void offsetDiffIsCalculatedProperlyForInsertion()
     {
         String original = "This is a test.";
         String changed = "This is a manipulated test.";
@@ -47,7 +47,7 @@ public class LookupTest
     }
 
     @Test
-    public void offsetDiffIsCalculatedProperlyForDeletion()
+    void offsetDiffIsCalculatedProperlyForDeletion()
     {
         String original = "This is a test.";
         String changed = "This is test.";
@@ -63,7 +63,7 @@ public class LookupTest
     }
 
     @Test
-    public void offsetDiffIsCalculatedNonWordBoundaries()
+    void offsetDiffIsCalculatedNonWordBoundaries()
     {
         String original = "This is a test.";
         String changed = "This is Ateset.";
@@ -79,7 +79,7 @@ public class LookupTest
     }
 
     @Test
-    public void testGetOffSetDiffStart()
+    void testGetOffSetDiffStart()
     {
         String original = "This is a test.";
         String changed = "This isfgfg a Ateset.";
@@ -88,7 +88,7 @@ public class LookupTest
     }
 
     @Test
-    public void testGetOffSetDiffStart2()
+    void testGetOffSetDiffStart2()
     {
         String original = "This is a test.";
         String changed = "qua67tkThis isfgfg a Ateset.";
@@ -97,7 +97,7 @@ public class LookupTest
     }
 
     @Test
-    public void testGetOffSetDiffStart3()
+    void testGetOffSetDiffStart3()
     {
         String original = "This is a test.";
         String changed = "Tghis isfgfg a Ateset.";
@@ -106,7 +106,7 @@ public class LookupTest
     }
 
     @Test
-    public void testGetOffSetDiffEnd()
+    void testGetOffSetDiffEnd()
     {
         String original = "This is a test.";
         String changed = "Thdfis is AnntestB.";
@@ -115,7 +115,7 @@ public class LookupTest
     }
 
     @Test
-    public void testGetOffSetDiffStart4()
+    void testGetOffSetDiffStart4()
     {
         String original = "qua67tkThis\n isfgfg a Ateset.";
         String changed = "This is a test.";
@@ -124,7 +124,7 @@ public class LookupTest
     }
 
     @Test
-    public void testGetOffSetDiffEnd2()
+    void testGetOffSetDiffEnd2()
     {
         String original = "This is a test.";
         String changed = "Thdfis is Anntest.";
@@ -133,7 +133,7 @@ public class LookupTest
     }
 
     @Test
-    public void testGetOffSetDiffEnd21()
+    void testGetOffSetDiffEnd21()
     {
         String original = "dkfjsf lsdthkk This is a test.";
         String changed = "This is Anntest.";
