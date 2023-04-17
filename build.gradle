@@ -6,8 +6,6 @@ import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.os.OperatingSystem
 import java.time.Duration
 
-
-
 plugins {
 	id "idea"
 	// id 'eclipse'
@@ -80,7 +78,7 @@ def artifactName = "sidebar-sdk"
 def fullVersion = "${project.version}.${buildVersion}"
 def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
 def isMasterBranch = false
-def suppressionUrl = "https://raw.githubusercontent.com/acrolinx/sidebar-sdk-java/master/supressions.xml"
+def suppressionUrl = "https://raw.githubusercontent.com/acrolinx/sidebar-sdk-java/main/supressions.xml"
 
 switch ( OperatingSystem.current() ) {
 	case OperatingSystem.WINDOWS:
@@ -190,7 +188,6 @@ task convertLocalizationEncoding() {
 					def string = b.toString();
 					write.write(string, 'ISO-8859-1')
 				}
-
 			}
 	}
 }
@@ -368,33 +365,16 @@ if (Integer.parseInt(Jvm.current().getJavaVersion().getMajorVersion()) >= 11) {
 }
 
 dependencies {
-	// overwrite vulnerability in transitive dependencies...
-	api 'commons-beanutils:commons-beanutils:1.9.4'
-	api group: 'com.google.code.gson', name: 'gson', version: '2.10'
-	api group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+	api group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
     api group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
 	api group: 'ch.qos.logback', name: 'logback-classic', version: '1.3.5'
 	api group: 'org.slf4j', name: 'slf4j-api', version: '2.0.6'
-	api group: 'commons-validator', name: 'commons-validator', version: '1.7'
-	api group: 'commons-io', name: 'commons-io', version: '2.11.0'
-	api group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
+	api group: 'org.jsoup', name: 'jsoup', version: '1.15.4'
 	api 'com.google.guava:guava:31.1-jre'
 	compileOnly "org.eclipse.platform:$swtNatives:$SWT_VERSION"
 
-	testImplementation "org.eclipse.platform:$swtNatives:$SWT_VERSION"
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
-}
-
-// Vunerability fix for transitive library common-beanutils
-configurations.all {
-	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-		if (details.requested.group == "commons-beanutils"
-				&& details.requested.name == "commons-beanutils"
-				&& details.requested.version == "1.9.2") {
-			details.useTarget("commons-beanutils:commons-beanutils:1.9.4")
-		}
-	}
 }
 
 configurations.all {
@@ -440,9 +420,6 @@ dependencyCheck {
 	suppressionFile=suppressionUrl
 }
 
-//npm_install.dependsOn npm_cache_clean
-
-//noinspection GroovyAssignabilityCheck,GroovyAssignabilityCheck
 processResources.dependsOn copyServerSelectorRessources
 processResources.dependsOn convertLocalizationEncoding
 licenseMain.dependsOn checkLicenseHeaders
