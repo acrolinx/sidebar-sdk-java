@@ -4,24 +4,24 @@
 
 package com.acrolinx.sidebar.dita;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.acrolinx.sidebar.pojo.document.CheckContent;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentBuilder;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentField;
 
-public class ExternalContentTest
+class ExternalContentTest
 {
     @Test
-    public void testBuildingExternalContent()
+    void testBuildingExternalContent()
     {
         final ExternalContentBuilder externalContentBuilder = new ExternalContentBuilder();
 
@@ -51,7 +51,7 @@ public class ExternalContentTest
     }
 
     @Test
-    public void testIntegrationOfContentAndExternalContent()
+    void testIntegrationOfContentAndExternalContent()
     {
         final ExternalContentBuilder externalContentBuilder = new ExternalContentBuilder();
 
@@ -77,14 +77,14 @@ public class ExternalContentTest
     }
 
     @Test
-    public void testExternalContentNotPresent()
+    void testExternalContentNotPresent()
     {
         final CheckContent checkContent = new CheckContent("This is a some sample", null);
         assertTrue(checkContent.toString().contains("content"));
     }
 
     @Test
-    public void testExternalContentReferencesEmpty()
+    void testExternalContentReferencesEmpty()
     {
         final ExternalContent externalContent = new ExternalContentBuilder().build();
         final CheckContent checkContent = new CheckContent("This is a some sample", externalContent);

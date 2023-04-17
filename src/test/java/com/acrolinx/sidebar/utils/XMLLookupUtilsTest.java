@@ -4,16 +4,16 @@
 
 package com.acrolinx.sidebar.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.acrolinx.sidebar.pojo.document.IntRange;
 
-public class XMLLookupUtilsTest
+class XMLLookupUtilsTest
 {
     private static final String XML_CONTENT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
             + "<bookstore xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
@@ -28,7 +28,7 @@ public class XMLLookupUtilsTest
             + "        </author>\n" + "    </book>\n" + "</bookstore>\n";
 
     @Test
-    public void findOffsetInXmlStringByXpath()
+    void findOffsetInXmlStringByXpath()
     {
         IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(XML_CONTENT,
                 "//bookstore[1]/book[1]/genre[1]");
@@ -38,7 +38,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void findXpathByOffset() throws Exception
+    void findXpathByOffset() throws Exception
     {
         int index = XML_CONTENT.indexOf("Fantastic");
         String xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT, index, index + "Fantastic".length());
@@ -50,7 +50,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void testCommonXpath()
+    void testCommonXpath()
     {
         assertEquals("//para[1]/p[2]/sub[1]",
                 XMLLookupUtils.getCommonXpath("//para[1]/p[2]/sub[1]", "//para[1]/p[2]/sub[1]"));
@@ -61,7 +61,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void testXHTMLContent() throws Exception
+    void testXHTMLContent() throws Exception
     {
 
         String XHtmlContent = "<!--Arbortext, Inc., 1988-2019, v.4002-->\n"
@@ -78,14 +78,14 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void testGetAllXpathsFromDocument() throws Exception
+    void testGetAllXpathsFromDocument() throws Exception
     {
         final List<String> allXpathInXmlDocument = XMLLookupUtils.getAllXpathInXmlDocument(XML_CONTENT);
         assertEquals(12, allXpathInXmlDocument.size());
     }
 
     @Test
-    public void testCleanXML()
+    void testCleanXML()
     {
         String XHtmlContent = "<!--Arbortext, Inc., 1988-2019, v.4002-->\n"
                 + "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n"
@@ -100,7 +100,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void testFindOffsetInXmlStringByXpathAdmonition()
+    void testFindOffsetInXmlStringByXpathAdmonition()
     {
         String content = "<!DOCTYPE procedure PUBLIC \"-//Scania//DTD -//WINGS DTD 2.00//EN\" \"wings.dtd\"><procedure class=\"description\" original-language=\"sv-SE\" type=\"remove\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><wsm-description-title its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">9- och 13-litersmotor [XPI]</wsm-description-title><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8d699\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"environment\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">firrst Tänk på miljön, undvik middle  spill och använd uppsamlingskärl lasst</p></admonition><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8eb67\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"note\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">onee Använd hjullyftar för att förenkla twoo borttagningen fourr och ditsättningen av motorn threee</p></admonition></procedure>";
         IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content,
@@ -113,7 +113,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void testFindOffsetInXmlStringByXpathAdmonition2()
+    void testFindOffsetInXmlStringByXpathAdmonition2()
     {
         String content = "<!DOCTYPE procedure PUBLIC \"-//Scania//DTD -//WINGS DTD 2.00//EN\" \"wings.dtd\"><procedure class=\"description\" original-language=\"sv-SE\" type=\"remove\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><wsm-description-title its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">9- och 13-litersmotor [XPI]</wsm-description-title><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8d699\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"environment\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">firrst Tänk på miljön, undvik middle  spill och använd uppsamlingskärl lasst</p></admonition><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8eb67\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"note\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">onee Använd hjullyftar för att förenkla twoo borttagningen fourr och ditsättningen av motorn threee</p></admonition></procedure>";
         IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content,
@@ -126,7 +126,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void testFindOffsetInXmlStringByXpathSimple()
+    void testFindOffsetInXmlStringByXpathSimple()
     {
         String content = "<x><y>Thiss iss tesst.</y></x>";
         IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/y[1]");
@@ -135,7 +135,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void testFindOffsetInXmlStringByXpathRootElement()
+    void testFindOffsetInXmlStringByXpathRootElement()
     {
         String content = "<x>The root element test</x>";
         IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]");
@@ -144,7 +144,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void testFindOffsetInXmlStringByXpathRepeatedElements()
+    void testFindOffsetInXmlStringByXpathRepeatedElements()
     {
         String content = "<x>Root<x>Child1<x>Child2<x>Child3</x></x></x></x>";
         IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/x[1]/x[1]/x[1]");
@@ -153,7 +153,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void testFindOffsetInXmlStringByXpathSiblingInRepeatedElements()
+    void testFindOffsetInXmlStringByXpathSiblingInRepeatedElements()
     {
         String content = "<x>Root<x>Child1<x>Child2<x>Child3</x></x></x><x>Sibling</x></x>";
         IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/x[2]");
@@ -162,7 +162,7 @@ public class XMLLookupUtilsTest
     }
 
     @Test
-    public void testFindOffsetInXmlStringByXpathAdditionalSpacesInAttributes()
+    void testFindOffsetInXmlStringByXpathAdditionalSpacesInAttributes()
     {
         String content = "<x>Root<x>Child1<x>Child2<x>Child3</x></x></x><x  a=\"abc\"   b=\"pqr\">Sibling</x></x>";
         IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/x[2]");
