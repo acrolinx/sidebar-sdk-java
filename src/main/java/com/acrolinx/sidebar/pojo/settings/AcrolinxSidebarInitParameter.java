@@ -61,34 +61,33 @@ public class AcrolinxSidebarInitParameter
         this.minimumJavaVersion = builder.minimumJavaVersion;
         this.supported = builder.supported;
 
-        this.clientComponents.stream().forEach(component -> logger.info("Software component: " + component.toString()));
+        this.clientComponents.stream().forEach(component -> logger.info("Software component: {}", component));
         if (this.clientLocale != null) {
-            logger.info("Plugin initialized with client locale: " + this.clientLocale);
+            logger.info("Plugin initialized with client locale: {}", this.clientLocale);
         }
 
-        logger.info("Plugin running on Java VM: " + SidebarUtils.getSystemJavaVMName());
+        logger.info("Plugin running on Java VM: {}", SidebarUtils.getSystemJavaVMName());
 
         if (SidebarUtils.getSystemJavaVMName().indexOf("OpenJDK") < 0
                 && SidebarUtils.getSystemJavaVMName().indexOf("HotSpot") < 0) {
             logger.warn("You are using an unsupported Java VM. This might cause errors during runtime.");
         }
 
-        logger.info("Plugin running on Java VM Version: " + SidebarUtils.getFullCurrentJavaVersionString());
-        logger.info("Plugin running with JRE Path: " + SidebarUtils.getPathOfCurrentJavaJRE());
+        logger.info("Plugin running on Java VM Version: {}", SidebarUtils.getFullCurrentJavaVersionString());
+        logger.info("Plugin running with JRE Path: {}", SidebarUtils.getPathOfCurrentJavaJRE());
 
         if (this.minimumJavaVersion != 0) {
-            logger.info("Required Java Version is: " + this.minimumJavaVersion);
+            logger.info("Required Java Version is: {}", this.minimumJavaVersion);
             if (SidebarUtils.getSystemJavaVersion() < this.minimumJavaVersion) {
-                logger.warn("The current Java version " + SidebarUtils.getSystemJavaVersion()
-                        + " does not fulfill the requirements.");
+                logger.warn("The current Java version {} does not fulfill the requirements.", SidebarUtils.getSystemJavaVersion());
             }
         }
 
-        logger.info("Plugin initialized with force https: " + this.enforceHTTPS);
-        logger.info("Plugin initialized with enableSingleSignOn: " + this.enableSingleSignOn);
+        logger.info("Plugin initialized with force https: {}", this.enforceHTTPS);
+        logger.info("Plugin initialized with enableSingleSignOn: {}", this.enableSingleSignOn);
 
         if (this.minimumSidebarVersion != null) {
-            logger.info("Plugin expects minimum sidebar version: " + this.minimumSidebarVersion);
+            logger.info("Plugin expects minimum sidebar version: {}", this.minimumSidebarVersion);
         }
     }
 
@@ -125,7 +124,7 @@ public class AcrolinxSidebarInitParameter
     public void setClientLocale(final String clientLocale)
     {
         if ((this.clientLocale == null) || !this.clientLocale.equalsIgnoreCase(clientLocale)) {
-            logger.info("Set client locale to " + clientLocale);
+            logger.info("Set client locale to: {}", clientLocale);
             this.clientLocale = clientLocale;
         }
     }

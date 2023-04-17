@@ -134,7 +134,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         browser.setJavascriptEnabled(true);
         try {
             final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(client.getInitParameters());
-            logger.debug("Loading sidebar from " + sidebarUrl);
+            logger.debug("Loading sidebar from: {}", sidebarUrl);
             browser.setUrl(sidebarUrl);
         } catch (final Exception e) {
             logger.error("Error while loading sidebar!", e);
@@ -165,9 +165,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             public Object function(final Object[] arguments)
             {
                 final String key = arguments[0].toString();
-                logger.debug("Requesting " + key + " from local storage.");
+                logger.debug("Requesting {} from local storage.", key);
                 final String item = storage.getItem(key);
-                logger.debug("Got item: " + item);
+                logger.debug("Got item: {}", item);
                 return item;
             }
         };
@@ -177,7 +177,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             public Object function(final Object[] arguments)
             {
                 final String key = arguments[0].toString();
-                logger.debug("Removing " + key + " from local storage.");
+                logger.debug("Removing {} from local storage.", key);
                 storage.removeItem(key);
                 return null;
             }
@@ -198,7 +198,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         final String key = arguments[0].toString();
         final String data = arguments[1].toString();
-        logger.debug("Setting " + key + " in local storage to " + data + ".");
+        logger.debug("Setting {} in local storage to {}.", key, data);
         storage.setItem(key, data);
         return null;
     }
@@ -209,7 +209,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             @Override
             public Object function(final Object[] arguments)
             {
-                logger.info("Java Script: " + arguments[0]);
+                logger.info("Java Script: {}", arguments[0]);
                 return null;
             }
         };
@@ -218,7 +218,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             @Override
             public Object function(final Object[] arguments)
             {
-                logger.debug("Java Script: " + arguments[0]);
+                logger.debug("Java Script: {}", arguments[0]);
                 return null;
             }
         };
@@ -340,27 +340,27 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     private String runCheckGlobal(Object checkSelection)
     {
-        Boolean selectionRequested = checkSelection.toString().equals("withCheckSelection") ? true : false;
-        logger.info("Check selection requested: " + selectionRequested);
+        boolean selectionRequested = checkSelection.toString().equals("withCheckSelection");
+        logger.info("Check selection requested: {}", selectionRequested);
 
         LogMessages.logCheckRequested(logger);
         checkStartTime.set(Instant.now());
 
         final String requestText = client.getEditorAdapter().getContent();
         currentlyCheckedText.set(requestText);
-        logger.debug("Request content: " + requestText);
+        logger.debug("Request content: {}", requestText);
 
         final String content = new Gson().toJson(requestText);
-        logger.debug("Request content JSON compatible: " + content);
+        logger.debug("Request content JSON compatible: {}", content);
 
         final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
         currentExternalContent.set(externalContent);
         if (externalContent != null) {
-            logger.debug("External Content: " + externalContent.toString());
+            logger.debug("External Content: {}", externalContent);
         }
 
         final CheckOptions checkOptions = getCheckSettingsFromClient(selectionRequested, externalContent);
-        logger.debug("Check options: " + checkOptions.toString());
+        logger.debug("Check options: {}", checkOptions);
 
         browser.execute("acrolinxSidebar.checkGlobal(" + content + "," + checkOptions.toString() + ");");
 
@@ -370,14 +370,14 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private String requestCheckForDocumentInBatch(Object documentIdentifier)
     {
         final String docIdJsonString = new Gson().toJson(documentIdentifier);
-        logger.debug("Batch Check requested for: " + docIdJsonString);
+        logger.debug("Batch Check requested for: {}", docIdJsonString);
 
         final String contentForDocument = new Gson().toJson(
                 client.getContentForDocument(documentIdentifier.toString()));
-        logger.debug("Batch Check document content: " + contentForDocument);
+        logger.debug("Batch Check document content: {}", contentForDocument);
 
         final CheckOptions checkOptions = client.getCheckOptionsForDocument(documentIdentifier.toString());
-        logger.debug("Check ooptions for batch check document: " + checkOptions.toString());
+        logger.debug("Check ooptions for batch check document: {}", checkOptions);
 
         browser.execute("acrolinxSidebar.checkDocumentInBatch(" + docIdJsonString + ", " + contentForDocument + ", "
                 + checkOptions.toString() + ");");
@@ -390,10 +390,10 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         logger.info("Extracting references");
         try {
             List<BatchCheckRequestOptions> references = client.extractReferences();
-            logger.debug("Batch check document list: " + references.toString());
+            logger.debug("Batch check document list: {}", references.toString());
             initBatchCheck(references);
         } catch (Exception e) {
-            logger.error("Initializing batch check failed" + e.getMessage());
+            logger.error("Initializing batch check failed: {}", e.getMessage());
         }
         return null;
     }
@@ -408,13 +408,13 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         ExecutorService executorService = Executors.newFixedThreadPool(1);
         Future<Boolean> openDocumentFuture = executorService.submit(() -> {
-            Boolean documentIsOpen = client.openDocumentInEditor(argument.toString());
+            boolean documentIsOpen = client.openDocumentInEditor(argument.toString());
             if (!documentIsOpen) {
                 // ToDo: Send a message to the sidebar
             }
             return documentIsOpen;
         });
-        logger.debug("Opening Document in Future task. Future task is running: " + !openDocumentFuture.isDone());
+        logger.debug("Opening Document in Future task. Future task is running: {}", !openDocumentFuture.isDone());
         return null;
     }
 
@@ -461,7 +461,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         } else if (SidebarUtils.isValidURL(url)) {
             Program.launch(url);
         } else {
-            logger.warn("Attempt to open invalid URL: " + url);
+            logger.warn("Attempt to open invalid URL: {}", url);
         }
         return null;
     }
@@ -640,7 +640,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     @Override
     public void showMessage(SidebarMessage sidebarMessage)
     {
-        logger.info("Message to be displayed on sidebar: " + sidebarMessage.toString());
+        logger.info("Message to be displayed on sidebar: {}", sidebarMessage.toString());
         browser.execute("window.acrolinxSidebar.showMessage(" + sidebarMessage.toString() + ")");
     }
 

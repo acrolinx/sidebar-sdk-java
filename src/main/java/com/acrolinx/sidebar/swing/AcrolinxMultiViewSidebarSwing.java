@@ -66,9 +66,9 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
 
                 for (AcrolinxSidebarJFX sidebarJFX : sidebars.values()) {
                     logger.debug("Component resized");
-                    logger.debug(getWidth() + " width");
+                    logger.debug("{} width", getWidth());
                     final float i = (float) getWidth() / 300;
-                    logger.debug(i + " Zoom");
+                    logger.debug("{} Zoom", i);
                     sidebarJFX.setZoom(i);
                 }
             }

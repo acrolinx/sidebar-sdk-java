@@ -46,11 +46,11 @@ public class AcrolinxSidebarPluginWithOptions extends AcrolinxSidebarPlugin
                     initBatchCheck(batchCheckRequestOptions);
                     return true;
                 } catch (Exception e) {
-                    logger.error("Extracting references in Future Task failed", e.getMessage());
+                    logger.error("Extracting references in Future Task failed: {}", e.getMessage());
                     return false;
                 }
             });
-            logger.debug("Extracting references in Future task. Future task is running: " + !initBatchFuture.isDone());
+            logger.debug("Extracting references in Future task. Future task is running: {}", !initBatchFuture.isDone());
         } else {
             final CheckContent checkContent = getCheckContentFromClient();
             logger.debug("Fetched check content including external content");
