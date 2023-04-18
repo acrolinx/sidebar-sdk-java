@@ -14,11 +14,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-
-import javafx.scene.web.WebView;
 
 import javax.annotation.Nullable;
 
@@ -27,22 +28,36 @@ import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.InputAdapterInterface;
-import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.SidebarError;
-import com.acrolinx.sidebar.pojo.document.*;
+import com.acrolinx.sidebar.pojo.document.AbstractMatch;
+import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
+import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
+import com.acrolinx.sidebar.pojo.document.CheckContent;
+import com.acrolinx.sidebar.pojo.document.CheckResult;
+import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
+import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import com.acrolinx.sidebar.pojo.settings.*;
+import com.acrolinx.sidebar.pojo.settings.AcrolinxPluginConfiguration;
+import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckOptions;
+import com.acrolinx.sidebar.pojo.settings.DocumentSelection;
+import com.acrolinx.sidebar.pojo.settings.InputFormat;
+import com.acrolinx.sidebar.pojo.settings.RequestDescription;
+import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
+import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.google.common.base.Preconditions;
 
+import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 
 /**
  * For internal use.
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
-abstract class AcrolinxSidebarPlugin {
+abstract class AcrolinxSidebarPlugin
+{
     final AcrolinxIntegration client;
     final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarPlugin.class);
     private final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
@@ -59,7 +74,8 @@ abstract class AcrolinxSidebarPlugin {
     private WebView webView;
     protected final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
-    protected AcrolinxSidebarPlugin(final AcrolinxIntegration client, final WebView webView) {
+    protected AcrolinxSidebarPlugin(final AcrolinxIntegration client, final WebView webView)
+    {
         Preconditions.checkNotNull(client, "Workspace should not be null");
         Preconditions.checkNotNull(client.getEditorAdapter(), "EditorAdapter should not be null");
         this.client = client;
@@ -75,11 +91,13 @@ abstract class AcrolinxSidebarPlugin {
     }
 
     private static String buildStringOfCheckedDocumentRanges(
-            final java.util.List<CheckedDocumentPart> checkedDocumentParts) {
+            final java.util.List<CheckedDocumentPart> checkedDocumentParts)
+    {
         return checkedDocumentParts.stream().map(CheckedDocumentPart::getAsJS).collect(Collectors.joining(", "));
     }
 
-    protected JSObject getWindowObject() {
+    protected JSObject getWindowObject()
+    {
         logger.info("Get window object from webview...");
         JSObject jsobj = null;
         int count = 0;
@@ -102,11 +120,13 @@ abstract class AcrolinxSidebarPlugin {
         return jsobj;
     }
 
-    private AcrolinxIntegration getClient() {
+    private AcrolinxIntegration getClient()
+    {
         return client;
     }
 
-    public synchronized void requestInit() {
+    public synchronized void requestInit()
+    {
         logger.debug("Requesting init sidebar: {}", client.getInitParameters());
         this.initParameters.set(client.getInitParameters());
         JFXUtils.invokeInJFXThread(() -> {
@@ -118,7 +138,8 @@ abstract class AcrolinxSidebarPlugin {
         });
     }
 
-    public synchronized void onInitFinished(final JSObject o) {
+    public synchronized void onInitFinished(final JSObject o)
+    {
         final Optional<SidebarError> initResult = JSToJavaConverter.getAcrolinxInitResultFromJSObject(o);
         if (initResult.isPresent()) {
             logger.error(initResult.get().getMessage());
@@ -126,7 +147,8 @@ abstract class AcrolinxSidebarPlugin {
         client.onInitFinished(initResult);
     }
 
-    public void configureSidebar(final SidebarConfiguration sidebarConfiguration) {
+    public void configureSidebar(final SidebarConfiguration sidebarConfiguration)
+    {
         logger.debug("Configuring Sidebar: {}", sidebarConfiguration);
         JFXUtils.invokeInJFXThread(() -> {
             try {
@@ -137,7 +159,8 @@ abstract class AcrolinxSidebarPlugin {
         });
     }
 
-    public synchronized void runCheck(final boolean selectionEnabled, final CheckContent checkContent) {
+    public synchronized void runCheck(final boolean selectionEnabled, final CheckContent checkContent)
+    {
         final CheckOptions checkOptions = getCheckSettingsFromClient(selectionEnabled,
                 checkContent.getExternalContent());
 
@@ -158,7 +181,8 @@ abstract class AcrolinxSidebarPlugin {
         });
     }
 
-    public void showSidebarMessage(final SidebarMessage sidebarMessage) {
+    public void showSidebarMessage(final SidebarMessage sidebarMessage)
+    {
         logger.debug("Message to Sidebar: {}", sidebarMessage);
         JFXUtils.invokeInJFXThread(() -> {
             try {
@@ -169,7 +193,8 @@ abstract class AcrolinxSidebarPlugin {
         });
     }
 
-    public synchronized void onCheckResult(final JSObject o) {
+    public synchronized void onCheckResult(final JSObject o)
+    {
         final Instant checkEndedTime = Instant.now();
         LogMessages.logCheckFinishedWithDurationTime(logger,
                 Duration.between(checkStartedTime, checkEndedTime).toMillis());
@@ -185,48 +210,50 @@ abstract class AcrolinxSidebarPlugin {
         }
     }
 
-    public synchronized void selectRanges(final String checkID, final JSObject o) {
+    public synchronized void selectRanges(final String checkID, final JSObject o)
+    {
         LogMessages.logSelectingRange(logger);
         final List<AcrolinxMatch> matches = JSToJavaConverter.getAcrolinxMatchFromJSObject(o);
 
         client.getEditorAdapter().selectRanges(checkID, matches);
-
     }
 
-    public synchronized void replaceRanges(final String checkID, final JSObject o) {
+    public synchronized void replaceRanges(final String checkID, final JSObject o)
+    {
         LogMessages.logReplacingRange(logger);
         final List<AcrolinxMatchWithReplacement> matches = JSToJavaConverter.getAcrolinxMatchWithReplacementFromJSObject(
                 o);
         client.getEditorAdapter().replaceRanges(checkID, matches);
     }
 
-    public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches) {
+    public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches)
+    {
         final List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map((match) -> {
             if (((AcrolinxMatch) match).getExternalContentMatches() != null) {
-                return new CheckedDocumentPart(
-                        currentCheckId.get(),
+                return new CheckedDocumentPart(currentCheckId.get(),
                         new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
-                        ((AcrolinxMatch) match).getExternalContentMatches()
-                );
+                        ((AcrolinxMatch) match).getExternalContentMatches());
             }
-            return new CheckedDocumentPart(
-                    currentCheckId.get(),
+            return new CheckedDocumentPart(currentCheckId.get(),
                     new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()));
         }).collect(Collectors.toList());
         invalidateRanges(invalidDocumentParts);
     }
 
-    public synchronized void openWindow(final JSObject o) {
+    public synchronized void openWindow(final JSObject o)
+    {
         final String url = o.getMember("url").toString();
         SidebarUtils.openWebPageInDefaultBrowser(url);
     }
 
-    public void openLogFile() {
+    public void openLogFile()
+    {
         SidebarUtils.openLogFile();
     }
 
     private CheckOptions getCheckSettingsFromClient(final boolean includeCheckSelectionRanges,
-                                                    @Nullable ExternalContent externalContent) {
+            @Nullable ExternalContent externalContent)
+    {
         inputFormatRef.set(client.getEditorAdapter().getInputFormat());
         currentDocumentReference.set(client.getEditorAdapter().getDocumentReference());
         DocumentSelection selection = null;
@@ -242,12 +269,14 @@ abstract class AcrolinxSidebarPlugin {
                 externalContent);
     }
 
-    protected CheckContent getCheckContentFromClient() {
+    protected CheckContent getCheckContentFromClient()
+    {
         final InputAdapterInterface editorAdapter = client.getEditorAdapter();
         return new CheckContent(editorAdapter.getContent(), editorAdapter.getExternalContent());
     }
 
-    public void onGlobalCheckRejected() {
+    public void onGlobalCheckRejected()
+    {
         LogMessages.logCheckRejected(logger);
         JFXUtils.invokeInJFXThread(() -> {
             try {
@@ -258,7 +287,8 @@ abstract class AcrolinxSidebarPlugin {
         });
     }
 
-    public void invalidateRanges(final List<CheckedDocumentPart> invalidCheckedDocumentRanges) {
+    public void invalidateRanges(final List<CheckedDocumentPart> invalidCheckedDocumentRanges)
+    {
         final String js = buildStringOfCheckedDocumentRanges(invalidCheckedDocumentRanges);
         JFXUtils.invokeInJFXThread(() -> {
             try {
@@ -269,39 +299,45 @@ abstract class AcrolinxSidebarPlugin {
         });
     }
 
-    public String getLastCheckedDocumentReference() {
+    public String getLastCheckedDocumentReference()
+    {
         if ((this.lastCheckedDocumentReference.get() != null) && !"".equals(this.lastCheckedDocumentReference.get())) {
             return this.lastCheckedDocumentReference.get();
         }
         return null;
     }
 
-    public String getLastCheckedDocument() {
+    public String getLastCheckedDocument()
+    {
         if ((this.lastCheckedDocument.get() != null) && !"".equals(this.lastCheckedDocument.get())) {
             return this.lastCheckedDocument.get();
         }
         return null;
     }
 
-    public ExternalContent getLastCheckedExternalContent() {
+    public ExternalContent getLastCheckedExternalContent()
+    {
         if (this.lastCheckedExternalContent.get() != null) {
             return this.lastCheckedExternalContent.get();
         }
         return null;
     }
 
-    public void configure(final AcrolinxPluginConfiguration configuration) {
+    public void configure(final AcrolinxPluginConfiguration configuration)
+    {
         // Not used ...
     }
 
-    public synchronized void requestCheckForDocumentInBatch(String documentIdentifier) {
+    public synchronized void requestCheckForDocumentInBatch(String documentIdentifier)
+    {
         logger.debug("requestCheckForDocumentInBatch is called.");
         final String contentToCheck = client.getContentForDocument(documentIdentifier);
         CheckOptions referenceCheckOptions = client.getCheckOptionsForDocument(documentIdentifier);
         this.checkDocumentInBatch(documentIdentifier, contentToCheck, referenceCheckOptions);
     }
 
-    public synchronized void openDocumentInEditor(String documentIdentifier) {
+    public synchronized void openDocumentInEditor(String documentIdentifier)
+    {
         logger.debug("openDocumentInEditor is called...");
         Future<Boolean> openDocumentFuture = executorService.submit(() -> {
             boolean documentIsOpen = client.openDocumentInEditor(documentIdentifier);
@@ -313,7 +349,8 @@ abstract class AcrolinxSidebarPlugin {
         logger.debug("Opening document in Future task. Future task is running: {}", !openDocumentFuture.isDone());
     }
 
-    public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions) {
+    public synchronized void initBatchCheck(final List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
         logger.info("initBatchCheck...");
         JFXUtils.invokeInJFXThread(() -> {
             try {
@@ -326,7 +363,8 @@ abstract class AcrolinxSidebarPlugin {
     }
 
     public synchronized void checkDocumentInBatch(final String documentIdentifier, final String documentContent,
-                                                  final CheckOptions options) {
+            final CheckOptions options)
+    {
         logger.debug("checkDocumentInBatch is called.");
         JFXUtils.invokeInJFXThread(() -> {
             try {
@@ -341,13 +379,12 @@ abstract class AcrolinxSidebarPlugin {
                 logger.error(e.getMessage(), e);
             }
         });
-
     }
 
     private static String buildStringOfCheckedRequestOptions(
-            final List<BatchCheckRequestOptions> batchCheckRequestOptions) {
+            final List<BatchCheckRequestOptions> batchCheckRequestOptions)
+    {
         return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(
                 Collectors.joining(", "));
     }
-
 }

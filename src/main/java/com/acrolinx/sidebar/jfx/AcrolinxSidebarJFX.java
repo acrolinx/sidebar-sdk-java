@@ -4,15 +4,6 @@ package com.acrolinx.sidebar.jfx;
 
 import java.util.List;
 
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
-import javafx.scene.CacheHint;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebErrorEvent;
-import javafx.scene.web.WebEvent;
-import javafx.scene.web.WebView;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,12 +12,24 @@ import com.acrolinx.sidebar.AcrolinxSidebar;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
-import com.acrolinx.sidebar.pojo.settings.*;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckOptions;
+import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;
+import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
+import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.acrolinx.sidebar.utils.StartPageInstaller;
 
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
+import javafx.scene.CacheHint;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebErrorEvent;
+import javafx.scene.web.WebEvent;
+import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 
 /**
@@ -34,13 +37,11 @@ import netscape.javascript.JSObject;
  *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings("unused, WeakerAccess")
 public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
     protected WebView webView = new WebView();
     protected AcrolinxSidebarPlugin acrolinxSidebarPlugin;
     protected final AcrolinxIntegration integration;
-
     protected final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
 
     public AcrolinxSidebarJFX(final AcrolinxIntegration integration)
@@ -87,7 +88,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     private void getChangeListener(final ObservableValue<? extends Worker.State> observedValue,
             final Worker.State oldState, final Worker.State newState, final AcrolinxStorage storage)
     {
-
         logger.debug("state changed: {} : {} -> {}", observedValue.getValue(), oldState, newState);
         if (newState == Worker.State.SUCCEEDED) {
             this.injectAcrolinxPlugin(storage);
@@ -151,7 +151,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     public void configure(final SidebarConfiguration configuration)
     {
         acrolinxSidebarPlugin.configureSidebar(configuration);
-
     }
 
     @Override
@@ -174,7 +173,6 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     public void invalidateRanges(final List<CheckedDocumentPart> invalidCheckedDocumentRanges)
     {
         acrolinxSidebarPlugin.invalidateRanges(invalidCheckedDocumentRanges);
-
     }
 
     @Override
@@ -224,7 +222,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         return acrolinxSidebarPlugin.getLastCheckedDocument();
     }
 
-    public ExternalContent getLastCheckedExternalContent() { return acrolinxSidebarPlugin.getLastCheckedExternalContent();}
+    public ExternalContent getLastCheckedExternalContent()
+    {
+        return acrolinxSidebarPlugin.getLastCheckedExternalContent();
+    }
 
     @Override
     public void showMessage(SidebarMessage sidebarMessage)
@@ -244,5 +245,4 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).checkDocumentInBatch(documentIdentifier, documentContent,
                 options);
     }
-
 }

@@ -21,12 +21,10 @@ import com.acrolinx.sidebar.pojo.settings.CheckOptions;
  */
 public interface AcrolinxIntegration
 {
-
     /**
      * Adapter to extract the text to be checked. It needs to be an implementation of
      * InputAdapterInterface.
      *
-     * @return Implementation of InputAdapterInterface
      * @see InputAdapterInterface
      */
     InputAdapterInterface getEditorAdapter();
@@ -34,30 +32,23 @@ public interface AcrolinxIntegration
     /**
      * Gets the parameters used to initialize the Acrolinx Sidebar.
      *
-     * @return AcrolinxInitParameter
      * @see AcrolinxSidebarInitParameter
      */
     AcrolinxSidebarInitParameter getInitParameters();
 
     /**
      * Notifies the Acrolinx Integration about the checks result.
-     *
-     * @param checkResult
      */
     void onCheckResult(CheckResult checkResult);
 
     /**
      * Notifies the Acrolinx Integration about the result of the initializing process.
-     *
-     * @param initResult
      */
-    void onInitFinished(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<SidebarError> initResult);
+    void onInitFinished(Optional<SidebarError> initResult);
 
     /**
      * Opens the given document in editor and notifies the sidebar that the document has been
      * opened.
-     *
-     * @param documentIdentifier
      */
     boolean openDocumentInEditor(String documentIdentifier);
 
@@ -71,18 +62,11 @@ public interface AcrolinxIntegration
     /**
      * Called together with getContentForDocument before running the background check on the given
      * document.
-     *
-     * @param documentIdentifier
-     * @return CheckOptions
      */
     CheckOptions getCheckOptionsForDocument(String documentIdentifier);
 
     /**
      * Gets the content for a requested background check
-     *
-     * @param documentIdentifier
-     * @return String
      */
     String getContentForDocument(String documentIdentifier);
-
 }

@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
 public class CheckResult
 {
     private final CheckedDocumentPart checkedDocumentPart;
@@ -20,7 +19,6 @@ public class CheckResult
         this.checkedDocumentPart = checkedDocumentPart;
     }
 
-    @SuppressWarnings("UnusedParameters")
     public CheckResult(final CheckedDocumentPart checkedDocumentPart, final Map<String, String> embedCheckInformation,
             final String inputFormat)
     {

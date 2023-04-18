@@ -12,7 +12,6 @@ import com.google.gson.Gson;
 
 public class CheckContent
 {
-
     private String content;
     private ExternalContent externalContent;
 

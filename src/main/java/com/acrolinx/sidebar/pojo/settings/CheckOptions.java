@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 /**
  * Check options define how the Acrolinx Server handles document to check.
  */
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class CheckOptions
 {
     private final InputFormat inputFormat;

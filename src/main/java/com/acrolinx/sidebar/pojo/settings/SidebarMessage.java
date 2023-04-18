@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 
 public class SidebarMessage
 {
-
     private String type;
     private String title;
     private String text;

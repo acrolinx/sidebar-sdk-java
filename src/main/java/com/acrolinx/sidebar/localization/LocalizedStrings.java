@@ -2,7 +2,6 @@
 
 package com.acrolinx.sidebar.localization;
 
-@SuppressWarnings("unused")
 public enum LocalizedStrings
 {
     SHOW_SIDEBAR_LABEL
@@ -48,14 +47,16 @@ public enum LocalizedStrings
     DITA_CAN_NOT_CHECK_UNRESOLVED_FILES_TITLE
     {
         @Override
-        public String toString() {
+        public String toString()
+        {
             return "MESSAGE.JAVASDK.DITA.CAN_NOT_CHECK_UNRESOLVED_FILES.TITLE";
         }
     },
     DITA_CAN_NOT_CHECK_UNRESOLVED_FILES_BODY
     {
         @Override
-        public String toString() {
+        public String toString()
+        {
             return "MESSAGE.JAVASDK.DITA.CAN_NOT_CHECK_UNRESOLVED_FILES.BODY";
         }
     }

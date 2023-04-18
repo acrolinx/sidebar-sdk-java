@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
-import com.acrolinx.sidebar.pojo.document.IntRange;
-
-@SuppressWarnings("WeakerAccess")
 public class Lookup
 {
     private Lookup()
@@ -100,5 +98,4 @@ public class Lookup
         }
         return Optional.empty();
     }
-
 }

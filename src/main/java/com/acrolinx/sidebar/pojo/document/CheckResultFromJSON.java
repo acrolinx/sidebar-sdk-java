@@ -10,20 +10,16 @@ import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.pojo.SidebarError;
 
-@SuppressWarnings("unused")
 public class CheckResultFromJSON
 {
     private final Logger logger = LoggerFactory.getLogger(CheckResultFromJSON.class);
-
     private CheckedDocumentPartFromJSON checkedPart;
     private SidebarError error;
-    @SuppressWarnings("MismatchedReadAndWriteOfArray")
     private CheckInformationKeyValuePairFromJSON[] embedCheckInformation;
     private String inputFormat;
 
     CheckResultFromJSON()
     {
-        //
     }
 
     public CheckResult getAsCheckResult()

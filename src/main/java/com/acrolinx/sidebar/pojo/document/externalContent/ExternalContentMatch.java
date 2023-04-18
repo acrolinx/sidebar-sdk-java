@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExternalContentMatch {
-
     private final String id;
     private final String type;
     private final int originalBegin;
@@ -73,5 +72,4 @@ public class ExternalContentMatch {
     {
         return new Gson().toJson(this);
     }
-
 }

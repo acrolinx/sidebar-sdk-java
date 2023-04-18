@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 
 public class BatchCheckRequestOptions
 {
-
     private final String documentIdentifier;
     private String displayName;
 
@@ -39,5 +38,4 @@ public class BatchCheckRequestOptions
         Gson gson = new Gson();
         return gson.toJson(this);
     }
-
 }

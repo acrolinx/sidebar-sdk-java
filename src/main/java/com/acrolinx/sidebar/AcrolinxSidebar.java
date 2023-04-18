@@ -14,13 +14,11 @@ import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 /**
  * These commands are available to interact with the Acrolinx Sidebar.
  */
-@SuppressWarnings("unused")
 public interface AcrolinxSidebar
 {
     /**
      * Pushed the configuration to the Acrolinx Sidebar.
      *
-     * @param configuration
      * @see SidebarConfiguration
      */
     void configure(SidebarConfiguration configuration);
@@ -39,23 +37,17 @@ public interface AcrolinxSidebar
     /**
      * Notifies the sidebar about invalid ranges of the current document. The sidebar will then
      * invalidate all cards containing issues within this text range.
-     *
-     * @param invalidCheckedDocumentRanges
      */
     void invalidateRanges(List<CheckedDocumentPart> invalidCheckedDocumentRanges);
 
     /**
      * Notifies the sidebar about invalid ranges of the current document. The sidebar will then
      * invalidate all cards containing issues within this text range for the current check.
-     * 
-     * @param matches
      */
     void invalidateRangesForMatches(List<? extends AbstractMatch> matches);
 
     /**
      * Load the sidebar from a different server address.
-     *
-     * @param serverAddress
      */
     void loadSidebarFromServerLocation(String serverAddress);
 
@@ -81,25 +73,10 @@ public interface AcrolinxSidebar
 
     /**
      * Shows a message in the sidebar.
-     *
-     * @param sidebarMessage
      */
-
     void showMessage(SidebarMessage sidebarMessage);
 
-    /**
-     *
-     * @param batchCheckRequestOptions
-     */
     void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions);
 
-    /**
-     *
-     * @param documentIdentifier
-     * @param documentContent
-     * @param options
-     */
-
     void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options);
-
 }

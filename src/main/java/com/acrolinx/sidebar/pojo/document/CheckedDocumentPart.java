@@ -2,12 +2,11 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
+import java.util.List;
+
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import com.google.gson.Gson;
 
-import java.util.List;
-
-@SuppressWarnings("unused")
 public class CheckedDocumentPart
 {
     private final String checkId;
@@ -36,7 +35,8 @@ public class CheckedDocumentPart
         return range;
     }
 
-    public List<ExternalContentMatch> getExternalContent() {
+    public List<ExternalContentMatch> getExternalContent()
+    {
         return externalContent;
     }
 
@@ -49,9 +49,9 @@ public class CheckedDocumentPart
 
     public String getAsJS()
     {
-        if(externalContent != null) {
-            return "{checkId: \"" + checkId + "\", range:[" + range.getMinimumInteger() + "," + range.getMaximumInteger()
-                    + "], externalContent:" + externalContent.toString() + "}";
+        if (externalContent != null) {
+            return "{checkId: \"" + checkId + "\", range:[" + range.getMinimumInteger() + ","
+                    + range.getMaximumInteger() + "], externalContent:" + externalContent.toString() + "}";
         }
         return "{checkId: \"" + checkId + "\", range:[" + range.getMinimumInteger() + "," + range.getMaximumInteger()
                 + "]}";

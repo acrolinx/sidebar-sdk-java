@@ -12,7 +12,6 @@ import com.acrolinx.sidebar.utils.LoggingUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.google.gson.Gson;
 
-@SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
 public class AcrolinxSidebarInitParameter
 {
     private String serverAddress;
@@ -29,7 +28,6 @@ public class AcrolinxSidebarInitParameter
     private String minimumSidebarVersion;
     private Integer minimumJavaVersion;
     private PluginSupportedParameters supported;
-
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarInitParameter.class);
 
     private AcrolinxSidebarInitParameter(final AcrolinxSidebarInitParameterBuilder builder)
@@ -79,7 +77,8 @@ public class AcrolinxSidebarInitParameter
         if (this.minimumJavaVersion != 0) {
             logger.info("Required Java Version is: {}", this.minimumJavaVersion);
             if (SidebarUtils.getSystemJavaVersion() < this.minimumJavaVersion) {
-                logger.warn("The current Java version {} does not fulfill the requirements.", SidebarUtils.getSystemJavaVersion());
+                logger.warn("The current Java version {} does not fulfill the requirements.",
+                        SidebarUtils.getSystemJavaVersion());
             }
         }
 
@@ -146,7 +145,6 @@ public class AcrolinxSidebarInitParameter
         return gson.toJson(this);
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static class AcrolinxSidebarInitParameterBuilder
     {
         private String serverAddress;
@@ -197,7 +195,6 @@ public class AcrolinxSidebarInitParameter
          * The url of the Acrolinx Sidebar. If this is not set the publicly available Sidebar will
          * be used by default.
          *
-         * @param sidebarUrl
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
         public AcrolinxSidebarInitParameterBuilder withSidebarUrl(final String sidebarUrl)
@@ -222,7 +219,6 @@ public class AcrolinxSidebarInitParameter
          * If this parameter is set to 'true' the Acrolinx Sidebar will provide an input field to
          * set an url for the Acrolinx Server.
          *
-         * @param showServerSelector
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
         public AcrolinxSidebarInitParameterBuilder withShowServerSelector(final Boolean showServerSelector)
@@ -236,7 +232,6 @@ public class AcrolinxSidebarInitParameter
          * this parameter is set, then the default check settings and the check settings saved by
          * the user will be ignored.
          *
-         * @param checkSettings
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
         public AcrolinxSidebarInitParameterBuilder withCheckSettings(final CheckSettings checkSettings)
@@ -249,7 +244,6 @@ public class AcrolinxSidebarInitParameter
          * These check settings will be used as the initial check settings when the Acrolinx Sidebar
          * is used for the first time.
          *
-         * @param defaultCheckSettings
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
         public AcrolinxSidebarInitParameterBuilder withDefaultCheckSettings(final CheckSettings defaultCheckSettings)
@@ -262,7 +256,6 @@ public class AcrolinxSidebarInitParameter
          * If the Acrolinx Server is set up for single sign on, this parameter has to be set to
          * 'true' in order enable single sign on from the integration.
          *
-         * @param enableSingleSignOn
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
         public AcrolinxSidebarInitParameterBuilder withEnableSingleSignOn(final boolean enableSingleSignOn)
@@ -274,7 +267,6 @@ public class AcrolinxSidebarInitParameter
         /**
          * This setting will prevent any connection with an Acrolinx Server except via 'https'.
          *
-         * @param enforceHTTPS
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
         public AcrolinxSidebarInitParameterBuilder withEnforceHTTPS(final boolean enforceHTTPS)
@@ -286,7 +278,6 @@ public class AcrolinxSidebarInitParameter
         /**
          * This can be set to require a minimum version of the sidebar. (eg. "4.4", "4.4.1")
          *
-         * @param minimumSidebarVersion
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
         public AcrolinxSidebarInitParameterBuilder withMinimumSidebarVersion(final String minimumSidebarVersion)
@@ -299,7 +290,6 @@ public class AcrolinxSidebarInitParameter
          * Add a parameter for integrations to enable check selection in the sidebar. Requires
          * minimum sidebar version 14.5.0.
          *
-         * @param supported
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
         public AcrolinxSidebarInitParameterBuilder withPluginSupportedParameters(
@@ -312,7 +302,6 @@ public class AcrolinxSidebarInitParameter
         /**
          * This can be set to require a minimum version of Java JRE. (eg. "8", "11")
          *
-         * @param minimumJavaVersion
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
         public AcrolinxSidebarInitParameterBuilder withMinimumJavaVersion(final int minimumJavaVersion)

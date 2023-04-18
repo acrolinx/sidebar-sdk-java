@@ -17,17 +17,14 @@ import java.util.ResourceBundle;
  * https://github.com/joconner/enhanced-resources
  */
 
-@SuppressWarnings("WeakerAccess")
 class UTF8ResourceBundleControl extends ResourceBundle.Control
 {
-
-    public UTF8ResourceBundleControl()
+    UTF8ResourceBundleControl()
     {
         // nothing to do here
     }
 
     @Override
-    @SuppressWarnings({"IfCanBeSwitch", "ConstantConditions"})
     public ResourceBundle newBundle(final String baseName, final Locale locale, final String format,
             final ClassLoader loader, final boolean reload)
             throws IllegalAccessException, InstantiationException, IOException
@@ -73,5 +70,4 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
         }
         return stream;
     }
-
 }

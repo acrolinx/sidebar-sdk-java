@@ -2,11 +2,10 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
-
 import java.util.List;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
+
 public class AcrolinxMatch extends ExternalAbstractMatch
 {
     private final String content;
@@ -26,13 +25,15 @@ public class AcrolinxMatch extends ExternalAbstractMatch
         this.extractedRange = extractedRange;
     }
 
-    public AcrolinxMatch(final IntRange range, final IntRange extractedRange, final String content, final List<ExternalContentMatch> externalContentMatches)
+    public AcrolinxMatch(final IntRange range, final IntRange extractedRange, final String content,
+            final List<ExternalContentMatch> externalContentMatches)
     {
         this(range, extractedRange, content);
         this.externalContentMatches = externalContentMatches;
     }
 
-    public AcrolinxMatch(final IntRange range, final String content, final List<ExternalContentMatch> externalContentMatches)
+    public AcrolinxMatch(final IntRange range, final String content,
+            final List<ExternalContentMatch> externalContentMatches)
     {
         this(range, content);
         this.externalContentMatches = externalContentMatches;
@@ -62,27 +63,29 @@ public class AcrolinxMatch extends ExternalAbstractMatch
             final int eRangeMin = this.extractedRange.getMinimumInteger();
             final int eRangeMax = this.extractedRange.getMaximumInteger();
 
-            if(this.getExternalContentMatches() != null) {
+            if (this.getExternalContentMatches() != null) {
                 final List<ExternalContentMatch> externalMatches = this.getExternalContentMatches();
                 return new AcrolinxMatch(range, new IntRange(eRangeMin, eRangeMax), content, externalMatches);
             }
             return new AcrolinxMatch(range, new IntRange(eRangeMin, eRangeMax), content);
         } else {
-
-            if(this.getExternalContentMatches() != null) {
+            if (this.getExternalContentMatches() != null) {
                 final List<ExternalContentMatch> externalMatches = this.getExternalContentMatches();
                 return new AcrolinxMatch(range, content, externalMatches);
             }
             return new AcrolinxMatch(range, content);
         }
     }
+
     @Override
-    public boolean hasExternalContentMatches () {
+    public boolean hasExternalContentMatches()
+    {
         return this.externalContentMatches != null && this.getExternalContentMatches().size() > 0;
     }
 
     @Override
-    public List<ExternalContentMatch> getExternalContentMatches() {
+    public List<ExternalContentMatch> getExternalContentMatches()
+    {
         return this.externalContentMatches;
     }
 
@@ -95,18 +98,18 @@ public class AcrolinxMatch extends ExternalAbstractMatch
             final int eRangeMin = this.extractedRange.getMinimumInteger();
             final int eRangeMax = this.extractedRange.getMaximumInteger();
 
-            if(this.getExternalContentMatches() != null) {
+            if (this.getExternalContentMatches() != null) {
                 final List<ExternalContentMatch> externalMatches = this.getExternalContentMatches();
-                return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), new IntRange(eRangeMin, eRangeMax), content, externalMatches);
+                return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), new IntRange(eRangeMin, eRangeMax), content,
+                        externalMatches);
             }
             return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), new IntRange(eRangeMin, eRangeMax), content);
         } else {
-            if(this.getExternalContentMatches() != null) {
+            if (this.getExternalContentMatches() != null) {
                 final List<ExternalContentMatch> externalMatches = this.getExternalContentMatches();
                 return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), content, externalMatches);
             }
             return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), content);
         }
     }
-
 }

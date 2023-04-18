@@ -8,22 +8,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentField;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
-
-import com.acrolinx.sidebar.LookupRanges;
-import com.acrolinx.sidebar.pojo.document.AbstractMatch;
-import com.acrolinx.sidebar.pojo.document.IntRange;
-import com.acrolinx.sidebar.utils.DiffMatchPatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@SuppressWarnings("WeakerAccess")
+import com.acrolinx.sidebar.LookupRanges;
+import com.acrolinx.sidebar.pojo.document.AbstractMatch;
+import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
+import com.acrolinx.sidebar.pojo.document.IntRange;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentField;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
+import com.acrolinx.sidebar.utils.DiffMatchPatch;
+
 public class LookupRangesDiff extends LookupRanges
 {
-   private Logger logger = LoggerFactory.getLogger(LookupRangesDiff.class);
+    private Logger logger = LoggerFactory.getLogger(LookupRangesDiff.class);
 
     @Override
     public Optional<List<? extends AbstractMatch>> getMatchesWithCorrectedRanges(String checkedText, String changedText,
@@ -50,7 +49,10 @@ public class LookupRangesDiff extends LookupRanges
         return Optional.of(Collections.unmodifiableList(returnValues));
     }
 
-    public List<? extends AbstractMatch> getMatchesIncludingCorrectedExternalMatches(ExternalContent checkedExternalContent,ExternalContent changedExternalContent, List<? extends AbstractMatch> matches) {
+    public List<? extends AbstractMatch> getMatchesIncludingCorrectedExternalMatches(
+            ExternalContent checkedExternalContent, ExternalContent changedExternalContent,
+            List<? extends AbstractMatch> matches)
+    {
         return matches.stream().map((match) -> {
             if (!(match instanceof AcrolinxMatch))
                 return match;
@@ -61,36 +63,42 @@ public class LookupRangesDiff extends LookupRanges
 
             List<ExternalContentMatch> externalContentMatches = acrolinxMatch.getExternalContentMatches();
 
-            List<ExternalContentMatch> correctedMatches = getExternalContentMatchesWithCorrectedRanges(externalContentMatches,
-                    checkedExternalContent, changedExternalContent);
+            List<ExternalContentMatch> correctedMatches = getExternalContentMatchesWithCorrectedRanges(
+                    externalContentMatches, checkedExternalContent, changedExternalContent);
 
-            return new AcrolinxMatch(match.getRange(), ((AcrolinxMatch) match).getExtractedRange(),
-                    match.getContent(), correctedMatches);
+            return new AcrolinxMatch(match.getRange(), ((AcrolinxMatch) match).getExtractedRange(), match.getContent(),
+                    correctedMatches);
         }).collect(Collectors.toList());
     }
 
-    public List<ExternalContentMatch> getExternalContentMatchesWithCorrectedRanges( List<ExternalContentMatch> matches, ExternalContent checkedText, ExternalContent changedText
-                                                                                              ) {
+    public List<ExternalContentMatch> getExternalContentMatchesWithCorrectedRanges(List<ExternalContentMatch> matches,
+            ExternalContent checkedText, ExternalContent changedText)
+    {
         List<ExternalContentField> checkedExternalContent = checkedText.getAll();
         List<ExternalContentField> changedExternalContent = changedText.getAll();
 
         return matches.stream().map((match) -> {
-
-            if(!match.getExternalContentMatches().isEmpty()) {
-               List<ExternalContentMatch> newMatches = getExternalContentMatchesWithCorrectedRanges(match.getExternalContentMatches(),checkedText,changedText);
-               match.setExternalContentMatches(newMatches);
+            if (!match.getExternalContentMatches().isEmpty()) {
+                List<ExternalContentMatch> newMatches = getExternalContentMatchesWithCorrectedRanges(
+                        match.getExternalContentMatches(), checkedText, changedText);
+                match.setExternalContentMatches(newMatches);
             }
 
-            return adJustMatch(match,checkedExternalContent,changedExternalContent);
+            return adJustMatch(match, checkedExternalContent, changedExternalContent);
 
         }).collect(Collectors.toList());
     }
 
-    public ExternalContentMatch adJustMatch(ExternalContentMatch match, List<ExternalContentField> checkedExternalContent,List<ExternalContentField> changedExternalContent) {
-        Optional<ExternalContentField> optionalCheckedField = checkedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
-        Optional<ExternalContentField> optionalChangedField = changedExternalContent.stream().filter( (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
+    public ExternalContentMatch adJustMatch(ExternalContentMatch match,
+            List<ExternalContentField> checkedExternalContent, List<ExternalContentField> changedExternalContent)
+    {
+        Optional<ExternalContentField> optionalCheckedField = checkedExternalContent.stream().filter(
+                (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
+        Optional<ExternalContentField> optionalChangedField = changedExternalContent.stream().filter(
+                (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
 
-        if(!optionalCheckedField.isPresent() || !optionalChangedField.isPresent()) return match;
+        if (!optionalCheckedField.isPresent() || !optionalChangedField.isPresent())
+            return match;
 
         ExternalContentField checkedField = optionalCheckedField.get();
         ExternalContentField changedField = optionalChangedField.get();
@@ -108,9 +116,6 @@ public class LookupRangesDiff extends LookupRanges
             return match;
         }
     }
-
- 
-
 
     public static Optional<Integer> getOffSetDiffStart(String originalVersion, String changedVersion,
             int offsetInOriginalVersion)

@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 /**
  * Available configuration for the Acrolinx Sidebar
  */
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class SidebarConfiguration
 {
     private final Boolean readOnlySuggestions;
@@ -21,7 +20,6 @@ public class SidebarConfiguration
      */
     public SidebarConfiguration(Boolean readOnlySuggestions)
     {
-
         this.readOnlySuggestions = readOnlySuggestions;
     }
 
