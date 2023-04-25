@@ -2,11 +2,10 @@
 
 package com.acrolinx.sidebar.pojo.settings;
 
-
-import com.google.gson.Gson;
 import org.apache.commons.lang3.SerializationUtils;
 
-@SuppressWarnings({"FieldCanBeLocal", "WeakerAccess", "unused"})
+import com.google.gson.Gson;
+
 public class CheckSettings
 {
     private final String language;
@@ -23,17 +22,6 @@ public class CheckSettings
     /**
      * Settings used by the Acrolinx Server to check the text. The available options depend on the
      * configuration of the Acrolinx Server.
-     *
-     * @param language
-     * @param ruleSetName
-     * @param termSets
-     * @param checkSpelling
-     * @param checkGrammar
-     * @param checkStyle
-     * @param checkReuse
-     * @param harvestTerms
-     * @param checkSeo
-     * @param termStatuses
      */
     public CheckSettings(String language, String ruleSetName, String[] termSets, Boolean checkSpelling,
             Boolean checkGrammar, Boolean checkStyle, Boolean checkReuse, Boolean harvestTerms, Boolean checkSeo,
@@ -41,14 +29,14 @@ public class CheckSettings
     {
         this.language = language;
         this.ruleSetName = ruleSetName;
-        this.termSets = (String[]) SerializationUtils.clone(termSets);
+        this.termSets = SerializationUtils.clone(termSets);
         this.checkSpelling = checkSpelling;
         this.checkGrammar = checkGrammar;
         this.checkStyle = checkStyle;
         this.checkReuse = checkReuse;
         this.harvestTerms = harvestTerms;
         this.checkSeo = checkSeo;
-        this.termStatuses = (String[]) SerializationUtils.clone(termStatuses);
+        this.termStatuses = SerializationUtils.clone(termStatuses);
     }
 
     @Override
@@ -57,5 +45,4 @@ public class CheckSettings
         Gson gson = new Gson();
         return gson.toJson(this);
     }
-
 }

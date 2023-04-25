@@ -2,13 +2,10 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
-import org.apache.commons.lang3.text.StrBuilder;
-import org.apache.commons.text.TextStringBuilder;
-
 import java.io.Serializable;
 
+import org.apache.commons.text.TextStringBuilder;
 
-@SuppressWarnings("WeakerAccess")
 public class IntRange implements Serializable
 {
     private static final long serialVersionUID = -2808883234003742075L;
@@ -47,5 +44,4 @@ public class IntRange implements Serializable
         buf.append(']');
         return buf.toString();
     }
-
 }

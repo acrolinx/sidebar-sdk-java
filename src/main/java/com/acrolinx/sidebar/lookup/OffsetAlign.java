@@ -2,7 +2,6 @@
 
 package com.acrolinx.sidebar.lookup;
 
-@SuppressWarnings("WeakerAccess")
 public class OffsetAlign
 {
     private final int oldPosition;

@@ -7,10 +7,8 @@ import java.util.Optional;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 
-@SuppressWarnings("unused")
 public abstract class LookupRanges
 {
-
     /**
      * Abstract method used to get the current location of matches. As the location within the
      * current document might have changed since the last check.
@@ -23,5 +21,4 @@ public abstract class LookupRanges
      */
     public abstract Optional<List<? extends AbstractMatch>> getMatchesWithCorrectedRanges(String checkedText,
             String changedText, List<? extends AbstractMatch> matches);
-
 }

@@ -15,10 +15,8 @@ import com.google.common.base.Preconditions;
 /**
  * Singleton to handle localization keys and resource bundles
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
 public class Localizer
 {
-
     private static Localizer instance;
     private Locale currentLocale;
     private ResourceBundle resourceBundle;
@@ -72,7 +70,6 @@ public class Localizer
 
     public String getStringForKey(String key)
     {
-
         Preconditions.checkNotNull(key, "key should not be null");
 
         if (resourceBundle.containsKey(key)) {

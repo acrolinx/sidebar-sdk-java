@@ -2,7 +2,6 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
-@SuppressWarnings({"WeakerAccess", "MismatchedReadAndWriteOfArray", "unused"})
 class CheckedDocumentPartFromJSON
 {
     private String checkId;
@@ -10,7 +9,6 @@ class CheckedDocumentPartFromJSON
 
     public CheckedDocumentPartFromJSON()
     {
-        //
     }
 
     public CheckedDocumentPart getAsCheckResult()

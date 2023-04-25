@@ -2,7 +2,6 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
-@SuppressWarnings({"WeakerAccess", "unused"})
 public class DownloadInfo
 {
     private String url;

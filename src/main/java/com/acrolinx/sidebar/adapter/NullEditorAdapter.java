@@ -12,7 +12,6 @@ import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
 
-@SuppressWarnings("unused")
 /**
  * Use as fallback input adapter.
  * 
@@ -20,7 +19,6 @@ import com.acrolinx.sidebar.pojo.settings.InputFormat;
  */
 public class NullEditorAdapter implements InputAdapterInterface
 {
-
     @Override
     public InputFormat getInputFormat()
     {

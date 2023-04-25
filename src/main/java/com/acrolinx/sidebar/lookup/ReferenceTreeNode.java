@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReferenceTreeNode {
-
     private String referencingTag = "";
     private String unresolvedContent = "";
     private String resolvedContent = "";
@@ -76,5 +75,4 @@ public class ReferenceTreeNode {
     public int getResolvedLength() {
         return resolvedContent.length();
     }
-
 }

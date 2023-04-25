@@ -2,9 +2,13 @@
 
 package com.acrolinx.sidebar.jfx;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,36 +18,41 @@ import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.CheckResult;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.document.IntRange;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxPluginConfiguration;
 import com.google.common.collect.Lists;
 
 import netscape.javascript.JSObject;
 
-@SuppressWarnings("unused")
-class JSToJavaConverter
+final class JSToJavaConverter
 {
     static final Logger logger = LoggerFactory.getLogger(JSToJavaConverter.class);
-    public static final String LENGTH = "length";
-    public static final String RANGE = "range";
-    public static final String CONTENT = "content";
-    public static final String REPLACEMENT = "replacement";
-    public static final String CHECKED_PART = "checkedPart";
-    public static final String CHECK_ID = "checkId";
-    public static final String EMBED_CHECK_INFORMATION = "embedCheckInformation";
-    public static final String MESSAGE = "message";
-    public static final String ERROR = "error";
-    public static final String UNDEFINED = "undefined";
-    public static final String INPUT_FORMAT = "inputFormat";
-    public static final String BASE_64_ENCODED_GZIPPED_DOCUMENT_CONTENT = "base64EncodedGzippedDocumentContent";
-    public static final String CODE = "code";
-    public static final String SUPPORTED = "supported";
-    public static final String KEY = "key";
-    public static final String VALUE = "value";
-    public static final String EXTERNAL_CONTENT_MATCHES = "externalContentMatches";
-    public static final String ID = "id";
-    public static final String TYPE = "type";
-    public static final String ORIGINAL_BEGIN = "originalBegin";
-    public static final String ORIGINAL_END = "originalEnd";
+    static final String LENGTH = "length";
+    static final String RANGE = "range";
+    static final String CONTENT = "content";
+    static final String REPLACEMENT = "replacement";
+    static final String CHECKED_PART = "checkedPart";
+    static final String CHECK_ID = "checkId";
+    static final String EMBED_CHECK_INFORMATION = "embedCheckInformation";
+    static final String MESSAGE = "message";
+    static final String ERROR = "error";
+    static final String UNDEFINED = "undefined";
+    static final String INPUT_FORMAT = "inputFormat";
+    static final String BASE_64_ENCODED_GZIPPED_DOCUMENT_CONTENT = "base64EncodedGzippedDocumentContent";
+    static final String CODE = "code";
+    static final String SUPPORTED = "supported";
+    static final String KEY = "key";
+    static final String VALUE = "value";
+    static final String EXTERNAL_CONTENT_MATCHES = "externalContentMatches";
+    static final String ID = "id";
+    static final String TYPE = "type";
+    static final String ORIGINAL_BEGIN = "originalBegin";
+    static final String ORIGINAL_END = "originalEnd";
+
+    private JSToJavaConverter()
+    {
+        throw new IllegalStateException();
+    }
 
     static List<AcrolinxMatch> getAcrolinxMatchFromJSObject(final JSObject o)
     {
@@ -52,11 +61,13 @@ class JSToJavaConverter
         for (int i = 0; i < Integer.parseInt(length); i++) {
             final IntRange range = getIntRangeFromJSString(((JSObject) o.getSlot(i)).getMember(RANGE).toString());
             final String surface = "" + ((JSObject) o.getSlot(i)).getMember(CONTENT);
-            if(((JSObject) o.getSlot(0)).getMember(EXTERNAL_CONTENT_MATCHES).toString().equals(UNDEFINED)) {
+            if (((JSObject) o.getSlot(0)).getMember(EXTERNAL_CONTENT_MATCHES).toString().equals(UNDEFINED)) {
                 acrolinxMatches.add(new AcrolinxMatch(range, surface));
             } else {
-                final JSObject externalContentMatches = (JSObject) ((JSObject) o.getSlot(i)).getMember(EXTERNAL_CONTENT_MATCHES);
-                acrolinxMatches.add(new AcrolinxMatch(range, surface, getExternalContentMatchFromJSObject(externalContentMatches)));
+                final JSObject externalContentMatches = (JSObject) ((JSObject) o.getSlot(i)).getMember(
+                        EXTERNAL_CONTENT_MATCHES);
+                acrolinxMatches.add(
+                        new AcrolinxMatch(range, surface, getExternalContentMatchFromJSObject(externalContentMatches)));
             }
         }
         return Collections.unmodifiableList(acrolinxMatches);
@@ -70,11 +81,13 @@ class JSToJavaConverter
             final IntRange range = getIntRangeFromJSString(((JSObject) o.getSlot(i)).getMember(RANGE).toString());
             final String surface = "" + ((JSObject) o.getSlot(i)).getMember(CONTENT);
             final String replacement = "" + ((JSObject) o.getSlot(i)).getMember(REPLACEMENT);
-            if(((JSObject) o.getSlot(0)).getMember(EXTERNAL_CONTENT_MATCHES).toString().equals(UNDEFINED)) {
+            if (((JSObject) o.getSlot(0)).getMember(EXTERNAL_CONTENT_MATCHES).toString().equals(UNDEFINED)) {
                 acrolinxMatches.add(new AcrolinxMatchWithReplacement(surface, range, replacement));
             } else {
-                final JSObject externalContentMatches = (JSObject) ((JSObject) o.getSlot(i)).getMember(EXTERNAL_CONTENT_MATCHES);
-                acrolinxMatches.add(new AcrolinxMatchWithReplacement(surface, range, replacement, getExternalContentMatchFromJSObject(externalContentMatches)));
+                final JSObject externalContentMatches = (JSObject) ((JSObject) o.getSlot(i)).getMember(
+                        EXTERNAL_CONTENT_MATCHES);
+                acrolinxMatches.add(new AcrolinxMatchWithReplacement(surface, range, replacement,
+                        getExternalContentMatchFromJSObject(externalContentMatches)));
             }
         }
         return Collections.unmodifiableList(acrolinxMatches);
@@ -166,10 +179,13 @@ class JSToJavaConverter
             final int originalEnd = Integer.parseInt((slotI.getMember(ORIGINAL_END).toString()));
 
             final Object externalContentMatchesJSObj = slotI.getMember(EXTERNAL_CONTENT_MATCHES);
-            if(!(externalContentMatchesJSObj.equals(UNDEFINED)) && Integer.parseInt(((JSObject) externalContentMatchesJSObj).getMember(LENGTH).toString()) > 0) {
-                nestedExternalContentMatches = getExternalContentMatchFromJSObject((JSObject) externalContentMatchesJSObj);
+            if (!(externalContentMatchesJSObj.equals(UNDEFINED))
+                    && Integer.parseInt(((JSObject) externalContentMatchesJSObj).getMember(LENGTH).toString()) > 0) {
+                nestedExternalContentMatches = getExternalContentMatchFromJSObject(
+                        (JSObject) externalContentMatchesJSObj);
             }
-            externalContentMatchesList.add(new ExternalContentMatch(id, type, originalBegin, originalEnd, nestedExternalContentMatches));
+            externalContentMatchesList.add(
+                    new ExternalContentMatch(id, type, originalBegin, originalEnd, nestedExternalContentMatches));
         }
         return Collections.unmodifiableList(externalContentMatchesList);
     }

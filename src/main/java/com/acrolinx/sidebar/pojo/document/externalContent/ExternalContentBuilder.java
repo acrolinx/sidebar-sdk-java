@@ -12,7 +12,6 @@ import java.util.List;
  */
 public class ExternalContentBuilder
 {
-
     private List<ExternalContentField> textReplacements = new ArrayList<>();
     private List<ExternalContentField> entities = new ArrayList<>();
     private List<ExternalContentField> ditaReferences = new ArrayList<>();
@@ -51,9 +50,6 @@ public class ExternalContentBuilder
 
     /**
      * External content which requires parsing.
-     *
-     * @param externalContentField
-     * @return
      */
     public ExternalContentBuilder addEntity(ExternalContentField externalContentField)
     {
@@ -78,9 +74,6 @@ public class ExternalContentBuilder
     /**
      * Dita references like conref, keyref, conkeyref which represent a placeholder for external
      * content. Content will be parsed.
-     *
-     * @param externalContentField
-     * @return
      */
     public ExternalContentBuilder addDitaReference(ExternalContentField externalContentField)
     {
@@ -109,7 +102,5 @@ public class ExternalContentBuilder
     public ExternalContent build()
     {
         return new ExternalContent(textReplacements, entities, ditaReferences, xincludeReferences);
-
     }
-
 }

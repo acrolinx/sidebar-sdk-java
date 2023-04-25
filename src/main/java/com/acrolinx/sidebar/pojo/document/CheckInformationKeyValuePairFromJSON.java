@@ -2,7 +2,6 @@
 
 package com.acrolinx.sidebar.pojo.document;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
 class CheckInformationKeyValuePairFromJSON
 {
     private String key;
@@ -10,7 +9,6 @@ class CheckInformationKeyValuePairFromJSON
 
     CheckInformationKeyValuePairFromJSON()
     {
-        //
     }
 
     public String getKey()

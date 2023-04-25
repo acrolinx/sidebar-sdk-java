@@ -2,7 +2,6 @@
 
 package com.acrolinx.sidebar.pojo.settings;
 
-@SuppressWarnings("unused")
 public enum SoftwareComponentCategory
 {
     /**

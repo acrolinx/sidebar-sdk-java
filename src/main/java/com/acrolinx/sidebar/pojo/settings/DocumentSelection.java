@@ -7,7 +7,6 @@ import java.util.List;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.google.gson.Gson;
 
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class DocumentSelection
 {
     private final int[][] ranges;
@@ -17,7 +16,6 @@ public class DocumentSelection
         this.ranges = convertDocumentSelection(ranges);
     }
 
-    @SuppressWarnings("WeakerAccess")
     public int[][] convertDocumentSelection(List<IntRange> ranges)
     {
         if (ranges != null) {

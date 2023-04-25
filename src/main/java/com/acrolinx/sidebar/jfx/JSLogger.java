@@ -5,7 +5,6 @@ package com.acrolinx.sidebar.jfx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@SuppressWarnings("unused")
 public class JSLogger
 {
     private final Logger logger = LoggerFactory.getLogger(JSLogger.class);

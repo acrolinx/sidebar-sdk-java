@@ -2,11 +2,9 @@
 
 package com.acrolinx.sidebar.pojo.settings;
 
-@SuppressWarnings("unused")
 public class PluginSupportedParameters
 {
     private final boolean checkSelection;
-
     private boolean supportsBatchChecks;
 
     /**
@@ -17,7 +15,6 @@ public class PluginSupportedParameters
     public PluginSupportedParameters(boolean checkSelection)
     {
         this(checkSelection, false);
-        // this.checkSelection = checkSelection;
     }
 
     public PluginSupportedParameters(boolean checkSelection, boolean supportsBatchChecks)
@@ -35,5 +32,4 @@ public class PluginSupportedParameters
     {
         return supportsBatchChecks;
     }
-
 }

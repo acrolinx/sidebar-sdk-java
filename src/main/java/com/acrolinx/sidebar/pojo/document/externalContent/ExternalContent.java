@@ -15,7 +15,6 @@ import com.google.gson.Gson;
  */
 public class ExternalContent
 {
-
     private final List<ExternalContentField> textReplacements;
     private final List<ExternalContentField> entities;
     private final List<ExternalContentField> ditaReferences;
@@ -77,7 +76,6 @@ public class ExternalContent
     @Override
     public String toString()
     {
-
         return new Gson().toJson(this);
     }
 }
