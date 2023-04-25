@@ -8,6 +8,8 @@ import org.xml.sax.SAXException;
 
 public class FragmentContentException extends SAXException
 {
+    private static final long serialVersionUID = 1L;
+
     public FragmentContentException(String message)
     {
         super(message);

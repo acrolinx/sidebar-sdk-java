@@ -5,7 +5,6 @@ package com.acrolinx.sidebar.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
@@ -25,12 +24,14 @@ import ch.qos.logback.core.joran.spi.JoranException;
 /**
  * Set up the integration's logging.
  */
-
-@SuppressWarnings("WeakerAccess")
-public class LoggingUtils
+public final class LoggingUtils
 {
+    private LoggingUtils()
+    {
+        throw new IllegalStateException();
+    }
 
-    private static Path getLogFilePathOSSpecific(String applicationName) throws URISyntaxException
+    private static Path getLogFilePathOSSpecific(String applicationName)
     {
         Path userTempDirLocation = SidebarUtils.getUserTempDirLocation();
         String s = System.getProperty("os.name").toLowerCase();
@@ -44,7 +45,7 @@ public class LoggingUtils
     }
 
     private static void loadLogFileConfig(InputStream configStream, String applicationName)
-            throws JoranException, IOException, URISyntaxException
+            throws JoranException, IOException
     {
         if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
             if (configStream != null) {
@@ -52,6 +53,7 @@ public class LoggingUtils
             }
             return;
         }
+
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         loggerContext.reset();
         JoranConfigurator configurator = new JoranConfigurator();
@@ -61,7 +63,7 @@ public class LoggingUtils
         configurator.doConfigure(configStream); // loads logback file
         configStream.close();
         ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(
-                ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+                org.slf4j.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.toLevel(System.getProperty("acrolog.level"), Level.INFO));
     }
 
@@ -70,17 +72,13 @@ public class LoggingUtils
      * the Acrolinx Coding Guidance.
      * 
      * @param applicationName the integration's name e.g. AcrolinxForEditorName
-     * @throws IOException Exception
-     * @throws JoranException Exception
-     * @throws URISyntaxException Exception
      */
-    public static void setupLogging(String applicationName) throws IOException, JoranException, URISyntaxException
+    public static void setupLogging(String applicationName) throws IOException, JoranException
     {
         useDefaultLoggingConfig(applicationName);
     }
 
-    private static void useDefaultLoggingConfig(String applicationName)
-            throws IOException, JoranException, URISyntaxException
+    private static void useDefaultLoggingConfig(String applicationName) throws IOException, JoranException
     {
         Preconditions.checkNotNull(applicationName, "application name should be set");
         InputStream configStream = LoggingUtils.class.getResourceAsStream("/logback_default.xml");
@@ -125,7 +123,6 @@ public class LoggingUtils
 
     /**
      * Resets the current Logging Context.
-     *
      */
     public static void resetLoggingContext()
     {

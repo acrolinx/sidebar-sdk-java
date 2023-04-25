@@ -40,7 +40,6 @@ public class XMLLookupUtils
 
     public static IntRange findOffsetForNodeInXmlStringByXpath(String xmlContent, String xpath)
     {
-
         int startOffset = 0;
         int endOffset = 0;
 
@@ -229,7 +228,6 @@ public class XMLLookupUtils
 
     public static String getCommonXpath(String xpath1, String xpath2)
     {
-
         String[] xpath1Elements = xpath1.split("/");
         String[] xpath2Elements = xpath2.split("/");
 

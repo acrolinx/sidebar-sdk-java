@@ -5,7 +5,7 @@ package com.acrolinx.sidebar.swing.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -26,13 +26,13 @@ import com.acrolinx.sidebar.pojo.settings.InputFormat;
  * 
  * @see InputAdapterInterface
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
 public class TextAreaAdapter implements InputAdapterInterface
 {
+    private static final Logger logger = LoggerFactory.getLogger(TextAreaAdapter.class);
+
     private final JTextArea textArea;
     private InputFormat inputFormat;
     private String documentReference;
-    final private Logger logger = LoggerFactory.getLogger(TextAreaAdapter.class);
 
     public TextAreaAdapter(JTextArea textArea, InputFormat inputFormat, String documentReference)
     {

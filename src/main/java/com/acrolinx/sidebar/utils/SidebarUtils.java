@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponent;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponentCategory;
 
-@SuppressWarnings({"WeakerAccess", "unused"})
 public class SidebarUtils
 {
     private static final Logger logger = LoggerFactory.getLogger(SidebarUtils.class);
@@ -35,8 +34,6 @@ public class SidebarUtils
     /**
      * Opens the given URL in the default Browser of the current OS. Note that this method is likely
      * to cause JVM crashes within SWT-based applications!
-     *
-     * @param url
      */
     public static void openWebPageInDefaultBrowser(final String url)
     {
@@ -54,7 +51,6 @@ public class SidebarUtils
     /**
      * Validates a URL. Local URLs are allowed.
      *
-     * @param url
      * @return true if url is valid
      */
     public static boolean isValidURL(final String url)
@@ -95,7 +91,6 @@ public class SidebarUtils
      */
     public static void openLogFile()
     {
-
         final String logFileLocation = LoggingUtils.getLogFileLocation();
         if (logFileLocation != null) {
             final String logFile = new File(logFileLocation).getPath();
@@ -128,14 +123,10 @@ public class SidebarUtils
 
     /**
      * Returns the sidebar URL for a given Acrolinx Server Address. For internal use.
-     *
-     * @param serverAddress
-     * @return sidebar url
      */
     public static String getSidebarUrl(final String serverAddress)
     {
         return serverAddress + (serverAddress.endsWith("/") ? "sidebar/v14/index.html" : "/sidebar/v14/index.html");
-
     }
 
     private static String getCurrentSDKImplementationVersion()
@@ -145,9 +136,9 @@ public class SidebarUtils
         final String versionFromPropertiesFile = getJavaSDKVersionFromPropertiesFile();
         if (versionFromPropertiesFile == null) {
             return SidebarUtils.class.getPackage().getImplementationVersion();
-        } else {
-            return versionFromPropertiesFile;
         }
+
+        return versionFromPropertiesFile;
     }
 
     private static String getJavaSDKVersionFromPropertiesFile()
@@ -178,8 +169,7 @@ public class SidebarUtils
 
     /**
      * Test if a sidebar is available for the given server address.
-     *
-     * @param serverAddress
+     * 
      * @return true if sidebar is available
      */
     public static boolean isValidServerAddress(final String serverAddress)
@@ -196,7 +186,7 @@ public class SidebarUtils
         return true;
     }
 
-    protected static Path getUserTempDirLocation() throws URISyntaxException
+    protected static Path getUserTempDirLocation()
     {
         final String s = System.getProperty("os.name").toLowerCase();
         String temDirProp;
@@ -205,7 +195,6 @@ public class SidebarUtils
             return Paths.get(temDirProp, "Library");
         }
         return Paths.get(System.getProperty("java.io.tmpdir"));
-
     }
 
     /**
@@ -227,19 +216,12 @@ public class SidebarUtils
 
     public static boolean openSystemSpecific(final String path)
     {
-
         final OSUtils.EnumOS os = OSUtils.getOS();
 
-        if (os.isMac()) {
-            if (runCommand("open", "-R", path)) {
-                return true;
-            }
-        }
-
-        if (os.isWindows()) {
-            if (runCommand("explorer", "/select,", "\"" + path + "\"")) {
-                return true;
-            }
+        if (os.isMac() && runCommand("open", "-R", path)) {
+            return true;
+        } else if (os.isWindows() && runCommand("explorer", "/select,", "\"" + path + "\"")) {
+            return true;
         }
 
         return false;
@@ -247,7 +229,6 @@ public class SidebarUtils
 
     private static boolean runCommand(final String command, final String args, final String file)
     {
-
         logger.info("Trying to exec:\n   cmd = {} \n   args = {} \n   %s = {}", command, args, file);
 
         final ArrayList<String> parts = new ArrayList<>();
@@ -262,16 +243,17 @@ public class SidebarUtils
         parts.add(file);
 
         try {
-            final Process p = Runtime.getRuntime().exec(parts.toArray(new String[parts.size()]));
+            final Process process = Runtime.getRuntime().exec(parts.toArray(new String[parts.size()]));
             try {
-                final int retval = p.exitValue();
+                final int retval = process.exitValue();
+
                 if (retval == 0) {
                     logger.error("Process ended immediately.");
                     return false;
-                } else {
-                    logger.error("Process crashed.");
-                    return false;
                 }
+
+                logger.error("Process crashed.");
+                return false;
             } catch (final IllegalThreadStateException e) {
                 logger.debug("Process is running.");
                 return true;

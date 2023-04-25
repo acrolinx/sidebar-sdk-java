@@ -32,7 +32,6 @@ import javafx.scene.web.WebView;
 
 public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implements AcrolinxMultiViewSidebarInterface
 {
-
     private final Map<String, AcrolinxSidebarJFX> sidebars = new ConcurrentHashMap<>();
 
     /**
@@ -63,7 +62,6 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             @Override
             public void componentResized(final ComponentEvent e)
             {
-
                 for (AcrolinxSidebarJFX sidebarJFX : sidebars.values()) {
                     logger.debug("Component resized");
                     logger.debug("{} width", getWidth());
@@ -197,5 +195,4 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             setVisible(true);
         });
     }
-
 }

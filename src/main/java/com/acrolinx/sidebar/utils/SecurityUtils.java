@@ -10,15 +10,23 @@ import org.slf4j.LoggerFactory;
 /**
  * For internal use.
  */
-public class SecurityUtils {
+public final class SecurityUtils
+{
     private static final Logger logger = LoggerFactory.getLogger(SecurityUtils.class);
-    final private static String ACRO_PREFIX = "acrolinx_force_";
+    private static final String ACRO_PREFIX = "acrolinx_force_";
 
-    private static void logPropertyValue(String propertyName, String propertyValue) {
+    private SecurityUtils()
+    {
+        throw new IllegalStateException();
+    }
+
+    private static void logPropertyValue(String propertyName, String propertyValue)
+    {
         logger.info("Property {} is set to {}", propertyName, propertyValue);
     }
 
-    public static void setUpEnvironment() {
+    public static void setUpEnvironment()
+    {
         String propertyNameAllowHeaders = "sun.net.http.allowRestrictedHeaders";
         String propertyRH = System.getProperty(propertyNameAllowHeaders);
         logPropertyValue(propertyNameAllowHeaders, propertyRH);

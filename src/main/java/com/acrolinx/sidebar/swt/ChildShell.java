@@ -10,11 +10,9 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.acrolinx.sidebar.utils.IconUtils;
 
-@SuppressWarnings({"WeakerAccess", "unused"})
 public class ChildShell
 {
-    @SuppressWarnings("WeakerAccess")
-    final Shell child;
+    private final Shell child;
 
     public ChildShell(Shell parent, Display display)
     {

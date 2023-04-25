@@ -7,33 +7,37 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.acrolinx.sidebar.pojo.document.ExternalAbstractMatch;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentField;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
+import com.acrolinx.sidebar.pojo.document.ExternalAbstractMatch;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentField;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
 import com.google.common.collect.Lists;
 
-public class MatchUtils
+public final class MatchUtils
 {
+    private static final Logger logger = LoggerFactory.getLogger(MatchUtils.class);
 
-    private static final Logger logger = LoggerFactory.getLogger(SidebarUtils.class);
-
-
-    public static List<? extends AbstractMatch> filterDangerousMatches(List<? extends AbstractMatch> list,
-                                                                       String lastCheckedContent) {
-        return filterDangerousMatches(list,lastCheckedContent,new ArrayList<>());
+    private MatchUtils()
+    {
+        throw new IllegalStateException();
     }
 
     public static List<? extends AbstractMatch> filterDangerousMatches(List<? extends AbstractMatch> list,
-                                                                       String lastCheckedContent, List<ExternalContentField> lastCheckedExternalContent)
+            String lastCheckedContent)
+    {
+        return filterDangerousMatches(list, lastCheckedContent, new ArrayList<>());
+    }
+
+    public static List<? extends AbstractMatch> filterDangerousMatches(List<? extends AbstractMatch> list,
+            String lastCheckedContent, List<ExternalContentField> lastCheckedExternalContent)
     {
         return list.stream().filter(m -> {
-            //todo: does the external content contain tags that are not external content matches?
+            // todo: does the external content contain tags that are not external content matches?
             if (m instanceof ExternalAbstractMatch && ((ExternalAbstractMatch) m).hasExternalContentMatches()) {
-                return isExternalContentMatchAXMLTag((ExternalAbstractMatch) m,lastCheckedExternalContent);
+                return isExternalContentMatchAXMLTag((ExternalAbstractMatch) m, lastCheckedExternalContent);
             }
             String matchContent = lastCheckedContent.substring(m.getRange().getMinimumInteger(),
                     m.getRange().getMaximumInteger());
@@ -46,24 +50,26 @@ public class MatchUtils
         }).collect(Collectors.toList());
     }
 
-    @java.lang.SuppressWarnings("java:S5852")
-    public static boolean isExternalContentMatchAXMLTag(ExternalAbstractMatch match, List<ExternalContentField> lastCheckedExternalContent) {
+    public static boolean isExternalContentMatchAXMLTag(ExternalAbstractMatch match,
+            List<ExternalContentField> lastCheckedExternalContent)
+    {
         ExternalContentMatch externalContentMatch = match.getExternalContentMatches().get(0);
         while (!externalContentMatch.getExternalContentMatches().isEmpty()) {
             externalContentMatch = externalContentMatch.getExternalContentMatches().get(0);
         }
         final String externalContentId = externalContentMatch.getId();
-        Optional<ExternalContentField> optionalExternalContentField = lastCheckedExternalContent.stream().filter(externalContentField -> externalContentField.getId().equals(externalContentId)).findFirst();
-        if(!optionalExternalContentField.isPresent()) {
+        Optional<ExternalContentField> optionalExternalContentField = lastCheckedExternalContent.stream().filter(
+                externalContentField -> externalContentField.getId().equals(externalContentId)).findFirst();
+        if (!optionalExternalContentField.isPresent()) {
             logger.warn("Field for externalContentMatch has not been found");
             return false;
         }
         ExternalContentField externalContentField = optionalExternalContentField.get();
         String content = externalContentField.getContent();
-        String matchContent = content.substring(externalContentMatch.getRange().getMinimumInteger(),externalContentMatch.getRange().getMaximumInteger());
+        String matchContent = content.substring(externalContentMatch.getRange().getMinimumInteger(),
+                externalContentMatch.getRange().getMaximumInteger());
         return !matchContent.matches("</?\\w+.*?>");
     }
-
 
     public static <T extends AbstractMatch> List<T> sortByOffsetDesc(final List<T> matches)
     {

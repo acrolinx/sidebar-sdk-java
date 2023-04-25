@@ -22,7 +22,7 @@ import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
 public class LookupRangesDiff extends LookupRanges
 {
-    private Logger logger = LoggerFactory.getLogger(LookupRangesDiff.class);
+    private final Logger logger = LoggerFactory.getLogger(LookupRangesDiff.class);
 
     @Override
     public Optional<List<? extends AbstractMatch>> getMatchesWithCorrectedRanges(String checkedText, String changedText,
@@ -38,9 +38,9 @@ public class LookupRangesDiff extends LookupRanges
                 AbstractMatch copy = match.setRange(correctedMatch.get());
                 returnValues.add(copy);
                 return false;
-            } else {
-                return true;
             }
+
+            return true;
         });
 
         if (anyEmpty) {

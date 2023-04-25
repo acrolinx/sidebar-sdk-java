@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Composite;
 // TODO: Hide default view on addition of first sidebar.
 public class AcrolinxMultiViewSidebarSWT
 {
-
     private AcrolinxStorage acrolinxStorage;
     private final Composite container;
     private final StackLayout stackLayout;
@@ -30,7 +29,6 @@ public class AcrolinxMultiViewSidebarSWT
     private final Map<String, AcrolinxSidebarSWT> sidebarSWTMap = new HashMap<>();
 
     /**
-     *
      * @param parent SWT Composite to which sidebar would be child of.
      * @param storage Acrolinx storage to act as external storage to sidebar local storage
      */
@@ -46,7 +44,6 @@ public class AcrolinxMultiViewSidebarSWT
     }
 
     /**
-     *
      * @param parent SWT Shell to which sidebar would be child of.
      * @param storage Acrolinx storage to act as external storage to sidebar local storage
      */
@@ -61,10 +58,7 @@ public class AcrolinxMultiViewSidebarSWT
         showDefaultSidebar();
     }
 
-
-
     /**
-     *
      * @param client New integration dedicated per sidebar instance
      * @param documentId Unique document Id for the sidebar instance eg: file path
      * @throws AcrolinxException Throws exception is sidebar already exists for the document
@@ -90,7 +84,6 @@ public class AcrolinxMultiViewSidebarSWT
     }
 
     /**
-     *
      * @param documentId Document Id of the sidebar instance to switch active sidebar to.
      * @throws AcrolinxException Throws if sidebar not found for provided document id.
      */
@@ -107,7 +100,6 @@ public class AcrolinxMultiViewSidebarSWT
     }
 
     /**
-     *
      * @param documentId Document Id for the sidebar instance to be removed
      * @throws AcrolinxException Throws if sidebar not found for the provided document id.
      */
@@ -125,7 +117,6 @@ public class AcrolinxMultiViewSidebarSWT
     }
 
     /**
-     *
      * @return Get Active sidebar from the list. Returns sidebar with visiblity set to true. Null if
      *         not found.
      */
