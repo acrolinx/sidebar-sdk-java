@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import com.google.common.base.Strings;
 
-@SuppressWarnings("WeakerAccess")
 public class StartPageInstaller
 {
     private static final Logger logger = LoggerFactory.getLogger(StartPageInstaller.class);
@@ -53,9 +52,6 @@ public class StartPageInstaller
 
     /**
      * Extracts the Acrolinx start page to file system. Internal use only.
-     * 
-     * @throws URISyntaxException
-     * @throws IOException
      */
     static public void exportStartPageResources() throws URISyntaxException, IOException
     {
@@ -103,8 +99,6 @@ public class StartPageInstaller
      * Returns the URI to the extracted start page.
      * 
      * @return Path to current start page.
-     * @throws IOException
-     * @throws URISyntaxException
      */
     public static String getStartPageURL() throws IOException, URISyntaxException
     {

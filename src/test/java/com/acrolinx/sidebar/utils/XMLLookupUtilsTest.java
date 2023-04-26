@@ -63,7 +63,6 @@ class XMLLookupUtilsTest
     @Test
     void testXHTMLContent() throws Exception
     {
-
         String XHtmlContent = "<!--Arbortext, Inc., 1988-2019, v.4002-->\n"
                 + "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n"
                 + " \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"

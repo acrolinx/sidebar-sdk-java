@@ -22,17 +22,14 @@ import com.acrolinx.sidebar.pojo.settings.InputFormat;
  * 
  * @see InputAdapterInterface
  */
-@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "unused"})
 public class TextAdapter implements InputAdapterInterface
 {
-    final private Text textWidget;
+    private final Text textWidget;
     private String documentReference;
     private InputFormat inputFormat;
 
-    public TextAdapter(Text textWidget, @SuppressWarnings("SameParameterValue") InputFormat inputFormat,
-            @SuppressWarnings("SameParameterValue") String documentReference)
+    public TextAdapter(Text textWidget, InputFormat inputFormat, String documentReference)
     {
-
         this.textWidget = textWidget;
         this.inputFormat = inputFormat;
         this.documentReference = documentReference;

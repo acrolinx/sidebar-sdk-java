@@ -2,11 +2,10 @@
 
 package com.acrolinx.sidebar.utils;
 
-import java.awt.*;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.InputStream;
 import java.net.URL;
-
-@SuppressWarnings({"WeakerAccess", "unused"})
 
 /**
  * Use this class to retrieve the Acrolinx Logo from package resources.

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -48,14 +47,20 @@ import com.acrolinx.sidebar.pojo.document.CheckResultFromJSON;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import com.acrolinx.sidebar.pojo.settings.*;
+import com.acrolinx.sidebar.pojo.settings.AcrolinxURL;
+import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
+import com.acrolinx.sidebar.pojo.settings.CheckOptions;
+import com.acrolinx.sidebar.pojo.settings.DocumentSelection;
+import com.acrolinx.sidebar.pojo.settings.InputFormat;
+import com.acrolinx.sidebar.pojo.settings.RequestDescription;
+import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
+import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.LoggingUtils;
 import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.acrolinx.sidebar.utils.StartPageInstaller;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -66,10 +71,9 @@ import com.google.gson.reflect.TypeToken;
  *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings({"unused", "SameParameterValue", "WeakerAccess"})
 public class AcrolinxSidebarSWT implements AcrolinxSidebar
 {
-    protected final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSWT.class);
+    protected static final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSWT.class);
 
     protected final Browser browser;
     protected final AcrolinxIntegration client;
@@ -78,13 +82,10 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private final AtomicReference<String> lastCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocumentReference = new AtomicReference<>("");
     private final AtomicReference<ExternalContent> lastCheckedExternalContent = new AtomicReference<>();
-
     private final AtomicReference<ExternalContent> currentExternalContent = new AtomicReference<>();
-
     protected final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<Instant> checkStartTime = new AtomicReference<>();
-    private GridData gridData;
 
     public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration client)
     {
@@ -96,7 +97,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         this(parent, client, null);
     }
 
-    @SuppressWarnings("WeakerAccess")
     public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration client, final AcrolinxStorage storage)
     {
         Preconditions.checkNotNull(parent, "Composite parent should not be null");
@@ -129,8 +129,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private void initBrowser()
     {
         logger.debug("Initializing Browser...");
-        this.gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-        browser.setLayoutData(this.gridData);
+        GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        browser.setLayoutData(gridData);
         browser.setJavascriptEnabled(true);
         try {
             final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(client.getInitParameters());
@@ -390,7 +390,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         logger.info("Extracting references");
         try {
             List<BatchCheckRequestOptions> references = client.extractReferences();
-            logger.debug("Batch check document list: {}", references.toString());
+            logger.debug("Batch check document list: {}", references);
             initBatchCheck(references);
         } catch (Exception e) {
             logger.error("Initializing batch check failed: {}", e.getMessage());
@@ -444,10 +444,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     protected Object getOpenLogFileObject()
     {
         final String logFileLocation = LoggingUtils.getLogFileLocation();
-        if (logFileLocation != null) {
-            if (!SidebarUtils.openSystemSpecific(logFileLocation)) {
-                Program.launch(new File(logFileLocation).getParent());
-            }
+        if (logFileLocation != null && !SidebarUtils.openSystemSpecific(logFileLocation)) {
+            Program.launch(new File(logFileLocation).getParent());
         }
         return null;
     }
@@ -537,7 +535,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    @SuppressWarnings("unused")
     public Browser getSidebarBrowser()
     {
         return this.browser;
@@ -578,17 +575,15 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     @Override
     public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches)
     {
-        final List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map((match) -> {
-            if(((AcrolinxMatchWithReplacement) match).getExternalContentMatches() != null) {
-                    return new CheckedDocumentPart(
-                            currentCheckId.get(),
-                            new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
-                            ((AcrolinxMatch) match).getExternalContentMatches());
-                }
-                    return new CheckedDocumentPart(
-                                currentCheckId.get(),
-                                new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()));
-                }).collect(Collectors.toList());
+        final List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map(match -> {
+            if (((AcrolinxMatchWithReplacement) match).getExternalContentMatches() != null) {
+                return new CheckedDocumentPart(currentCheckId.get(),
+                        new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
+                        ((AcrolinxMatch) match).getExternalContentMatches());
+            }
+            return new CheckedDocumentPart(currentCheckId.get(),
+                    new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()));
+        }).collect(Collectors.toList());
         invalidateRanges(invalidDocumentParts);
     }
 
@@ -607,7 +602,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             try {
                 StartPageInstaller.exportStartPageResources();
             } catch (final Exception e) {
-                logger.error("Error while exporting start page resources!");
+                logger.error("Error while exporting start page resources!", e);
                 browser.setText(SidebarUtils.SIDEBAR_ERROR_HTML);
             }
         }
@@ -640,7 +635,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     @Override
     public void showMessage(SidebarMessage sidebarMessage)
     {
-        logger.info("Message to be displayed on sidebar: {}", sidebarMessage.toString());
+        logger.info("Message to be displayed on sidebar: {}", sidebarMessage);
         browser.execute("window.acrolinxSidebar.showMessage(" + sidebarMessage.toString() + ")");
     }
 
@@ -651,16 +646,15 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         browser.execute("window.acrolinxSidebar.requestCheckForDocumentInBatch(\"" + documentIdentifier + "\");");
     }
 
-    @SuppressWarnings("WeakerAccess")
     protected static String getURlFromJS(final String jsonStr)
     {
         final Gson gson = new Gson();
         final AcrolinxURL element = gson.fromJson(jsonStr, AcrolinxURL.class);
         if (element != null) {
             return element.getUrl();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public void toggleVisibility()

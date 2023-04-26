@@ -8,14 +8,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.web.WebView;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,28 +18,33 @@ import com.acrolinx.sidebar.jfx.AcrolinxSidebarJFX;
 import com.acrolinx.sidebar.jfx.JFXUtils;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
+import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
-import com.acrolinx.sidebar.utils.AcrolinxException;
 import com.acrolinx.sidebar.utils.LogMessages;
+
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.web.WebView;
 
 /**
  * Swing implementation of Acrolinx Sidebar.
  *
  * @see AcrolinxSidebar
  */
-@SuppressWarnings({"SameParameterValue", "WeakerAccess", "unused"})
 public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 {
     private static final long serialVersionUID = 3813416489627785478L;
+
     protected transient AcrolinxSidebarJFX sidebarJFX;
-    protected transient final AcrolinxStorage storage;
-
-    protected transient final AcrolinxIntegration integration;
-
-    protected transient final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
+    protected final transient AcrolinxStorage storage;
+    protected final transient AcrolinxIntegration integration;
+    protected final transient Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
 
     public AcrolinxSidebarSwing(final AcrolinxIntegration integration)
     {
@@ -195,7 +192,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
     public ExternalContent getLastCheckedExternalContent()
     {
-        if(sidebarJFX != null) {
+        if (sidebarJFX != null) {
             return sidebarJFX.getLastCheckedExternalContent();
         }
         return null;

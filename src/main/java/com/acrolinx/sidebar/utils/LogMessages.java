@@ -44,5 +44,4 @@ public class LogMessages
     {
         logger.info("Request replace range.");
     }
-
 }

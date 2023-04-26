@@ -11,11 +11,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
-public class Lookup
+public final class Lookup
 {
     private Lookup()
     {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException();
     }
 
     public static List<OffsetAlign> createOffsetMappingArray(List<DiffMatchPatch.Diff> diffs)
