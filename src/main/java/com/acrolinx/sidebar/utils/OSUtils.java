@@ -5,7 +5,6 @@ package com.acrolinx.sidebar.utils;
 /**
  * Retrieves the current OS.
  */
-
 public final class OSUtils
 {
     public enum EnumOS
@@ -30,14 +29,14 @@ public final class OSUtils
 
     public static EnumOS getOS()
     {
-        String string = System.getProperty("os.name").toLowerCase();
+        String osNameString = System.getProperty("os.name").toLowerCase();
 
-        if (string.contains("mac")) {
+        if (osNameString.contains("mac")) {
             return EnumOS.MACOS;
-        } else if (string.contains("win")) {
+        } else if (osNameString.contains("win")) {
             return EnumOS.WINDOWS;
-        } else if (string.contains("linux") || string.contains("sunos") || string.contains("solaris")
-                || string.contains("unix")) {
+        } else if (osNameString.contains("linux") || osNameString.contains("sunos") || osNameString.contains("solaris")
+                || osNameString.contains("unix")) {
             return EnumOS.LINUX;
         } else {
             return EnumOS.UNKNOWN;
