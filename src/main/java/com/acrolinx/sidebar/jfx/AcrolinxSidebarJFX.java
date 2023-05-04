@@ -39,11 +39,11 @@ import netscape.javascript.JSObject;
  */
 public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
-    protected static final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
+    private static final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
 
-    protected WebView webView = new WebView();
-    protected AcrolinxSidebarPlugin acrolinxSidebarPlugin;
-    protected final AcrolinxIntegration integration;
+    private WebView webView = new WebView();
+    private AcrolinxSidebarPlugin acrolinxSidebarPlugin;
+    private final AcrolinxIntegration integration;
 
     public AcrolinxSidebarJFX(final AcrolinxIntegration integration)
     {
@@ -237,13 +237,12 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     @Override
     public void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions)
     {
-        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).initBatchCheck(batchCheckRequestOptions);
+        acrolinxSidebarPlugin.initBatchCheck(batchCheckRequestOptions);
     }
 
     @Override
     public void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options)
     {
-        ((AcrolinxSidebarPlugin) acrolinxSidebarPlugin).checkDocumentInBatch(documentIdentifier, documentContent,
-                options);
+        acrolinxSidebarPlugin.checkDocumentInBatch(documentIdentifier, documentContent, options);
     }
 }
