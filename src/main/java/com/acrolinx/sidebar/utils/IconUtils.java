@@ -10,7 +10,7 @@ import java.net.URL;
 /**
  * Use this class to retrieve the Acrolinx Logo from package resources.
  */
-public class IconUtils
+public final class IconUtils
 {
     public static InputStream getAcrolinxIcon_16_16_AsStream()
     {
@@ -66,5 +66,10 @@ public class IconUtils
     public static Image getAcrolinxIcon_24_24()
     {
         return Toolkit.getDefaultToolkit().getImage(getAcrolinxIcon_24_24_URL());
+    }
+
+    private IconUtils()
+    {
+        throw new IllegalStateException();
     }
 }

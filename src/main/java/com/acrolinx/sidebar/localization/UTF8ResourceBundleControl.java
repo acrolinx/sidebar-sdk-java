@@ -16,7 +16,6 @@ import java.util.ResourceBundle;
 /*
  * https://github.com/joconner/enhanced-resources
  */
-
 class UTF8ResourceBundleControl extends ResourceBundle.Control
 {
     UTF8ResourceBundleControl()
@@ -31,6 +30,7 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
     {
         final String bundleName = toBundleName(baseName, locale);
         ResourceBundle bundle = null;
+
         if (format.equals("java.class")) {
             bundle = super.newBundle(baseName, locale, format, loader, reload);
         } else if (format.equals("java.properties")) {
@@ -38,14 +38,16 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
             if (resourceName == null) {
                 return bundle;
             }
-            InputStream stream;
+
+            InputStream inputStream;
             if (reload) {
-                stream = reload(resourceName, loader);
+                inputStream = reload(resourceName, loader);
             } else {
-                stream = loader.getResourceAsStream(resourceName);
+                inputStream = loader.getResourceAsStream(resourceName);
             }
-            if (stream != null) {
-                try (Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+
+            if (inputStream != null) {
+                try (Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
                     bundle = new PropertyResourceBundle(reader);
                 }
             }
@@ -57,17 +59,18 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
 
     private static InputStream reload(final String resourceName, final ClassLoader classLoader) throws IOException
     {
-        InputStream stream = null;
         final URL url = classLoader.getResource(resourceName);
+
         if (url != null) {
-            final URLConnection connection = url.openConnection();
-            if (connection != null) {
-                // Disable caches to get fresh data for
-                // reloading.
-                connection.setUseCaches(false);
-                stream = connection.getInputStream();
+            final URLConnection urlConnection = url.openConnection();
+
+            if (urlConnection != null) {
+                // Disable caches to get fresh data for reloading.
+                urlConnection.setUseCaches(false);
+                return urlConnection.getInputStream();
             }
         }
-        return stream;
+
+        return null;
     }
 }

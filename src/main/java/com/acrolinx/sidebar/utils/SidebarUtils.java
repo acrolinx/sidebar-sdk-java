@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponent;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponentCategory;
 
-public class SidebarUtils
+public final class SidebarUtils
 {
     private static final Logger logger = LoggerFactory.getLogger(SidebarUtils.class);
 
@@ -291,5 +291,10 @@ public class SidebarUtils
     public static String getPathOfCurrentJavaJRE()
     {
         return System.getProperty("java.home");
+    }
+
+    private SidebarUtils()
+    {
+        throw new IllegalStateException();
     }
 }

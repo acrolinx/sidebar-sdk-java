@@ -9,9 +9,10 @@ import com.acrolinx.sidebar.pojo.settings.InputFormat;
 
 public class CheckResult
 {
+    public static final String ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME = "acrolinxCheckData";
+
     private final CheckedDocumentPart checkedDocumentPart;
     private Map<String, String> embedCheckInformation;
-    public final static String ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME = "acrolinxCheckData";
     private String inputFormat;
 
     public CheckResult(final CheckedDocumentPart checkedDocumentPart)

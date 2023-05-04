@@ -58,8 +58,9 @@ import netscape.javascript.JSObject;
  */
 abstract class AcrolinxSidebarPlugin
 {
+    static final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarPlugin.class);
+
     final AcrolinxIntegration client;
-    final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarPlugin.class);
     private final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocument = new AtomicReference<>("");
     private final AtomicReference<ExternalContent> lastCheckedExternalContent = new AtomicReference<>();
@@ -70,11 +71,11 @@ abstract class AcrolinxSidebarPlugin
     private final AtomicReference<String> lastCheckedDocumentReference = new AtomicReference<>("");
     private final AtomicReference<List<IntRange>> checkSelectionRange = new AtomicReference<>();
     private final AtomicReference<AcrolinxSidebarInitParameter> initParameters = new AtomicReference<>();
-    protected Instant checkStartedTime;
+    Instant checkStartedTime;
     private WebView webView;
-    protected final ExecutorService executorService = Executors.newFixedThreadPool(1);
+    final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
-    protected AcrolinxSidebarPlugin(final AcrolinxIntegration client, final WebView webView)
+    AcrolinxSidebarPlugin(final AcrolinxIntegration client, final WebView webView)
     {
         Preconditions.checkNotNull(client, "Workspace should not be null");
         Preconditions.checkNotNull(client.getEditorAdapter(), "EditorAdapter should not be null");
@@ -85,7 +86,7 @@ abstract class AcrolinxSidebarPlugin
             try {
                 getWindowObject().setMember("acrolinxPlugin", this);
             } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
             }
         });
     }
@@ -96,7 +97,7 @@ abstract class AcrolinxSidebarPlugin
         return checkedDocumentParts.stream().map(CheckedDocumentPart::getAsJS).collect(Collectors.joining(", "));
     }
 
-    protected JSObject getWindowObject()
+    JSObject getWindowObject()
     {
         logger.info("Get window object from webview...");
         JSObject jsobj = null;
@@ -175,7 +176,7 @@ abstract class AcrolinxSidebarPlugin
                 jsObject.setMember(nameVariableCheckText, checkContent.getContent());
                 jsObject.eval("acrolinxSidebar.checkGlobal(checkText," + checkOptions.toString() + ");");
             } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
                 onGlobalCheckRejected();
             }
         });
@@ -188,7 +189,7 @@ abstract class AcrolinxSidebarPlugin
             try {
                 getWindowObject().eval("acrolinxSidebar.showMessage(" + sidebarMessage.toString() + ")");
             } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
             }
         });
     }
@@ -269,7 +270,7 @@ abstract class AcrolinxSidebarPlugin
                 externalContent);
     }
 
-    protected CheckContent getCheckContentFromClient()
+    CheckContent getCheckContentFromClient()
     {
         final InputAdapterInterface editorAdapter = client.getEditorAdapter();
         return new CheckContent(editorAdapter.getContent(), editorAdapter.getExternalContent());
@@ -282,7 +283,7 @@ abstract class AcrolinxSidebarPlugin
             try {
                 getWindowObject().eval("acrolinxSidebar.onGlobalCheckRejected();");
             } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
             }
         });
     }
@@ -294,7 +295,7 @@ abstract class AcrolinxSidebarPlugin
             try {
                 getWindowObject().eval("acrolinxSidebar.invalidateRanges([" + js + "])");
             } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
             }
         });
     }
@@ -357,7 +358,7 @@ abstract class AcrolinxSidebarPlugin
                 final JSObject windowObject = getWindowObject();
                 windowObject.eval("acrolinxSidebar.initBatchCheck(" + batchCheckRequestOptions.toString() + ")");
             } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
             }
         });
     }
@@ -376,7 +377,7 @@ abstract class AcrolinxSidebarPlugin
                 jsObject.eval("acrolinxSidebar.checkDocumentInBatch(documentIdentifier, documentContent, "
                         + options.toString() + ");");
             } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
             }
         });
     }

@@ -39,10 +39,11 @@ import netscape.javascript.JSObject;
  */
 public class AcrolinxSidebarJFX implements AcrolinxSidebar
 {
+    protected static final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
+
     protected WebView webView = new WebView();
     protected AcrolinxSidebarPlugin acrolinxSidebarPlugin;
     protected final AcrolinxIntegration integration;
-    protected final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarJFX.class);
 
     public AcrolinxSidebarJFX(final AcrolinxIntegration integration)
     {

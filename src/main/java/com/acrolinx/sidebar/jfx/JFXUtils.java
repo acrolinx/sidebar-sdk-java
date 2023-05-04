@@ -4,7 +4,7 @@ package com.acrolinx.sidebar.jfx;
 
 import javafx.application.Platform;
 
-public class JFXUtils
+public final class JFXUtils
 {
     public static void invokeInJFXThread(Runnable runnable)
     {
@@ -13,5 +13,10 @@ public class JFXUtils
         } else {
             Platform.runLater(runnable);
         }
+    }
+
+    private JFXUtils()
+    {
+        throw new IllegalStateException();
     }
 }

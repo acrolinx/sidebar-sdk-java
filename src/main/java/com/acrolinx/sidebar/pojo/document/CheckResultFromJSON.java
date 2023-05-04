@@ -12,7 +12,8 @@ import com.acrolinx.sidebar.pojo.SidebarError;
 
 public class CheckResultFromJSON
 {
-    private final Logger logger = LoggerFactory.getLogger(CheckResultFromJSON.class);
+    private static final Logger logger = LoggerFactory.getLogger(CheckResultFromJSON.class);
+
     private CheckedDocumentPartFromJSON checkedPart;
     private SidebarError error;
     private CheckInformationKeyValuePairFromJSON[] embedCheckInformation;

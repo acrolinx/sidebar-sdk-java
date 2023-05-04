@@ -9,8 +9,9 @@ import org.apache.commons.text.TextStringBuilder;
 public class IntRange implements Serializable
 {
     private static final long serialVersionUID = -2808883234003742075L;
-    final int min;
-    final int max;
+
+    private final int min;
+    private final int max;
 
     public IntRange(final int number1, final int number2)
     {

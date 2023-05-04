@@ -6,7 +6,6 @@ package com.acrolinx.sidebar;
  * Functionality only available with sidebar version 14.4.3
  *
  * Use to overwrite the browser's local storage.
- *
  */
 public interface AcrolinxStorage
 {
