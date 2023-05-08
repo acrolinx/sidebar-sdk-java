@@ -594,8 +594,8 @@ class LookupForResolvedEditorViewsTest
     }
 
     /***
-     * This test covers the rare edge case where the contentnode's content appears twice in the
-     * document and the matchcontent also appears once in referenced content.
+     * This test covers the rare edge case where the contentnode's content appears twice in the document
+     * and the matchcontent also appears once in referenced content.
      */
     @Test
     void testLookupOnFileWithRepeatedSameContentAndReferences()

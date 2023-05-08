@@ -10,8 +10,8 @@ import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 public abstract class LookupRanges
 {
     /**
-     * Abstract method used to get the current location of matches. As the location within the
-     * current document might have changed since the last check.
+     * Abstract method used to get the current location of matches. As the location within the current
+     * document might have changed since the last check.
      *
      * @param checkedText The current text as it was when a check was performed on it.
      * @param changedText The current text within the editor.

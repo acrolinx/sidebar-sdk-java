@@ -6,12 +6,12 @@ package com.acrolinx.sidebar.jfx;
 
 import java.time.Instant;
 
+import javafx.scene.web.WebView;
+
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.document.CheckContent;
 import com.acrolinx.sidebar.utils.LogMessages;
-
-import javafx.scene.web.WebView;
 
 public class AcrolinxSidebarPluginWithoutOptions extends AcrolinxSidebarPlugin
 {

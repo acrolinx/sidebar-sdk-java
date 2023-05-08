@@ -5,6 +5,9 @@ package com.acrolinx.sidebar.jfx.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.control.IndexRange;
+import javafx.scene.control.TextArea;
+
 import com.acrolinx.sidebar.InputAdapterInterface;
 import com.acrolinx.sidebar.lookup.MatchComparator;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
@@ -12,9 +15,6 @@ import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
-
-import javafx.scene.control.IndexRange;
-import javafx.scene.control.TextArea;
 
 public class TextAreaAdapter implements InputAdapterInterface
 {

@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import javafx.scene.web.WebView;
+
 import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
@@ -50,7 +52,6 @@ import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.google.common.base.Preconditions;
 
-import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 
 /**

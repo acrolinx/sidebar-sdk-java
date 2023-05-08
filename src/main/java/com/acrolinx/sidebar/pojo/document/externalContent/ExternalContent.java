@@ -21,7 +21,7 @@ public class ExternalContent
     private final List<ExternalContentField> xincludeReferences;
 
     public ExternalContent(List<ExternalContentField> textReplacements, List<ExternalContentField> entities,
-                           List<ExternalContentField> ditaReferences, List<ExternalContentField> xincludeReferences)
+            List<ExternalContentField> ditaReferences, List<ExternalContentField> xincludeReferences)
     {
         this.textReplacements = textReplacements;
         this.entities = entities;
@@ -44,11 +44,15 @@ public class ExternalContent
         return ditaReferences;
     }
 
-    public List<ExternalContentField> getXIncludeReferences() { return xincludeReferences; }
+    public List<ExternalContentField> getXIncludeReferences()
+    {
+        return xincludeReferences;
+    }
 
-    public List<ExternalContentField> getAll() {
-        List<ExternalContentField> flattenedList =  new ArrayList<>();
-        Stream.of(textReplacements,entities,ditaReferences,xincludeReferences).forEach(flattenedList::addAll);
+    public List<ExternalContentField> getAll()
+    {
+        List<ExternalContentField> flattenedList = new ArrayList<>();
+        Stream.of(textReplacements, entities, ditaReferences, xincludeReferences).forEach(flattenedList::addAll);
         return flattenedList;
     }
 

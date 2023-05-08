@@ -68,8 +68,8 @@ public final class LoggingUtils
     }
 
     /**
-     * Call this method on your integration's startup. This will initialize the logs as specified in
-     * the Acrolinx Coding Guidance.
+     * Call this method on your integration's startup. This will initialize the logs as specified in the
+     * Acrolinx Coding Guidance.
      * 
      * @param applicationName the integration's name e.g. AcrolinxForEditorName
      */

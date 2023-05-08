@@ -2,22 +2,21 @@
 
 package com.acrolinx.sidebar.swt;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
-import com.acrolinx.sidebar.localization.LocalizedStrings;
-import com.acrolinx.sidebar.localization.Localizer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Composite;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.AcrolinxStorage;
+import com.acrolinx.sidebar.localization.LocalizedStrings;
+import com.acrolinx.sidebar.localization.Localizer;
 import com.acrolinx.sidebar.utils.AcrolinxException;
-import org.eclipse.swt.widgets.Composite;
 
 // TODO: Hide default view on addition of first sidebar.
 public class AcrolinxMultiViewSidebarSWT
@@ -117,8 +116,8 @@ public class AcrolinxMultiViewSidebarSWT
     }
 
     /**
-     * @return Get Active sidebar from the list. Returns sidebar with visiblity set to true. Null if
-     *         not found.
+     * @return Get Active sidebar from the list. Returns sidebar with visiblity set to true. Null if not
+     *         found.
      */
     public AcrolinxSidebarSWT getActiveSidebar()
     {
@@ -131,13 +130,14 @@ public class AcrolinxMultiViewSidebarSWT
     }
 
     /**
-     * Creates default empty view with CLabel informing the user about having to open a file
-     * before being able to interact with acrolinx
+     * Creates default empty view with CLabel informing the user about having to open a file before
+     * being able to interact with acrolinx
      */
-    private void createDefaultSidebar() {
-        noFileOpenedLabel = new CLabel (this.container, SWT.WRAP);
+    private void createDefaultSidebar()
+    {
+        noFileOpenedLabel = new CLabel(this.container, SWT.WRAP);
         noFileOpenedLabel.setText(Localizer.getInstance().getText(LocalizedStrings.NO_CHECK_CONTENT_AVAILABLE_MESSAGE));
-        noFileOpenedLabel.setMargins(5,5,0,5);
+        noFileOpenedLabel.setMargins(5, 5, 0, 5);
     }
 
     /**

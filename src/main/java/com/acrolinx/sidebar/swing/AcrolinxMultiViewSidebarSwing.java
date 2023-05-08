@@ -9,16 +9,6 @@ import java.awt.event.ComponentListener;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.acrolinx.sidebar.AcrolinxIntegration;
-import com.acrolinx.sidebar.AcrolinxMultiViewSidebarInterface;
-import com.acrolinx.sidebar.AcrolinxStorage;
-import com.acrolinx.sidebar.jfx.AcrolinxSidebarJFX;
-import com.acrolinx.sidebar.jfx.JFXUtils;
-import com.acrolinx.sidebar.localization.LocalizedStrings;
-import com.acrolinx.sidebar.localization.Localizer;
-import com.acrolinx.sidebar.utils.AcrolinxException;
-import com.acrolinx.sidebar.utils.IconUtils;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -32,6 +22,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
+
+import com.acrolinx.sidebar.AcrolinxIntegration;
+import com.acrolinx.sidebar.AcrolinxMultiViewSidebarInterface;
+import com.acrolinx.sidebar.AcrolinxStorage;
+import com.acrolinx.sidebar.jfx.AcrolinxSidebarJFX;
+import com.acrolinx.sidebar.jfx.JFXUtils;
+import com.acrolinx.sidebar.localization.LocalizedStrings;
+import com.acrolinx.sidebar.localization.Localizer;
+import com.acrolinx.sidebar.utils.AcrolinxException;
+import com.acrolinx.sidebar.utils.IconUtils;
 
 public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implements AcrolinxMultiViewSidebarInterface
 {

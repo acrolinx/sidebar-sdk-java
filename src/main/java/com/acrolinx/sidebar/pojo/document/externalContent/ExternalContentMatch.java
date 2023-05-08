@@ -1,32 +1,36 @@
 /**
- *  Copyright (c) 2022-present Acrolinx GmbH
+ * Copyright (c) 2022-present Acrolinx GmbH
  */
-package com.acrolinx.sidebar.pojo.document.externalContent;
 
-import com.acrolinx.sidebar.pojo.document.IntRange;
-import com.google.gson.Gson;
+package com.acrolinx.sidebar.pojo.document.externalContent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExternalContentMatch {
+import com.acrolinx.sidebar.pojo.document.IntRange;
+import com.google.gson.Gson;
+
+public class ExternalContentMatch
+{
     private final String id;
     private final String type;
     private final int originalBegin;
     private final int originalEnd;
     private List<ExternalContentMatch> externalContentMatches;
 
-
-    public ExternalContentMatch(String id, String type, int originalBegin, int originalEnd, List<ExternalContentMatch> externalContentMatches) {
+    public ExternalContentMatch(String id, String type, int originalBegin, int originalEnd,
+            List<ExternalContentMatch> externalContentMatches)
+    {
         this(id, type, originalBegin, originalEnd);
-        if(externalContentMatches != null) {
+        if (externalContentMatches != null) {
             this.externalContentMatches = externalContentMatches;
         } else {
             this.externalContentMatches = new ArrayList<>();
         }
     }
 
-    public ExternalContentMatch(String id, String type, int originalBegin, int originalEnd) {
+    public ExternalContentMatch(String id, String type, int originalBegin, int originalEnd)
+    {
         this.id = id;
         this.type = type;
         this.originalBegin = originalBegin;
@@ -34,11 +38,13 @@ public class ExternalContentMatch {
         this.externalContentMatches = new ArrayList<>();
     }
 
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
-    public String getType() {
+    public String getType()
+    {
         return type;
     }
 
@@ -49,18 +55,21 @@ public class ExternalContentMatch {
 
     public ExternalContentMatch setRange(final IntRange range)
     {
-        return new ExternalContentMatch(this.id, this.type, range.getMinimumInteger(), range.getMaximumInteger(), this.getExternalContentMatches());
+        return new ExternalContentMatch(this.id, this.type, range.getMinimumInteger(), range.getMaximumInteger(),
+                this.getExternalContentMatches());
     }
 
-    public List<ExternalContentMatch> getExternalContentMatches() {
+    public List<ExternalContentMatch> getExternalContentMatches()
+    {
         if (externalContentMatches == null) {
             externalContentMatches = new ArrayList<>();
         }
         return externalContentMatches;
     }
 
-    public void setExternalContentMatches( List<ExternalContentMatch> newList) {
-        if(newList == null) {
+    public void setExternalContentMatches(List<ExternalContentMatch> newList)
+    {
+        if (newList == null) {
             this.externalContentMatches = new ArrayList<>();
         } else {
             this.externalContentMatches = newList;
