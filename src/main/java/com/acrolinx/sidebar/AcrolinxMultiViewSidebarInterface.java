@@ -10,7 +10,6 @@ import com.acrolinx.sidebar.utils.AcrolinxException;
  * This interface needs be implemented to support multiple sidebars. Each open document will have
  * its own corresponding sidebar. These methods should be called by the integration whenever a new
  * editor is opened, activated or closed.
- *
  */
 public interface AcrolinxMultiViewSidebarInterface
 {

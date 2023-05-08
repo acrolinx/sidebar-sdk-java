@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 /**
  * For internal use.
  */
-public class LogMessages
+public final class LogMessages
 {
     public static void logJavaVersionAndUIFramework(Logger logger, String uiFramework)
     {
@@ -32,7 +32,8 @@ public class LogMessages
 
     public static void logCheckFinishedWithDurationTime(Logger logger, long durationTimeInMS)
     {
-        logger.info("Check finished. Check took {}", DurationFormatUtils.formatDuration(durationTimeInMS, "HH:mm:ss,SSS"));
+        logger.info("Check finished. Check took {}",
+                DurationFormatUtils.formatDuration(durationTimeInMS, "HH:mm:ss,SSS"));
     }
 
     public static void logSelectingRange(Logger logger)
@@ -43,5 +44,10 @@ public class LogMessages
     public static void logReplacingRange(Logger logger)
     {
         logger.info("Request replace range.");
+    }
+
+    private LogMessages()
+    {
+        throw new IllegalStateException();
     }
 }

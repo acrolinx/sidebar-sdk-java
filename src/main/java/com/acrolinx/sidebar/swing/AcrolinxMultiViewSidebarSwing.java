@@ -9,29 +9,34 @@ import java.awt.event.ComponentListener;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.acrolinx.sidebar.localization.LocalizedStrings;
-import com.acrolinx.sidebar.localization.Localizer;
-import com.acrolinx.sidebar.utils.IconUtils;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.*;
-
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.AcrolinxMultiViewSidebarInterface;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.jfx.AcrolinxSidebarJFX;
 import com.acrolinx.sidebar.jfx.JFXUtils;
+import com.acrolinx.sidebar.localization.LocalizedStrings;
+import com.acrolinx.sidebar.localization.Localizer;
 import com.acrolinx.sidebar.utils.AcrolinxException;
+import com.acrolinx.sidebar.utils.IconUtils;
+
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
 
 public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implements AcrolinxMultiViewSidebarInterface
 {
+    private static final long serialVersionUID = 1L;
+
     private final Map<String, AcrolinxSidebarJFX> sidebars = new ConcurrentHashMap<>();
 
     /**
@@ -169,7 +174,8 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
         }
     }
 
-    public void showEmptyMessage() {
+    public void showEmptyMessage()
+    {
         JFXUtils.invokeInJFXThread(() -> {
             Scene scene = getScene();
             if (scene == null) {
@@ -180,7 +186,8 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             Image acrolinxCheckIcon = new Image(IconUtils.getAcrolinxIcon_48_48_AsStream());
             ImageView imageView = new ImageView(acrolinxCheckIcon);
 
-            Label label = new Label(Localizer.getInstance().getText(LocalizedStrings.NO_CHECK_CONTENT_AVAILABLE_MESSAGE));
+            Label label = new Label(
+                    Localizer.getInstance().getText(LocalizedStrings.NO_CHECK_CONTENT_AVAILABLE_MESSAGE));
             label.setTextAlignment(TextAlignment.CENTER);
             label.setWrapText(true);
             Font defaultFont = Font.getDefault();
@@ -189,7 +196,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             VBox messageContainer = new VBox();
             messageContainer.setAlignment(Pos.CENTER);
             messageContainer.getChildren().addAll(imageView, label);
-            messageContainer.setPadding(new Insets(0,defaultFont.getSize(),0, defaultFont.getSize()));
+            messageContainer.setPadding(new Insets(0, defaultFont.getSize(), 0, defaultFont.getSize()));
 
             scene.setRoot(messageContainer);
             setVisible(true);

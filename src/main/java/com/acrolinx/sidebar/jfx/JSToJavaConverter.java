@@ -160,9 +160,9 @@ final class JSToJavaConverter
             final String code = error.getMember(CODE).toString();
             final String message = error.getMember(MESSAGE).toString();
             return Optional.of(new SidebarError(message, code));
-        } else {
-            return Optional.empty();
         }
+
+        return Optional.empty();
     }
 
     static List<ExternalContentMatch> getExternalContentMatchFromJSObject(final JSObject o)

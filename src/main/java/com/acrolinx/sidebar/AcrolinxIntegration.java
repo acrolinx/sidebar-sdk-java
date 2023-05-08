@@ -17,7 +17,6 @@ import com.acrolinx.sidebar.pojo.settings.CheckOptions;
  *
  * Remember to activate logging by using LoggingUtils.setupDefaultLogging() on application/plugin
  * start.
- *
  */
 public interface AcrolinxIntegration
 {

@@ -17,10 +17,11 @@ public class FragmentContentHandler extends DefaultHandler
 {
     private static String markerXpath;
     private static List<String> documentXpaths = new ArrayList<>();
+
     private String xPath = "/";
-    private XMLReader xmlReader;
+    private final XMLReader xmlReader;
     private FragmentContentHandler parent;
-    private Map<String, Integer> elementNameCount = new HashMap<>();
+    private final Map<String, Integer> elementNameCount = new HashMap<>();
 
     public FragmentContentHandler(XMLReader xmlReader)
     {

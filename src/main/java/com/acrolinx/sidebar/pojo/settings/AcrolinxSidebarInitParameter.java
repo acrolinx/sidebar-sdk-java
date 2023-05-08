@@ -30,7 +30,7 @@ public class AcrolinxSidebarInitParameter
     private PluginSupportedParameters supported;
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarInitParameter.class);
 
-    private AcrolinxSidebarInitParameter(final AcrolinxSidebarInitParameterBuilder builder)
+    AcrolinxSidebarInitParameter(final AcrolinxSidebarInitParameterBuilder builder)
     {
         this.serverAddress = builder.serverAddress;
         this.clientSignature = builder.clientSignature;
@@ -147,19 +147,19 @@ public class AcrolinxSidebarInitParameter
 
     public static class AcrolinxSidebarInitParameterBuilder
     {
-        private String serverAddress;
-        private final String clientSignature;
-        private String sidebarUrl;
-        private String clientLocale;
-        private final List<SoftwareComponent> clientComponents;
-        private boolean showServerSelector;
-        private CheckSettings checkSettings;
-        private CheckSettings defaultCheckSettings;
-        private boolean enableSingleSignOn;
-        private boolean enforceHTTPS;
-        private String minimumSidebarVersion;
-        private PluginSupportedParameters supported;
-        private int minimumJavaVersion;
+        String serverAddress;
+        final String clientSignature;
+        String sidebarUrl;
+        String clientLocale;
+        final List<SoftwareComponent> clientComponents;
+        boolean showServerSelector;
+        CheckSettings checkSettings;
+        CheckSettings defaultCheckSettings;
+        boolean enableSingleSignOn;
+        boolean enforceHTTPS;
+        String minimumSidebarVersion;
+        PluginSupportedParameters supported;
+        int minimumJavaVersion;
 
         /**
          * Class to build the parameters to initialize the Acrolinx Sidebar. Two parameters have to

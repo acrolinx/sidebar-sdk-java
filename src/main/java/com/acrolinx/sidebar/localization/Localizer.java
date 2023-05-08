@@ -17,10 +17,11 @@ import com.google.common.base.Preconditions;
  */
 public class Localizer
 {
+    private static final Logger logger = LoggerFactory.getLogger(Localizer.class);
+
     private static Localizer instance;
     private Locale currentLocale;
     private ResourceBundle resourceBundle;
-    final private Logger logger = LoggerFactory.getLogger(Localizer.class);
 
     protected Localizer()
     {
@@ -29,8 +30,10 @@ public class Localizer
 
     public static Localizer getInstance()
     {
-        if (instance == null)
+        if (instance == null) {
             instance = new Localizer();
+        }
+
         return instance;
     }
 
@@ -42,14 +45,14 @@ public class Localizer
     public void changeLocale(Locale locale)
     {
         Locale.setDefault(locale);
+
         try {
             ResourceBundle.Control utf8Control = new UTF8ResourceBundleControl();
             this.resourceBundle = ResourceBundle.getBundle("localization/JavaSDK", locale, utf8Control);
             this.currentLocale = locale;
             logger.debug("Locale changed to: {}", locale);
         } catch (MissingResourceException e) {
-            logger.error("Could not find locale resources.");
-            logger.error(e.getMessage());
+            logger.error("Could not find locale resources", e);
         }
     }
 
@@ -74,8 +77,8 @@ public class Localizer
 
         if (resourceBundle.containsKey(key)) {
             return resourceBundle.getString(key);
-        } else {
-            return key;
         }
+
+        return key;
     }
 }

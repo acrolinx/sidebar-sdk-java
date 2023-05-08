@@ -5,7 +5,7 @@ package com.acrolinx.sidebar.pojo.settings;
 public class PluginSupportedParameters
 {
     private final boolean checkSelection;
-    private boolean supportsBatchChecks;
+    private final boolean supportsBatchChecks;
 
     /**
      * This is supported only for minimum sidebar version 14.5.0.

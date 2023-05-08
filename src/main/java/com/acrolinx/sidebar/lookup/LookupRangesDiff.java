@@ -22,7 +22,7 @@ import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
 public class LookupRangesDiff extends LookupRanges
 {
-    private final Logger logger = LoggerFactory.getLogger(LookupRangesDiff.class);
+    private static final Logger logger = LoggerFactory.getLogger(LookupRangesDiff.class);
 
     @Override
     public Optional<List<? extends AbstractMatch>> getMatchesWithCorrectedRanges(String checkedText, String changedText,
@@ -53,7 +53,7 @@ public class LookupRangesDiff extends LookupRanges
             ExternalContent checkedExternalContent, ExternalContent changedExternalContent,
             List<? extends AbstractMatch> matches)
     {
-        return matches.stream().map((match) -> {
+        return matches.stream().map(match -> {
             if (!(match instanceof AcrolinxMatch))
                 return match;
             AcrolinxMatch acrolinxMatch = (AcrolinxMatch) match;
@@ -77,7 +77,7 @@ public class LookupRangesDiff extends LookupRanges
         List<ExternalContentField> checkedExternalContent = checkedText.getAll();
         List<ExternalContentField> changedExternalContent = changedText.getAll();
 
-        return matches.stream().map((match) -> {
+        return matches.stream().map(match -> {
             if (!match.getExternalContentMatches().isEmpty()) {
                 List<ExternalContentMatch> newMatches = getExternalContentMatchesWithCorrectedRanges(
                         match.getExternalContentMatches(), checkedText, changedText);
@@ -111,10 +111,10 @@ public class LookupRangesDiff extends LookupRanges
 
         if (correctedMatch.isPresent()) {
             return match.setRange(correctedMatch.get());
-        } else {
-            logger.warn("Could not adjust external Content Match");
-            return match;
         }
+
+        logger.warn("Could not adjust external Content Match");
+        return match;
     }
 
     public static Optional<Integer> getOffSetDiffStart(String originalVersion, String changedVersion,

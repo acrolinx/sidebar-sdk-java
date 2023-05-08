@@ -7,15 +7,15 @@ import org.slf4j.LoggerFactory;
 
 public class JSLogger
 {
-    private final Logger logger = LoggerFactory.getLogger(JSLogger.class);
+    private static final Logger logger = LoggerFactory.getLogger(JSLogger.class);
 
-    public void log(String args)
+    public void log(String message)
     {
-        logger.info(args);
+        logger.info(message);
     }
 
-    public void error(String args)
+    public void error(String message)
     {
-        logger.error(args);
+        logger.error(message);
     }
 }

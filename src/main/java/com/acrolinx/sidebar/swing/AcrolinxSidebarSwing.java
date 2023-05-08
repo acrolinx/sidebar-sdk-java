@@ -40,11 +40,11 @@ import javafx.scene.web.WebView;
 public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 {
     private static final long serialVersionUID = 3813416489627785478L;
+    protected static final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
 
     protected transient AcrolinxSidebarJFX sidebarJFX;
     protected final transient AcrolinxStorage storage;
     protected final transient AcrolinxIntegration integration;
-    protected final transient Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
 
     public AcrolinxSidebarSwing(final AcrolinxIntegration integration)
     {

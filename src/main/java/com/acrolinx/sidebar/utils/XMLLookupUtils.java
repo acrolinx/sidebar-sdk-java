@@ -4,18 +4,19 @@
 
 package com.acrolinx.sidebar.utils;
 
-import com.acrolinx.sidebar.pojo.document.IntRange;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.parser.Parser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.*;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
-import javax.xml.parsers.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -26,15 +27,24 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 
-public class XMLLookupUtils
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
+import com.acrolinx.sidebar.pojo.document.IntRange;
+
+public final class XMLLookupUtils
 {
     private static final Logger logger = LoggerFactory.getLogger(XMLLookupUtils.class);
 
@@ -85,15 +95,17 @@ public class XMLLookupUtils
             endOffset = documentXML.indexOf(endTag) - startTag.length();
             documentXML = documentXML.replace(startTag, "").replace(endTag, "");
 
-
             String startTagInXML = "<" + nodeName + (nodeHasAttributes ? " " : ">");
-            final int occurrencesOfStartTag = StringUtils.countMatches(documentXML.substring(0, startOffset), startTagInXML);
+            final int occurrencesOfStartTag = StringUtils.countMatches(documentXML.substring(0, startOffset),
+                    startTagInXML);
 
             String endTagInXML = "</" + nodeName + ">";
-            final int occurrencesOfEndTag = StringUtils.countMatches(documentXML.substring(0, endOffset), endTagInXML) - 1;
+            final int occurrencesOfEndTag = StringUtils.countMatches(documentXML.substring(0, endOffset), endTagInXML)
+                    - 1;
 
             startOffset = StringUtils.ordinalIndexOf(xmlContent, startTagInXML, occurrencesOfStartTag + 1);
-            endOffset = StringUtils.ordinalIndexOf(xmlContent, endTagInXML, occurrencesOfEndTag + 1) + endTagInXML.length();
+            endOffset = StringUtils.ordinalIndexOf(xmlContent, endTagInXML, occurrencesOfEndTag + 1)
+                    + endTagInXML.length();
 
         } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException e) {
             logger.error("Unable to find offsets in XMl for xpath: {}", xpath);
@@ -243,5 +255,10 @@ public class XMLLookupUtils
         }
 
         return String.join("/", Arrays.copyOfRange(xpath1Elements, 0, shortXpathCount));
+    }
+
+    private XMLLookupUtils()
+    {
+        throw new IllegalStateException();
     }
 }

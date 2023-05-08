@@ -6,9 +6,9 @@ import com.google.gson.Gson;
 
 public class SidebarMessage
 {
-    private String type;
-    private String title;
-    private String text;
+    private final String type;
+    private final String title;
+    private final String text;
 
     public SidebarMessage(String title, String text, SidebarMessageType type)
     {
