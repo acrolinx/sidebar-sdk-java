@@ -1,3 +1,1 @@
 rootProject.name = 'sidebar-sdk'
-
-include 'spotless-sidebar-sdk-java'

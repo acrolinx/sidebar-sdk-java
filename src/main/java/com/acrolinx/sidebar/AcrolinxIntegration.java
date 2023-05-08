@@ -46,8 +46,7 @@ public interface AcrolinxIntegration
     void onInitFinished(Optional<SidebarError> initResult);
 
     /**
-     * Opens the given document in editor and notifies the sidebar that the document has been
-     * opened.
+     * Opens the given document in editor and notifies the sidebar that the document has been opened.
      */
     boolean openDocumentInEditor(String documentIdentifier);
 

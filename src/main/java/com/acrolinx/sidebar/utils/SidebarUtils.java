@@ -32,8 +32,8 @@ public final class SidebarUtils
             + LoggingUtils.getLogFileLocation() + "</body>\n" + "</html>";
 
     /**
-     * Opens the given URL in the default Browser of the current OS. Note that this method is likely
-     * to cause JVM crashes within SWT-based applications!
+     * Opens the given URL in the default Browser of the current OS. Note that this method is likely to
+     * cause JVM crashes within SWT-based applications!
      */
     public static void openWebPageInDefaultBrowser(final String url)
     {
@@ -86,8 +86,8 @@ public final class SidebarUtils
 
     /**
      * Opens the log file. For internal use. Attempts to open and preselect log file in systems file
-     * manager (only for mac os and windows). If that fails, it just shows the containing folder in
-     * the file manager.
+     * manager (only for mac os and windows). If that fails, it just shows the containing folder in the
+     * file manager.
      */
     public static void openLogFile()
     {

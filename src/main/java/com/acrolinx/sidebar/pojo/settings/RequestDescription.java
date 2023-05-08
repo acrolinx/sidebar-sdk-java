@@ -9,8 +9,8 @@ public class RequestDescription
     private final String documentReference;
 
     /**
-     * The path or filename of the document to check. In a CMS, it can be the id that is used to
-     * look up the document.
+     * The path or filename of the document to check. In a CMS, it can be the id that is used to look up
+     * the document.
      */
     public RequestDescription(String documentReference)
     {

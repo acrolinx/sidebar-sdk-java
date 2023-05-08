@@ -10,7 +10,7 @@ into different Java UI framework-based applications (JFX, Swing, and SWT).
 You can use the Maven artifact [`com.acrolinx.client:sidebar-sdk`](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20)
 to integrate Acrolinx in your Java application.
 
-See: [Getting Started with Custom Integrations](https://docs.acrolinx.com/customintegrations)
+See: [Build With Acrolinx](https://support.acrolinx.com/hc/en-us/categories/10209837818770-Build-With-Acrolinx)
 
 ## Live Demo
 
@@ -21,7 +21,7 @@ See: [Getting Started with Custom Integrations](https://docs.acrolinx.com/custom
 The Acrolinx Sidebar is designed to show up beside the window where you edit your content.
 You use it for checking, reviewing, and correcting your content.
 To get an impression what the Sidebar looks like in existing integrations, have a look at
-[Get Started With the Sidebar](https://docs.acrolinx.com/coreplatform/latest/en/the-sidebar/get-started-with-the-sidebar).
+[Sidebar Quick Start](https://support.acrolinx.com/hc/en-us/articles/10252588984594-Sidebar-Quick-Start).
 
 ## Prerequisites
 
@@ -30,12 +30,12 @@ for consulting and getting your integration certified.
 This sample works with a test license on an internal Acrolinx URL.
 This license is only meant for demonstration and developing purposes.
 Once you finished your integration, you'll have to get a license for your integration from Acrolinx.
-  
+
 Acrolinx offers different other SDKs, and examples for developing integrations.
 
 Before you start developing your own integration, you might benefit from looking into:
 
-* [Getting Started with Custom Integrations](https://docs.acrolinx.com/customintegrations),
+* [Build With Acrolinx](https://support.acrolinx.com/hc/en-us/categories/10209837818770-Build-With-Acrolinx),
 * the [Guidance for the Development of Acrolinx Integrations](https://github.com/acrolinx/acrolinx-coding-guidance),
 * the [Acrolinx SDKs](https://github.com/acrolinx?q=sdk), and
 * the [Acrolinx Demo Projects](https://github.com/acrolinx?q=demo).
@@ -55,12 +55,12 @@ Note that, if you’re using Java version 11 or later you’ll need to provide t
 * "javafx.swing"
 
 1. Just reference the Maven artifact `com.acrolinx.client:sidebar-sdk` that is available on
-   [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
-   Have a look at the [`build.gradle`](build.gradle) file if you use Gradle.
+[Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
+Have a look at the [`build.gradle`](build.gradle) file if you use Gradle.
 2. Implement:
-    + `AcrolinxIntegrationInterface`, and the
-    + `InputAdapterInterface`.
-    + The `AcrolinxSidebarInitParameterBuilder` helps you initialize the Acrolinx Sidebar.
+	+ `AcrolinxIntegrationInterface`, and the
+	+ `InputAdapterInterface`.
+	+ The `AcrolinxSidebarInitParameterBuilder` helps you initialize the Acrolinx Sidebar.
 3. Check out the [Sidebar SDK Java API Reference](https://acrolinx.github.io/sidebar-sdk-java/) for more details.
 
 ![Architecture and Interfaces](img/ArchitectureInterfaces.png)
@@ -68,25 +68,25 @@ Note that, if you’re using Java version 11 or later you’ll need to provide t
 ## SDK Features
 
 1. Support for UI-frameworks:
-    + JavaFX
-    + Swing
-    + SWT (For Windows WebView2 required for Sidebar version 15 or higher, other platforms will use default Browser)
-2. `LookupRangesDiff` - Provides [lookup](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-lookup.md)
-  functionality.
+	+ JavaFX
+	+ Swing
+	+ SWT (For Windows WebView2 required for Sidebar version 15 or higher, other platforms will use default Browser)
+2. `LookupRangesDiff` - Provides [lookup](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/text-lookup.md)
+functionality.
 3. **Start page**: Provides an interactive way to sign in to Acrolinx with built-in error handling.
 4. Provides [logging](https://github.com/acrolinx/sidebar-sdk-dotnet/blob/main/Acrolinx.Sidebar/Util/Logging/Logger.cs).
-   Logging can be activated via:
+Logging can be activated via:
 
-    ```java
-    LoggingUtils.setupLogging("AcrolinxDemoClientJFX");
-    ```
+	```java
+	LoggingUtils.setupLogging("AcrolinxDemoClientJFX");
+	```
 
 5. Provides an `AcrolinxStorage` that can be used to persist Sidebar settings in the data store of the host editors.
-   If not set, the SDK will default to the browsers LocalStorage.
-   
+If not set, the SDK will default to the browsers LocalStorage.
+
 6. Provides `MultiSidebar` usage that can be used to create and manage multiple Sidebars. Every document can get its own Sidebar.
-   Helping preserve Acrolinx results switching between documents.
-   
+Helping preserve Acrolinx results switching between documents.
+
 7. Provides Batch Checking functionality to check multiple documents with a single click.
 
 ### SWT Dependency Resolution
@@ -121,32 +121,32 @@ Follow the guidelines provided by Microsoft to install the [WebView2 Runtime](ht
 
 1. Please add new features using the `main` branch, or submit a pull request.
 
-   ```bash
-   git checkout main
-   # make your changes
-   git commit
-   git push
-   ```
+```bash
+git checkout main
+# make your changes
+git commit
+git push
+```
 
-    If your build on Travis was successful,
-    a new snapshot version will be automatically available via the [Maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
+	If your build on Travis was successful,
+	a new snapshot version will be automatically available via the [Maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
 
 2. Once you tested your new features, remove the snapshot from the `currentVersion` property in the `gradle.properties` file.
 
 3. Commit and push your changes. If all goes right, the artifact is released to
-   [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
-   Note that it might take quite a while until the new version shows up in
-   [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
+[Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
+Note that it might take quite a while until the new version shows up in
+[Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
 
-   If that build fails, you might have to sign in into
-   [Nexus Repository Manager](https://oss.sonatype.org/#welcome),
-   and drop falsely created repositories, before starting a new release build.
+If that build fails, you might have to sign in into
+[Nexus Repository Manager](https://oss.sonatype.org/#welcome),
+and drop falsely created repositories, before starting a new release build.
 
 4. Run the Gradle Task for creating a release tag and pushing it GitHub:
 
-   ```bash
-    ./gradlew createGithubReleaseTag -Dorg.ajoberstar.grgit.auth.username=someone -Dorg.ajoberstar.grgit.auth.password=mysecretpassword
-   ```
+```bash
+	./gradlew createGithubReleaseTag -Dorg.ajoberstar.grgit.auth.username=someone -Dorg.ajoberstar.grgit.auth.password=mysecretpassword
+```
 
 5. Once the tag is pushed to GitHub, TravisCI will automatically update the [API documentation on the GitHub Pages](https://acrolinx.github.io/sidebar-sdk-java/).
 
@@ -184,8 +184,8 @@ referenced found by the [Dependency-Check-Gradle](https://github.com/jeremylong/
 * The API documentation is published on the [GitHub Pages](https://acrolinx.github.io/sidebar-sdk-java/).
 * The Sidebar SDKs are based on the [Acrolinx Sidebar Interface](https://acrolinx.github.io/sidebar-interface/).
 * This project depends on (unmodified) Logback for logging.
-  Logback is Copyright (C) 1999-2017, QOS.ch and licensed under the EPL-1.0. You can get the source from [github.com/qos-ch/logback](https://github.com/qos-ch/logback).
-  The Logback website is at [logback.qos.ch/license.html](https://logback.qos.ch/license.html)
+Logback is Copyright (C) 1999-2017, QOS.ch and licensed under the EPL-1.0. You can get the source from [github.com/qos-ch/logback](https://github.com/qos-ch/logback).
+The Logback website is at [logback.qos.ch/license.html](https://logback.qos.ch/license.html)
 
 ## License
 
@@ -195,7 +195,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at:
 
-[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+[https://www.apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
