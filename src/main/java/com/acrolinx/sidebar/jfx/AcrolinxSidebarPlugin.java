@@ -122,11 +122,6 @@ abstract class AcrolinxSidebarPlugin
         return jsobj;
     }
 
-    private AcrolinxIntegration getClient()
-    {
-        return client;
-    }
-
     public synchronized void requestInit()
     {
         logger.debug("Requesting init sidebar: {}", client.getInitParameters());
@@ -230,7 +225,7 @@ abstract class AcrolinxSidebarPlugin
 
     public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches)
     {
-        final List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map((match) -> {
+        final List<CheckedDocumentPart> invalidDocumentParts = matches.stream().map(match -> {
             if (((AcrolinxMatch) match).getExternalContentMatches() != null) {
                 return new CheckedDocumentPart(currentCheckId.get(),
                         new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
@@ -381,12 +376,5 @@ abstract class AcrolinxSidebarPlugin
                 logger.error("", e);
             }
         });
-    }
-
-    private static String buildStringOfCheckedRequestOptions(
-            final List<BatchCheckRequestOptions> batchCheckRequestOptions)
-    {
-        return batchCheckRequestOptions.stream().map(BatchCheckRequestOptions::toString).collect(
-                Collectors.joining(", "));
     }
 }
