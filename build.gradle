@@ -1,7 +1,3 @@
-/*
-* Copyright (c) 2016-present Acrolinx GmbH
-*/
-
 import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.os.OperatingSystem
 import java.time.Duration
@@ -18,11 +14,7 @@ plugins {
 	id 'io.codearte.nexus-staging' version '0.21.2'
 	id 'de.marcphilipp.nexus-publish' version '0.4.0'
 
-	id 'se.patrikerdes.use-latest-versions' version '0.2.17'
-	id 'com.github.ben-manes.versions' version '0.39.0'
-
 	id "com.github.node-gradle.node" version "3.5.0"
-	id "org.owasp.dependencycheck" version "7.1.0.1"
 
 	id 'com.github.hierynomus.license' version '0.16.1'
 	id 'com.github.hierynomus.license-report' version '0.16.1'
@@ -40,7 +32,6 @@ sonar {
 	properties {
 		property "sonar.organization", "acrolinx"
 		property "sonar.projectKey", "acrolinx_sidebar-sdk-java"
-		property "sonar.exclusions", "src/main/java/com/acrolinx/sidebar/utils/DiffMatchPatch.java"
 		property "sonar.host.url", "https://sonarcloud.io"
 	}
 }
@@ -76,7 +67,6 @@ def artifactName = "sidebar-sdk"
 def fullVersion = "${project.version}.${buildVersion}"
 def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
 def isMasterBranch = false
-def suppressionUrl = "https://raw.githubusercontent.com/acrolinx/sidebar-sdk-java/main/supressions.xml"
 
 switch ( OperatingSystem.current() ) {
 	case OperatingSystem.WINDOWS:
@@ -88,13 +78,6 @@ switch ( OperatingSystem.current() ) {
 	case OperatingSystem.MAC_OS:
 		project.ext.swtNatives = "org.eclipse.swt.cocoa.macosx.x86_64"
 		break
-}
-
-dependencyCheck {
-	cveValidForHours = 1
-	format = 'HTML'
-	failBuildOnCVSS = 4.0
-	scanConfigurations = ['compile', 'runtime']
 }
 
 task getIsMasterBranch {
@@ -207,7 +190,6 @@ task javadocJar(type: Jar) {
 	from javadoc.destinationDir
 }
 
-
 artifacts {
 	archives jar
 	archives javadocJar
@@ -217,7 +199,6 @@ artifacts {
 def devId = "Acrolinx Open Source"
 def devName = "Acrolinx"
 def devEmail = "opensource@acrolinx.com"
-
 
 publishing {
 	publications {
@@ -303,7 +284,6 @@ nexusPublishing {
 	}
 }
 
-
 signing {
 	required { isReleaseBuild }
 	def signingKey = findProperty("signingKey")
@@ -315,12 +295,6 @@ signing {
 def isNonStable = { String version ->
 	def nonStableKeyword = ['alpha'].any { it -> version.toUpperCase().contains(it) }
 	return nonStableKeyword
-}
-
-tasks.named("dependencyUpdates").configure {
-	rejectVersionIf {
-		isNonStable(it.candidate.version)
-	}
 }
 
 task createGithubReleaseTag {
@@ -383,7 +357,6 @@ configurations.all {
 	}
 }
 
-
 license {
 	header rootProject.file('LICENSE_HEADER')
 	skipExistingHeaders true
@@ -399,12 +372,6 @@ task checkLicenseHeaders {
 	doLast {
 		println 'If this fails run \'./gradlew licenseFormat\' to apply missing headers'
 	}
-}
-
-dependencyCheck {
-	println("Supression URL: " + suppressionUrl);
-	println("If dependency check fails verify supression URL is correct");
-	suppressionFile=suppressionUrl
 }
 
 spotless {
@@ -431,6 +398,5 @@ licenseMain.dependsOn copyServerSelectorRessources
 licenseTest.dependsOn checkLicenseHeaders
 jar.dependsOn 'downloadLicenses'
 jar.dependsOn createVersionPropertiesFile
-check.dependsOn dependencyCheckAnalyze
 test.dependsOn javadoc
 javadocJar.dependsOn javadoc
