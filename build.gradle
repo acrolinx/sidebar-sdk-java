@@ -9,7 +9,7 @@ plugins {
 	id 'maven-publish'
 
 	id 'signing'
-	id 'org.ajoberstar.grgit' version '4.1.0'
+	id 'org.ajoberstar.grgit' version '4.1.1'
 
 	id 'io.codearte.nexus-staging' version '0.21.2'
 	id 'de.marcphilipp.nexus-publish' version '0.4.0'
@@ -21,7 +21,7 @@ plugins {
 
 	id "org.openjfx.javafxplugin" version "0.0.10" apply false
 	id "org.sonarqube" version "4.0.0.2929"
-	id 'com.diffplug.spotless' version '6.18.0'
+	id 'com.diffplug.spotless' version '6.13.0'
 }
 
 node {
