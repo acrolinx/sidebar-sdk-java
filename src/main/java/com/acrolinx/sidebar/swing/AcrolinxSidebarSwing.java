@@ -65,14 +65,12 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     protected void processKeyEvent(final KeyEvent e)
     {
         // Hack to prevent pasting event for editor (e. g. .
-        if ((e.getModifiersEx() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())
-                && (e.getKeyCode() == KeyEvent.VK_V)) {
+        if ((e.getKeyCode() == KeyEvent.VK_V)
+                && (((e.getModifiers() & KeyEvent.META_MASK) != 0) || ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0))) {
             // Consume it.
             e.consume();
-        } else {
-            super.processKeyEvent(e);
         }
-
+        super.processKeyEvent(e);
     }
 
     protected void createScene()
