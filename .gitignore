@@ -1,47 +1,22 @@
-# Android built artifacts
-*.apk
-*.ap_
-*.dex
-
-# Java build artifacts class files
-*.class
-
-# other generated files
-bin/
-gen/
-build/
-out/
-docs/
-dependency-licenses/
-node_modules/
-server-selector
-localization_iso-8859-1
-
-# local configuration file (for Android sdk path, etc)
-local.properties
-versionJavaSDK.properties
-
-# OSX files
-.DS_Store
-
-# Eclipse project files
+# Eclipse
+.settings/
 .classpath
 .project
+/bin
 
+# Gradle
+.gradle/
+**/build/
 
-# Android Studio
-*.iml
-*.ipr
-*.iws
-.idea
-.gradle
+# IntelliJ IDEA
+.idea/
+.iml
 
-workspace
+# Node
+node_modules/
 
-
-#NDK
-obj/
-
-**/.settings
-coverage
-.nyc_output
+# Other generated file
+docs/
+src/main/resources/localization_iso-8859-1/
+src/main/resources/server-selector/
+versionJavaSDK.properties
