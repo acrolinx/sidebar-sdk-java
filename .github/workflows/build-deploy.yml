@@ -50,11 +50,11 @@ jobs:
           java-version: '11'
           java-package: 'jdk+fx'
 
-      - name: Build Gradle Project
-        run: ./gradlew build
-
       - name: Check Java Version
         run: java -version
+
+      - name: Build Gradle Project
+        run: ./gradlew build
 
       - name: Sonar Scan Project
         run: ./gradlew sonar
