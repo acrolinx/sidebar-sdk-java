@@ -53,6 +53,9 @@ jobs:
       - name: Build Gradle Project
         run: ./gradlew build
 
+      - name: Check Java Version
+        run: java -version
+
       - name: Sonar Scan Project
         run: ./gradlew sonar
 
