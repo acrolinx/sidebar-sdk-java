@@ -1,15 +1,20 @@
-package com.acrolinx.sidebar.swing;
+/* Copyright (c) 2017-present Acrolinx GmbH */
 
-import com.acrolinx.sidebar.AcrolinxIntegration;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+package com.acrolinx.sidebar.swing;
 
 import java.awt.event.KeyEvent;
 
-class AcrolinxSidebarSwingTest {
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import com.acrolinx.sidebar.AcrolinxIntegration;
+
+class AcrolinxSidebarSwingTest
+{
 
     @Test
-    void processKeyEvent_PasteOnMacIsConsumed() {
+    void processKeyEvent_PasteOnMacIsConsumed()
+    {
         // Given
         KeyEvent keyEvent = Mockito.mock(KeyEvent.class);
         AcrolinxIntegration acrolinxIntegration = Mockito.mock(AcrolinxIntegration.class);
@@ -25,7 +30,8 @@ class AcrolinxSidebarSwingTest {
     }
 
     @Test
-    void processKeyEvent_PasteOnWindowsIsConsumed() {
+    void processKeyEvent_PasteOnWindowsIsConsumed()
+    {
         // Given
         KeyEvent keyEvent = Mockito.mock(KeyEvent.class);
         AcrolinxIntegration acrolinxIntegration = Mockito.mock(AcrolinxIntegration.class);
@@ -41,7 +47,8 @@ class AcrolinxSidebarSwingTest {
     }
 
     @Test
-    void processKeyEvent_AnyOtherEventIsNotConsumed() {
+    void processKeyEvent_AnyOtherEventIsNotConsumed()
+    {
         // Given
         KeyEvent keyEvent = Mockito.mock(KeyEvent.class);
         AcrolinxIntegration acrolinxIntegration = Mockito.mock(AcrolinxIntegration.class);
