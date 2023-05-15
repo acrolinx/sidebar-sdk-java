@@ -30,7 +30,7 @@ class AcrolinxSidebarSwingTest
     }
 
     @Test
-    void processKeyEventPasteOnMacIsConsumed()
+    void processKeyEvent()
     {
         // Command + V on Mac
         testPasteCommand(KeyEvent.VK_V, KeyEvent.META_MASK, true);
