@@ -12,54 +12,31 @@ import com.acrolinx.sidebar.AcrolinxIntegration;
 class AcrolinxSidebarSwingTest
 {
 
-    @Test
-    void processKeyEvent_PasteOnMacIsConsumed()
+    private static void testPasteCommand(int key, int modifier, boolean consume)
     {
-        // Given
-        KeyEvent keyEvent = Mockito.mock(KeyEvent.class);
         AcrolinxIntegration acrolinxIntegration = Mockito.mock(AcrolinxIntegration.class);
         AcrolinxSidebarSwing acrolinxSidebarSwing = new AcrolinxSidebarSwing(acrolinxIntegration);
+        KeyEvent keyEvent = Mockito.mock(KeyEvent.class);
 
-        // When
-        Mockito.when(keyEvent.getKeyCode()).thenReturn(KeyEvent.VK_V);
-        Mockito.when(keyEvent.getModifiers()).thenReturn(KeyEvent.META_MASK);
-
-        // Then
+        Mockito.when(keyEvent.getKeyCode()).thenReturn(key);
+        Mockito.when(keyEvent.getModifiers()).thenReturn(modifier);
         acrolinxSidebarSwing.processKeyEvent(keyEvent);
-        Mockito.verify(keyEvent, Mockito.atLeast(1)).consume();
+
+        if (consume) {
+            Mockito.verify(keyEvent, Mockito.times(1)).consume();
+        } else {
+            Mockito.verify(keyEvent, Mockito.times(0)).consume();
+        }
     }
 
     @Test
-    void processKeyEvent_PasteOnWindowsIsConsumed()
+    void processKeyEventPasteOnMacIsConsumed()
     {
-        // Given
-        KeyEvent keyEvent = Mockito.mock(KeyEvent.class);
-        AcrolinxIntegration acrolinxIntegration = Mockito.mock(AcrolinxIntegration.class);
-        AcrolinxSidebarSwing acrolinxSidebarSwing = new AcrolinxSidebarSwing(acrolinxIntegration);
-
-        // When
-        Mockito.when(keyEvent.getKeyCode()).thenReturn(KeyEvent.VK_V);
-        Mockito.when(keyEvent.getModifiers()).thenReturn(KeyEvent.CTRL_MASK);
-
-        // Then
-        acrolinxSidebarSwing.processKeyEvent(keyEvent);
-        Mockito.verify(keyEvent, Mockito.atLeast(1)).consume();
-    }
-
-    @Test
-    void processKeyEvent_AnyOtherEventIsNotConsumed()
-    {
-        // Given
-        KeyEvent keyEvent = Mockito.mock(KeyEvent.class);
-        AcrolinxIntegration acrolinxIntegration = Mockito.mock(AcrolinxIntegration.class);
-        AcrolinxSidebarSwing acrolinxSidebarSwing = new AcrolinxSidebarSwing(acrolinxIntegration);
-
-        // When
-        Mockito.when(keyEvent.getKeyCode()).thenReturn(KeyEvent.VK_V);
-        Mockito.when(keyEvent.getModifiers()).thenReturn(KeyEvent.SHIFT_MASK);
-
-        // Then
-        acrolinxSidebarSwing.processKeyEvent(keyEvent);
-        Mockito.verify(keyEvent, Mockito.times(0)).consume();
+        // Command + V on Mac
+        testPasteCommand(KeyEvent.VK_V, KeyEvent.META_MASK, true);
+        // CTRL + V on Mac
+        testPasteCommand(KeyEvent.VK_V, KeyEvent.CTRL_MASK, true);
+        // SHIFT + V
+        testPasteCommand(KeyEvent.VK_A, KeyEvent.SHIFT_MASK, false);
     }
 }
