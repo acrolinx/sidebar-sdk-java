@@ -5,18 +5,15 @@ package com.acrolinx.sidebar.swing;
 import java.awt.event.KeyEvent;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 
 class AcrolinxSidebarSwingTest
 {
-
     private static void testPasteCommandIsConsumed(int key, int modifier)
     {
-        AcrolinxIntegration acrolinxIntegration = Mockito.mock(AcrolinxIntegration.class);
-        AcrolinxSidebarSwing acrolinxSidebarSwing = new AcrolinxSidebarSwing(acrolinxIntegration);
+        AcrolinxSidebarSwing acrolinxSidebarSwing = Mockito.mock(AcrolinxSidebarSwing.class);
         KeyEvent keyEvent = Mockito.mock(KeyEvent.class);
 
         Mockito.when(keyEvent.getKeyCode()).thenReturn(key);
