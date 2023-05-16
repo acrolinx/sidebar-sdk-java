@@ -53,6 +53,9 @@ jobs:
       - name: Check Java Version
         run: java -version
 
+      - name: Install libgtk-3-0
+        run: sudo apt-get update && sudo apt-get install libgtk-3-0
+
       - name: Build Gradle Project
         run: ./gradlew build
 
