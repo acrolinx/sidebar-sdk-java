@@ -47,20 +47,17 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '8'
           java-package: 'jdk+fx'
 
       - name: Check Java Version
         run: java -version
 
-      - name: Install libgtk-3-0
-        run: sudo apt-get update && sudo apt-get install libgtk-3-0
-
       - name: Build Gradle Project
         run: ./gradlew build
 
-      - name: Sonar Scan Project
-        run: ./gradlew sonar
+#      - name: Sonar Scan Project
+#        run: ./gradlew sonar
 
       - name: Create JavaDoc
         run: ./gradlew javadoc
