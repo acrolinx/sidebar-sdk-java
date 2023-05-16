@@ -13,7 +13,8 @@ class AcrolinxSidebarSwingTest
 {
     private static void testPasteCommandIsConsumed(int key, int modifier)
     {
-        AcrolinxSidebarSwing acrolinxSidebarSwing = Mockito.mock(AcrolinxSidebarSwing.class);
+        AcrolinxIntegration acrolinxIntegration = Mockito.mock(AcrolinxIntegration.class);
+        AcrolinxSidebarSwing acrolinxSidebarSwing = new AcrolinxSidebarSwing(acrolinxIntegration);
         KeyEvent keyEvent = Mockito.mock(KeyEvent.class);
 
         Mockito.when(keyEvent.getKeyCode()).thenReturn(key);
