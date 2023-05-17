@@ -56,8 +56,8 @@ jobs:
       - name: Build Gradle Project
         run: ./gradlew build
 
-#      - name: Sonar Scan Project
-#        run: ./gradlew sonar
+      - name: Sonar Scan Project
+        run: ./gradlew sonar
 
       - name: Create JavaDoc
         run: ./gradlew javadoc
