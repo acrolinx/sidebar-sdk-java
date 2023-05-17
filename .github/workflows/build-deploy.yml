@@ -50,9 +50,6 @@ jobs:
           java-version: '11'
           java-package: 'jdk+fx'
 
-      - name: Check Java Version
-        run: java -version
-
       - name: Build Gradle Project
         run: ./gradlew build
 
