@@ -118,7 +118,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             final float i = (float) getWidth() / 300;
             sidebarJFX.setZoom(i);
             Scene scene;
-            if (getScene() != null) {
+            if (getScene() != null && getScene().getWidth() > 0) {
                 scene = getScene();
                 scene.setRoot(webview);
             } else {
