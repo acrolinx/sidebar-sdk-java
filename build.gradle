@@ -21,7 +21,7 @@ plugins {
 
 	id "org.openjfx.javafxplugin" version "0.0.10" apply false
 	id "org.sonarqube" version "4.0.0.2929"
-	id 'com.diffplug.spotless' version '6.18.0'
+	id 'com.diffplug.spotless' version '6.13.0'
 }
 
 switch ( OperatingSystem.current() ) {
