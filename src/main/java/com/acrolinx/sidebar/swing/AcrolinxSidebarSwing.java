@@ -66,7 +66,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     {
         // Consume all paste events (CTRL+V) in the sidebar to prevent inserting the content into the editor
         // too.
-        if ((keyEvent.getKeyCode() == KeyEvent.VK_V) && isMetaOrCtrlModifier(keyEvent)) {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_V && isMetaOrCtrlModifier(keyEvent)) {
             keyEvent.consume();
         }
         super.processKeyEvent(keyEvent);
@@ -74,8 +74,8 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
     private static boolean isMetaOrCtrlModifier(KeyEvent keyEvent)
     {
-        return ((keyEvent.getModifiers() & InputEvent.META_MASK) != 0)
-                || ((keyEvent.getModifiers() & InputEvent.CTRL_MASK) != 0);
+        return (keyEvent.getModifiers() & InputEvent.META_MASK) != 0
+                || (keyEvent.getModifiers() & InputEvent.CTRL_MASK) != 0;
     }
 
     protected void createScene()
