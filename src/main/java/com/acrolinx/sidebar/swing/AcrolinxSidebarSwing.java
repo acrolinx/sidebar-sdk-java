@@ -2,7 +2,6 @@
 
 package com.acrolinx.sidebar.swing;
 
-import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
