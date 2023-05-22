@@ -1,7 +1,7 @@
 name: Build and Deploy
 on:
   push:
-    branches: [ main, DITA_POC ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
   schedule:
@@ -55,12 +55,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      # This workflow will automatically create a dummy commit in your repo if the last commit in your repo is 50 days (default) ago.
-      # This will keep the cronjob trigger active so that it will run indefinitely without getting suspended by GitHub for inactivity.
-      # A definite commit SHA is used for hardening
-      - name: Keep Action Alive
-        uses: gautamkrishnar/keepalive-workflow@545bece52b22933e4228319348e34d61736514e1
 
       - name: Setup Java
         uses: actions/setup-java@v2
