@@ -1,5 +1,4 @@
-/* Copyright (c) 2021-present Acrolinx GmbH */
-
+/* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
 public class AcrolinxException extends Exception
