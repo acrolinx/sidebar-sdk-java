@@ -2,9 +2,9 @@
 
 package com.acrolinx.sidebar.swing;
 
-import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -62,17 +62,20 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     }
 
     @Override
-    protected void processKeyEvent(final KeyEvent e)
+    protected void processKeyEvent(final KeyEvent keyEvent)
     {
-        // Hack to prevent pasting event for editor (e. g. .
-        if ((e.getModifiersEx() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())
-                && (e.getKeyCode() == KeyEvent.VK_V)) {
-            // Consume it.
-            e.consume();
-        } else {
-            super.processKeyEvent(e);
+        // Consume all paste events (CTRL+V) in the sidebar to prevent inserting the content into the editor
+        // too.
+        if (keyEvent.getKeyCode() == KeyEvent.VK_V && isMetaOrCtrlModifier(keyEvent)) {
+            keyEvent.consume();
         }
+        super.processKeyEvent(keyEvent);
+    }
 
+    private static boolean isMetaOrCtrlModifier(KeyEvent keyEvent)
+    {
+        return (keyEvent.getModifiers() & InputEvent.META_MASK) != 0
+                || (keyEvent.getModifiers() & InputEvent.CTRL_MASK) != 0;
     }
 
     protected void createScene()
