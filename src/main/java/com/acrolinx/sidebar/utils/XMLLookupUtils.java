@@ -1,7 +1,4 @@
-/**
- * Copyright (c) 2019-present Acrolinx GmbH
- */
-
+/* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
 import java.io.ByteArrayInputStream;
