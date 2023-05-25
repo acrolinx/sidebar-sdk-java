@@ -46,7 +46,6 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration)
     {
         super(integration);
-        showEmptyMessage();
     }
 
     /**
@@ -57,7 +56,6 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration, AcrolinxStorage storage)
     {
         super(integration, storage);
-        showEmptyMessage();
     }
 
     @Override
@@ -118,7 +116,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             final float i = (float) getWidth() / 300;
             sidebarJFX.setZoom(i);
             Scene scene;
-            if (getScene() != null && getScene().getWidth() > 0) {
+            if (getScene() != null) {
                 scene = getScene();
                 scene.setRoot(webview);
             } else {
