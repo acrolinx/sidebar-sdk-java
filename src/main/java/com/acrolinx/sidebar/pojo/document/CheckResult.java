@@ -1,5 +1,4 @@
-/* Copyright (c) 2016-present Acrolinx GmbH */
-
+/* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.document;
 
 import java.util.Map;

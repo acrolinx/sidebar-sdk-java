@@ -1,5 +1,4 @@
-/* Copyright (c) 2016-present Acrolinx GmbH */
-
+/* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.lookup;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class LookupRangesDiff extends LookupRanges
     private static final Logger logger = LoggerFactory.getLogger(LookupRangesDiff.class);
 
     @Override
-    public Optional<List<AbstractMatch>> getMatchesWithCorrectedRanges(String checkedText, String changedText,
+    public Optional<List<? extends AbstractMatch>> getMatchesWithCorrectedRanges(String checkedText, String changedText,
             List<? extends AbstractMatch> matches)
     {
         List<DiffMatchPatch.Diff> diffs = Lookup.getDiffs(checkedText, changedText);
@@ -49,8 +48,9 @@ public class LookupRangesDiff extends LookupRanges
         return Optional.of(Collections.unmodifiableList(returnValues));
     }
 
-    public List<AbstractMatch> getMatchesIncludingCorrectedExternalMatches(ExternalContent checkedExternalContent,
-            ExternalContent changedExternalContent, List<? extends AbstractMatch> matches)
+    public List<? extends AbstractMatch> getMatchesIncludingCorrectedExternalMatches(
+            ExternalContent checkedExternalContent, ExternalContent changedExternalContent,
+            List<? extends AbstractMatch> matches)
     {
         return matches.stream().map(match -> {
             if (!(match instanceof AcrolinxMatch))

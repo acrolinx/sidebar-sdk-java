@@ -1,13 +1,4 @@
-/* Copyright (c) 2016-present Acrolinx GmbH */
-
-/**
- * (c) 2015 Acrolinx GmbH. All rights reserved.
- * <p>
- * Created 19.05.2015
- *
- * @author ralf
- */
-
+/* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.jfx;
 
 import java.time.Duration;

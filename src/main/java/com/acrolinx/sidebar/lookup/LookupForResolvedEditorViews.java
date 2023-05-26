@@ -1,5 +1,4 @@
-/* Copyright (c) 2017-present Acrolinx GmbH */
-
+/* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.lookup;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class LookupForResolvedEditorViews
     private final List<AbstractMatch> mappedRanges = new ArrayList<>();
     private final List<AbstractMatch> newRanges = new ArrayList<>();
 
-    public Optional<List<AbstractMatch>> matchRangesForResolvedEditorView(
+    public Optional<List<? extends AbstractMatch>> matchRangesForResolvedEditorView(
             List<? extends AbstractMatch> adjustedRangesForCurrentDocument, String currentDocumentContent,
             String resolvedViewContent, LookupForResolvedViewsHelper utils)
     {

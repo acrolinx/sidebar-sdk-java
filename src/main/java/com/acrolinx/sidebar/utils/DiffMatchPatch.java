@@ -1,5 +1,4 @@
-/* Copyright 2018 The diff-match-patch Authors. */
-
+/* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
 /*

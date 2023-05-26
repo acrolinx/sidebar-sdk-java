@@ -3,25 +3,19 @@ import org.gradle.internal.os.OperatingSystem
 import java.time.Duration
 
 plugins {
-	id "idea"
-
-	id "java-library"
+	id 'idea'
+	id 'java-library'
 	id 'maven-publish'
-
 	id 'signing'
 	id 'org.ajoberstar.grgit' version '4.1.1'
-
 	id 'io.codearte.nexus-staging' version '0.21.2'
 	id 'de.marcphilipp.nexus-publish' version '0.4.0'
-
-	id "com.github.node-gradle.node" version "3.5.0"
-
+	id 'com.github.node-gradle.node' version '3.5.0'
 	id 'com.github.hierynomus.license' version '0.16.1'
 	id 'com.github.hierynomus.license-report' version '0.16.1'
-
-	id "org.openjfx.javafxplugin" version "0.0.10" apply false
-	id "org.sonarqube" version "4.0.0.2929"
-	id 'com.diffplug.spotless' version '6.18.0'
+	id 'org.openjfx.javafxplugin' version '0.0.10' apply false
+	id 'org.sonarqube' version '4.0.0.2929'
+	id 'com.diffplug.spotless' version '6.13.0'
 }
 
 switch ( OperatingSystem.current() ) {
@@ -325,7 +319,7 @@ task createGithubReleaseTag {
 }
 
 if (Integer.parseInt(Jvm.current().getJavaVersion().getMajorVersion()) >= 11) {
-	apply plugin: "org.openjfx.javafxplugin"
+	apply plugin: 'org.openjfx.javafxplugin'
 
 	javafx {
 		modules = ["javafx.web", "javafx.swing"]
@@ -372,10 +366,8 @@ task checkLicenseHeaders {
 spotless {
 	java {
 		importOrderFile rootProject.file('spotless.importorder')
-		// An import ordering file, exported from Eclipse
-		eclipse().configFile    rootProject.file('spotless.eclipseformat.xml')
-		// XML file dumped out by the Eclipse formatter
-		custom 'Lambda fix', { it.replace('} )', '})').replace('} ,', '},') }
+		eclipse().configFile rootProject.file('spotless.eclipseformat.xml')
+		licenseHeaderFile rootProject.file('spotless.license.java')
 	}
 	format 'misc', {
 		target '*.gradle', '*.md', '.gitignore', '*.sh'

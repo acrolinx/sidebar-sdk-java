@@ -1,5 +1,4 @@
-/* Copyright (c) 2017-present Acrolinx GmbH */
-
+/* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar;
 
 import java.util.List;
@@ -19,6 +18,6 @@ public abstract class LookupRanges
      * @return An Optional with a list with the corrected ranges will be returned. In case the text
      *         within these ranges is not present anymore an empty Optional will be returned.
      */
-    public abstract Optional<List<AbstractMatch>> getMatchesWithCorrectedRanges(String checkedText, String changedText,
-            List<? extends AbstractMatch> matches);
+    public abstract Optional<List<? extends AbstractMatch>> getMatchesWithCorrectedRanges(String checkedText,
+            String changedText, List<? extends AbstractMatch> matches);
 }
