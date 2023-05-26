@@ -43,7 +43,6 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration)
     {
         super(integration);
-        showEmptyMessage();
     }
 
     /**
@@ -54,7 +53,6 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration, AcrolinxStorage storage)
     {
         super(integration, storage);
-        showEmptyMessage();
     }
 
     @Override
