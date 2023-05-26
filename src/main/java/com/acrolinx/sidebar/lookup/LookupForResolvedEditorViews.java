@@ -30,7 +30,7 @@ public class LookupForResolvedEditorViews
     private final List<AbstractMatch> mappedRanges = new ArrayList<>();
     private final List<AbstractMatch> newRanges = new ArrayList<>();
 
-    public Optional<List<AbstractMatch>> matchRangesForResolvedEditorView(
+    public Optional<List<? extends AbstractMatch>> matchRangesForResolvedEditorView(
             List<? extends AbstractMatch> adjustedRangesForCurrentDocument, String currentDocumentContent,
             String resolvedViewContent, LookupForResolvedViewsHelper utils)
     {
