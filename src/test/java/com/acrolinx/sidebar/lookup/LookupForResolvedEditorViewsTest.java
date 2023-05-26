@@ -85,8 +85,8 @@ class LookupForResolvedEditorViewsTest
         matches.add(new AcrolinxMatch(new IntRange(251, 252), " "));
         matches.add(new AcrolinxMatch(new IntRange(255, 260), "apple"));
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches, textApple,
-                appleEditorContent, offset -> new ContentNode() {
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+                textApple, appleEditorContent, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
                     {
@@ -149,7 +149,7 @@ class LookupForResolvedEditorViewsTest
         matches.add(new AcrolinxMatchWithReplacement("are", new IntRange(603, 606), ""));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
                 textAutumnFlowers, autumnFlowersEditor, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
@@ -197,8 +197,8 @@ class LookupForResolvedEditorViewsTest
         matches.add(new AcrolinxMatch(new IntRange(1021, 1027), "wastee"));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches, restDitaText,
-                restDitaEditor, offset -> new ContentNode() {
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+                restDitaText, restDitaEditor, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
                     {
@@ -241,8 +241,8 @@ class LookupForResolvedEditorViewsTest
         matches.add(new AcrolinxMatch(new IntRange(1021, 1027), "tast"));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches, restDitaText,
-                restDitaEditor, offset -> new ContentNode() {
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+                restDitaText, restDitaEditor, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
                     {
@@ -382,7 +382,7 @@ class LookupForResolvedEditorViewsTest
                 contentNode.getContent());
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
                 getRest_lookUpText, rest_lookUpEditor, offset -> contentNode);
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
@@ -521,7 +521,7 @@ class LookupForResolvedEditorViewsTest
                 contentNode.getContent());
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
                 getRest_lookUpText, rest_lookUpEditor, offset -> contentNode);
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
@@ -584,7 +584,7 @@ class LookupForResolvedEditorViewsTest
         matches.add(new AcrolinxMatch(new IntRange(297, 301), ">"));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
                 documentContent, authorViewContent, offset -> contentNode);
 
         abstractMatches.get().stream().forEach(match -> Assertions.assertEquals(
@@ -652,7 +652,7 @@ class LookupForResolvedEditorViewsTest
                 matchContent));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
                 documentContent, authorViewContent, offset -> contentNode);
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
@@ -739,7 +739,7 @@ class LookupForResolvedEditorViewsTest
                 matchContent, externalContentMatches));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
                 documentContent, authorViewContent, offset -> contentNode);
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
@@ -826,7 +826,7 @@ class LookupForResolvedEditorViewsTest
                 matchContent, externalContentMatches));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
                 documentContent, authorViewContent, offset -> contentNode);
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
@@ -932,7 +932,7 @@ class LookupForResolvedEditorViewsTest
                 matchContent, externalContentMatches));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
                 documentContent, authorViewContent, offset -> contentNode);
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
