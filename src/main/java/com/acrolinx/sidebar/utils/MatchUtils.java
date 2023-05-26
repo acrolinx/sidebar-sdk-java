@@ -24,13 +24,13 @@ public final class MatchUtils
         throw new IllegalStateException();
     }
 
-    public static List<AbstractMatch> filterDangerousMatches(List<? extends AbstractMatch> list,
+    public static List<? extends AbstractMatch> filterDangerousMatches(List<? extends AbstractMatch> list,
             String lastCheckedContent)
     {
         return filterDangerousMatches(list, lastCheckedContent, new ArrayList<>());
     }
 
-    public static List<AbstractMatch> filterDangerousMatches(List<? extends AbstractMatch> list,
+    public static List<? extends AbstractMatch> filterDangerousMatches(List<? extends AbstractMatch> list,
             String lastCheckedContent, List<ExternalContentField> lastCheckedExternalContent)
     {
         return list.stream().filter(m -> {
