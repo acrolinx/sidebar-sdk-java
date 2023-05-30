@@ -39,12 +39,12 @@ else
 			echo "Done with release step."
 			echo "Trying to create Github Release Tag"
 			if ./gradlew createGithubReleaseTag; then
-			echo "::set-output name=TAGNAME::release-$PROJECT_VERSION"
-			echo "::set-output name=RELEASE::true"
-			exit 0
+				echo "::set-output name=TAGNAME::release-$PROJECT_VERSION"
+				echo "::set-output name=RELEASE::true"
+				exit 0
 			else
-			echo "Can't create Github Release Tag. Please do manually."
-			exit 1
+				echo "Can't create Github Release Tag. Please do manually."
+				exit 1
 			fi
 		else
 			exit 1
