@@ -43,6 +43,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration)
     {
         super(integration);
+        this.showEmptyMessage();
     }
 
     /**
@@ -53,6 +54,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration, AcrolinxStorage storage)
     {
         super(integration, storage);
+        this.showEmptyMessage();
     }
 
     @Override
@@ -174,7 +176,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
         JFXUtils.invokeInJFXThread(() -> {
             Scene scene = getScene();
             if (scene == null) {
-                setScene(new Scene(new Group()));
+                setScene(new Scene(new Group(), 300.0, 600.0));
                 scene = getScene();
             }
 
