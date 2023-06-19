@@ -17,7 +17,7 @@ import com.acrolinx.sidebar.lookup.MatchComparator;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.IntRange;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
 
 /**

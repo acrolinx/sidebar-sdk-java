@@ -3,7 +3,7 @@ package com.acrolinx.sidebar.pojo.settings;
 
 import javax.annotation.Nullable;
 
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.google.gson.Gson;
 
 /**

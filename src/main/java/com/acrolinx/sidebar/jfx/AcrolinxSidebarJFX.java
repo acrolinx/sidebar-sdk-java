@@ -19,7 +19,7 @@ import com.acrolinx.sidebar.AcrolinxSidebar;
 import com.acrolinx.sidebar.AcrolinxStorage;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;

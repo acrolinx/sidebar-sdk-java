@@ -3,8 +3,8 @@ package com.acrolinx.sidebar.pojo.document;
 
 import javax.annotation.Nullable;
 
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentBuilder;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentBuilder;
 import com.google.gson.Gson;
 
 public class CheckContent

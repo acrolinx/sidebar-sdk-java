@@ -19,7 +19,7 @@ import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.ExternalAbstractMatch;
 import com.acrolinx.sidebar.pojo.document.IntRange;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
 public class LookupForResolvedEditorViews

@@ -1,5 +1,5 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
-package com.acrolinx.sidebar.pojo.document.externalContent;
+package com.acrolinx.sidebar.pojo.document.externalcontent;
 
 import com.google.gson.Gson;
 
