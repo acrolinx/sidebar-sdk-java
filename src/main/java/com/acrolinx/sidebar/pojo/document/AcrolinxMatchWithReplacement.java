@@ -3,7 +3,7 @@ package com.acrolinx.sidebar.pojo.document;
 
 import java.util.List;
 
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 
 public class AcrolinxMatchWithReplacement extends AcrolinxMatch
 {

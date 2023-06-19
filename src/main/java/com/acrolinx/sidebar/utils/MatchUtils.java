@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.ExternalAbstractMatch;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentField;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentField;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 import com.google.common.collect.Lists;
 
 public final class MatchUtils

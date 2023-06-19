@@ -14,9 +14,9 @@ import com.acrolinx.sidebar.LookupRanges;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import com.acrolinx.sidebar.pojo.document.IntRange;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentField;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentField;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
 public class LookupRangesDiff extends LookupRanges

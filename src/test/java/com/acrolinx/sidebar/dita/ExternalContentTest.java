@@ -11,9 +11,9 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import com.acrolinx.sidebar.pojo.document.CheckContent;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContent;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentBuilder;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentField;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentBuilder;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentField;
 
 class ExternalContentTest
 {

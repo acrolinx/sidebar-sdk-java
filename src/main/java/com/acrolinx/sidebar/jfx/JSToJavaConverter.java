@@ -17,7 +17,7 @@ import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.CheckResult;
 import com.acrolinx.sidebar.pojo.document.CheckedDocumentPart;
 import com.acrolinx.sidebar.pojo.document.IntRange;
-import com.acrolinx.sidebar.pojo.document.externalContent.ExternalContentMatch;
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxPluginConfiguration;
 import com.google.common.collect.Lists;
 
