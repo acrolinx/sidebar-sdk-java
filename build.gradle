@@ -62,7 +62,7 @@ sonar {
 	}
 }
 
-tasks.withType(Javadoc) {
+tasks.withType(Javadoc).configureEach {
 	options.addStringOption('Xdoclint:none', '-quiet')
 	options.memberLevel = JavadocMemberLevel.PUBLIC
 }
@@ -83,7 +83,7 @@ def fullVersion = "${project.version}.${buildVersion}"
 def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
 def isMasterBranch = false
 
-task getIsMasterBranch {
+tasks.register('getIsMasterBranch') {
 	def branch = ""
 	def proc = "git rev-parse --abbrev-ref HEAD".execute()
 	proc.in.eachLine { line -> branch = line }
@@ -96,7 +96,7 @@ task getIsMasterBranch {
 	}
 }
 
-task createVersionPropertiesFile {
+tasks.register('createVersionPropertiesFile') {
 	doFirst {
 		def Properties versionProps = new Properties()
 		def versionPropsFile = file('versionJavaSDK.properties')
@@ -127,7 +127,8 @@ jar {
 	}
 }
 
-task copyServerSelectorRessources(type: Copy, dependsOn: npm_install) {
+tasks.register('copyServerSelectorRessources', Copy) {
+	dependsOn 'npm_install'
 	doFirst {
 		def mainDir = new File('src/main/resources')
 		def subDir = new File(mainDir, 'server-selector')
@@ -141,7 +142,7 @@ task copyServerSelectorRessources(type: Copy, dependsOn: npm_install) {
 	into('src/main/resources/server-selector')
 }
 
-task convertLocalizationEncoding() {
+tasks.register('convertLocalizationEncoding') {
 	def dir = new File("$projectDir/src/main/resources/localization_iso-8859-1/")
 	if (!dir.exists()) {
 		dir.mkdirs()
@@ -182,12 +183,12 @@ javadoc {
 	failOnError = false
 }
 
-task sourcesJar(type: Jar) {
+tasks.register('sourcesJar', Jar) {
 	archiveClassifier = 'sources'
 	from sourceSets.main.allJava
 }
 
-task javadocJar(type: Jar) {
+tasks.register('javadocJar', Jar) {
 	archiveClassifier = 'javadoc'
 	from javadoc.destinationDir
 }
@@ -299,7 +300,7 @@ def isNonStable = { String version ->
 	return nonStableKeyword
 }
 
-task createGithubReleaseTag {
+tasks.register('createGithubReleaseTag') {
 	doLast {
 		println 'Creating Github Release Tag'
 		if (isReleaseBuild) {
@@ -357,7 +358,7 @@ downloadLicenses {
 	dependencyConfiguration = "compileClasspath"
 }
 
-task checkLicenseHeaders {
+tasks.register('checkLicenseHeaders') {
 	doLast {
 		println 'If this fails run \'./gradlew licenseFormat\' to apply missing headers'
 	}
@@ -387,3 +388,4 @@ jar.dependsOn 'downloadLicenses'
 jar.dependsOn createVersionPropertiesFile
 test.dependsOn javadoc
 javadocJar.dependsOn javadoc
+compileJava.dependsOn 'spotlessApply'
