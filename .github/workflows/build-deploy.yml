@@ -34,7 +34,7 @@ jobs:
       - name: Sonar Scan Project
         run: ./gradlew sonar
 
-  Build-And-Deploy:
+  Build:
     runs-on: ubuntu-latest
     env:
       ACROLINX_URL: ${{ secrets.ACROLINX_URL }}
@@ -72,16 +72,17 @@ jobs:
       - name: Deploy artifacts
         id: deploy
         run: ./deploy.sh
+        if: github.ref == 'refs/heads/main'
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.36.0
-        if: steps.deploy.outputs.RELEASE == 'true'
+        if: steps.deploy.outputs.RELEASE == 'true' && github.ref == 'refs/heads/main'
         env:
           CUSTOM_TAG: ${{ steps.deploy.outputs.TAGNAME }}
 
       - name: Deploy JavaDoc
         uses: JamesIves/github-pages-deploy-action@4.1.5
-        if: steps.deploy.outputs.RELEASE == 'true'
+        if: steps.deploy.outputs.RELEASE == 'true' && github.ref == 'refs/heads/main'
         with:
           branch: gh-pages
           folder: "docs/"
