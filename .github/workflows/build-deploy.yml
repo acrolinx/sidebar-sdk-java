@@ -27,7 +27,7 @@ jobs:
           java-package: 'jdk+fx'
 
       - name: Sonar Scan Project
-        run: ./gradlew sonar
+        run: ./gradlew jacocoTestReport sonar
 
   Build:
     runs-on: ubuntu-latest
