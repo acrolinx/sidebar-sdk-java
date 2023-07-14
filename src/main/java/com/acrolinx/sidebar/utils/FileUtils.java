@@ -20,36 +20,26 @@ public final class FileUtils
      */
     public static InputFormat getInputFormat(String fileName)
     {
-        final String fileExtensionPattern = "(\\.(?i)(txt|xml|dita|html|md))";
-        Pattern fileExtensionExtractor = Pattern.compile(fileExtensionPattern);
-        Matcher matcher = fileExtensionExtractor.matcher(fileName);
-        InputFormat inputFormat;
+        Pattern fileExtensionPatternPattern = Pattern.compile("(\\.(?i)(txt|xml|dita|html|md))");
+        Matcher matcher = fileExtensionPatternPattern.matcher(fileName);
 
         if (matcher.find()) {
             switch (matcher.group().toLowerCase()) {
                 case ".txt":
-                    inputFormat = InputFormat.TEXT;
-                    break;
+                    return InputFormat.TEXT;
                 case ".xml":
-                    inputFormat = InputFormat.XML;
-                    break;
+                    return InputFormat.XML;
                 case ".dita":
-                    inputFormat = InputFormat.XML;
-                    break;
+                    return InputFormat.XML;
                 case ".html":
-                    inputFormat = InputFormat.HTML;
-                    break;
+                    return InputFormat.HTML;
                 case ".md":
-                    inputFormat = InputFormat.MARKDOWN;
-                    break;
+                    return InputFormat.MARKDOWN;
                 default:
-                    inputFormat = InputFormat.TEXT;
-                    break;
+                    return InputFormat.TEXT;
             }
-        } else {
-            inputFormat = null;
         }
-        return inputFormat;
+        return null;
     }
 
     public static boolean hasFileEnding(String fileName, String requiredFileEnding)

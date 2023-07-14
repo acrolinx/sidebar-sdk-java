@@ -30,37 +30,40 @@ public final class LoggingUtils
         throw new IllegalStateException();
     }
 
-    private static Path getLogFilePathOSSpecific(String applicationName)
+    private static Path getLogFilePathOsSpecific(String applicationName)
     {
         Path userTempDirLocation = SidebarUtils.getUserTempDirLocation();
-        String s = System.getProperty("os.name").toLowerCase();
-        if (s.contains("mac")) {
+        String propertyValueString = System.getProperty("os.name").toLowerCase();
+
+        if (propertyValueString.contains("mac")) {
             return Paths.get(userTempDirLocation.toString(), "Logs", "Acrolinx", applicationName);
         }
-        if (s.contains("win")) {
+        if (propertyValueString.contains("win")) {
             return Paths.get(userTempDirLocation.toString(), "Acrolinx", "Logs", applicationName);
         }
+
         return Paths.get(userTempDirLocation.toString(), "acrolinx", "logs", applicationName);
     }
 
-    private static void loadLogFileConfig(InputStream configStream, String applicationName)
+    private static void loadLogFileConfig(InputStream inputStream, String applicationName)
             throws JoranException, IOException
     {
         if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
-            if (configStream != null) {
-                configStream.close();
+            if (inputStream != null) {
+                inputStream.close();
             }
             return;
         }
 
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         loggerContext.reset();
-        JoranConfigurator configurator = new JoranConfigurator();
-        configurator.setContext(loggerContext);
+
+        JoranConfigurator joranConfigurator = new JoranConfigurator();
+        joranConfigurator.setContext(loggerContext);
         loggerContext.putProperty("application-name", applicationName);
-        loggerContext.putProperty("log-dir-path", getLogFilePathOSSpecific(applicationName).toString());
-        configurator.doConfigure(configStream); // loads logback file
-        configStream.close();
+        loggerContext.putProperty("log-dir-path", getLogFilePathOsSpecific(applicationName).toString());
+        joranConfigurator.doConfigure(inputStream); // loads logback file
+        inputStream.close();
         ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(
                 org.slf4j.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.toLevel(System.getProperty("acrolog.level"), Level.INFO));
@@ -80,8 +83,8 @@ public final class LoggingUtils
     private static void useDefaultLoggingConfig(String applicationName) throws IOException, JoranException
     {
         Preconditions.checkNotNull(applicationName, "application name should be set");
-        InputStream configStream = LoggingUtils.class.getResourceAsStream("/logback_default.xml");
-        loadLogFileConfig(configStream, applicationName);
+        InputStream inputStream = LoggingUtils.class.getResourceAsStream("/logback_default.xml");
+        loadLogFileConfig(inputStream, applicationName);
     }
 
     /**
@@ -97,7 +100,9 @@ public final class LoggingUtils
         if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
             return null;
         }
+
         LoggerContext lContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+
         for (ch.qos.logback.classic.Logger logger : lContext.getLoggerList()) {
             for (Iterator<Appender<ILoggingEvent>> index = logger.iteratorForAppenders(); index.hasNext();) {
                 Object enumElement = index.next();
@@ -128,6 +133,7 @@ public final class LoggingUtils
         if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
             return;
         }
+
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         loggerContext.reset();
     }

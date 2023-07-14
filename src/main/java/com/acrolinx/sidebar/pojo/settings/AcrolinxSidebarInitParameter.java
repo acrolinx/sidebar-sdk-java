@@ -37,7 +37,7 @@ public class AcrolinxSidebarInitParameter
         this.clientLocale = builder.clientLocale;
         final List<SoftwareComponent> copy = new ArrayList<>();
         copy.addAll(builder.clientComponents);
-        copy.add(SidebarUtils.getJavaSDKSoftwareComponent());
+        copy.add(SidebarUtils.getJavaSdkSoftwareComponent());
 
         String osID = ("os." + System.getProperty("os.name").replace(" ", "."));
         String javaID = ("java.runtime." + System.getProperty("java.vendor")).replace(" ", ".");
@@ -63,15 +63,15 @@ public class AcrolinxSidebarInitParameter
             logger.info("Plugin initialized with client locale: {}", this.clientLocale);
         }
 
-        logger.info("Plugin running on Java VM: {}", SidebarUtils.getSystemJavaVMName());
+        logger.info("Plugin running on Java VM: {}", SidebarUtils.getSystemJavaVmName());
 
-        if (SidebarUtils.getSystemJavaVMName().indexOf("OpenJDK") < 0
-                && SidebarUtils.getSystemJavaVMName().indexOf("HotSpot") < 0) {
+        if (SidebarUtils.getSystemJavaVmName().indexOf("OpenJDK") < 0
+                && SidebarUtils.getSystemJavaVmName().indexOf("HotSpot") < 0) {
             logger.warn("You are using an unsupported Java VM. This might cause errors during runtime.");
         }
 
         logger.info("Plugin running on Java VM Version: {}", SidebarUtils.getFullCurrentJavaVersionString());
-        logger.info("Plugin running with JRE Path: {}", SidebarUtils.getPathOfCurrentJavaJRE());
+        logger.info("Plugin running with JRE Path: {}", SidebarUtils.getPathOfCurrentJavaJre());
 
         if (this.minimumJavaVersion != 0) {
             logger.info("Required Java Version is: {}", this.minimumJavaVersion);

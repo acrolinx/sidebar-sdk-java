@@ -182,8 +182,7 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void onCheckResult(final JSObject o)
     {
         final Instant checkEndedTime = Instant.now();
-        LogMessages.logCheckFinishedWithDurationTime(logger,
-                Duration.between(checkStartedTime, checkEndedTime).toMillis());
+        LogMessages.logCheckFinishedWithDurationTime(logger, Duration.between(checkStartedTime, checkEndedTime));
         final CheckResult checkResult = JSToJavaConverter.getCheckResultFromJSObject(o);
         if (checkResult == null) {
             logger.info("Check finished with errors.");

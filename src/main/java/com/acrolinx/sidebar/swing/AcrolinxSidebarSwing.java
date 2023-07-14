@@ -50,12 +50,12 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         this(integration, null);
     }
 
-    public AcrolinxSidebarSwing(final AcrolinxIntegration integration, final AcrolinxStorage storage)
+    public AcrolinxSidebarSwing(final AcrolinxIntegration acrolinxIntegration, final AcrolinxStorage acrolinxStorage)
     {
         super();
-        LogMessages.logJavaVersionAndUIFramework(logger, "Java Swing with Java FX Sidebar component");
-        this.storage = storage;
-        this.integration = integration;
+        LogMessages.logJavaVersionAndUiFramework(logger, "Java Swing with Java FX Sidebar component");
+        this.storage = acrolinxStorage;
+        this.integration = acrolinxIntegration;
         Platform.setImplicitExit(false);
         JFXUtils.invokeInJFXThread(this::createScene);
     }
@@ -119,10 +119,10 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     }
 
     @Override
-    public void configure(final SidebarConfiguration configuration)
+    public void configure(final SidebarConfiguration sidebarConfiguration)
     {
         if (sidebarJFX != null) {
-            sidebarJFX.configure(configuration);
+            sidebarJFX.configure(sidebarConfiguration);
         }
     }
 
@@ -217,10 +217,10 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     }
 
     @Override
-    public void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options)
+    public void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions checkOptions)
     {
         if (sidebarJFX != null) {
-            sidebarJFX.checkDocumentInBatch(documentIdentifier, documentContent, options);
+            sidebarJFX.checkDocumentInBatch(documentIdentifier, documentContent, checkOptions);
         }
     }
 

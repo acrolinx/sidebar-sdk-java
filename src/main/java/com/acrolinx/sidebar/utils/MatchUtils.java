@@ -53,16 +53,20 @@ public final class MatchUtils
             List<ExternalContentField> lastCheckedExternalContent)
     {
         ExternalContentMatch externalContentMatch = match.getExternalContentMatches().get(0);
+
         while (!externalContentMatch.getExternalContentMatches().isEmpty()) {
             externalContentMatch = externalContentMatch.getExternalContentMatches().get(0);
         }
+
         final String externalContentId = externalContentMatch.getId();
         Optional<ExternalContentField> optionalExternalContentField = lastCheckedExternalContent.stream().filter(
                 externalContentField -> externalContentField.getId().equals(externalContentId)).findFirst();
+
         if (!optionalExternalContentField.isPresent()) {
             logger.warn("Field for externalContentMatch has not been found");
             return false;
         }
+
         ExternalContentField externalContentField = optionalExternalContentField.get();
         String content = externalContentField.getContent();
         String matchContent = content.substring(externalContentMatch.getRange().getMinimumInteger(),
@@ -73,10 +77,12 @@ public final class MatchUtils
     public static <T extends AbstractMatch> List<T> sortByOffsetDesc(final List<T> matches)
     {
         final List<T> sortedMatches = Lists.newArrayList(matches);
-        sortedMatches.sort((a, b) -> {
-            final int start = a.getRange().getMinimumInteger() - b.getRange().getMinimumInteger();
+        sortedMatches.sort((first, second) -> {
+            final int start = first.getRange().getMinimumInteger() - second.getRange().getMinimumInteger();
+
             if (start == 0) {
-                final int end = a.getRange().getMaximumInteger() - b.getRange().getMaximumInteger();
+                final int end = first.getRange().getMaximumInteger() - second.getRange().getMaximumInteger();
+
                 if (end == 0) {
                     return 0;
                 }
@@ -84,8 +90,10 @@ public final class MatchUtils
                 return (end > 0) ? -1 : +1;
 
             }
+
             return start > 0 ? -1 : +1;
         });
+
         return sortedMatches;
     }
 }

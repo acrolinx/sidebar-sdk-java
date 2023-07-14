@@ -28,30 +28,30 @@ public class AcrolinxMultiViewSidebarSWT
 
     /**
      * @param parent SWT Composite to which sidebar would be child of.
-     * @param storage Acrolinx storage to act as external storage to sidebar local storage
+     * @param acrolinxStorage Acrolinx storage to act as external storage to sidebar local storage
      */
-    public AcrolinxMultiViewSidebarSWT(final Composite parent, final AcrolinxStorage storage)
+    public AcrolinxMultiViewSidebarSWT(final Composite parent, final AcrolinxStorage acrolinxStorage)
     {
         this.container = new Composite(parent, SWT.NONE);
         this.container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         this.stackLayout = new StackLayout();
         this.container.setLayout(this.stackLayout);
-        this.acrolinxStorage = storage;
+        this.acrolinxStorage = acrolinxStorage;
         createDefaultSidebar();
         showDefaultSidebar();
     }
 
     /**
      * @param parent SWT Shell to which sidebar would be child of.
-     * @param storage Acrolinx storage to act as external storage to sidebar local storage
+     * @param acrolinxStorage Acrolinx storage to act as external storage to sidebar local storage
      */
-    public AcrolinxMultiViewSidebarSWT(final Shell parent, final AcrolinxStorage storage)
+    public AcrolinxMultiViewSidebarSWT(final Shell parent, final AcrolinxStorage acrolinxStorage)
     {
         this.container = new Composite(parent, SWT.NONE);
         this.container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         this.stackLayout = new StackLayout();
         this.container.setLayout(this.stackLayout);
-        this.acrolinxStorage = storage;
+        this.acrolinxStorage = acrolinxStorage;
         createDefaultSidebar();
         showDefaultSidebar();
     }

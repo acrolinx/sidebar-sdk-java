@@ -28,7 +28,7 @@ class StartPageInstallerTest
 
         final AcrolinxSidebarInitParameter params = builder.build();
 
-        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageURL());
+        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageUrl());
     }
 
     @Test
@@ -54,7 +54,7 @@ class StartPageInstallerTest
 
         final AcrolinxSidebarInitParameter params = builder.build();
 
-        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageURL());
+        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageUrl());
     }
 
     @Test
@@ -67,7 +67,7 @@ class StartPageInstallerTest
 
         final AcrolinxSidebarInitParameter params = builder.build();
 
-        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageURL());
+        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageUrl());
     }
 
     @Test
@@ -80,6 +80,6 @@ class StartPageInstallerTest
 
         final AcrolinxSidebarInitParameter params = builder.build();
 
-        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageURL());
+        assertEquals(StartPageInstaller.prepareSidebarUrl(params), StartPageInstaller.getStartPageUrl());
     }
 }

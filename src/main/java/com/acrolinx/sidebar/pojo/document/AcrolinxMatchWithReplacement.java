@@ -65,6 +65,7 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
         int rangeMin = getRange().getMinimumInteger();
         int rangeMax = getRange().getMaximumInteger();
         IntRange range = new IntRange(rangeMin, rangeMax);
+
         if (getExtractedRange() != null) {
             int minRange = super.getExtractedRange().getMinimumInteger();
             int maxRange = super.getExtractedRange().getMaximumInteger();
@@ -89,6 +90,7 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
         int rangeMax = getRange().getMaximumInteger();
         String content = getContent();
         IntRange range = new IntRange(rangeMin, rangeMax);
+
         if (getExtractedRange() != null) {
             int minRange = super.getExtractedRange().getMinimumInteger();
             int maxRange = super.getExtractedRange().getMaximumInteger();

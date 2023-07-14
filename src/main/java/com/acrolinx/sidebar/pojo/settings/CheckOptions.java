@@ -13,7 +13,7 @@ public class CheckOptions
 {
     private final InputFormat inputFormat;
     private final RequestDescription requestDescription;
-    private final DocumentSelection selection;
+    private final DocumentSelection documentSelection;
     private final ExternalContent externalContent;
 
     /**
@@ -26,7 +26,7 @@ public class CheckOptions
     {
         this.requestDescription = requestDescription;
         this.inputFormat = inputFormat;
-        this.selection = documentSelection;
+        this.documentSelection = documentSelection;
         this.externalContent = externalContent;
     }
 

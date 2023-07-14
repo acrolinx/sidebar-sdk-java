@@ -55,7 +55,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
      */
     public AcrolinxSidebarJFX(final AcrolinxIntegration integration, final AcrolinxStorage storage)
     {
-        LogMessages.logJavaVersionAndUIFramework(logger, "Java FX");
+        LogMessages.logJavaVersionAndUiFramework(logger, "Java FX");
         SecurityUtils.setUpEnvironment();
         this.integration = integration;
         final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(integration.getInitParameters());
