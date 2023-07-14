@@ -68,14 +68,14 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         webView.setCache(true);
         webView.setCacheHint(CacheHint.SPEED);
 
-        webEngine.setOnError((final WebErrorEvent arg0) -> logger.error("Error: {}", arg0.getMessage()));
-        webEngine.setOnAlert((final WebEvent<String> arg0) -> logger.debug("Alert: {}", arg0.getData()));
+        webEngine.setOnError((final WebErrorEvent webErrorEvent) -> logger.error("Error: {}", webErrorEvent));
+        webEngine.setOnAlert((final WebEvent<String> webEvent) -> logger.debug("Alert: {}", webEvent.getData()));
 
         webEngine.getLoadWorker().stateProperty().addListener((
                 final ObservableValue<? extends Worker.State> observedValue, final Worker.State oldState,
                 final Worker.State newState) -> this.getChangeListener(observedValue, oldState, newState, storage));
         webEngine.getLoadWorker().exceptionProperty().addListener(
-                (ov, t, t1) -> logger.error("webEngine exception: {}", t1.getMessage()));
+                (observableValue, oldThrowable, newThrowable) -> logger.error("webEngine exception", newThrowable));
 
         if (sidebarUrl != null) {
             logger.info("Loading: {}", sidebarUrl);
@@ -100,7 +100,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             // noinspection ThrowableResultOfMethodCallIgnored
             if (webEngine.getLoadWorker().getException() != null) {
                 // noinspection ThrowableResultOfMethodCallIgnored
-                logger.error(webEngine.getLoadWorker().getException().getMessage());
+                logger.error("", webEngine.getLoadWorker().getException());
             }
             webEngine.loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
         }
@@ -138,7 +138,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             try {
                 webView.setZoom(i);
             } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
             }
         });
     }
@@ -191,7 +191,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             try {
                 webView.getEngine().load(SidebarUtils.getSidebarUrl(serverAddress));
             } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
             }
         });
     }
@@ -203,8 +203,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             try {
                 StartPageInstaller.exportStartPageResources();
             } catch (final Exception e) {
-                logger.error("Error while exporting start page resources!");
-                logger.error(e.getMessage());
+                logger.error("Error while exporting start page resources!", e);
                 webView.getEngine().loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
             }
         }

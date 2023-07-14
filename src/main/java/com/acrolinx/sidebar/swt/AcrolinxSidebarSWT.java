@@ -392,7 +392,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             logger.debug("Batch check document list: {}", references);
             initBatchCheck(references);
         } catch (Exception e) {
-            logger.error("Initializing batch check failed: {}", e.getMessage());
+            logger.error("Initializing batch check failed", e);
         }
         return null;
     }
@@ -436,7 +436,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             }
 
         } catch (final Exception e) {
-            logger.error(e.getMessage());
+            logger.error("", e);
         }
     }
 
@@ -505,7 +505,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 client.onCheckResult(result);
             }
         } catch (final Exception e) {
-            logger.error(e.getMessage());
+            logger.error("", e);
         }
         return null;
     }

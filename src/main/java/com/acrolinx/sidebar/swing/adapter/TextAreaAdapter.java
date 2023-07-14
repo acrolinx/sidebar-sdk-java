@@ -84,7 +84,7 @@ public class TextAreaAdapter implements InputAdapterInterface
         try {
             h.addHighlight(minRange, maxRange, DefaultHighlighter.DefaultPainter);
         } catch (BadLocationException e) {
-            logger.error(e.getMessage());
+            logger.error("", e);
         }
     }
 
