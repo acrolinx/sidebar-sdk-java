@@ -13,6 +13,7 @@ import java.net.URLConnection;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -34,16 +35,16 @@ public final class SidebarUtils
      * Opens the given URL in the default Browser of the current OS. Note that this method is likely to
      * cause JVM crashes within SWT-based applications!
      */
-    public static void openWebPageInDefaultBrowser(final String url)
+    public static void openWebPageInDefaultBrowser(final String urlString)
     {
-        if (SidebarUtils.isValidURL(url)) {
+        if (SidebarUtils.isValidUrl(urlString)) {
             try {
-                openURIInDefaultBrowser(new URI(url));
+                openUriInDefaultBrowser(new URI(urlString));
             } catch (final URISyntaxException e) {
                 logger.error("", e);
             }
         } else {
-            logger.warn("Attempt to open invalid URL: {}", url);
+            logger.warn("Attempt to open invalid URL: {}", urlString);
         }
     }
 
@@ -52,12 +53,12 @@ public final class SidebarUtils
      *
      * @return true if url is valid
      */
-    public static boolean isValidURL(final String url)
+    public static boolean isValidUrl(final String urlString)
     {
-        if ((url != null) && (url.length() > 0)) {
-            boolean matches = url.matches("^(https?)://.*$");
+        if ((urlString != null) && (!urlString.isEmpty())) {
+            boolean matches = urlString.matches("^(https?)://.*$");
             try {
-                new URL(url);
+                new URL(urlString);
                 return matches;
             } catch (final MalformedURLException e) {
                 logger.error("Non valid URL", e);
@@ -67,13 +68,14 @@ public final class SidebarUtils
         return false;
     }
 
-    private static void openURIInDefaultBrowser(final URI url)
+    private static void openUriInDefaultBrowser(final URI uri)
     {
         final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+
         if ((desktop != null) && desktop.isSupported(Desktop.Action.BROWSE)) {
             new Thread(() -> {
                 try {
-                    Desktop.getDesktop().browse(url);
+                    Desktop.getDesktop().browse(uri);
                 } catch (final Exception e) {
                     logger.error("", e);
                 }
@@ -91,6 +93,7 @@ public final class SidebarUtils
     public static void openLogFile()
     {
         final String logFileLocation = LoggingUtils.getLogFileLocation();
+
         if (logFileLocation != null) {
             final String logFile = new File(logFileLocation).getPath();
             if (openSystemSpecific(logFile)) {
@@ -103,9 +106,11 @@ public final class SidebarUtils
     private static void openLogFileFolderInFileManger()
     {
         final String logFileLocation = LoggingUtils.getLogFileLocation();
+
         if (logFileLocation != null) {
             final String folder = new File(logFileLocation).getParent();
             final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+
             if ((desktop != null) && desktop.isSupported(Desktop.Action.OPEN)) {
                 new Thread(() -> {
                     try {
@@ -128,11 +133,12 @@ public final class SidebarUtils
         return serverAddress + (serverAddress.endsWith("/") ? "sidebar/v14/index.html" : "/sidebar/v14/index.html");
     }
 
-    private static String getCurrentSDKImplementationVersion()
+    private static String getCurrentSdkImplementationVersion()
     {
         // Need version from properties file to get proper version number in case sdk gets packed
         // into fat jar
-        final String versionFromPropertiesFile = getJavaSDKVersionFromPropertiesFile();
+        final String versionFromPropertiesFile = getJavaSdkVersionFromPropertiesFile();
+
         if (versionFromPropertiesFile == null) {
             return SidebarUtils.class.getPackage().getImplementationVersion();
         }
@@ -140,15 +146,15 @@ public final class SidebarUtils
         return versionFromPropertiesFile;
     }
 
-    private static String getJavaSDKVersionFromPropertiesFile()
+    private static String getJavaSdkVersionFromPropertiesFile()
     {
         final String resourceName = "/versionJavaSDK.properties";
-        final Properties props = new Properties();
+        final Properties properties = new Properties();
         final InputStream resourceStream = SidebarUtils.class.getResourceAsStream(resourceName);
         if (resourceStream != null) {
             try {
-                props.load(resourceStream);
-                return (String) props.get("VERSION_JAVA_SDK");
+                properties.load(resourceStream);
+                return (String) properties.get("VERSION_JAVA_SDK");
             } catch (final IOException e) {
                 logger.error("Could not read java sdk version!", e);
             } finally {
@@ -173,8 +179,8 @@ public final class SidebarUtils
     {
         try {
             final URL url = new URL(getSidebarUrl(serverAddress));
-            final URLConnection conn = url.openConnection();
-            conn.connect();
+            final URLConnection urlConnection = url.openConnection();
+            urlConnection.connect();
         } catch (final Exception e) {
             logger.error("", e);
             return false;
@@ -184,21 +190,22 @@ public final class SidebarUtils
 
     protected static Path getUserTempDirLocation()
     {
-        final String s = System.getProperty("os.name").toLowerCase();
-        String temDirProp;
-        if (s.contains("mac")) {
-            temDirProp = System.getProperty("user.home");
+        final String propertyValueString = System.getProperty("os.name").toLowerCase();
+
+        if (propertyValueString.contains("mac")) {
+            String temDirProp = System.getProperty("user.home");
             return Paths.get(temDirProp, "Library");
         }
+
         return Paths.get(System.getProperty("java.io.tmpdir"));
     }
 
     /**
      * Internal use.
      */
-    public static SoftwareComponent getJavaSDKSoftwareComponent()
+    public static SoftwareComponent getJavaSdkSoftwareComponent()
     {
-        return new SoftwareComponent("com.acrolinx.sidebar.java", "Java SDK", getCurrentSDKImplementationVersion(),
+        return new SoftwareComponent("com.acrolinx.sidebar.java", "Java SDK", getCurrentSdkImplementationVersion(),
                 SoftwareComponentCategory.DETAIL);
     }
 
@@ -227,14 +234,15 @@ public final class SidebarUtils
     {
         logger.info("Trying to exec:\n   cmd = {} \n   args = {} \n   %s = {}", command, args, file);
 
-        final ArrayList<String> parts = new ArrayList<>();
+        final List<String> parts = new ArrayList<>();
         parts.add(command);
 
         if (args != null) {
-            for (final String s : args.split(" ")) {
-                parts.add(s.trim());
+            for (final String string : args.split(" ")) {
+                parts.add(string.trim());
             }
         }
+
         parts.add(args);
         parts.add(file);
 
@@ -263,18 +271,20 @@ public final class SidebarUtils
     public static int getSystemJavaVersion()
     {
         String version = SidebarUtils.getFullCurrentJavaVersionString();
+
         if (version.startsWith("1.")) {
             version = version.substring(2, 3);
         } else {
-            int dot = version.indexOf(".");
-            if (dot != -1) {
-                version = version.substring(0, dot);
+            int indexOfDot = version.indexOf(".");
+
+            if (indexOfDot != -1) {
+                version = version.substring(0, indexOfDot);
             }
         }
         return Integer.parseInt(version);
     }
 
-    public static String getSystemJavaVMName()
+    public static String getSystemJavaVmName()
     {
         return System.getProperty("java.vm.name");
     }
@@ -284,7 +294,7 @@ public final class SidebarUtils
         return System.getProperty("java.version");
     }
 
-    public static String getPathOfCurrentJavaJRE()
+    public static String getPathOfCurrentJavaJre()
     {
         return System.getProperty("java.home");
     }

@@ -12,41 +12,41 @@ class SidebarUtilsTest
     @Test
     void isValidURLNullTest()
     {
-        assertFalse(SidebarUtils.isValidURL(null));
+        assertFalse(SidebarUtils.isValidUrl(null));
     }
 
     @Test
     void isValidURLLocalhostTest()
     {
-        assertTrue(SidebarUtils.isValidURL("http://sifnos"));
+        assertTrue(SidebarUtils.isValidUrl("http://sifnos"));
     }
 
     @Test
     void isValidURLTEST()
     {
-        assertTrue(SidebarUtils.isValidURL("https://us-demo.acrolinx.cloud:443/dashboard.html"));
+        assertTrue(SidebarUtils.isValidUrl("https://us-demo.acrolinx.cloud:443/dashboard.html"));
     }
 
     @Test
     void isValidURLTEST2()
     {
-        assertTrue(SidebarUtils.isValidURL(
+        assertTrue(SidebarUtils.isValidUrl(
                 "https://acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html"));
     }
 
     @Test
     void isNOTValidURLTEST()
     {
-        assertFalse(SidebarUtils.isValidURL(
+        assertFalse(SidebarUtils.isValidUrl(
                 "https:/acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html"));
     }
 
     @Test
     void testSidebarSystemUtils()
     {
-        assertNotNull(SidebarUtils.getSystemJavaVMName());
+        assertNotNull(SidebarUtils.getSystemJavaVmName());
         assertTrue(SidebarUtils.getSystemJavaVersion() >= 8);
-        assertNotNull(SidebarUtils.getPathOfCurrentJavaJRE());
+        assertNotNull(SidebarUtils.getPathOfCurrentJavaJre());
         assertNotNull(SidebarUtils.getFullCurrentJavaVersionString());
     }
 }

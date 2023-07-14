@@ -26,25 +26,22 @@ public final class SecurityUtils
 
     public static void setUpEnvironment()
     {
-        String propertyNameAllowHeaders = "sun.net.http.allowRestrictedHeaders";
-        String propertyRH = System.getProperty(propertyNameAllowHeaders);
-        logPropertyValue(propertyNameAllowHeaders, propertyRH);
+        final String propertyNameAllowRestrictedHeaders = "sun.net.http.allowRestrictedHeaders";
+        logPropertyValue(propertyNameAllowRestrictedHeaders, System.getProperty(propertyNameAllowRestrictedHeaders));
 
-        String propertyNameHTTPProtocols = "https.protocols";
-        String property = System.getProperty(propertyNameHTTPProtocols);
-        logPropertyValue(propertyNameHTTPProtocols, property);
+        final String propertyNameHttpProtocols = "https.protocols";
+        logPropertyValue(propertyNameHttpProtocols, System.getProperty(propertyNameHttpProtocols));
 
-        String propertyNameGSS = "sun.security.jgss.native";
-        String propertyGSS = System.getProperty(propertyNameGSS);
-        logPropertyValue(propertyNameGSS, propertyGSS);
+        final String propertyNameGssNative = "sun.security.jgss.native";
+        logPropertyValue(propertyNameGssNative, System.getProperty(propertyNameGssNative));
 
         Properties systemProperties = (Properties) System.getProperties().clone();
-        systemProperties.forEach((k, v) -> {
-            String key = k.toString().toLowerCase();
+        systemProperties.forEach((keyObject, value) -> {
+            String key = keyObject.toString().toLowerCase();
             if (key.startsWith(ACRO_PREFIX)) {
                 logger.info("Setting up environment properties enforced by configuration.");
-                logger.info("{} : {}", key, v);
-                System.setProperty(key.substring(ACRO_PREFIX.length()), v.toString());
+                logger.info("{} : {}", key, value);
+                System.setProperty(key.substring(ACRO_PREFIX.length()), value.toString());
                 logger.info("{} : {}", key.substring(ACRO_PREFIX.length()),
                         System.getProperty(key.substring(ACRO_PREFIX.length())));
             }

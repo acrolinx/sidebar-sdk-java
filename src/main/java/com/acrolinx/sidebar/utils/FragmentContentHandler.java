@@ -33,7 +33,7 @@ public class FragmentContentHandler extends DefaultHandler
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes atts)
+    public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws FragmentContentException
     {
         Integer count = elementNameCount.get(qName);
@@ -42,6 +42,7 @@ public class FragmentContentHandler extends DefaultHandler
         } else {
             count++;
         }
+
         elementNameCount.put(qName, count);
         String childXPath = xPath + "/" + qName + "[" + count + "]";
 

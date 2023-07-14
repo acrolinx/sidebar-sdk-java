@@ -25,10 +25,10 @@ public final class StartPageInstaller
     static String getStartPageVersion()
     {
         final String resourceName = "/server-selector/version.properties";
-        final Properties props = new Properties();
+        final Properties properties = new Properties();
         try (InputStream resourceStream = StartPageInstaller.class.getResourceAsStream(resourceName)) {
-            props.load(resourceStream);
-            return props.getProperty("version");
+            properties.load(resourceStream);
+            return properties.getProperty("version");
         } catch (final IOException e) {
             logger.error("Could not read server selector version!", e);
             return null;
@@ -40,22 +40,26 @@ public final class StartPageInstaller
      */
     public static void exportStartPageResources() throws IOException
     {
-        InputStream asset;
         logger.info("Exporting Server Selector Resources.");
         final Path assetDir = getDefaultStartPageInstallLocation();
-        try (BufferedReader listFile = new BufferedReader(new InputStreamReader(
+
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
                 StartPageInstaller.class.getResourceAsStream("/server-selector/files.txt"), StandardCharsets.UTF_8))) {
             String assetResource;
-            while ((assetResource = listFile.readLine()) != null) {
+
+            while ((assetResource = bufferedReader.readLine()) != null) {
                 final Path assetFile = assetDir.resolve(assetResource.substring(1, assetResource.length()));
+
                 if (assetFile != null) {
                     final Path parent = assetFile.getParent();
                     if ((parent != null) && !Files.exists(parent)) {
                         Files.createDirectories(parent);
                     }
-                    asset = StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
-                    if ((asset != null) && !Files.exists(assetFile)) {
-                        Files.copy(asset, assetFile, StandardCopyOption.REPLACE_EXISTING);
+                    InputStream inputStream = StartPageInstaller.class.getResourceAsStream(
+                            "/server-selector" + assetResource);
+
+                    if ((inputStream != null) && !Files.exists(assetFile)) {
+                        Files.copy(inputStream, assetFile, StandardCopyOption.REPLACE_EXISTING);
                     }
                 }
             }
@@ -85,7 +89,7 @@ public final class StartPageInstaller
      *
      * @return Path to current start page.
      */
-    public static String getStartPageURL() throws IOException
+    public static String getStartPageUrl() throws IOException
     {
         final Path assetDir = getDefaultStartPageInstallLocation();
         if (!Files.exists(assetDir.resolve("index.html"))) {
@@ -95,23 +99,24 @@ public final class StartPageInstaller
         return assetDir.toUri().toString() + "index.html";
     }
 
-    public static String prepareSidebarUrl(final AcrolinxSidebarInitParameter initParam)
+    public static String prepareSidebarUrl(final AcrolinxSidebarInitParameter acrolinxSidebarInitParameter)
     {
         try {
-            if (!isExportRequired(initParam)) {
-                return initParam.getSidebarUrl();
+            if (!isExportRequired(acrolinxSidebarInitParameter)) {
+                return acrolinxSidebarInitParameter.getSidebarUrl();
             }
 
-            return getStartPageURL();
+            return getStartPageUrl();
         } catch (final Exception e) {
             logger.error("Error getting sidebarURL", e);
             return "";
         }
     }
 
-    public static boolean isExportRequired(final AcrolinxSidebarInitParameter initParam)
+    public static boolean isExportRequired(final AcrolinxSidebarInitParameter acrolinxSidebarInitParameter)
     {
-        return initParam.getShowServerSelector() || Strings.isNullOrEmpty(initParam.getSidebarUrl());
+        return acrolinxSidebarInitParameter.getShowServerSelector()
+                || Strings.isNullOrEmpty(acrolinxSidebarInitParameter.getSidebarUrl());
     }
 
     private StartPageInstaller()

@@ -9,9 +9,9 @@ public class SidebarMessage
     private final String title;
     private final String text;
 
-    public SidebarMessage(String title, String text, SidebarMessageType type)
+    public SidebarMessage(String title, String text, SidebarMessageType sidebarMessageType)
     {
-        this.type = type.getValue();
+        this.type = sidebarMessageType.getValue();
         this.title = title;
         this.text = text;
     }

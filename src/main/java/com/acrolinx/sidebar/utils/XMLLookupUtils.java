@@ -85,7 +85,7 @@ public final class XMLLookupUtils
                 }
             }
 
-            String documentXML = getDocumentXML(doc);
+            String documentXML = getDocumentXml(doc);
             String startTag = "<" + selectionTag + ">";
             String endTag = "</" + selectionTag + ">";
             startOffset = documentXML.indexOf(startTag);
@@ -131,7 +131,7 @@ public final class XMLLookupUtils
         return xmlReader;
     }
 
-    private static String getDocumentXML(Document document)
+    private static String getDocumentXml(Document document)
     {
         TransformerFactory transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
         Transformer transformer;
@@ -150,9 +150,9 @@ public final class XMLLookupUtils
                 transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
             }
 
-            StringWriter writer = new StringWriter();
-            transformer.transform(new DOMSource(document), new StreamResult(writer));
-            return writer.getBuffer().toString();
+            StringWriter stringWriter = new StringWriter();
+            transformer.transform(new DOMSource(document), new StreamResult(stringWriter));
+            return stringWriter.getBuffer().toString();
         } catch (TransformerException e) {
             logger.debug("Creating XML string from document failed.");
         }
@@ -162,18 +162,18 @@ public final class XMLLookupUtils
     private static Document buildDocument(String xmlContent)
             throws ParserConfigurationException, IOException, SAXException
     {
-        DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        builder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
+        DocumentBuilderFactory documentBuilderFactory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        documentBuilder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
+
         try {
-            ByteArrayInputStream input = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
-            return builder.parse(input);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
+            return documentBuilder.parse(inputStream);
         } catch (Exception e) {
             final String cleanXML = XMLLookupUtils.cleanXML(xmlContent);
             ByteArrayInputStream input = new ByteArrayInputStream(cleanXML.getBytes(StandardCharsets.UTF_8));
-            return builder.parse(input);
+            return documentBuilder.parse(input);
         }
-
     }
 
     public static String cleanXML(String markup)
@@ -190,7 +190,7 @@ public final class XMLLookupUtils
                 + xmlContent.substring(offsetStart, offsetEnd) + "</acroseparator>" + xmlContent.substring(offsetEnd);
 
         XMLReader xmlReader = XMLLookupUtils.getSecureXMLReader();
-        boolean isMalformedXMLFound = false;
+        boolean isMalformedXmlFound = false;
         FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xmlReader);
         xmlReader.setContentHandler(fragmentContentHandler);
         try {
@@ -198,9 +198,9 @@ public final class XMLLookupUtils
         } catch (FragmentContentException s) {
             logger.debug("Custom fragment content exception is received");
         } catch (Exception e) {
-            isMalformedXMLFound = true;
+            isMalformedXmlFound = true;
         }
-        if (isMalformedXMLFound) {
+        if (isMalformedXmlFound) {
             try {
                 xmlReader.parse(new InputSource(new StringReader(XMLLookupUtils.cleanXML(contentWithMarkerNode))));
             } catch (FragmentContentException s) {

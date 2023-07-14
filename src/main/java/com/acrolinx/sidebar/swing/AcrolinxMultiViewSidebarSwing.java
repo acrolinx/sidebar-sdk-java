@@ -38,22 +38,22 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
 
     /**
      *
-     * @param integration Acrolinx Integration without Acrolinx Storage
+     * @param acrolinxIntegration Acrolinx Integration without Acrolinx Storage
      */
-    public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration)
+    public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration acrolinxIntegration)
     {
-        super(integration);
+        super(acrolinxIntegration);
         this.showEmptyMessage();
     }
 
     /**
      *
-     * @param integration Acrolinx Integration with Acrolinx storage as external synchronous local
-     *        storage
+     * @param acrolinxIntegration Acrolinx Integration with Acrolinx storage as external synchronous
+     *        local storage
      */
-    public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration integration, AcrolinxStorage storage)
+    public AcrolinxMultiViewSidebarSwing(AcrolinxIntegration acrolinxIntegration, AcrolinxStorage acrolinxStorage)
     {
-        super(integration, storage);
+        super(acrolinxIntegration, acrolinxStorage);
         this.showEmptyMessage();
     }
 
@@ -95,19 +95,19 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
 
     /**
      *
-     * @param client New integration dedicated per sidebar instance
+     * @param acrolinxIntegration New integration dedicated per sidebar instance
      * @param documentId Unique document Id for the sidebar instance eg: file path
      * @throws AcrolinxException Throws exception is sidebar already exists for the document
      */
     @Override
-    public void addSidebar(AcrolinxIntegration client, String documentId) throws AcrolinxException
+    public void addSidebar(AcrolinxIntegration acrolinxIntegration, String documentId) throws AcrolinxException
     {
         final AcrolinxSidebarJFX existingSidebar = sidebars.get(documentId);
         if (existingSidebar != null) {
             throw new AcrolinxException("Sidebar already exists for document id: " + documentId);
         }
         JFXUtils.invokeInJFXThread(() -> {
-            sidebarJFX = new AcrolinxSidebarJFX(client, storage);
+            sidebarJFX = new AcrolinxSidebarJFX(acrolinxIntegration, storage);
             final WebView webview = sidebarJFX.getWebView();
             GridPane.setHgrow(webview, Priority.ALWAYS);
             GridPane.setVgrow(webview, Priority.ALWAYS);

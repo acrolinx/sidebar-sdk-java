@@ -40,34 +40,40 @@ public class CheckResult
     public Optional<String> getEmbedCheckDataAsEmbeddableString()
     {
         if (InputFormat.XML.toString().equalsIgnoreCase(this.inputFormat)) {
-            final StringBuilder sb = new StringBuilder();
+            final StringBuilder stringBuilder = new StringBuilder();
             getEmbedCheckInformation().ifPresent(map -> {
-                sb.append("<?" + ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME + " ");
-                map.forEach((key, value) -> sb.append(key).append("=").append("\"").append(value).append("\" "));
-                sb.append("?>");
+                stringBuilder.append("<?" + ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME + " ");
+                map.forEach(
+                        (key, value) -> stringBuilder.append(key).append("=").append("\"").append(value).append("\" "));
+                stringBuilder.append("?>");
             });
-            if (sb.length() > 0) {
-                return Optional.of(sb.toString());
+
+            if (stringBuilder.length() > 0) {
+                return Optional.of(stringBuilder.toString());
             }
         } else if (InputFormat.MARKDOWN.toString().equalsIgnoreCase(this.inputFormat)) {
-            final StringBuilder sb = new StringBuilder();
+            final StringBuilder stringBuilder = new StringBuilder();
             getEmbedCheckInformation().ifPresent(map -> {
-                sb.append("<!-- " + ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME + " ");
-                map.forEach((key, value) -> sb.append(key).append("=").append("\"").append(value).append("\" "));
-                sb.append("-->");
+                stringBuilder.append("<!-- " + ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME + " ");
+                map.forEach(
+                        (key, value) -> stringBuilder.append(key).append("=").append("\"").append(value).append("\" "));
+                stringBuilder.append("-->");
             });
-            if (sb.length() > 0) {
-                return Optional.of(sb.toString());
+
+            if (stringBuilder.length() > 0) {
+                return Optional.of(stringBuilder.toString());
             }
         } else if (InputFormat.HTML.toString().equalsIgnoreCase(this.inputFormat)) {
-            final StringBuilder sb = new StringBuilder();
+            final StringBuilder stringBuilder = new StringBuilder();
             getEmbedCheckInformation().ifPresent(map -> {
-                sb.append("<meta " + "name=\"" + ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME + "\" ");
-                map.forEach((key, value) -> sb.append(key).append("=").append("\"").append(value).append("\" "));
-                sb.append("/>");
+                stringBuilder.append("<meta " + "name=\"" + ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME + "\" ");
+                map.forEach(
+                        (key, value) -> stringBuilder.append(key).append("=").append("\"").append(value).append("\" "));
+                stringBuilder.append("/>");
             });
-            if (sb.length() > 0) {
-                return Optional.of(sb.toString());
+
+            if (stringBuilder.length() > 0) {
+                return Optional.of(stringBuilder.toString());
             }
         }
 
