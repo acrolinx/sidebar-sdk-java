@@ -22,30 +22,17 @@ public final class StartPageInstaller
     private static final Logger logger = LoggerFactory.getLogger(StartPageInstaller.class);
     private static final String SERVER_SELECTOR_DIR = "acrolinx_start_page";
 
-    protected static String getStartPageVersion()
+    static String getStartPageVersion()
     {
         final String resourceName = "/server-selector/version.properties";
         final Properties props = new Properties();
-        final InputStream resourceStream = StartPageInstaller.class.getResourceAsStream(resourceName);
-        if (resourceStream != null) {
-            try {
-                props.load(resourceStream);
-                return (String) props.get("version");
-            } catch (final IOException e) {
-                logger.error("Could not read server selector version!");
-                logger.error(e.getMessage());
-            } finally {
-                try {
-                    resourceStream.close();
-                } catch (final IOException e) {
-                    logger.debug("Could not close resource stream or stream already cleaned up!");
-                    logger.error(e.getMessage());
-                }
-            }
-        } else {
-            logger.error("Version properties file for server selector not found!");
+        try (InputStream resourceStream = StartPageInstaller.class.getResourceAsStream(resourceName)) {
+            props.load(resourceStream);
+            return props.getProperty("version");
+        } catch (final IOException e) {
+            logger.error("Could not read server selector version!", e);
+            return null;
         }
-        return null;
     }
 
     /**
@@ -95,7 +82,7 @@ public final class StartPageInstaller
 
     /**
      * Returns the URI to the extracted start page.
-     * 
+     *
      * @return Path to current start page.
      */
     public static String getStartPageURL() throws IOException

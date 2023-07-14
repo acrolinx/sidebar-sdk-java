@@ -40,7 +40,7 @@ public final class SidebarUtils
             try {
                 openURIInDefaultBrowser(new URI(url));
             } catch (final URISyntaxException e) {
-                logger.error(e.getMessage());
+                logger.error("", e);
             }
         } else {
             logger.warn("Attempt to open invalid URL: {}", url);
@@ -75,7 +75,7 @@ public final class SidebarUtils
                 try {
                     Desktop.getDesktop().browse(url);
                 } catch (final Exception e) {
-                    logger.error(e.getMessage());
+                    logger.error("", e);
                 }
             }).start();
         } else {
@@ -111,7 +111,7 @@ public final class SidebarUtils
                     try {
                         Desktop.getDesktop().open(new File(folder));
                     } catch (final Exception e) {
-                        logger.error(e.getMessage());
+                        logger.error("", e);
                     }
                 }).start();
             } else {
@@ -150,14 +150,12 @@ public final class SidebarUtils
                 props.load(resourceStream);
                 return (String) props.get("VERSION_JAVA_SDK");
             } catch (final IOException e) {
-                logger.error("Could not read java sdk version!");
-                logger.error(e.getMessage());
+                logger.error("Could not read java sdk version!", e);
             } finally {
                 try {
                     resourceStream.close();
                 } catch (final IOException e) {
-                    logger.debug("Could not close resource stream or stream already cleaned up!");
-                    logger.error(e.getMessage());
+                    logger.error("Could not close resource stream or stream already cleaned up!", e);
                 }
             }
         } else {
@@ -178,8 +176,7 @@ public final class SidebarUtils
             final URLConnection conn = url.openConnection();
             conn.connect();
         } catch (final Exception e) {
-            logger.error("Invalid Server URL!");
-            logger.error(e.getMessage());
+            logger.error("", e);
             return false;
         }
         return true;

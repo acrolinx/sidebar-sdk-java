@@ -105,10 +105,9 @@ public final class XMLLookupUtils
                     + endTagInXML.length();
 
         } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException e) {
-            logger.error("Unable to find offsets in XMl for xpath: {}", xpath);
-            logger.error(e.getMessage());
+            logger.error("Unable to find offsets in XMl for xpath: {}", xpath, e);
         } catch (IllegalStateException e) {
-            logger.error(e.getMessage());
+            logger.error("", e);
         }
 
         if (startOffset < 0 || endOffset < 0) {
@@ -119,18 +118,17 @@ public final class XMLLookupUtils
 
     private static XMLReader getSecureXMLReader() throws ParserConfigurationException, SAXException
     {
-        SAXParserFactory spf = javax.xml.parsers.SAXParserFactory.newInstance();
-        SAXParser sp = spf.newSAXParser();
-        XMLReader xr = sp.getXMLReader();
+        SAXParserFactory saxParserFactory = javax.xml.parsers.SAXParserFactory.newInstance();
+        SAXParser saxParser = saxParserFactory.newSAXParser();
+        XMLReader xmlReader = saxParser.getXMLReader();
         try {
-            xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            xr.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            xr.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            xmlReader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
         } catch (SAXException e) {
-            logger.error(e.getMessage());
-            logger.warn("Some XXE preventing settings are not supported by the current XML Reader library.");
+            logger.error("Some XXE preventing settings are not supported by the current XML Reader library.", e);
         }
-        return xr;
+        return xmlReader;
     }
 
     private static String getDocumentXML(Document document)
@@ -191,48 +189,35 @@ public final class XMLLookupUtils
         String contentWithMarkerNode = xmlContent.substring(0, offsetStart) + "<acroseparator>"
                 + xmlContent.substring(offsetStart, offsetEnd) + "</acroseparator>" + xmlContent.substring(offsetEnd);
 
+        XMLReader xmlReader = XMLLookupUtils.getSecureXMLReader();
+        boolean isMalformedXMLFound = false;
+        FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xmlReader);
+        xmlReader.setContentHandler(fragmentContentHandler);
         try {
-            XMLReader xr = XMLLookupUtils.getSecureXMLReader();
-            boolean isMalformedXMLFound = false;
-            FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
-            xr.setContentHandler(fragmentContentHandler);
+            xmlReader.parse(new InputSource(new StringReader(contentWithMarkerNode)));
+        } catch (FragmentContentException s) {
+            logger.debug("Custom fragment content exception is received");
+        } catch (Exception e) {
+            isMalformedXMLFound = true;
+        }
+        if (isMalformedXMLFound) {
             try {
-                xr.parse(new InputSource(new StringReader(contentWithMarkerNode)));
+                xmlReader.parse(new InputSource(new StringReader(XMLLookupUtils.cleanXML(contentWithMarkerNode))));
             } catch (FragmentContentException s) {
                 logger.debug("Custom fragment content exception is received");
-            } catch (Exception e) {
-                isMalformedXMLFound = true;
             }
-            if (isMalformedXMLFound) {
-                try {
-                    xr.parse(new InputSource(new StringReader(XMLLookupUtils.cleanXML(contentWithMarkerNode))));
-                } catch (FragmentContentException s) {
-                    logger.debug("Custom fragment content exception is received");
-                }
-            }
-            String markerXpath = fragmentContentHandler.getMarkerXpath();
-            String xpath = markerXpath.substring(0, markerXpath.lastIndexOf('/'));
-            return xpath;
-
-        } catch (Exception ex) {
-            logger.error("Lookup For Offset Failed");
-            logger.error(ex.getMessage());
-            throw new Exception(ex.getMessage());
         }
+        String markerXpath = fragmentContentHandler.getMarkerXpath();
+        return markerXpath.substring(0, markerXpath.lastIndexOf('/'));
     }
 
     public static List<String> getAllXpathInXmlDocument(String xml) throws Exception
     {
-        try {
-            XMLReader xr = getSecureXMLReader();
-            FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xr);
-            xr.setContentHandler(fragmentContentHandler);
-            xr.parse(new InputSource(new StringReader(xml)));
-            return fragmentContentHandler.getDocumentXpaths();
-        } catch (Exception ex) {
-            logger.error(ex.getMessage());
-            throw new Exception(ex.getMessage());
-        }
+        XMLReader xmlReader = getSecureXMLReader();
+        FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xmlReader);
+        xmlReader.setContentHandler(fragmentContentHandler);
+        xmlReader.parse(new InputSource(new StringReader(xml)));
+        return fragmentContentHandler.getDocumentXpaths();
     }
 
     public static String getCommonXpath(String xpath1, String xpath2)

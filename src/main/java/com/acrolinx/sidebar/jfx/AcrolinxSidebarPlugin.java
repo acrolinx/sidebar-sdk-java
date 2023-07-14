@@ -101,7 +101,7 @@ abstract class AcrolinxSidebarPlugin
                 TimeUnit.MILLISECONDS.sleep(500);
                 jsobj = (JSObject) webView.getEngine().executeScript("window");
             } catch (final InterruptedException e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
                 Thread.currentThread().interrupt();
             } catch (final Exception e) {
                 // Window object might not be available in the first attempt and
@@ -121,17 +121,15 @@ abstract class AcrolinxSidebarPlugin
             try {
                 getWindowObject().eval("acrolinxSidebar.init(" + this.initParameters.get().toString() + ")");
             } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
             }
         });
     }
 
-    public synchronized void onInitFinished(final JSObject o)
+    public synchronized void onInitFinished(final JSObject jsObject)
     {
-        final Optional<SidebarError> initResult = JSToJavaConverter.getAcrolinxInitResultFromJSObject(o);
-        if (initResult.isPresent()) {
-            logger.error(initResult.get().getMessage());
-        }
+        final Optional<SidebarError> initResult = JSToJavaConverter.getAcrolinxInitResultFromJSObject(jsObject);
+        initResult.ifPresent(sidebarError -> logger.error("", sidebarError));
         client.onInitFinished(initResult);
     }
 
@@ -142,7 +140,7 @@ abstract class AcrolinxSidebarPlugin
             try {
                 getWindowObject().eval("acrolinxSidebar.configure(" + sidebarConfiguration.toString() + ")");
             } catch (final Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error("", e);
             }
         });
     }

@@ -14,7 +14,7 @@ public class CheckResultFromJSON
     private static final Logger logger = LoggerFactory.getLogger(CheckResultFromJSON.class);
 
     private CheckedDocumentPartFromJSON checkedPart;
-    private SidebarError error;
+    private SidebarError sidebarError;
     private CheckInformationKeyValuePairFromJSON[] embedCheckInformation;
     private String inputFormat;
 
@@ -24,8 +24,8 @@ public class CheckResultFromJSON
 
     public CheckResult getAsCheckResult()
     {
-        if (this.error != null) {
-            logger.warn(error.getMessage());
+        if (this.sidebarError != null) {
+            logger.warn("Message: {}, Code: {}", sidebarError.getMessage(), sidebarError.getErrorCode());
             return null;
         }
         return new CheckResult(checkedPart.getAsCheckResult(), getEmbedCheckInformation(), inputFormat);

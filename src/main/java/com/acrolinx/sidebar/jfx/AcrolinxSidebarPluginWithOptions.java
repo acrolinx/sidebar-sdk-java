@@ -43,7 +43,7 @@ public class AcrolinxSidebarPluginWithOptions extends AcrolinxSidebarPlugin
                     initBatchCheck(batchCheckRequestOptions);
                     return true;
                 } catch (Exception e) {
-                    logger.error("Extracting references in Future Task failed: {}", e.getMessage());
+                    logger.error("Extracting references in Future Task failed", e);
                     return false;
                 }
             });
