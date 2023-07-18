@@ -53,7 +53,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     /**
      * @param acrolinxIntegration The implementation of the Acrolinx Integration.
      */
-    public AcrolinxSidebarJFX(final AcrolinxIntegration acrolinxIntegration, final AcrolinxStorage storage)
+    public AcrolinxSidebarJFX(final AcrolinxIntegration acrolinxIntegration, final AcrolinxStorage acrolinxStorage)
     {
         LogMessages.logJavaVersionAndUiFramework(logger, "Java FX");
         SecurityUtils.setUpEnvironment();
@@ -71,9 +71,10 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         webEngine.setOnError((final WebErrorEvent webErrorEvent) -> logger.error("Error: {}", webErrorEvent));
         webEngine.setOnAlert((final WebEvent<String> webEvent) -> logger.debug("Alert: {}", webEvent.getData()));
 
-        webEngine.getLoadWorker().stateProperty().addListener((
-                final ObservableValue<? extends Worker.State> observedValue, final Worker.State oldState,
-                final Worker.State newState) -> this.getChangeListener(observedValue, oldState, newState, storage));
+        webEngine.getLoadWorker().stateProperty().addListener(
+                (final ObservableValue<? extends Worker.State> observedValue, final Worker.State oldState,
+                        final Worker.State newState) -> this.getChangeListener(observedValue, oldState, newState,
+                                acrolinxStorage));
         webEngine.getLoadWorker().exceptionProperty().addListener(
                 (observableValue, oldThrowable, newThrowable) -> logger.error("webEngine exception", newThrowable));
 
@@ -87,11 +88,11 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     private void getChangeListener(final ObservableValue<? extends Worker.State> observedValue,
-            final Worker.State oldState, final Worker.State newState, final AcrolinxStorage storage)
+            final Worker.State oldState, final Worker.State newState, final AcrolinxStorage acrolinxStorage)
     {
         logger.debug("state changed: {} : {} -> {}", observedValue.getValue(), oldState, newState);
         if (newState == Worker.State.SUCCEEDED) {
-            this.injectAcrolinxPlugin(storage);
+            this.injectAcrolinxPlugin(acrolinxStorage);
         }
         if ("FAILED".equals("" + newState)) {
             final WebView webView = getWebView();
@@ -106,23 +107,23 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         }
     }
 
-    protected void injectAcrolinxPlugin(AcrolinxStorage storage)
+    protected void injectAcrolinxPlugin(AcrolinxStorage acrolinxStorage)
     {
         final WebView webView = getWebView();
         final WebEngine webEngine = webView.getEngine();
         logger.debug("Sidebar loaded from: {}", webEngine.getLocation());
-        final JSObject jsobj = (JSObject) webEngine.executeScript("window");
-        if (jsobj == null) {
+        final JSObject jsObject = (JSObject) webEngine.executeScript("window");
+        if (jsObject == null) {
             logger.error("Window Object null!");
         } else {
             logger.debug("Injecting JSLogger.");
-            jsobj.setMember("java", new JSLogger());
+            jsObject.setMember("java", new JSLogger());
             webEngine.executeScript("console.log = function()\n" + "{\n" + "    java.log('JavaScript: ' + "
                     + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
             webEngine.executeScript("console.error = function()\n" + "{\n" + "    java.error('JavaScript: ' + "
                     + "JSON.stringify(Array.prototype.slice.call(arguments)));\n" + "};");
             logger.debug("Setting local storage");
-            jsobj.setMember("acrolinxStorage", storage);
+            jsObject.setMember("acrolinxStorage", acrolinxStorage);
         }
         final PluginSupportedParameters supported = this.acrolinxIntegration.getInitParameters().getSupported();
         if ((supported != null) && (supported.isCheckSelection() || supported.isBatchChecking())) {

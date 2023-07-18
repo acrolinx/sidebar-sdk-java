@@ -7,10 +7,9 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.Objects;
 
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Preconditions;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
@@ -82,7 +81,8 @@ public final class LoggingUtils
 
     private static void useDefaultLoggingConfig(String applicationName) throws IOException, JoranException
     {
-        Preconditions.checkNotNull(applicationName, "application name should be set");
+        Objects.requireNonNull(applicationName, "application name should be set");
+
         InputStream inputStream = LoggingUtils.class.getResourceAsStream("/logback_default.xml");
         loadLogFileConfig(inputStream, applicationName);
     }

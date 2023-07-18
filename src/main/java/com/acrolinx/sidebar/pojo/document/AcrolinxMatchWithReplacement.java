@@ -112,6 +112,7 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
             final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
             return new AcrolinxMatchWithReplacement(content, intRange, getReplacement(), externalContentMatches);
         }
+
         return new AcrolinxMatchWithReplacement(content, intRange, getReplacement());
     }
 }

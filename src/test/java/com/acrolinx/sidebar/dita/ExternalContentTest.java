@@ -34,17 +34,17 @@ class ExternalContentTest
         externalContentBuilder.addTextReplacement(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         externalContentBuilder.addTextReplacement(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
-        final ExternalContent content = externalContentBuilder.build();
+        final ExternalContent externalContent = externalContentBuilder.build();
 
-        final List<ExternalContentField> ditaReferences = content.getDitaReferences();
-        final List<ExternalContentField> entities = content.getEntities();
-        final List<ExternalContentField> textReplacements = content.getTextReplacements();
+        final List<ExternalContentField> ditaReferences = externalContent.getDitaReferences();
+        final List<ExternalContentField> entities = externalContent.getEntities();
+        final List<ExternalContentField> textReplacements = externalContent.getTextReplacements();
 
         assertEquals(3, ditaReferences.size());
         assertEquals(3, entities.size());
         assertEquals(3, textReplacements.size());
 
-        assertNotNull(content.toString());
+        assertNotNull(externalContent.toString());
     }
 
     @Test
@@ -64,9 +64,10 @@ class ExternalContentTest
         externalContentBuilder.addTextReplacement(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         externalContentBuilder.addTextReplacement(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
-        final ExternalContent content = externalContentBuilder.build();
+        final ExternalContent externalContent = externalContentBuilder.build();
 
-        final CheckContent checkContent = new CheckContent("<xml>This \"is a sentence.</xml>\n<t>tests</t>", content);
+        final CheckContent checkContent = new CheckContent("<xml>This \"is a sentence.</xml>\n<t>tests</t>",
+                externalContent);
 
         String jsonString = checkContent.toString();
         assertTrue(jsonString.contains("content"));

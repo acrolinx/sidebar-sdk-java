@@ -42,7 +42,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     protected static final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSwing.class);
 
     protected transient AcrolinxSidebarJFX sidebarJFX;
-    protected final transient AcrolinxStorage storage;
+    protected final transient AcrolinxStorage acrolinxStorage;
     protected final transient AcrolinxIntegration acrolinxIntegration;
 
     public AcrolinxSidebarSwing(final AcrolinxIntegration acrolinxIntegration)
@@ -52,9 +52,8 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
     public AcrolinxSidebarSwing(final AcrolinxIntegration acrolinxIntegration, final AcrolinxStorage acrolinxStorage)
     {
-        super();
         LogMessages.logJavaVersionAndUiFramework(logger, "Java Swing with Java FX Sidebar component");
-        this.storage = acrolinxStorage;
+        this.acrolinxStorage = acrolinxStorage;
         this.acrolinxIntegration = acrolinxIntegration;
         Platform.setImplicitExit(false);
         JFXUtils.invokeInJFXThread(this::createScene);
@@ -80,7 +79,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
     protected void createScene()
     {
-        sidebarJFX = new AcrolinxSidebarJFX(acrolinxIntegration, storage);
+        sidebarJFX = new AcrolinxSidebarJFX(acrolinxIntegration, acrolinxStorage);
         final WebView webview = sidebarJFX.getWebView();
         GridPane.setHgrow(webview, Priority.ALWAYS);
         GridPane.setVgrow(webview, Priority.ALWAYS);

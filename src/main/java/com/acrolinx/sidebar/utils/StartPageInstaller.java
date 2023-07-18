@@ -26,6 +26,7 @@ public final class StartPageInstaller
     {
         final String resourceName = "/server-selector/version.properties";
         final Properties properties = new Properties();
+
         try (InputStream resourceStream = StartPageInstaller.class.getResourceAsStream(resourceName)) {
             properties.load(resourceStream);
             return properties.getProperty("version");

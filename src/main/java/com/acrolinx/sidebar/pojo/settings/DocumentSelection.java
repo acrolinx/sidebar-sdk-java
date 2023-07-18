@@ -10,22 +10,24 @@ public class DocumentSelection
 {
     private final int[][] ranges;
 
-    public DocumentSelection(List<IntRange> ranges)
+    public DocumentSelection(List<IntRange> intRanges)
     {
-        this.ranges = convertDocumentSelection(ranges);
+        this.ranges = convertDocumentSelection(intRanges);
     }
 
-    public int[][] convertDocumentSelection(List<IntRange> ranges)
+    public int[][] convertDocumentSelection(List<IntRange> intRanges)
     {
-        if (ranges != null) {
-            int size = ranges.size();
+        if (intRanges != null) {
+            int size = intRanges.size();
             int[][] rangesArray = new int[size][2];
             int index = 0;
-            for (IntRange i : ranges) {
-                rangesArray[index][0] = ranges.get(index).getMinimumInteger();
-                rangesArray[index][1] = ranges.get(index).getMaximumInteger();
+
+            for (IntRange intRange : intRanges) {
+                rangesArray[index][0] = intRanges.get(index).getMinimumInteger();
+                rangesArray[index][1] = intRanges.get(index).getMaximumInteger();
                 index++;
             }
+
             return rangesArray;
         }
 

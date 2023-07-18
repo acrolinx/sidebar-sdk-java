@@ -3,7 +3,13 @@ package com.acrolinx.sidebar.pojo.settings;
 
 public enum SidebarMessageType
 {
-    SUCCESS("success"), INFO("info"), WARNING("warning"), ERROR("error");
+    SUCCESS("success"),
+
+    INFO("info"),
+
+    WARNING("warning"),
+
+    ERROR("error");
 
     private String value;
 
