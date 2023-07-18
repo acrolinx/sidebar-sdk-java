@@ -85,22 +85,22 @@ public final class XMLLookupUtils
                 }
             }
 
-            String documentXML = getDocumentXml(doc);
+            String documentXml = getDocumentXml(doc);
             String startTag = "<" + selectionTag + ">";
             String endTag = "</" + selectionTag + ">";
-            startOffset = documentXML.indexOf(startTag);
-            endOffset = documentXML.indexOf(endTag) - startTag.length();
-            documentXML = documentXML.replace(startTag, "").replace(endTag, "");
+            startOffset = documentXml.indexOf(startTag);
+            endOffset = documentXml.indexOf(endTag) - startTag.length();
+            documentXml = documentXml.replace(startTag, "").replace(endTag, "");
 
-            String startTagInXML = "<" + nodeName + (nodeHasAttributes ? " " : ">");
-            final int occurrencesOfStartTag = StringUtils.countMatches(documentXML.substring(0, startOffset),
-                    startTagInXML);
+            String startTagInXml = "<" + nodeName + (nodeHasAttributes ? " " : ">");
+            final int occurrencesOfStartTag = StringUtils.countMatches(documentXml.substring(0, startOffset),
+                    startTagInXml);
 
             String endTagInXML = "</" + nodeName + ">";
-            final int occurrencesOfEndTag = StringUtils.countMatches(documentXML.substring(0, endOffset), endTagInXML)
+            final int occurrencesOfEndTag = StringUtils.countMatches(documentXml.substring(0, endOffset), endTagInXML)
                     - 1;
 
-            startOffset = StringUtils.ordinalIndexOf(xmlContent, startTagInXML, occurrencesOfStartTag + 1);
+            startOffset = StringUtils.ordinalIndexOf(xmlContent, startTagInXml, occurrencesOfStartTag + 1);
             endOffset = StringUtils.ordinalIndexOf(xmlContent, endTagInXML, occurrencesOfEndTag + 1)
                     + endTagInXML.length();
 
@@ -170,8 +170,8 @@ public final class XMLLookupUtils
             ByteArrayInputStream inputStream = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
             return documentBuilder.parse(inputStream);
         } catch (Exception e) {
-            final String cleanXML = XMLLookupUtils.cleanXML(xmlContent);
-            ByteArrayInputStream input = new ByteArrayInputStream(cleanXML.getBytes(StandardCharsets.UTF_8));
+            final String cleanXml = XMLLookupUtils.cleanXML(xmlContent);
+            ByteArrayInputStream input = new ByteArrayInputStream(cleanXml.getBytes(StandardCharsets.UTF_8));
             return documentBuilder.parse(input);
         }
     }

@@ -68,10 +68,10 @@ public class TextAreaAdapter implements InputAdapterInterface
     }
 
     @Override
-    public synchronized void selectRanges(final String checkId, final List<AcrolinxMatch> matches)
+    public synchronized void selectRanges(final String checkId, final List<AcrolinxMatch> acrolinxMatches)
     {
-        final int minRange = matches.get(0).getRange().getMinimumInteger();
-        final int maxRange = matches.get(matches.size() - 1).getRange().getMaximumInteger();
+        final int minRange = acrolinxMatches.get(0).getRange().getMinimumInteger();
+        final int maxRange = acrolinxMatches.get(acrolinxMatches.size() - 1).getRange().getMaximumInteger();
         textArea.selectRange(minRange, maxRange);
     }
 
@@ -88,8 +88,8 @@ public class TextAreaAdapter implements InputAdapterInterface
         final IndexRange selection = this.textArea.getSelection();
         final int start = selection.getStart();
         final int end = selection.getEnd();
-        final List<IntRange> ranges = new ArrayList<>();
-        ranges.add(new IntRange(start, end));
-        return ranges;
+        final List<IntRange> intRanges = new ArrayList<>();
+        intRanges.add(new IntRange(start, end));
+        return intRanges;
     }
 }

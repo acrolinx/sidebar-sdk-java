@@ -9,18 +9,18 @@ import com.google.gson.Gson;
 public class CheckedDocumentPart
 {
     private final String checkId;
-    private final IntRange range;
+    private final IntRange intRange;
     private List<ExternalContentMatch> externalContent;
 
-    public CheckedDocumentPart(String checkId, IntRange range)
+    public CheckedDocumentPart(String checkId, IntRange intRange)
     {
         this.checkId = checkId;
-        this.range = range;
+        this.intRange = intRange;
     }
 
-    public CheckedDocumentPart(String checkId, IntRange range, List<ExternalContentMatch> externalContent)
+    public CheckedDocumentPart(String checkId, IntRange intRange, List<ExternalContentMatch> externalContent)
     {
-        this(checkId, range);
+        this(checkId, intRange);
         this.externalContent = externalContent;
     }
 
@@ -31,7 +31,7 @@ public class CheckedDocumentPart
 
     public IntRange getRange()
     {
-        return range;
+        return intRange;
     }
 
     public List<ExternalContentMatch> getExternalContent()
@@ -49,10 +49,10 @@ public class CheckedDocumentPart
     public String getAsJS()
     {
         if (externalContent != null) {
-            return "{checkId: \"" + checkId + "\", range:[" + range.getMinimumInteger() + ","
-                    + range.getMaximumInteger() + "], externalContent:" + externalContent.toString() + "}";
+            return "{checkId: \"" + checkId + "\", range:[" + intRange.getMinimumInteger() + ","
+                    + intRange.getMaximumInteger() + "], externalContent:" + externalContent.toString() + "}";
         }
-        return "{checkId: \"" + checkId + "\", range:[" + range.getMinimumInteger() + "," + range.getMaximumInteger()
-                + "]}";
+        return "{checkId: \"" + checkId + "\", range:[" + intRange.getMinimumInteger() + ","
+                + intRange.getMaximumInteger() + "]}";
     }
 }

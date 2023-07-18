@@ -25,16 +25,16 @@ public class LookupRangesDiff extends LookupRanges
 
     @Override
     public Optional<List<? extends AbstractMatch>> getMatchesWithCorrectedRanges(String checkedText, String changedText,
-            List<? extends AbstractMatch> matches)
+            List<? extends AbstractMatch> abstractMatches)
     {
         List<DiffMatchPatch.Diff> diffs = Lookup.getDiffs(checkedText, changedText);
         List<OffsetAlign> offsetMappingArray = Lookup.createOffsetMappingArray(diffs);
         List<AbstractMatch> returnValues = new ArrayList<>();
-        boolean anyEmpty = matches.stream().anyMatch(match -> {
+        boolean anyEmpty = abstractMatches.stream().anyMatch(abstractMatch -> {
             Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs, offsetMappingArray,
-                    match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
+                    abstractMatch.getRange().getMinimumInteger(), abstractMatch.getRange().getMaximumInteger());
             if (correctedMatch.isPresent()) {
-                AbstractMatch copy = match.setRange(correctedMatch.get());
+                AbstractMatch copy = abstractMatch.setRange(correctedMatch.get());
                 returnValues.add(copy);
                 return false;
             }
@@ -50,23 +50,23 @@ public class LookupRangesDiff extends LookupRanges
 
     public List<? extends AbstractMatch> getMatchesIncludingCorrectedExternalMatches(
             ExternalContent checkedExternalContent, ExternalContent changedExternalContent,
-            List<? extends AbstractMatch> matches)
+            List<? extends AbstractMatch> abstractMatches)
     {
-        return matches.stream().map(match -> {
-            if (!(match instanceof AcrolinxMatch))
-                return match;
-            AcrolinxMatch acrolinxMatch = (AcrolinxMatch) match;
+        return abstractMatches.stream().map(abstractMatch -> {
+            if (!(abstractMatch instanceof AcrolinxMatch))
+                return abstractMatch;
+            AcrolinxMatch acrolinxMatch = (AcrolinxMatch) abstractMatch;
 
             if (!acrolinxMatch.hasExternalContentMatches())
-                return match;
+                return abstractMatch;
 
             List<ExternalContentMatch> externalContentMatches = acrolinxMatch.getExternalContentMatches();
 
             List<ExternalContentMatch> correctedMatches = getExternalContentMatchesWithCorrectedRanges(
                     externalContentMatches, checkedExternalContent, changedExternalContent);
 
-            return new AcrolinxMatch(match.getRange(), ((AcrolinxMatch) match).getExtractedRange(), match.getContent(),
-                    correctedMatches);
+            return new AcrolinxMatch(abstractMatch.getRange(), ((AcrolinxMatch) abstractMatch).getExtractedRange(),
+                    abstractMatch.getContent(), correctedMatches);
         }).collect(Collectors.toList());
     }
 

@@ -91,8 +91,8 @@ class XMLLookupUtilsTest
                 + "<meta content=\"text/html; charset=iso-8859-1\" http-equiv=\"content-type\">\n" + "</head>\n"
                 + "<body>\t\t\t \t\t\t<div>\t\t\t\t<img\n" + "alt=\"notice that all my quotes are in\n"
                 + " place for attribute values\" src=\"logoBlackBlue.png\"> \t\t\t\t</div> \t\t\t</body>\n" + "</html>";
-        final String cleanXML = XMLLookupUtils.cleanXML(XHtmlContent);
-        assertTrue(cleanXML.contains("</meta>"));
+        final String cleanXml = XMLLookupUtils.cleanXML(XHtmlContent);
+        assertTrue(cleanXml.contains("</meta>"));
     }
 
     @Test

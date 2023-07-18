@@ -57,11 +57,11 @@ public class AcrolinxMultiViewSidebarSWT
     }
 
     /**
-     * @param client New integration dedicated per sidebar instance
+     * @param acrolinxIntegration New integration dedicated per sidebar instance
      * @param documentId Unique document Id for the sidebar instance eg: file path
      * @throws AcrolinxException Throws exception is sidebar already exists for the document
      */
-    public void addSidebar(String documentId, AcrolinxIntegration client) throws AcrolinxException
+    public void addSidebar(String documentId, AcrolinxIntegration acrolinxIntegration) throws AcrolinxException
     {
         final AcrolinxSidebarSWT existingSidebar = this.sidebarSWTMap.get(documentId);
         if (existingSidebar != null) {
@@ -70,9 +70,9 @@ public class AcrolinxMultiViewSidebarSWT
         this.hideAllSidebars();
         final AcrolinxSidebarSWT acrolinxSidebarSWT;
         if (this.container instanceof Shell) {
-            acrolinxSidebarSWT = new AcrolinxSidebarSWT((Shell) container, client, this.acrolinxStorage);
+            acrolinxSidebarSWT = new AcrolinxSidebarSWT((Shell) container, acrolinxIntegration, this.acrolinxStorage);
         } else {
-            acrolinxSidebarSWT = new AcrolinxSidebarSWT(container, client, this.acrolinxStorage);
+            acrolinxSidebarSWT = new AcrolinxSidebarSWT(container, acrolinxIntegration, this.acrolinxStorage);
         }
         this.sidebarSWTMap.put(documentId, acrolinxSidebarSWT);
         acrolinxSidebarSWT.reload();

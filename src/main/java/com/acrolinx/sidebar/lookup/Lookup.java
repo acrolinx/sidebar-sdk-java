@@ -19,7 +19,7 @@ public final class Lookup
 
     public static List<OffsetAlign> createOffsetMappingArray(List<DiffMatchPatch.Diff> diffs)
     {
-        LinkedList<OffsetAlign> offsetMapping = new LinkedList<>();
+        List<OffsetAlign> offsetMapping = new LinkedList<>();
         final AtomicInteger offsetCountOld = new AtomicInteger(0);
         final AtomicInteger currentDiffOffset = new AtomicInteger(0);
         diffs.forEach(diff -> {
@@ -41,24 +41,27 @@ public final class Lookup
             }
             offsetMapping.add(new OffsetAlign(offsetCountOld.get(), currentDiffOffset.get()));
         });
+
         return Collections.unmodifiableList(offsetMapping);
     }
 
-    protected static Optional<IntRange> getCorrectedMatch(List<DiffMatchPatch.Diff> diffs, List<OffsetAlign> aligns,
-            int offsetStart, int offsetEnd)
+    protected static Optional<IntRange> getCorrectedMatch(List<DiffMatchPatch.Diff> diffs,
+            List<OffsetAlign> offsetAligns, int offsetStart, int offsetEnd)
     {
-        Optional<OffsetAlign> first = aligns.stream().filter(a -> a.getOldPosition() >= offsetEnd).findFirst();
+        Optional<OffsetAlign> first = offsetAligns.stream().filter(
+                offsetAlign -> offsetAlign.getOldPosition() >= offsetEnd).findFirst();
         if (first.isPresent()) {
-            int index = aligns.indexOf(first.get());
-            if (index > 0 && aligns.get(index - 1).getOldPosition() <= offsetStart
+            int index = offsetAligns.indexOf(first.get());
+            if (index > 0 && offsetAligns.get(index - 1).getOldPosition() <= offsetStart
                     && diffs.get(index).operation == DiffMatchPatch.Operation.EQUAL) {
-                final int diffOffset = aligns.get(index).getDiffOffset();
+                final int diffOffset = offsetAligns.get(index).getDiffOffset();
                 return Optional.of(new IntRange(offsetStart + diffOffset, offsetEnd + diffOffset));
             }
             if (index == 0 && diffs.get(0).operation == DiffMatchPatch.Operation.EQUAL) {
                 return Optional.of(new IntRange(offsetStart, offsetEnd));
             }
         }
+
         return Optional.empty();
     }
 
@@ -71,30 +74,32 @@ public final class Lookup
         return Collections.unmodifiableList(diffs);
     }
 
-    public static Optional<Integer> getDiffOffsetPositionStart(List<OffsetAlign> aligns, int offset)
+    public static Optional<Integer> getDiffOffsetPositionStart(List<OffsetAlign> offsetAligns, int offset)
     {
-        Optional<OffsetAlign> first = aligns.stream().filter(a -> a.getOldPosition() >= offset + 1).findFirst();
+        Optional<OffsetAlign> first = offsetAligns.stream().filter(a -> a.getOldPosition() >= offset + 1).findFirst();
         if (first.isPresent()) {
-            int index = aligns.indexOf(first.get());
+            int index = offsetAligns.indexOf(first.get());
             if (index >= 0) {
-                final int diffOffset = aligns.get(index).getDiffOffset();
+                final int diffOffset = offsetAligns.get(index).getDiffOffset();
                 return Optional.of(diffOffset);
             }
         }
+
         return Optional.empty();
     }
 
-    public static Optional<Integer> getDiffOffsetPositionEnd(List<OffsetAlign> aligns, int offset)
+    public static Optional<Integer> getDiffOffsetPositionEnd(List<OffsetAlign> offsetAligns, int offset)
     {
-        Optional<OffsetAlign> first = aligns.stream().filter(a -> a.getOldPosition() <= offset - 1
-                && aligns.get(aligns.indexOf(a) + 1).getOldPosition() >= offset).findFirst();
+        Optional<OffsetAlign> first = offsetAligns.stream().filter(a -> a.getOldPosition() <= offset - 1
+                && offsetAligns.get(offsetAligns.indexOf(a) + 1).getOldPosition() >= offset).findFirst();
         if (first.isPresent()) {
-            int index = aligns.indexOf(first.get());
+            int index = offsetAligns.indexOf(first.get());
             if (index >= 0) {
-                final int diffOffset = aligns.get(index).getDiffOffset();
+                final int diffOffset = offsetAligns.get(index).getDiffOffset();
                 return Optional.of(diffOffset);
             }
         }
+
         return Optional.empty();
     }
 }

@@ -74,10 +74,10 @@ public class TextAdapter implements InputAdapterInterface
     }
 
     @Override
-    public void selectRanges(String checkId, List<AcrolinxMatch> matches)
+    public void selectRanges(String checkId, List<AcrolinxMatch> acrolinxMatches)
     {
-        int minRange = matches.get(0).getRange().getMinimumInteger();
-        int maxRange = matches.get(matches.size() - 1).getRange().getMaximumInteger();
+        int minRange = acrolinxMatches.get(0).getRange().getMinimumInteger();
+        int maxRange = acrolinxMatches.get(acrolinxMatches.size() - 1).getRange().getMaximumInteger();
         textWidget.clearSelection();
         textWidget.setSelection(minRange, maxRange);
     }

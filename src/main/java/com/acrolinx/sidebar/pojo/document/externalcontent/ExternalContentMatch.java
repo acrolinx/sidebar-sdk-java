@@ -50,9 +50,9 @@ public class ExternalContentMatch
         return new IntRange(this.originalBegin, this.originalEnd);
     }
 
-    public ExternalContentMatch setRange(final IntRange range)
+    public ExternalContentMatch setRange(final IntRange intRange)
     {
-        return new ExternalContentMatch(this.id, this.type, range.getMinimumInteger(), range.getMaximumInteger(),
+        return new ExternalContentMatch(this.id, this.type, intRange.getMinimumInteger(), intRange.getMaximumInteger(),
                 this.getExternalContentMatches());
     }
 

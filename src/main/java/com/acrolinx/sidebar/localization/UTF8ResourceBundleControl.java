@@ -24,14 +24,14 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
 
     @Override
     public ResourceBundle newBundle(final String baseName, final Locale locale, final String format,
-            final ClassLoader loader, final boolean reload)
+            final ClassLoader classLoader, final boolean reload)
             throws IllegalAccessException, InstantiationException, IOException
     {
         final String bundleName = toBundleName(baseName, locale);
         ResourceBundle bundle = null;
 
         if (format.equals("java.class")) {
-            bundle = super.newBundle(baseName, locale, format, loader, reload);
+            bundle = super.newBundle(baseName, locale, format, classLoader, reload);
         } else if (format.equals("java.properties")) {
             final String resourceName = bundleName.contains("://") ? null : toResourceName(bundleName, "properties");
             if (resourceName == null) {
@@ -40,9 +40,9 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
 
             InputStream inputStream;
             if (reload) {
-                inputStream = reload(resourceName, loader);
+                inputStream = reload(resourceName, classLoader);
             } else {
-                inputStream = loader.getResourceAsStream(resourceName);
+                inputStream = classLoader.getResourceAsStream(resourceName);
             }
 
             if (inputStream != null) {
