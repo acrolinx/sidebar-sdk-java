@@ -18,8 +18,8 @@ class DocumentSelectionTest
         intRanges.add(new IntRange(12, 12));
         intRanges.add(new IntRange(13, 14));
         intRanges.add(new IntRange(15, 16));
-        DocumentSelection selection = new DocumentSelection(intRanges);
-        Assertions.assertEquals("{\"ranges\":[[12,12],[13,14],[15,16]]}", selection.toString());
+        DocumentSelection documentSelection = new DocumentSelection(intRanges);
+        Assertions.assertEquals("{\"ranges\":[[12,12],[13,14],[15,16]]}", documentSelection.toString());
     }
 
     @Test
@@ -27,7 +27,7 @@ class DocumentSelectionTest
     {
         List<IntRange> intRanges = new ArrayList<>();
         intRanges.add(new IntRange(12, 12));
-        DocumentSelection selection = new DocumentSelection(intRanges);
-        Assertions.assertEquals("{\"ranges\":[[12,12]]}", selection.toString());
+        DocumentSelection documentSelection = new DocumentSelection(intRanges);
+        Assertions.assertEquals("{\"ranges\":[[12,12]]}", documentSelection.toString());
     }
 }

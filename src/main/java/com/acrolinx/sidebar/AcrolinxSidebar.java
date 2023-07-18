@@ -20,7 +20,7 @@ public interface AcrolinxSidebar
      *
      * @see SidebarConfiguration
      */
-    void configure(SidebarConfiguration configuration);
+    void configure(SidebarConfiguration sidebarConfiguration);
 
     /**
      * Triggers a check action in the Acrolinx Sidebar, same as pushing the checkButton.
@@ -77,5 +77,5 @@ public interface AcrolinxSidebar
 
     void initBatchCheck(List<BatchCheckRequestOptions> batchCheckRequestOptions);
 
-    void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options);
+    void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions checkOptions);
 }

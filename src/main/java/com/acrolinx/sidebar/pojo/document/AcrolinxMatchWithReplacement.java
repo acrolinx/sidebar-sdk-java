@@ -9,29 +9,29 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
 {
     private String replacement;
 
-    public AcrolinxMatchWithReplacement(String content, IntRange range, String replacement)
+    public AcrolinxMatchWithReplacement(String content, IntRange intRange, String replacement)
     {
-        super(range, content);
+        super(intRange, content);
         this.replacement = replacement;
     }
 
-    public AcrolinxMatchWithReplacement(String content, IntRange range, String replacement,
+    public AcrolinxMatchWithReplacement(String content, IntRange intRange, String replacement,
             List<ExternalContentMatch> externalContentMatches)
     {
-        super(range, content, externalContentMatches);
+        super(intRange, content, externalContentMatches);
         this.replacement = replacement;
     }
 
-    public AcrolinxMatchWithReplacement(IntRange range, IntRange extractedRange, String content, String replacement)
+    public AcrolinxMatchWithReplacement(IntRange intRange, IntRange extractedRange, String content, String replacement)
     {
-        super(range, extractedRange, content);
+        super(intRange, extractedRange, content);
         this.replacement = replacement;
     }
 
-    public AcrolinxMatchWithReplacement(IntRange range, IntRange extractedRange, String content, String replacement,
+    public AcrolinxMatchWithReplacement(IntRange intRange, IntRange extractedRange, String content, String replacement,
             List<ExternalContentMatch> externalContentMatches)
     {
-        super(range, extractedRange, content, externalContentMatches);
+        super(intRange, extractedRange, content, externalContentMatches);
         this.replacement = replacement;
     }
 
@@ -41,46 +41,50 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
     }
 
     @Override
-    public AcrolinxMatch setRange(IntRange range)
+    public AcrolinxMatch setRange(IntRange intRange)
     {
         if (getExtractedRange() != null) {
             int minRange = super.getExtractedRange().getMinimumInteger();
             int maxRange = super.getExtractedRange().getMaximumInteger();
 
             if (this.getExternalContentMatches() != null) {
-                return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(),
+                return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
                         replacement, this.getExternalContentMatches());
             }
-            return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(), replacement);
+            return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
+                    replacement);
         }
 
         if (this.getExternalContentMatches() != null) {
-            return new AcrolinxMatchWithReplacement(getContent(), range, replacement, this.getExternalContentMatches());
+            return new AcrolinxMatchWithReplacement(getContent(), intRange, replacement,
+                    this.getExternalContentMatches());
         }
-        return new AcrolinxMatchWithReplacement(getContent(), range, replacement);
+        return new AcrolinxMatchWithReplacement(getContent(), intRange, replacement);
     }
 
     public AcrolinxMatchWithReplacement setReplacement(String replacement)
     {
         int rangeMin = getRange().getMinimumInteger();
         int rangeMax = getRange().getMaximumInteger();
-        IntRange range = new IntRange(rangeMin, rangeMax);
+        IntRange intRange = new IntRange(rangeMin, rangeMax);
 
         if (getExtractedRange() != null) {
             int minRange = super.getExtractedRange().getMinimumInteger();
             int maxRange = super.getExtractedRange().getMaximumInteger();
 
             if (this.getExternalContentMatches() != null) {
-                return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(),
+                return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
                         replacement, this.getExternalContentMatches());
             }
-            return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(), replacement);
+            return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
+                    replacement);
         }
 
         if (this.getExternalContentMatches() != null) {
-            return new AcrolinxMatchWithReplacement(getContent(), range, replacement, this.getExternalContentMatches());
+            return new AcrolinxMatchWithReplacement(getContent(), intRange, replacement,
+                    this.getExternalContentMatches());
         }
-        return new AcrolinxMatchWithReplacement(getContent(), range, replacement);
+        return new AcrolinxMatchWithReplacement(getContent(), intRange, replacement);
     }
 
     @Override
@@ -89,7 +93,7 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
         int rangeMin = getRange().getMinimumInteger();
         int rangeMax = getRange().getMaximumInteger();
         String content = getContent();
-        IntRange range = new IntRange(rangeMin, rangeMax);
+        IntRange intRange = new IntRange(rangeMin, rangeMax);
 
         if (getExtractedRange() != null) {
             int minRange = super.getExtractedRange().getMinimumInteger();
@@ -97,17 +101,17 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
 
             if (this.getExternalContentMatches() != null) {
                 final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
-                return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(),
+                return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
                         getReplacement(), externalContentMatches);
             }
-            return new AcrolinxMatchWithReplacement(range, new IntRange(minRange, maxRange), getContent(),
+            return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
                     getReplacement());
         }
 
         if (this.getExternalContentMatches() != null) {
             final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
-            return new AcrolinxMatchWithReplacement(content, range, getReplacement(), externalContentMatches);
+            return new AcrolinxMatchWithReplacement(content, intRange, getReplacement(), externalContentMatches);
         }
-        return new AcrolinxMatchWithReplacement(content, range, getReplacement());
+        return new AcrolinxMatchWithReplacement(content, intRange, getReplacement());
     }
 }

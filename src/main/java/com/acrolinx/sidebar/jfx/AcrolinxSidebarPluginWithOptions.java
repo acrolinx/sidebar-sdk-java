@@ -17,29 +17,31 @@ import netscape.javascript.JSObject;
 
 public class AcrolinxSidebarPluginWithOptions extends AcrolinxSidebarPlugin
 {
-    public AcrolinxSidebarPluginWithOptions(final AcrolinxIntegration client, final WebView webView)
+    public AcrolinxSidebarPluginWithOptions(final AcrolinxIntegration acrolinxIntegration, final WebView webView)
     {
-        super(client, webView);
+        super(acrolinxIntegration, webView);
     }
 
-    public synchronized void requestGlobalCheck(final JSObject o)
+    public synchronized void requestGlobalCheck(final JSObject jsObject)
     {
         LogMessages.logCheckRequested(logger);
         this.checkStartedTime = Instant.now();
         boolean selection = false;
         boolean batchCheck = false;
-        if (o != null) {
-            if (o.getMember("selection") != null) {
-                selection = Boolean.parseBoolean(o.getMember("selection").toString());
+
+        if (jsObject != null) {
+            if (jsObject.getMember("selection") != null) {
+                selection = Boolean.parseBoolean(jsObject.getMember("selection").toString());
             }
-            if (o.getMember("batchCheck") != null) {
-                batchCheck = Boolean.parseBoolean(o.getMember("batchCheck").toString());
+            if (jsObject.getMember("batchCheck") != null) {
+                batchCheck = Boolean.parseBoolean(jsObject.getMember("batchCheck").toString());
             }
         }
-        if (batchCheck == true) {
+
+        if (batchCheck) {
             final Future<Boolean> initBatchFuture = executorService.submit(() -> {
                 try {
-                    final List<BatchCheckRequestOptions> batchCheckRequestOptions = client.extractReferences();
+                    final List<BatchCheckRequestOptions> batchCheckRequestOptions = acrolinxIntegration.extractReferences();
                     initBatchCheck(batchCheckRequestOptions);
                     return true;
                 } catch (Exception e) {
@@ -51,7 +53,8 @@ public class AcrolinxSidebarPluginWithOptions extends AcrolinxSidebarPlugin
         } else {
             final CheckContent checkContent = getCheckContentFromClient();
             logger.debug("Fetched check content including external content");
-            if ((client.getEditorAdapter() != null) && !(client.getEditorAdapter() instanceof NullEditorAdapter)
+            if ((acrolinxIntegration.getEditorAdapter() != null)
+                    && !(acrolinxIntegration.getEditorAdapter() instanceof NullEditorAdapter)
                     && (checkContent.getContent() != null)) {
                 logger.debug("Editor is ready for running a check");
                 runCheck(selection, checkContent);

@@ -43,22 +43,22 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
 
     private WebView webView = new WebView();
     private AcrolinxSidebarPlugin acrolinxSidebarPlugin;
-    private final AcrolinxIntegration integration;
+    private final AcrolinxIntegration acrolinxIntegration;
 
-    public AcrolinxSidebarJFX(final AcrolinxIntegration integration)
+    public AcrolinxSidebarJFX(final AcrolinxIntegration acrolinxIntegration)
     {
-        this(integration, null);
+        this(acrolinxIntegration, null);
     }
 
     /**
-     * @param integration The implementation of the Acrolinx Integration.
+     * @param acrolinxIntegration The implementation of the Acrolinx Integration.
      */
-    public AcrolinxSidebarJFX(final AcrolinxIntegration integration, final AcrolinxStorage storage)
+    public AcrolinxSidebarJFX(final AcrolinxIntegration acrolinxIntegration, final AcrolinxStorage storage)
     {
         LogMessages.logJavaVersionAndUiFramework(logger, "Java FX");
         SecurityUtils.setUpEnvironment();
-        this.integration = integration;
-        final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(integration.getInitParameters());
+        this.acrolinxIntegration = acrolinxIntegration;
+        final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(acrolinxIntegration.getInitParameters());
 
         logger.debug("Trying to load sidebar url: {}", sidebarUrl);
         final WebView webView = getWebView();
@@ -124,11 +124,11 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             logger.debug("Setting local storage");
             jsobj.setMember("acrolinxStorage", storage);
         }
-        final PluginSupportedParameters supported = this.integration.getInitParameters().getSupported();
+        final PluginSupportedParameters supported = this.acrolinxIntegration.getInitParameters().getSupported();
         if ((supported != null) && (supported.isCheckSelection() || supported.isBatchChecking())) {
-            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithOptions(integration, webView);
+            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithOptions(acrolinxIntegration, webView);
         } else {
-            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutOptions(integration, webView);
+            acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutOptions(acrolinxIntegration, webView);
         }
     }
 
@@ -149,9 +149,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public void configure(final SidebarConfiguration configuration)
+    public void configure(final SidebarConfiguration sidebarConfiguration)
     {
-        acrolinxSidebarPlugin.configureSidebar(configuration);
+        acrolinxSidebarPlugin.configureSidebar(sidebarConfiguration);
     }
 
     @Override
@@ -185,8 +185,8 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     @Override
     public void loadSidebarFromServerLocation(final String serverAddress)
     {
-        integration.getInitParameters().setServerAddress(serverAddress);
-        integration.getInitParameters().setShowServerSelector(true);
+        acrolinxIntegration.getInitParameters().setServerAddress(serverAddress);
+        acrolinxIntegration.getInitParameters().setShowServerSelector(true);
         JFXUtils.invokeInJFXThread(() -> {
             try {
                 webView.getEngine().load(SidebarUtils.getSidebarUrl(serverAddress));
@@ -199,7 +199,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     @Override
     public void reload()
     {
-        if (StartPageInstaller.isExportRequired(integration.getInitParameters())) {
+        if (StartPageInstaller.isExportRequired(acrolinxIntegration.getInitParameters())) {
             try {
                 StartPageInstaller.exportStartPageResources();
             } catch (final Exception e) {
@@ -240,8 +240,8 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
     }
 
     @Override
-    public void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options)
+    public void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions checkOptions)
     {
-        acrolinxSidebarPlugin.checkDocumentInBatch(documentIdentifier, documentContent, options);
+        acrolinxSidebarPlugin.checkDocumentInBatch(documentIdentifier, documentContent, checkOptions);
     }
 }

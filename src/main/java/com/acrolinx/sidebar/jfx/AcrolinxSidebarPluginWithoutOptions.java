@@ -12,9 +12,9 @@ import com.acrolinx.sidebar.utils.LogMessages;
 
 public class AcrolinxSidebarPluginWithoutOptions extends AcrolinxSidebarPlugin
 {
-    public AcrolinxSidebarPluginWithoutOptions(final AcrolinxIntegration client, final WebView webView)
+    public AcrolinxSidebarPluginWithoutOptions(final AcrolinxIntegration acrolinxIntegration, final WebView webView)
     {
-        super(client, webView);
+        super(acrolinxIntegration, webView);
     }
 
     public synchronized void requestGlobalCheck()
@@ -24,7 +24,8 @@ public class AcrolinxSidebarPluginWithoutOptions extends AcrolinxSidebarPlugin
         final CheckContent checkContent = getCheckContentFromClient();
         logger.debug("Fetched check content including external content");
 
-        if ((client.getEditorAdapter() != null) && !(client.getEditorAdapter() instanceof NullEditorAdapter)
+        if ((acrolinxIntegration.getEditorAdapter() != null)
+                && !(acrolinxIntegration.getEditorAdapter() instanceof NullEditorAdapter)
                 && (checkContent.getContent() != null)) {
             runCheck(false, checkContent);
         } else {

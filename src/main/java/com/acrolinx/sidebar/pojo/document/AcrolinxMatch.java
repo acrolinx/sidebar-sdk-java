@@ -9,32 +9,32 @@ public class AcrolinxMatch extends ExternalAbstractMatch
 {
     private final String content;
     private IntRange extractedRange;
-    private IntRange range;
+    private IntRange intRange;
     private List<ExternalContentMatch> externalContentMatches;
 
-    public AcrolinxMatch(final IntRange range, final String content)
+    public AcrolinxMatch(final IntRange intRange, final String content)
     {
         this.content = content;
-        this.range = range;
+        this.intRange = intRange;
     }
 
-    public AcrolinxMatch(final IntRange range, final IntRange extractedRange, final String content)
+    public AcrolinxMatch(final IntRange intRange, final IntRange extractedRange, final String content)
     {
-        this(range, content);
+        this(intRange, content);
         this.extractedRange = extractedRange;
     }
 
-    public AcrolinxMatch(final IntRange range, final IntRange extractedRange, final String content,
+    public AcrolinxMatch(final IntRange intRange, final IntRange extractedRange, final String content,
             final List<ExternalContentMatch> externalContentMatches)
     {
-        this(range, extractedRange, content);
+        this(intRange, extractedRange, content);
         this.externalContentMatches = externalContentMatches;
     }
 
-    public AcrolinxMatch(final IntRange range, final String content,
+    public AcrolinxMatch(final IntRange intRange, final String content,
             final List<ExternalContentMatch> externalContentMatches)
     {
-        this(range, content);
+        this(intRange, content);
         this.externalContentMatches = externalContentMatches;
     }
 
@@ -52,11 +52,11 @@ public class AcrolinxMatch extends ExternalAbstractMatch
     @Override
     public IntRange getRange()
     {
-        return range;
+        return intRange;
     }
 
     @Override
-    public AcrolinxMatch setRange(final IntRange range)
+    public AcrolinxMatch setRange(final IntRange intRange)
     {
         if (this.extractedRange != null) {
             final int eRangeMin = this.extractedRange.getMinimumInteger();
@@ -64,16 +64,16 @@ public class AcrolinxMatch extends ExternalAbstractMatch
 
             if (this.getExternalContentMatches() != null) {
                 final List<ExternalContentMatch> externalMatches = this.getExternalContentMatches();
-                return new AcrolinxMatch(range, new IntRange(eRangeMin, eRangeMax), content, externalMatches);
+                return new AcrolinxMatch(intRange, new IntRange(eRangeMin, eRangeMax), content, externalMatches);
             }
-            return new AcrolinxMatch(range, new IntRange(eRangeMin, eRangeMax), content);
+            return new AcrolinxMatch(intRange, new IntRange(eRangeMin, eRangeMax), content);
         }
 
         if (this.getExternalContentMatches() != null) {
             final List<ExternalContentMatch> externalMatches = this.getExternalContentMatches();
-            return new AcrolinxMatch(range, content, externalMatches);
+            return new AcrolinxMatch(intRange, content, externalMatches);
         }
-        return new AcrolinxMatch(range, content);
+        return new AcrolinxMatch(intRange, content);
     }
 
     @Override
@@ -91,8 +91,8 @@ public class AcrolinxMatch extends ExternalAbstractMatch
     @Override
     public AbstractMatch copy()
     {
-        final int rangeMin = this.range.getMinimumInteger();
-        final int rangeMax = this.range.getMaximumInteger();
+        final int rangeMin = this.intRange.getMinimumInteger();
+        final int rangeMax = this.intRange.getMaximumInteger();
         if (this.extractedRange != null) {
             final int eRangeMin = this.extractedRange.getMinimumInteger();
             final int eRangeMax = this.extractedRange.getMaximumInteger();

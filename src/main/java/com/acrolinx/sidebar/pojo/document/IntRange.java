@@ -3,8 +3,6 @@ package com.acrolinx.sidebar.pojo.document;
 
 import java.io.Serializable;
 
-import org.apache.commons.text.TextStringBuilder;
-
 public class IntRange implements Serializable
 {
     private static final long serialVersionUID = -2808883234003742075L;
@@ -36,12 +34,7 @@ public class IntRange implements Serializable
     @Override
     public String toString()
     {
-        final TextStringBuilder buf = new TextStringBuilder(32);
-        buf.append("Range[");
-        buf.append(getMinimumInteger());
-        buf.append(',');
-        buf.append(getMaximumInteger());
-        buf.append(']');
-        return buf.toString();
+        return new StringBuilder(32).append("Range[").append(getMinimumInteger()).append(',').append(
+                getMaximumInteger()).append(']').toString();
     }
 }

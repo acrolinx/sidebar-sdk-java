@@ -13,7 +13,7 @@ public interface AcrolinxMultiViewSidebarInterface
     /**
      * Launches a new sidebar for the opened document with id documentId.
      */
-    void addSidebar(AcrolinxIntegration client, String documentId) throws AcrolinxException;
+    void addSidebar(AcrolinxIntegration acrolinxIntegration, String documentId) throws AcrolinxException;
 
     /**
      * Switches the active sidebar to the one corresponding to the document with id documentId.

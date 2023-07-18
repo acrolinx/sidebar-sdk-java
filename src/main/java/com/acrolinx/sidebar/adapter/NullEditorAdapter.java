@@ -43,13 +43,13 @@ public class NullEditorAdapter implements InputAdapterInterface
     }
 
     @Override
-    public void selectRanges(String s, List<AcrolinxMatch> list)
+    public void selectRanges(String checkId, List<AcrolinxMatch> acrolinxMatches)
     {
         //
     }
 
     @Override
-    public void replaceRanges(String s, List<AcrolinxMatchWithReplacement> list)
+    public void replaceRanges(String checkId, List<AcrolinxMatchWithReplacement> matches)
     {
         //
     }

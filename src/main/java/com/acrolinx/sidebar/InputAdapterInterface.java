@@ -52,9 +52,9 @@ public interface InputAdapterInterface
      * (which might have changed in the meantime).
      *
      * @param checkId The current check id.
-     * @param matches The ranges to be highlighted as sent by the AcrolinxServer.
+     * @param acrolinxMatches The ranges to be highlighted as sent by the AcrolinxServer.
      */
-    void selectRanges(String checkId, List<AcrolinxMatch> matches);
+    void selectRanges(String checkId, List<AcrolinxMatch> acrolinxMatches);
 
     /**
      * Is called by the Acrolinx Integration to replace found issues with suggestions from the Acrolinx

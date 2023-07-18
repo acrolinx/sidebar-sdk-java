@@ -16,8 +16,8 @@ class CheckedDocumentPartTest
     @Test
     void getAsJS()
     {
-        CheckedDocumentPart part = new CheckedDocumentPart("id0", new IntRange(2, 3));
-        assertEquals("{checkId: \"id0\", range:[2,3]}", part.getAsJS());
+        CheckedDocumentPart checkedDocumentPart = new CheckedDocumentPart("id0", new IntRange(2, 3));
+        assertEquals("{checkId: \"id0\", range:[2,3]}", checkedDocumentPart.getAsJS());
 
         ExternalContentMatch reference1 = new ExternalContentMatch("chapter11.dita", "ditaReferences", 75, 90);
         List<ExternalContentMatch> externalContentMatches = new ArrayList<>();

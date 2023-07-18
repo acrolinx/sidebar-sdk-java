@@ -75,7 +75,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     protected static final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSWT.class);
 
     protected final Browser browser;
-    protected final AcrolinxIntegration client;
+    protected final AcrolinxIntegration acrolinxIntegration;
     private final AcrolinxStorage storage;
     private final AtomicReference<String> currentlyCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedText = new AtomicReference<>("");
@@ -86,41 +86,43 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<Instant> checkStartTime = new AtomicReference<>();
 
-    public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration client)
+    public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration acrolinxIntegration)
     {
-        this(parent, client, null);
+        this(parent, acrolinxIntegration, null);
     }
 
-    public AcrolinxSidebarSWT(final Shell parent, final AcrolinxIntegration client)
+    public AcrolinxSidebarSWT(final Shell parent, final AcrolinxIntegration acrolinxIntegration)
     {
-        this(parent, client, null);
+        this(parent, acrolinxIntegration, null);
     }
 
-    public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration client, final AcrolinxStorage storage)
+    public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration acrolinxIntegration,
+            final AcrolinxStorage acrolinxStorage)
     {
         Preconditions.checkNotNull(parent, "Composite parent should not be null");
-        Preconditions.checkNotNull(client, "AcrolinxIntegration client should not be null");
-        Preconditions.checkNotNull(client.getEditorAdapter(),
+        Preconditions.checkNotNull(acrolinxIntegration, "AcrolinxIntegration client should not be null");
+        Preconditions.checkNotNull(acrolinxIntegration.getEditorAdapter(),
                 "EditorAdapter client.getEditorAdapter should return null");
 
         LogMessages.logJavaVersionAndUiFramework(logger, "Java SWT");
         SecurityUtils.setUpEnvironment();
 
-        this.storage = storage;
-        this.client = client;
+        this.storage = acrolinxStorage;
+        this.acrolinxIntegration = acrolinxIntegration;
         this.browser = new Browser(parent, SWT.DEFAULT);
         initBrowser();
     }
 
-    public AcrolinxSidebarSWT(final Shell parent, final AcrolinxIntegration client, final AcrolinxStorage storage)
+    public AcrolinxSidebarSWT(final Shell parent, final AcrolinxIntegration acrolinxIntegration,
+            final AcrolinxStorage acrolinxStorage)
     {
         Preconditions.checkNotNull(parent, "Shell parent should not be null");
-        Preconditions.checkNotNull(client, "AcrolinxIntegration client should not be null");
-        Preconditions.checkNotNull(client.getEditorAdapter(),
+        Preconditions.checkNotNull(acrolinxIntegration, "AcrolinxIntegration client should not be null");
+        Preconditions.checkNotNull(acrolinxIntegration.getEditorAdapter(),
                 "EditorAdapter client.getEditorAdapter should not return null");
 
-        this.storage = storage;
-        this.client = client;
+        this.storage = acrolinxStorage;
+        this.acrolinxIntegration = acrolinxIntegration;
         this.browser = new Browser(parent, SWT.DEFAULT);
         initBrowser();
     }
@@ -132,7 +134,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         browser.setLayoutData(gridData);
         browser.setJavascriptEnabled(true);
         try {
-            final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(client.getInitParameters());
+            final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(acrolinxIntegration.getInitParameters());
             logger.debug("Loading sidebar from: {}", sidebarUrl);
             browser.setUrl(sidebarUrl);
         } catch (final Exception e) {
@@ -226,7 +228,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             @Override
             public Object function(final Object[] arguments)
             {
-                return client.getInitParameters().toString();
+                return acrolinxIntegration.getInitParameters().toString();
             }
         };
 
@@ -345,14 +347,14 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         LogMessages.logCheckRequested(logger);
         checkStartTime.set(Instant.now());
 
-        final String requestText = client.getEditorAdapter().getContent();
+        final String requestText = acrolinxIntegration.getEditorAdapter().getContent();
         currentlyCheckedText.set(requestText);
         logger.debug("Request content: {}", requestText);
 
         final String content = new Gson().toJson(requestText);
         logger.debug("Request content JSON compatible: {}", content);
 
-        final ExternalContent externalContent = client.getEditorAdapter().getExternalContent();
+        final ExternalContent externalContent = acrolinxIntegration.getEditorAdapter().getExternalContent();
         currentExternalContent.set(externalContent);
         if (externalContent != null) {
             logger.debug("External Content: {}", externalContent);
@@ -372,10 +374,10 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         logger.debug("Batch Check requested for: {}", docIdJsonString);
 
         final String contentForDocument = new Gson().toJson(
-                client.getContentForDocument(documentIdentifier.toString()));
+                acrolinxIntegration.getContentForDocument(documentIdentifier.toString()));
         logger.debug("Batch Check document content: {}", contentForDocument);
 
-        final CheckOptions checkOptions = client.getCheckOptionsForDocument(documentIdentifier.toString());
+        final CheckOptions checkOptions = acrolinxIntegration.getCheckOptionsForDocument(documentIdentifier.toString());
         logger.debug("Check ooptions for batch check document: {}", checkOptions);
 
         browser.execute("acrolinxSidebar.checkDocumentInBatch(" + docIdJsonString + ", " + contentForDocument + ", "
@@ -388,7 +390,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         logger.info("Extracting references");
         try {
-            List<BatchCheckRequestOptions> references = client.extractReferences();
+            List<BatchCheckRequestOptions> references = acrolinxIntegration.extractReferences();
             logger.debug("Batch check document list: {}", references);
             initBatchCheck(references);
         } catch (Exception e) {
@@ -407,7 +409,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         ExecutorService executorService = Executors.newFixedThreadPool(1);
         Future<Boolean> openDocumentFuture = executorService.submit(() -> {
-            boolean documentIsOpen = client.openDocumentInEditor(argument.toString());
+            boolean documentIsOpen = acrolinxIntegration.openDocumentInEditor(argument.toString());
             if (!documentIsOpen) {
                 // ToDo: Send a message to the sidebar
             }
@@ -470,7 +472,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         final List<AcrolinxMatchWithReplacement> result = match.stream().map(
                 AcrolinxMatchFromJSON::getAsAcrolinxMatchWithReplacement).collect(
                         Collectors.toCollection(ArrayList::new));
-        client.getEditorAdapter().replaceRanges(currentCheckId.get(), Collections.unmodifiableList(result));
+        acrolinxIntegration.getEditorAdapter().replaceRanges(currentCheckId.get(),
+                Collections.unmodifiableList(result));
         return null;
     }
 
@@ -481,7 +484,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 new TypeToken<List<AcrolinxMatchFromJSON>>() {}.getType());
         final List<AcrolinxMatch> result = match.stream().map(AcrolinxMatchFromJSON::getAsAcrolinxMatch).collect(
                 Collectors.toCollection(ArrayList::new));
-        client.getEditorAdapter().selectRanges(currentCheckId.get(), Collections.unmodifiableList(result));
+        acrolinxIntegration.getEditorAdapter().selectRanges(currentCheckId.get(), Collections.unmodifiableList(result));
         return null;
     }
 
@@ -489,18 +492,19 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         final Instant checkEndedTime = Instant.now();
         LogMessages.logCheckFinishedWithDurationTime(logger, Duration.between(checkStartTime.get(), checkEndedTime));
-        final String checkResult = argument.toString();
+        final String checkResultString = argument.toString();
         try {
-            final CheckResultFromJSON checkResultObj = new Gson().fromJson(checkResult, CheckResultFromJSON.class);
-            final CheckResult result = checkResultObj.getAsCheckResult();
-            if (result == null) {
+            final CheckResultFromJSON checkResultObj = new Gson().fromJson(checkResultString,
+                    CheckResultFromJSON.class);
+            final CheckResult checkResult = checkResultObj.getAsCheckResult();
+            if (checkResult == null) {
                 logger.info("Check finished with errors.");
             } else {
-                currentCheckId.set(result.getCheckedDocumentPart().getCheckId());
+                currentCheckId.set(checkResult.getCheckedDocumentPart().getCheckId());
                 lastCheckedDocumentReference.set(currentDocumentReference.get());
                 lastCheckedText.set(currentlyCheckedText.get());
                 lastCheckedExternalContent.set(currentExternalContent.get());
-                client.onCheckResult(result);
+                acrolinxIntegration.onCheckResult(checkResult);
             }
         } catch (final Exception e) {
             logger.error("", e);
@@ -510,8 +514,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     protected boolean getCanCheckObject()
     {
-        final boolean canCheck = (client.getEditorAdapter() != null)
-                && !(client.getEditorAdapter() instanceof NullEditorAdapter);
+        final boolean canCheck = (acrolinxIntegration.getEditorAdapter() != null)
+                && !(acrolinxIntegration.getEditorAdapter() instanceof NullEditorAdapter);
         if (!canCheck) {
             logger.warn("Current File Editor not supported for checking or no file present.");
         }
@@ -521,13 +525,13 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     protected Object getOnInitFinishedNotificationObject(Object argument)
     {
         final String result = argument.toString();
-        final JsonObject json = (JsonObject) JsonParser.parseString(result);
-        final JsonObject error = json.getAsJsonObject("error");
-        if (error != null) {
-            final SidebarError sidebarError = new Gson().fromJson(error, SidebarError.class);
-            client.onInitFinished(Optional.of(sidebarError));
+        final JsonObject jsonObject = (JsonObject) JsonParser.parseString(result);
+        final JsonObject errorJsonObject = jsonObject.getAsJsonObject("error");
+        if (errorJsonObject != null) {
+            final SidebarError sidebarError = new Gson().fromJson(errorJsonObject, SidebarError.class);
+            acrolinxIntegration.onInitFinished(Optional.of(sidebarError));
         } else {
-            client.onInitFinished(Optional.empty());
+            acrolinxIntegration.onInitFinished(Optional.empty());
         }
         return null;
     }
@@ -538,9 +542,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     }
 
     @Override
-    public void configure(final SidebarConfiguration configuration)
+    public void configure(final SidebarConfiguration sidebarConfiguration)
     {
-        browser.execute("window.acrolinxSidebar.configure(" + configuration.toString() + ");");
+        browser.execute("window.acrolinxSidebar.configure(" + sidebarConfiguration.toString() + ");");
     }
 
     @Override
@@ -587,15 +591,15 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     @Override
     public void loadSidebarFromServerLocation(final String serverAddress)
     {
-        this.client.getInitParameters().setServerAddress(serverAddress);
-        this.client.getInitParameters().setShowServerSelector(false);
+        this.acrolinxIntegration.getInitParameters().setServerAddress(serverAddress);
+        this.acrolinxIntegration.getInitParameters().setShowServerSelector(false);
         this.initBrowser();
     }
 
     @Override
     public void reload()
     {
-        if (StartPageInstaller.isExportRequired(this.client.getInitParameters())) {
+        if (StartPageInstaller.isExportRequired(this.acrolinxIntegration.getInitParameters())) {
             try {
                 StartPageInstaller.exportStartPageResources();
             } catch (final Exception e) {
@@ -637,7 +641,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     }
 
     @Override
-    public void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions options)
+    public void checkDocumentInBatch(String documentIdentifier, String documentContent, CheckOptions checkOptions)
     {
         // The document identifier should be a escaped string, otherwise it may break JS object.
         browser.execute("window.acrolinxSidebar.requestCheckForDocumentInBatch(\"" + documentIdentifier + "\");");
@@ -676,19 +680,19 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     private CheckOptions getCheckSettingsFromClient(final boolean includeCheckSelectionRanges,
             @Nullable ExternalContent externalContent)
     {
-        InputFormat inputFormat = client.getEditorAdapter().getInputFormat();
-        String docRef = client.getEditorAdapter().getDocumentReference();
+        InputFormat inputFormat = acrolinxIntegration.getEditorAdapter().getInputFormat();
+        String docRef = acrolinxIntegration.getEditorAdapter().getDocumentReference();
         currentDocumentReference.set(docRef);
-        DocumentSelection selection = null;
+        DocumentSelection documentSelection = null;
 
         if (includeCheckSelectionRanges) {
             logger.debug("Including check selection ranges.");
-            final List<IntRange> currentSelection = client.getEditorAdapter().getCurrentSelection();
+            final List<IntRange> currentSelection = acrolinxIntegration.getEditorAdapter().getCurrentSelection();
             if (currentSelection != null) {
-                selection = new DocumentSelection(currentSelection);
+                documentSelection = new DocumentSelection(currentSelection);
             }
         }
 
-        return new CheckOptions(new RequestDescription(docRef), inputFormat, selection, externalContent);
+        return new CheckOptions(new RequestDescription(docRef), inputFormat, documentSelection, externalContent);
     }
 }

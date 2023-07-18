@@ -16,14 +16,14 @@ class MatchUtilsTest
     @Test
     void testSortByOffsetDesc()
     {
-        final List<AcrolinxMatch> matches = Lists.newArrayList();
+        final List<AcrolinxMatch> acrolinxMatches = Lists.newArrayList();
 
-        matches.add(new AcrolinxMatch(new IntRange(7, 4), "4"));
-        matches.add(new AcrolinxMatch(new IntRange(0, 5), "2"));
-        matches.add(new AcrolinxMatch(new IntRange(3, 7), "3"));
-        matches.add(new AcrolinxMatch(new IntRange(0, 4), "1"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(7, 4), "4"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(0, 5), "2"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(3, 7), "3"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(0, 4), "1"));
 
-        final List<AcrolinxMatch> sortedMatches = MatchUtils.sortByOffsetDesc(matches);
+        final List<AcrolinxMatch> sortedMatches = MatchUtils.sortByOffsetDesc(acrolinxMatches);
 
         assertEquals("4", sortedMatches.get(0).getContent());
         assertEquals("3", sortedMatches.get(1).getContent());

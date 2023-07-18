@@ -43,11 +43,11 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
     protected transient AcrolinxSidebarJFX sidebarJFX;
     protected final transient AcrolinxStorage storage;
-    protected final transient AcrolinxIntegration integration;
+    protected final transient AcrolinxIntegration acrolinxIntegration;
 
-    public AcrolinxSidebarSwing(final AcrolinxIntegration integration)
+    public AcrolinxSidebarSwing(final AcrolinxIntegration acrolinxIntegration)
     {
-        this(integration, null);
+        this(acrolinxIntegration, null);
     }
 
     public AcrolinxSidebarSwing(final AcrolinxIntegration acrolinxIntegration, final AcrolinxStorage acrolinxStorage)
@@ -55,7 +55,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         super();
         LogMessages.logJavaVersionAndUiFramework(logger, "Java Swing with Java FX Sidebar component");
         this.storage = acrolinxStorage;
-        this.integration = acrolinxIntegration;
+        this.acrolinxIntegration = acrolinxIntegration;
         Platform.setImplicitExit(false);
         JFXUtils.invokeInJFXThread(this::createScene);
     }
@@ -63,7 +63,8 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
     @Override
     protected void processKeyEvent(final KeyEvent keyEvent)
     {
-        // Consume all paste events (CTRL+V) in the sidebar to prevent inserting the content into the editor
+        // Consume all paste events (CTRL+V) in the sidebar to prevent inserting the content into
+        // the editor
         // too.
         if (keyEvent.getKeyCode() == KeyEvent.VK_V && isMetaOrCtrlModifier(keyEvent)) {
             keyEvent.consume();
@@ -79,14 +80,14 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
     protected void createScene()
     {
-        sidebarJFX = new AcrolinxSidebarJFX(integration, storage);
+        sidebarJFX = new AcrolinxSidebarJFX(acrolinxIntegration, storage);
         final WebView webview = sidebarJFX.getWebView();
         GridPane.setHgrow(webview, Priority.ALWAYS);
         GridPane.setVgrow(webview, Priority.ALWAYS);
         webview.setPrefWidth(300);
         addComponentListener(new ComponentListener() {
             @Override
-            public void componentResized(final ComponentEvent e)
+            public void componentResized(final ComponentEvent componentEvent)
             {
                 logger.debug("Component resized");
                 logger.debug("{} width", getWidth());
@@ -96,19 +97,19 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
             }
 
             @Override
-            public void componentMoved(final ComponentEvent e)
+            public void componentMoved(final ComponentEvent componentEvent)
             {
                 // we only need resize event to be handled
             }
 
             @Override
-            public void componentShown(final ComponentEvent e)
+            public void componentShown(final ComponentEvent componentEvent)
             {
                 // we only need resize event to be handled
             }
 
             @Override
-            public void componentHidden(final ComponentEvent e)
+            public void componentHidden(final ComponentEvent componentEvent)
             {
                 // we only need resize event to be handled
             }

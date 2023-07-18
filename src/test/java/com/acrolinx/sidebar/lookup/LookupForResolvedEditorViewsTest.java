@@ -80,13 +80,13 @@ class LookupForResolvedEditorViewsTest
     @Test
     void testLookupIgnoreWhiteSpace()
     {
-        List<AcrolinxMatch> matches = new ArrayList<>();
-        matches.add(new AcrolinxMatch(new IntRange(246, 247), "a"));
-        matches.add(new AcrolinxMatch(new IntRange(251, 252), " "));
-        matches.add(new AcrolinxMatch(new IntRange(255, 260), "apple"));
+        List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(246, 247), "a"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(251, 252), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(255, 260), "apple"));
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
-                textApple, appleEditorContent, offset -> new ContentNode() {
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
+                acrolinxMatches, textApple, appleEditorContent, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
                     {
@@ -120,37 +120,37 @@ class LookupForResolvedEditorViewsTest
     @Test
     void testLookupIgnoreWhiteSpaceIgnoreWhitespaces()
     {
-        List<AcrolinxMatch> matches = new ArrayList<>();
+        List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
         String replacement = "blooming in\n" + "                autumn is";
 
-        matches.add(new AcrolinxMatchWithReplacement("blooming", new IntRange(509, 517), replacement));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(517, 518), ""));
-        matches.add(new AcrolinxMatchWithReplacement("in", new IntRange(518, 520), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(520, 521), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(521, 522), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(522, 523), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(524, 525), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(525, 526), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(526, 527), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(527, 528), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement("blooming", new IntRange(509, 517), replacement));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(517, 518), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement("in", new IntRange(518, 520), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(520, 521), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(521, 522), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(522, 523), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(524, 525), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(525, 526), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(526, 527), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(527, 528), ""));
 
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(528, 529), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(529, 530), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(530, 531), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(531, 532), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(532, 533), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(533, 534), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(534, 535), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(535, 536), ""));
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(536, 537), ""));
-        matches.add(new AcrolinxMatchWithReplacement("autumn", new IntRange(537, 543), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(528, 529), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(529, 530), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(530, 531), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(531, 532), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(532, 533), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(533, 534), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(534, 535), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(535, 536), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(536, 537), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement("autumn", new IntRange(537, 543), ""));
 
-        matches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(602, 603), ""));
-        matches.add(new AcrolinxMatchWithReplacement("are", new IntRange(603, 606), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement(" ", new IntRange(602, 603), ""));
+        acrolinxMatches.add(new AcrolinxMatchWithReplacement("are", new IntRange(603, 606), ""));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
-                textAutumnFlowers, autumnFlowersEditor, offset -> new ContentNode() {
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
+                acrolinxMatches, textAutumnFlowers, autumnFlowersEditor, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
                     {
@@ -178,7 +178,7 @@ class LookupForResolvedEditorViewsTest
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
         Assertions.assertEquals(7, matchesNew.size());
-        matches.sort(new MatchComparator());
+        acrolinxMatches.sort(new MatchComparator());
         matchesNew.stream().sorted(new MatchComparator()).forEach(
                 match -> Assertions.assertEquals(autumnFlowersEditor.substring(match.getRange().getMinimumInteger(),
                         match.getRange().getMaximumInteger()), match.getContent()));
@@ -192,13 +192,12 @@ class LookupForResolvedEditorViewsTest
     @Test
     void testLookupFindMatchInNode()
     {
-        List<AcrolinxMatch> matches = new ArrayList<>();
-
-        matches.add(new AcrolinxMatch(new IntRange(1021, 1027), "wastee"));
+        List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(1021, 1027), "wastee"));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
-                restDitaText, restDitaEditor, offset -> new ContentNode() {
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
+                acrolinxMatches, restDitaText, restDitaEditor, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
                     {
@@ -236,13 +235,12 @@ class LookupForResolvedEditorViewsTest
     @Test
     void testLookupFindMatchInNode2()
     {
-        List<AcrolinxMatch> matches = new ArrayList<>();
-
-        matches.add(new AcrolinxMatch(new IntRange(1021, 1027), "tast"));
+        List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(1021, 1027), "tast"));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
-                restDitaText, restDitaEditor, offset -> new ContentNode() {
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
+                acrolinxMatches, restDitaText, restDitaEditor, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
                     {
@@ -325,13 +323,13 @@ class LookupForResolvedEditorViewsTest
                 + "                <li>orderr 5</li>\n" + "            </ol></glossScopeNote>\n" + "    </glossBody>\n"
                 + "    <related-links/>\n" + "</glossentry>\n";
 
-        List<AcrolinxMatch> matches = new ArrayList<>();
+        List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
 
-        matches.add(new AcrolinxMatch(new IntRange(347, 351), "very"));
-        matches.add(new AcrolinxMatch(new IntRange(351, 352), " "));
-        matches.add(new AcrolinxMatch(new IntRange(352, 362), "seasobable"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(347, 351), "very"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(351, 352), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(352, 362), "seasobable"));
 
-        matches.stream().forEach(
+        acrolinxMatches.stream().forEach(
                 match -> Assertions.assertEquals(getRest_lookUpText.substring(match.getRange().getMinimumInteger(),
                         match.getRange().getMaximumInteger()), match.getContent()));
 
@@ -382,8 +380,8 @@ class LookupForResolvedEditorViewsTest
                 contentNode.getContent());
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
-                getRest_lookUpText, rest_lookUpEditor, offset -> contentNode);
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
+                acrolinxMatches, getRest_lookUpText, rest_lookUpEditor, offset -> contentNode);
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
 
@@ -443,36 +441,36 @@ class LookupForResolvedEditorViewsTest
                 + "                <li>orderr 5</li>\n" + "            </ol></glossScopeNote>\n" + "    </glossBody>\n"
                 + "    <related-links/>\n" + "</glossentry>\n";
 
-        List<AcrolinxMatch> matches = new ArrayList<>();
+        List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
 
-        matches.add(new AcrolinxMatch(new IntRange(371, 379), "blooming"));
-        matches.add(new AcrolinxMatch(new IntRange(379, 380), " "));
-        matches.add(new AcrolinxMatch(new IntRange(380, 382), "in"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(371, 379), "blooming"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(379, 380), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(380, 382), "in"));
 
-        matches.add(new AcrolinxMatch(new IntRange(382, 383), "\n"));
-        matches.add(new AcrolinxMatch(new IntRange(383, 384), " "));
-        matches.add(new AcrolinxMatch(new IntRange(384, 385), " "));
-        matches.add(new AcrolinxMatch(new IntRange(385, 386), " "));
-        matches.add(new AcrolinxMatch(new IntRange(386, 387), " "));
-        matches.add(new AcrolinxMatch(new IntRange(387, 388), " "));
-        matches.add(new AcrolinxMatch(new IntRange(388, 389), " "));
-        matches.add(new AcrolinxMatch(new IntRange(389, 390), " "));
-        matches.add(new AcrolinxMatch(new IntRange(390, 391), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(382, 383), "\n"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(383, 384), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(384, 385), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(385, 386), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(386, 387), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(387, 388), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(388, 389), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(389, 390), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(390, 391), " "));
 
-        matches.add(new AcrolinxMatch(new IntRange(499, 505), "winter"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(499, 505), "winter"));
 
-        matches.add(new AcrolinxMatch(new IntRange(524, 525), " "));
-        matches.add(new AcrolinxMatch(new IntRange(525, 526), " "));
-        matches.add(new AcrolinxMatch(new IntRange(526, 527), " "));
-        matches.add(new AcrolinxMatch(new IntRange(527, 528), " "));
-        matches.add(new AcrolinxMatch(new IntRange(528, 529), " "));
-        matches.add(new AcrolinxMatch(new IntRange(529, 530), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(524, 525), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(525, 526), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(526, 527), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(527, 528), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(528, 529), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(529, 530), " "));
 
-        matches.add(new AcrolinxMatch(new IntRange(530, 531), " "));
-        matches.add(new AcrolinxMatch(new IntRange(531, 532), " "));
-        matches.add(new AcrolinxMatch(new IntRange(532, 533), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(530, 531), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(531, 532), " "));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(532, 533), " "));
 
-        matches.add(new AcrolinxMatch(new IntRange(533, 536), "are"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(533, 536), "are"));
 
         ContentNode contentNode = new ContentNode() {
             @Override
@@ -521,8 +519,8 @@ class LookupForResolvedEditorViewsTest
                 contentNode.getContent());
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
-                getRest_lookUpText, rest_lookUpEditor, offset -> contentNode);
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
+                acrolinxMatches, getRest_lookUpText, rest_lookUpEditor, offset -> contentNode);
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
 
@@ -573,19 +571,19 @@ class LookupForResolvedEditorViewsTest
         Assertions.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
-        List<AcrolinxMatch> matches = new ArrayList<>();
+        List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
 
-        matches.add(new AcrolinxMatch(new IntRange(272, 276), "<"));
-        matches.add(new AcrolinxMatch(new IntRange(276, 280), "caar"));
-        matches.add(new AcrolinxMatch(new IntRange(280, 284), ">"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(272, 276), "<"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(276, 280), "caar"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(280, 284), ">"));
 
-        matches.add(new AcrolinxMatch(new IntRange(288, 292), "<"));
-        matches.add(new AcrolinxMatch(new IntRange(292, 297), "nicce"));
-        matches.add(new AcrolinxMatch(new IntRange(297, 301), ">"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(288, 292), "<"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(292, 297), "nicce"));
+        acrolinxMatches.add(new AcrolinxMatch(new IntRange(297, 301), ">"));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
-                documentContent, authorViewContent, offset -> contentNode);
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
+                acrolinxMatches, documentContent, authorViewContent, offset -> contentNode);
 
         abstractMatches.get().stream().forEach(match -> Assertions.assertEquals(
                 authorViewContent.substring(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
@@ -601,7 +599,7 @@ class LookupForResolvedEditorViewsTest
     {
         final String matchContent = "mistaake";
         final String contentNodeString = " " + matchContent + " " + matchContent;
-        final String contentNodeXMLString = "<p>" + contentNodeString + "</p>";
+        final String contentNodeXmlString = "<p>" + contentNodeString + "</p>";
 
         final String authorViewContentBeforeContentNodeString = "Instructions for Authors.\n" + " " + matchContent
                 + "\n" + contentNodeString + "\n";
@@ -610,9 +608,9 @@ class LookupForResolvedEditorViewsTest
         final String documentContentBeforeContentNode = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<!DOCTYPE topic PUBLIC \"-//OASIS//DTD DITA Topic//EN\" \"topic.dtd\">\n"
                 + "<topic id=\"topic_icd_txy_3db\">\n" + "<title>Instructions for Authors.</title>\n"
-                + "    <body>\n<p conref=\"mistake-conref\"/>" + contentNodeXMLString;
+                + "    <body>\n<p conref=\"mistake-conref\"/>" + contentNodeXmlString;
         final String documentContentAfterContentNode = "    </body>\n" + "</topic>\n";
-        final String documentContent = documentContentBeforeContentNode + contentNodeXMLString
+        final String documentContent = documentContentBeforeContentNode + contentNodeXmlString
                 + documentContentAfterContentNode;
         ContentNode contentNode = new ContentNode() {
             @Override
@@ -636,24 +634,24 @@ class LookupForResolvedEditorViewsTest
             @Override
             public String getAsXMLFragment()
             {
-                return contentNodeXMLString;
+                return contentNodeXmlString;
             }
         };
 
         Assertions.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
-        List<AcrolinxMatch> matches = new ArrayList<>();
+        List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
 
         int pTagAndWhiteSpace = 4;
-        matches.add(new AcrolinxMatch(
+        acrolinxMatches.add(new AcrolinxMatch(
                 new IntRange(documentContentBeforeContentNode.length() + pTagAndWhiteSpace,
                         documentContentBeforeContentNode.length() + pTagAndWhiteSpace + matchContent.length()),
                 matchContent));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
-                documentContent, authorViewContent, offset -> contentNode);
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
+                acrolinxMatches, documentContent, authorViewContent, offset -> contentNode);
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
         Assertions.assertEquals(onlyMatch.getContent(), authorViewContent.substring(
@@ -669,7 +667,7 @@ class LookupForResolvedEditorViewsTest
     {
         final String matchContent = "mistaake";
         final String contentNodeString = " " + matchContent + " ";
-        final String contentNodeResolvedXMLString = "<p>" + contentNodeString + "</p>";
+        final String contentNodeResolvedXmlString = "<p>" + contentNodeString + "</p>";
 
         final String authorViewContentBeforeContentNodeString = "Instructions for Authors.\n";
         final String authorViewContent = authorViewContentBeforeContentNodeString + contentNodeString + "\n";
@@ -687,11 +685,11 @@ class LookupForResolvedEditorViewsTest
             {
                 ReferenceTreeNode r = new ReferenceTreeNode();
                 r.setUnresolvedContent(referencedContentTag);
-                r.setResolvedContent(contentNodeResolvedXMLString);
+                r.setResolvedContent(contentNodeResolvedXmlString);
 
                 ReferenceTreeNode externalContentNode = new ReferenceTreeNode();
-                externalContentNode.setResolvedContent(contentNodeResolvedXMLString);
-                externalContentNode.setUnresolvedContent(contentNodeResolvedXMLString);
+                externalContentNode.setResolvedContent(contentNodeResolvedXmlString);
+                externalContentNode.setUnresolvedContent(contentNodeResolvedXmlString);
                 externalContentNode.setStartOffsetInParent(0);
                 externalContentNode.setReferencingTag(referencedContentTag);
                 r.referenceChildren.add(externalContentNode);
@@ -726,21 +724,21 @@ class LookupForResolvedEditorViewsTest
         Assertions.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
-        List<AcrolinxMatch> matches = new ArrayList<>();
+        List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
 
         int pTagAndWhiteSpace = 4;
         List<ExternalContentMatch> externalContentMatches = new ArrayList<>();
         ExternalContentMatch externalContentMatch = new ExternalContentMatch("id", "dita", pTagAndWhiteSpace,
                 pTagAndWhiteSpace + matchContent.length());
         externalContentMatches.add(externalContentMatch);
-        matches.add(new AcrolinxMatch(
+        acrolinxMatches.add(new AcrolinxMatch(
                 new IntRange(documentContentBeforeContentNode.length(),
                         documentContentBeforeContentNode.length() + referencedContentTag.length()),
                 matchContent, externalContentMatches));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
-                documentContent, authorViewContent, offset -> contentNode);
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
+                acrolinxMatches, documentContent, authorViewContent, offset -> contentNode);
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
         IntRange matchRange = onlyMatch.getRange();
@@ -756,7 +754,7 @@ class LookupForResolvedEditorViewsTest
     {
         final String matchContent = "mistaake";
         final String contentNodeString = " " + matchContent + " " + matchContent;
-        final String contentNodeResolvedXMLString = "<p>" + contentNodeString + "</p>";
+        final String contentNodeResolvedXmlString = "<p>" + contentNodeString + "</p>";
 
         final String authorViewContentBeforeContentNodeString = "Instructions for Authors.\n";
         final String authorViewContent = authorViewContentBeforeContentNodeString + contentNodeString + "\n";
@@ -774,11 +772,11 @@ class LookupForResolvedEditorViewsTest
             {
                 ReferenceTreeNode r = new ReferenceTreeNode();
                 r.setUnresolvedContent(referencedContentTag);
-                r.setResolvedContent(contentNodeResolvedXMLString);
+                r.setResolvedContent(contentNodeResolvedXmlString);
 
                 ReferenceTreeNode externalContentNode = new ReferenceTreeNode();
-                externalContentNode.setResolvedContent(contentNodeResolvedXMLString);
-                externalContentNode.setUnresolvedContent(contentNodeResolvedXMLString);
+                externalContentNode.setResolvedContent(contentNodeResolvedXmlString);
+                externalContentNode.setUnresolvedContent(contentNodeResolvedXmlString);
                 externalContentNode.setStartOffsetInParent(0);
                 externalContentNode.setReferencingTag(referencedContentTag);
                 r.referenceChildren.add(externalContentNode);
@@ -813,21 +811,21 @@ class LookupForResolvedEditorViewsTest
         Assertions.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
-        List<AcrolinxMatch> matches = new ArrayList<>();
+        List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
 
         int pTagAndWhiteSpace = 4;
         List<ExternalContentMatch> externalContentMatches = new ArrayList<>();
         ExternalContentMatch externalContentMatch = new ExternalContentMatch("id", "dita", pTagAndWhiteSpace,
                 pTagAndWhiteSpace + matchContent.length());
         externalContentMatches.add(externalContentMatch);
-        matches.add(new AcrolinxMatch(
+        acrolinxMatches.add(new AcrolinxMatch(
                 new IntRange(documentContentBeforeContentNode.length(),
                         documentContentBeforeContentNode.length() + referencedContentTag.length()),
                 matchContent, externalContentMatches));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
-                documentContent, authorViewContent, offset -> contentNode);
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
+                acrolinxMatches, documentContent, authorViewContent, offset -> contentNode);
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
         IntRange matchRange = onlyMatch.getRange();
@@ -843,7 +841,7 @@ class LookupForResolvedEditorViewsTest
     {
         final String matchContent = "mistaake";
         final String contentNodeString = " " + matchContent + " " + matchContent;
-        final String contentNodeResolvedXMLString = "<div><p>" + contentNodeString + "</p></div>";
+        final String contentNodeResolvedXmlString = "<div><p>" + contentNodeString + "</p></div>";
 
         final String authorViewContentBeforeContentNodeString = "Instructions for Authors.\n";
         final String authorViewContent = authorViewContentBeforeContentNodeString + contentNodeString + "\n";
@@ -862,17 +860,17 @@ class LookupForResolvedEditorViewsTest
             {
                 ReferenceTreeNode r = new ReferenceTreeNode();
                 r.setUnresolvedContent(referencedContentTag);
-                r.setResolvedContent(contentNodeResolvedXMLString);
+                r.setResolvedContent(contentNodeResolvedXmlString);
 
                 ReferenceTreeNode externalContentNode = new ReferenceTreeNode();
-                externalContentNode.setResolvedContent(contentNodeResolvedXMLString);
+                externalContentNode.setResolvedContent(contentNodeResolvedXmlString);
                 externalContentNode.setUnresolvedContent("<div>" + secondReferencedContentTag + "</div>");
                 externalContentNode.setStartOffsetInParent(0);
                 externalContentNode.setReferencingTag(referencedContentTag);
 
                 ReferenceTreeNode externalContentChildNode = new ReferenceTreeNode();
-                String firstLevelSubstring = contentNodeResolvedXMLString.substring(5,
-                        contentNodeResolvedXMLString.length() - 6);
+                String firstLevelSubstring = contentNodeResolvedXmlString.substring(5,
+                        contentNodeResolvedXmlString.length() - 6);
                 externalContentChildNode.setResolvedContent(firstLevelSubstring);
                 externalContentChildNode.setUnresolvedContent(firstLevelSubstring);
                 externalContentChildNode.setReferencingTag(secondReferencedContentTag);
@@ -911,7 +909,7 @@ class LookupForResolvedEditorViewsTest
         Assertions.assertEquals(authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
-        List<AcrolinxMatch> matches = new ArrayList<>();
+        List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
 
         int divTag = 5;
         int pTag = 3;
@@ -926,14 +924,14 @@ class LookupForResolvedEditorViewsTest
                 divTag + secondReferencedContentTag.length(), nestedExternalContentMatches);
 
         externalContentMatches.add(externalContentMatch);
-        matches.add(new AcrolinxMatch(
+        acrolinxMatches.add(new AcrolinxMatch(
                 new IntRange(documentContentBeforeContentNode.length(),
                         documentContentBeforeContentNode.length() + referencedContentTag.length()),
                 matchContent, externalContentMatches));
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
-        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(matches,
-                documentContent, authorViewContent, offset -> contentNode);
+        Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
+                acrolinxMatches, documentContent, authorViewContent, offset -> contentNode);
 
         AbstractMatch onlyMatch = abstractMatches.get().get(0);
         IntRange matchRange = onlyMatch.getRange();

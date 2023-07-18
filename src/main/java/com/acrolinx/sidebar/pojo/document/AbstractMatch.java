@@ -7,7 +7,7 @@ public abstract class AbstractMatch
 
     public abstract String getContent();
 
-    public abstract AbstractMatch setRange(IntRange range);
+    public abstract AbstractMatch setRange(IntRange intRange);
 
     public abstract AbstractMatch copy();
 }

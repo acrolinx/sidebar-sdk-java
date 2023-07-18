@@ -11,8 +11,8 @@ class AcrolinxMatchWithReplacementTest
     {
         AcrolinxMatchWithReplacement acrolinxMatchWithReplacement = new AcrolinxMatchWithReplacement("test",
                 new IntRange(1, 4), "lala");
-        AbstractMatch match = acrolinxMatchWithReplacement.setRange(new IntRange(5, 8));
+        AbstractMatch abstractMatch = acrolinxMatchWithReplacement.setRange(new IntRange(5, 8));
         Assertions.assertEquals(4, acrolinxMatchWithReplacement.getRange().getMaximumInteger());
-        Assertions.assertEquals(8, match.getRange().getMaximumInteger());
+        Assertions.assertEquals(8, abstractMatch.getRange().getMaximumInteger());
     }
 }

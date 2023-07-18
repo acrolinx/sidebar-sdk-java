@@ -62,7 +62,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     {
         addComponentListener(new ComponentListener() {
             @Override
-            public void componentResized(final ComponentEvent e)
+            public void componentResized(final ComponentEvent componentEvent)
             {
                 for (AcrolinxSidebarJFX sidebarJFX : sidebars.values()) {
                     logger.debug("Component resized");
@@ -74,19 +74,19 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             }
 
             @Override
-            public void componentMoved(final ComponentEvent e)
+            public void componentMoved(final ComponentEvent componentEvent)
             {
                 // we only need resize event to be handled
             }
 
             @Override
-            public void componentShown(final ComponentEvent e)
+            public void componentShown(final ComponentEvent componentEvent)
             {
                 // we only need resize event to be handled
             }
 
             @Override
-            public void componentHidden(final ComponentEvent e)
+            public void componentHidden(final ComponentEvent componentEvent)
             {
                 // we only need resize event to be handled
             }
