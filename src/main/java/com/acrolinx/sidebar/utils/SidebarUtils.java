@@ -150,16 +150,17 @@ public final class SidebarUtils
     {
         final String resourceName = "/versionJavaSDK.properties";
         final Properties properties = new Properties();
-        final InputStream resourceStream = SidebarUtils.class.getResourceAsStream(resourceName);
-        if (resourceStream != null) {
+        final InputStream resourceInputStream = SidebarUtils.class.getResourceAsStream(resourceName);
+
+        if (resourceInputStream != null) {
             try {
-                properties.load(resourceStream);
+                properties.load(resourceInputStream);
                 return (String) properties.get("VERSION_JAVA_SDK");
             } catch (final IOException e) {
                 logger.error("Could not read java sdk version!", e);
             } finally {
                 try {
-                    resourceStream.close();
+                    resourceInputStream.close();
                 } catch (final IOException e) {
                     logger.error("Could not close resource stream or stream already cleaned up!", e);
                 }
@@ -167,6 +168,7 @@ public final class SidebarUtils
         } else {
             logger.error("Version properties file for Java SDK not found!");
         }
+
         return null;
     }
 

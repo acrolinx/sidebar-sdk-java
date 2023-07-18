@@ -16,15 +16,15 @@ import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 
 class LookupForResolvedEditorViewsTest
 {
-    private final static String textApple = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    private final static String TEXT_APPLE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
             + "<!DOCTYPE task PUBLIC \"-//OASIS//DTD DITA General Task//EN\" \"generalTask.dtd\">\n"
             + "<task id=\"task_tvt_rr5_t1b\">\n" + "    <title></title>\n" + "    <shortdesc></shortdesc>\n"
             + "    <taskbody>\n" + "        <context>\n" + "            <p><b>an</b> <u>apple</u></p>\n"
             + "        </context>\n" + "    </taskbody>\n" + "</task>";
 
-    private final static String appleEditorContent = "a apple";
+    private final static String APPLE_EDITOR_CONTENT = "a apple";
 
-    private final static String textAutumnFlowers = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    private final static String TEXT_AUTUMN_FLOWERS = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
             + "<!DOCTYPE concept PUBLIC \"-//OASIS//DTD DITA Concept//EN\" \"concept.dtd\">\n"
             + "<concept id=\"autumnFlowers\">\n" + "    <title>Autumn Flowers</title>\n" + "    <conbody>\n"
             + "        <p>Autumn is the season of the primary harvest. Autumn falls during September - November in\n"
@@ -39,11 +39,11 @@ class LookupForResolvedEditorViewsTest
             + "            Roses, Rowen berry, Salvia, Solidago, Statice, Star of Bethlehem, Sunflower, Yarrow,\n"
             + "            Zinnia.</p>\n" + "    </conbody>\n" + "</concept>";
 
-    private final static String autumnFlowersEditor = "\n" + "Autumn Flowers\n"
+    private final static String AUTUMN_FLOWERS_EDITOR = "\n" + "Autumn Flowers\n"
             + "Autumn is the season of the primary harvest. Autumn falls during September - November in the Northern hemisphere, and during March - June in the Southern hemisphere. Crops are harvested during Autumn. Leaves change color are at their beautiful best.\n"
             + "Some of the flowers blooming in autumnflowersautumn are: Acashia, Allium, Alstromeria, Amaranthus, Anemone, Baby's Breath, Bittersweet, Carnation, China berry, Chrysanthemum, Cockscomb, Cosmos, Echinops, Freesia, Gerbera Daisy, Gladiolus, Hypericum, Iris, Juniper, Kangaroo paw, Kalancheo, Liatrus, Lily, Asiatic, Lily, Gloriosa, Misty Blue, Orchid, Pepper berry, Protea, Queen Ann's Lace, Quince, Rover, Roses, Rowen berry, Salvia, Solidago, Statice, Star of Bethlehem, Sunflower, Yarrow, Zinnia.";
 
-    private final static String restDitaText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    private final static String REST_DITA_TEXT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
             + "<!DOCTYPE glossentry PUBLIC \"-//OASIS//DTD DITA Glossary//EN\" \"glossary.dtd\">\n"
             + "<glossentry id=\"glossentry_s2k_tlv_t1b\">\n" + "    <glossterm/>\n"
             + "    <?oxy_comment_start author=\"shroti_kapartiwar\" timestamp=\"20170804T161332+0530\" comment=\"this is the camment texxt\"?>\n"
@@ -75,7 +75,7 @@ class LookupForResolvedEditorViewsTest
             + "            </table>\n" + "        </glossScopeNote>\n" + "    </glossBody>\n" + "    <related-links/>\n"
             + "</glossentry>\n";
 
-    private final static String restDitaEditor = "     new data new line starts in div this mastake  test  page  spalling.    tablee         wastee  wastee      wastee  wastee    wastee  wastee    wastee  wastee          tast                           ";
+    private final static String REST_DITA_EDITOR = "     new data new line starts in div this mastake  test  page  spalling.    tablee         wastee  wastee      wastee  wastee    wastee  wastee    wastee  wastee          tast                           ";
 
     @Test
     void testLookupIgnoreWhiteSpace()
@@ -84,9 +84,10 @@ class LookupForResolvedEditorViewsTest
         acrolinxMatches.add(new AcrolinxMatch(new IntRange(246, 247), "a"));
         acrolinxMatches.add(new AcrolinxMatch(new IntRange(251, 252), " "));
         acrolinxMatches.add(new AcrolinxMatch(new IntRange(255, 260), "apple"));
+
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
         Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
-                acrolinxMatches, textApple, appleEditorContent, offset -> new ContentNode() {
+                acrolinxMatches, TEXT_APPLE, APPLE_EDITOR_CONTENT, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
                     {
@@ -112,9 +113,10 @@ class LookupForResolvedEditorViewsTest
                     }
                 });
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
-        matchesNew.stream().forEach(
-                match -> Assertions.assertEquals(appleEditorContent.substring(match.getRange().getMinimumInteger(),
-                        match.getRange().getMaximumInteger()), match.getContent()));
+        matchesNew.stream().forEach(abstractMatch -> Assertions.assertEquals(
+                APPLE_EDITOR_CONTENT.substring(abstractMatch.getRange().getMinimumInteger(),
+                        abstractMatch.getRange().getMaximumInteger()),
+                abstractMatch.getContent()));
     }
 
     @Test
@@ -150,7 +152,7 @@ class LookupForResolvedEditorViewsTest
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
         Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
-                acrolinxMatches, textAutumnFlowers, autumnFlowersEditor, offset -> new ContentNode() {
+                acrolinxMatches, TEXT_AUTUMN_FLOWERS, AUTUMN_FLOWERS_EDITOR, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
                     {
@@ -179,9 +181,10 @@ class LookupForResolvedEditorViewsTest
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
         Assertions.assertEquals(7, matchesNew.size());
         acrolinxMatches.sort(new MatchComparator());
-        matchesNew.stream().sorted(new MatchComparator()).forEach(
-                match -> Assertions.assertEquals(autumnFlowersEditor.substring(match.getRange().getMinimumInteger(),
-                        match.getRange().getMaximumInteger()), match.getContent()));
+        matchesNew.stream().sorted(new MatchComparator()).forEach(abstractMatch -> Assertions.assertEquals(
+                AUTUMN_FLOWERS_EDITOR.substring(abstractMatch.getRange().getMinimumInteger(),
+                        abstractMatch.getRange().getMaximumInteger()),
+                abstractMatch.getContent()));
 
         AbstractMatch abstractMatch = matchesNew.get(0);
         Assertions.assertEquals("blooming", abstractMatch.getContent());
@@ -197,7 +200,7 @@ class LookupForResolvedEditorViewsTest
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
         Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
-                acrolinxMatches, restDitaText, restDitaEditor, offset -> new ContentNode() {
+                acrolinxMatches, REST_DITA_TEXT, REST_DITA_EDITOR, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
                     {
@@ -227,9 +230,10 @@ class LookupForResolvedEditorViewsTest
 
         Assertions.assertEquals(1, matchesNew.size());
 
-        matchesNew.stream().forEach(match -> Assertions.assertEquals(
-                restDitaEditor.substring(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
-                match.getContent()));
+        matchesNew.stream().forEach(abstractMatch -> Assertions.assertEquals(
+                REST_DITA_EDITOR.substring(abstractMatch.getRange().getMinimumInteger(),
+                        abstractMatch.getRange().getMaximumInteger()),
+                abstractMatch.getContent()));
     }
 
     @Test
@@ -240,7 +244,7 @@ class LookupForResolvedEditorViewsTest
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
         Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
-                acrolinxMatches, restDitaText, restDitaEditor, offset -> new ContentNode() {
+                acrolinxMatches, REST_DITA_TEXT, REST_DITA_EDITOR, offset -> new ContentNode() {
                     @Override
                     public int getStartOffset()
                     {
@@ -270,20 +274,21 @@ class LookupForResolvedEditorViewsTest
 
         Assertions.assertEquals(1, matchesNew.size());
 
-        matchesNew.stream().forEach(match -> Assertions.assertEquals(
-                restDitaEditor.substring(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
-                match.getContent()));
+        matchesNew.stream().forEach(abstractMatch -> Assertions.assertEquals(
+                REST_DITA_EDITOR.substring(abstractMatch.getRange().getMinimumInteger(),
+                        abstractMatch.getRange().getMaximumInteger()),
+                abstractMatch.getContent()));
     }
 
     @Test
     void testLookupSpecialCases1()
     {
-        final String rest_lookUpEditor = "    "
+        final String restLookUpEditor = "    "
                 + " The flowers are very seasobable. Flower blooming in winter are very brigth and fresh. New data new line starts in div this mastake  test  page  spalling.   tablee         waste  waste      waste  waste    waste  waste    waste  waste     "
                 + "tast\n" + "client customer textt is written in cald and italicc formattingg\n"
                 + "listt 1listt 2listt 3listt 4\n" + "orderr 1orderr 2orderr 3orderr 4orderr 5";
 
-        final String getRest_lookUpText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        final String getRestLookUpText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                 + "<!DOCTYPE glossentry PUBLIC \"-//OASIS//DTD DITA Glossary//EN\" \"glossary.dtd\">\n"
                 + "<glossentry id=\"glossentry_s2k_tlv_t1b\">\n" + "    <glossterm/>\n"
                 + "    <?oxy_comment_start author=\"shroti_kapartiwar\" timestamp=\"20170804T161332+0530\" comment=\"this is the camment texxt\"?>\n"
@@ -329,9 +334,9 @@ class LookupForResolvedEditorViewsTest
         acrolinxMatches.add(new AcrolinxMatch(new IntRange(351, 352), " "));
         acrolinxMatches.add(new AcrolinxMatch(new IntRange(352, 362), "seasobable"));
 
-        acrolinxMatches.stream().forEach(
-                match -> Assertions.assertEquals(getRest_lookUpText.substring(match.getRange().getMinimumInteger(),
-                        match.getRange().getMaximumInteger()), match.getContent()));
+        acrolinxMatches.stream().forEach(match -> Assertions.assertEquals(
+                getRestLookUpText.substring(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
+                match.getContent()));
 
         ContentNode contentNode = new ContentNode() {
             @Override
@@ -376,32 +381,32 @@ class LookupForResolvedEditorViewsTest
             }
         };
 
-        Assertions.assertEquals(rest_lookUpEditor.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
+        Assertions.assertEquals(restLookUpEditor.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
         Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
-                acrolinxMatches, getRest_lookUpText, rest_lookUpEditor, offset -> contentNode);
+                acrolinxMatches, getRestLookUpText, restLookUpEditor, offset -> contentNode);
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
 
         Assertions.assertEquals(3, matchesNew.size());
 
-        matchesNew.stream().forEach(match -> {
-            Assertions.assertEquals(rest_lookUpEditor.substring(match.getRange().getMinimumInteger(),
-                    match.getRange().getMaximumInteger()), match.getContent());
+        matchesNew.stream().forEach(abstractMatch -> {
+            Assertions.assertEquals(restLookUpEditor.substring(abstractMatch.getRange().getMinimumInteger(),
+                    abstractMatch.getRange().getMaximumInteger()), abstractMatch.getContent());
         });
     }
 
     @Test
     void testLookupSpecialCasesDeletedNewLine()
     {
-        final String rest_lookUpEditor = "    "
+        final String restLookUpEditor = "    "
                 + " The flowers are very seasobable. Flower blooming in winter are very brigth and fresh. New data new line starts in div this mastake  test  page  spalling.   tablee         waste  waste      waste  waste    waste  waste    waste  waste     "
                 + "tast\n" + "client customer textt is written in cald and italicc formattingg\n"
                 + "listt 1listt 2listt 3listt 4\n" + "orderr 1orderr 2orderr 3orderr 4orderr 5";
 
-        final String getRest_lookUpText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        final String getRestLookUpText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                 + "<!DOCTYPE glossentry PUBLIC \"-//OASIS//DTD DITA Glossary//EN\" \"glossary.dtd\">\n"
                 + "<glossentry id=\"glossentry_s2k_tlv_t1b\">\n" + "    <glossterm/>\n"
                 + "    <?oxy_comment_start author=\"shroti_kapartiwar\" timestamp=\"20170804T161332+0530\" comment=\"this is the camment texxt\"?>\n"
@@ -515,20 +520,21 @@ class LookupForResolvedEditorViewsTest
             }
         };
 
-        Assertions.assertEquals(rest_lookUpEditor.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
+        Assertions.assertEquals(restLookUpEditor.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
                 contentNode.getContent());
 
         LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
         Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
-                acrolinxMatches, getRest_lookUpText, rest_lookUpEditor, offset -> contentNode);
+                acrolinxMatches, getRestLookUpText, restLookUpEditor, offset -> contentNode);
 
         List<? extends AbstractMatch> matchesNew = abstractMatches.get();
 
         Assertions.assertEquals(7, matchesNew.size());
 
-        matchesNew.stream().forEach(match -> Assertions.assertEquals(
-                rest_lookUpEditor.substring(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
-                match.getContent()));
+        matchesNew.stream().forEach(abstractMatch -> Assertions.assertEquals(
+                restLookUpEditor.substring(abstractMatch.getRange().getMinimumInteger(),
+                        abstractMatch.getRange().getMaximumInteger()),
+                abstractMatch.getContent()));
     }
 
     @Test
@@ -585,9 +591,10 @@ class LookupForResolvedEditorViewsTest
         Optional<List<? extends AbstractMatch>> abstractMatches = lookup.matchRangesForResolvedEditorView(
                 acrolinxMatches, documentContent, authorViewContent, offset -> contentNode);
 
-        abstractMatches.get().stream().forEach(match -> Assertions.assertEquals(
-                authorViewContent.substring(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
-                match.getContent()));
+        abstractMatches.get().stream().forEach(abstractMatch -> Assertions.assertEquals(
+                authorViewContent.substring(abstractMatch.getRange().getMinimumInteger(),
+                        abstractMatch.getRange().getMaximumInteger()),
+                abstractMatch.getContent()));
     }
 
     /***
@@ -770,17 +777,18 @@ class LookupForResolvedEditorViewsTest
             @Override
             public ReferenceTreeNode getReferenceTree()
             {
-                ReferenceTreeNode r = new ReferenceTreeNode();
-                r.setUnresolvedContent(referencedContentTag);
-                r.setResolvedContent(contentNodeResolvedXmlString);
+                ReferenceTreeNode referenceTreeNode = new ReferenceTreeNode();
+                referenceTreeNode.setUnresolvedContent(referencedContentTag);
+                referenceTreeNode.setResolvedContent(contentNodeResolvedXmlString);
 
                 ReferenceTreeNode externalContentNode = new ReferenceTreeNode();
                 externalContentNode.setResolvedContent(contentNodeResolvedXmlString);
                 externalContentNode.setUnresolvedContent(contentNodeResolvedXmlString);
                 externalContentNode.setStartOffsetInParent(0);
                 externalContentNode.setReferencingTag(referencedContentTag);
-                r.referenceChildren.add(externalContentNode);
-                return r;
+                referenceTreeNode.referenceChildren.add(externalContentNode);
+
+                return referenceTreeNode;
             }
 
             @Override
@@ -858,9 +866,9 @@ class LookupForResolvedEditorViewsTest
             @Override
             public ReferenceTreeNode getReferenceTree()
             {
-                ReferenceTreeNode r = new ReferenceTreeNode();
-                r.setUnresolvedContent(referencedContentTag);
-                r.setResolvedContent(contentNodeResolvedXmlString);
+                ReferenceTreeNode referenceTreeNode = new ReferenceTreeNode();
+                referenceTreeNode.setUnresolvedContent(referencedContentTag);
+                referenceTreeNode.setResolvedContent(contentNodeResolvedXmlString);
 
                 ReferenceTreeNode externalContentNode = new ReferenceTreeNode();
                 externalContentNode.setResolvedContent(contentNodeResolvedXmlString);
@@ -877,8 +885,9 @@ class LookupForResolvedEditorViewsTest
                 externalContentChildNode.setStartOffsetInParent(5);
 
                 externalContentNode.referenceChildren.add(externalContentChildNode);
-                r.referenceChildren.add(externalContentNode);
-                return r;
+                referenceTreeNode.referenceChildren.add(externalContentNode);
+
+                return referenceTreeNode;
             }
 
             @Override

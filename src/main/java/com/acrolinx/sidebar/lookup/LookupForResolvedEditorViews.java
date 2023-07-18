@@ -201,7 +201,6 @@ public class LookupForResolvedEditorViews
                 correctedMatchRange.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match,
                         contentNodeXmlString, startOffset, textContent, rangeContent, range));
             }
-
         });
     }
 

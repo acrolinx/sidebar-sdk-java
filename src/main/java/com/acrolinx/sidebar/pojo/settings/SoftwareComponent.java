@@ -17,12 +17,13 @@ public class SoftwareComponent
         this.version = version;
     }
 
-    public SoftwareComponent(String id, String name, String version, SoftwareComponentCategory category)
+    public SoftwareComponent(String id, String name, String version,
+            SoftwareComponentCategory softwareComponentCategory)
     {
         this.id = id;
         this.name = name;
         this.version = version;
-        this.category = category;
+        this.category = softwareComponentCategory;
     }
 
     @Override

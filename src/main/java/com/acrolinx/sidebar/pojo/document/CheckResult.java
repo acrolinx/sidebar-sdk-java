@@ -44,7 +44,7 @@ public class CheckResult
             getEmbedCheckInformation().ifPresent(map -> {
                 stringBuilder.append("<?" + ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME + " ");
                 map.forEach(
-                        (key, value) -> stringBuilder.append(key).append("=").append("\"").append(value).append("\" "));
+                        (key, value) -> stringBuilder.append(key).append('=').append('"').append(value).append("\" "));
                 stringBuilder.append("?>");
             });
 
@@ -56,7 +56,7 @@ public class CheckResult
             getEmbedCheckInformation().ifPresent(map -> {
                 stringBuilder.append("<!-- " + ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME + " ");
                 map.forEach(
-                        (key, value) -> stringBuilder.append(key).append("=").append("\"").append(value).append("\" "));
+                        (key, value) -> stringBuilder.append(key).append('=').append('"').append(value).append("\" "));
                 stringBuilder.append("-->");
             });
 
@@ -68,7 +68,7 @@ public class CheckResult
             getEmbedCheckInformation().ifPresent(map -> {
                 stringBuilder.append("<meta " + "name=\"" + ACROLINX_PROCESSING_INSTRUCTION_TAG_NAME + "\" ");
                 map.forEach(
-                        (key, value) -> stringBuilder.append(key).append("=").append("\"").append(value).append("\" "));
+                        (key, value) -> stringBuilder.append(key).append('=').append('"').append(value).append("\" "));
                 stringBuilder.append("/>");
             });
 

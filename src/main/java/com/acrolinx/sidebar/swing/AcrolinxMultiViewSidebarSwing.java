@@ -64,12 +64,12 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             @Override
             public void componentResized(final ComponentEvent componentEvent)
             {
-                for (AcrolinxSidebarJFX sidebarJFX : sidebars.values()) {
+                for (AcrolinxSidebarJFX acrolinxSidebarJFX : sidebars.values()) {
                     logger.debug("Component resized");
                     logger.debug("{} width", getWidth());
                     final float i = (float) getWidth() / 300;
                     logger.debug("{} Zoom", i);
-                    sidebarJFX.setZoom(i);
+                    acrolinxSidebarJFX.setZoom(i);
                 }
             }
 
@@ -107,7 +107,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             throw new AcrolinxException("Sidebar already exists for document id: " + documentId);
         }
         JFXUtils.invokeInJFXThread(() -> {
-            sidebarJFX = new AcrolinxSidebarJFX(acrolinxIntegration, storage);
+            sidebarJFX = new AcrolinxSidebarJFX(acrolinxIntegration, acrolinxStorage);
             final WebView webview = sidebarJFX.getWebView();
             GridPane.setHgrow(webview, Priority.ALWAYS);
             GridPane.setVgrow(webview, Priority.ALWAYS);
@@ -139,7 +139,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     {
         final AcrolinxSidebarJFX acrolinxSidebarJFX = sidebars.get(documentId);
         if (acrolinxSidebarJFX == null) {
-            throw new AcrolinxException("Existing sidebar not found for document Id. " + documentId);
+            throw new AcrolinxException("Existing sidebar not found for document Id: " + documentId);
         }
         JFXUtils.invokeInJFXThread(() -> {
             if (sidebars.containsKey(documentId)) {

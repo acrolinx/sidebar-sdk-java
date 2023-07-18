@@ -4,35 +4,30 @@ package com.acrolinx.sidebar.localization;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Preconditions;
-
 /**
  * Singleton to handle localization keys and resource bundles
  */
-public class Localizer
+public final class Localizer
 {
     private static final Logger logger = LoggerFactory.getLogger(Localizer.class);
+    private static final Localizer instance = new Localizer();
 
-    private static Localizer instance;
     private Locale currentLocale;
     private ResourceBundle resourceBundle;
 
-    protected Localizer()
+    private Localizer()
     {
         this.changeLocale(Locale.ENGLISH);
     }
 
     public static Localizer getInstance()
     {
-        if (instance == null) {
-            instance = new Localizer();
-        }
-
         return instance;
     }
 
@@ -72,7 +67,7 @@ public class Localizer
 
     public String getStringForKey(String key)
     {
-        Preconditions.checkNotNull(key, "key should not be null");
+        Objects.requireNonNull(key, "key should not be null");
 
         if (resourceBundle.containsKey(key)) {
             return resourceBundle.getString(key);

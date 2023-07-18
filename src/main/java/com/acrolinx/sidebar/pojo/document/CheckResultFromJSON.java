@@ -34,12 +34,15 @@ public class CheckResultFromJSON
     private Map<String, String> getEmbedCheckInformation()
     {
         final Map<String, String> map = new LinkedHashMap<>();
+
         if (embedCheckInformation == null) {
             return null;
         }
+
         for (final CheckInformationKeyValuePairFromJSON checkInformationKeyValuePairFromJSON : embedCheckInformation) {
             map.put(checkInformationKeyValuePairFromJSON.getKey(), checkInformationKeyValuePairFromJSON.getValue());
         }
+
         return map;
     }
 }

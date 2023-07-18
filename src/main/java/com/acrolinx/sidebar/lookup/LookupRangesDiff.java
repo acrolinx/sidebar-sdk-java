@@ -45,6 +45,7 @@ public class LookupRangesDiff extends LookupRanges
         if (anyEmpty) {
             return Optional.empty();
         }
+
         return Optional.of(Collections.unmodifiableList(returnValues));
     }
 
@@ -53,12 +54,15 @@ public class LookupRangesDiff extends LookupRanges
             List<? extends AbstractMatch> abstractMatches)
     {
         return abstractMatches.stream().map(abstractMatch -> {
-            if (!(abstractMatch instanceof AcrolinxMatch))
+            if (!(abstractMatch instanceof AcrolinxMatch)) {
                 return abstractMatch;
+            }
+
             AcrolinxMatch acrolinxMatch = (AcrolinxMatch) abstractMatch;
 
-            if (!acrolinxMatch.hasExternalContentMatches())
+            if (!acrolinxMatch.hasExternalContentMatches()) {
                 return abstractMatch;
+            }
 
             List<ExternalContentMatch> externalContentMatches = acrolinxMatch.getExternalContentMatches();
 
@@ -96,8 +100,9 @@ public class LookupRangesDiff extends LookupRanges
         Optional<ExternalContentField> optionalChangedField = changedExternalContent.stream().filter(
                 (ExternalContentField old) -> old.getId().equals(match.getId())).findFirst();
 
-        if (!optionalCheckedField.isPresent() || !optionalChangedField.isPresent())
+        if (!optionalCheckedField.isPresent() || !optionalChangedField.isPresent()) {
             return match;
+        }
 
         ExternalContentField checkedField = optionalCheckedField.get();
         ExternalContentField changedField = optionalChangedField.get();

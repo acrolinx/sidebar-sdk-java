@@ -28,14 +28,15 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
             throws IllegalAccessException, InstantiationException, IOException
     {
         final String bundleName = toBundleName(baseName, locale);
-        ResourceBundle bundle = null;
+        ResourceBundle resourceBundle = null;
 
         if (format.equals("java.class")) {
-            bundle = super.newBundle(baseName, locale, format, classLoader, reload);
+            resourceBundle = super.newBundle(baseName, locale, format, classLoader, reload);
         } else if (format.equals("java.properties")) {
             final String resourceName = bundleName.contains("://") ? null : toResourceName(bundleName, "properties");
+
             if (resourceName == null) {
-                return bundle;
+                return resourceBundle;
             }
 
             InputStream inputStream;
@@ -47,13 +48,14 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
 
             if (inputStream != null) {
                 try (Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
-                    bundle = new PropertyResourceBundle(reader);
+                    resourceBundle = new PropertyResourceBundle(reader);
                 }
             }
         } else {
             throw new IllegalArgumentException("Unknown format: " + format);
         }
-        return bundle;
+
+        return resourceBundle;
     }
 
     private static InputStream reload(final String resourceName, final ClassLoader classLoader) throws IOException

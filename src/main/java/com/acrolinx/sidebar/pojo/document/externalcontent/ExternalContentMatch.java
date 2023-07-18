@@ -64,12 +64,12 @@ public class ExternalContentMatch
         return externalContentMatches;
     }
 
-    public void setExternalContentMatches(List<ExternalContentMatch> newList)
+    public void setExternalContentMatches(List<ExternalContentMatch> externalContentMatches)
     {
-        if (newList == null) {
+        if (externalContentMatches == null) {
             this.externalContentMatches = new ArrayList<>();
         } else {
-            this.externalContentMatches = newList;
+            this.externalContentMatches = externalContentMatches;
         }
     }
 

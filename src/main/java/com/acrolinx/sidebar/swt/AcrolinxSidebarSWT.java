@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -59,7 +60,6 @@ import com.acrolinx.sidebar.utils.LoggingUtils;
 import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.acrolinx.sidebar.utils.StartPageInstaller;
-import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -76,7 +76,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     protected final Browser browser;
     protected final AcrolinxIntegration acrolinxIntegration;
-    private final AcrolinxStorage storage;
+    private final AcrolinxStorage acrolinxStorage;
     private final AtomicReference<String> currentlyCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocumentReference = new AtomicReference<>("");
@@ -99,15 +99,15 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     public AcrolinxSidebarSWT(final Composite parent, final AcrolinxIntegration acrolinxIntegration,
             final AcrolinxStorage acrolinxStorage)
     {
-        Preconditions.checkNotNull(parent, "Composite parent should not be null");
-        Preconditions.checkNotNull(acrolinxIntegration, "AcrolinxIntegration client should not be null");
-        Preconditions.checkNotNull(acrolinxIntegration.getEditorAdapter(),
+        Objects.requireNonNull(parent, "Composite parent should not be null");
+        Objects.requireNonNull(acrolinxIntegration, "AcrolinxIntegration client should not be null");
+        Objects.requireNonNull(acrolinxIntegration.getEditorAdapter(),
                 "EditorAdapter client.getEditorAdapter should return null");
 
         LogMessages.logJavaVersionAndUiFramework(logger, "Java SWT");
         SecurityUtils.setUpEnvironment();
 
-        this.storage = acrolinxStorage;
+        this.acrolinxStorage = acrolinxStorage;
         this.acrolinxIntegration = acrolinxIntegration;
         this.browser = new Browser(parent, SWT.DEFAULT);
         initBrowser();
@@ -116,12 +116,12 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     public AcrolinxSidebarSWT(final Shell parent, final AcrolinxIntegration acrolinxIntegration,
             final AcrolinxStorage acrolinxStorage)
     {
-        Preconditions.checkNotNull(parent, "Shell parent should not be null");
-        Preconditions.checkNotNull(acrolinxIntegration, "AcrolinxIntegration client should not be null");
-        Preconditions.checkNotNull(acrolinxIntegration.getEditorAdapter(),
+        Objects.requireNonNull(parent, "Shell parent should not be null");
+        Objects.requireNonNull(acrolinxIntegration, "AcrolinxIntegration client should not be null");
+        Objects.requireNonNull(acrolinxIntegration.getEditorAdapter(),
                 "EditorAdapter client.getEditorAdapter should not return null");
 
-        this.storage = acrolinxStorage;
+        this.acrolinxStorage = acrolinxStorage;
         this.acrolinxIntegration = acrolinxIntegration;
         this.browser = new Browser(parent, SWT.DEFAULT);
         initBrowser();
@@ -145,7 +145,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             @Override
             public void completed(final ProgressEvent progressEvent)
             {
-                if (storage != null) {
+                if (acrolinxStorage != null) {
                     initLocalStorage();
                 }
                 initSidebar();
@@ -167,7 +167,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             {
                 final String key = arguments[0].toString();
                 logger.debug("Requesting {} from local storage.", key);
-                final String item = storage.getItem(key);
+                final String item = acrolinxStorage.getItem(key);
                 logger.debug("Got item: {}", item);
                 return item;
             }
@@ -179,7 +179,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             {
                 final String key = arguments[0].toString();
                 logger.debug("Removing {} from local storage.", key);
-                storage.removeItem(key);
+                acrolinxStorage.removeItem(key);
                 return null;
             }
         };
@@ -200,7 +200,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         final String key = arguments[0].toString();
         final String data = arguments[1].toString();
         logger.debug("Setting {} in local storage to {}.", key, data);
-        storage.setItem(key, data);
+        acrolinxStorage.setItem(key, data);
         return null;
     }
 
@@ -286,7 +286,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             {
                 return getSelectRangesObject(arguments[1]);
             }
-
         };
         new BrowserFunction(browser, "replaceRangesP") {
             @Override

@@ -101,8 +101,8 @@ public class TextAdapter implements InputAdapterInterface
     public List<IntRange> getCurrentSelection()
     {
         Point selection = this.textWidget.getSelection();
-        List<IntRange> ranges = new ArrayList<>();
-        ranges.add(new IntRange(selection.x, selection.y));
-        return ranges;
+        List<IntRange> intRanges = new ArrayList<>();
+        intRanges.add(new IntRange(selection.x, selection.y));
+        return intRanges;
     }
 }

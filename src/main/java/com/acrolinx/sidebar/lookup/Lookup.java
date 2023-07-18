@@ -19,7 +19,7 @@ public final class Lookup
 
     public static List<OffsetAlign> createOffsetMappingArray(List<DiffMatchPatch.Diff> diffs)
     {
-        List<OffsetAlign> offsetMapping = new LinkedList<>();
+        List<OffsetAlign> offsetAligns = new LinkedList<>();
         final AtomicInteger offsetCountOld = new AtomicInteger(0);
         final AtomicInteger currentDiffOffset = new AtomicInteger(0);
         diffs.forEach(diff -> {
@@ -39,10 +39,10 @@ public final class Lookup
                     break;
 
             }
-            offsetMapping.add(new OffsetAlign(offsetCountOld.get(), currentDiffOffset.get()));
+            offsetAligns.add(new OffsetAlign(offsetCountOld.get(), currentDiffOffset.get()));
         });
 
-        return Collections.unmodifiableList(offsetMapping);
+        return Collections.unmodifiableList(offsetAligns);
     }
 
     protected static Optional<IntRange> getCorrectedMatch(List<DiffMatchPatch.Diff> diffs,
@@ -76,9 +76,12 @@ public final class Lookup
 
     public static Optional<Integer> getDiffOffsetPositionStart(List<OffsetAlign> offsetAligns, int offset)
     {
-        Optional<OffsetAlign> first = offsetAligns.stream().filter(a -> a.getOldPosition() >= offset + 1).findFirst();
+        Optional<OffsetAlign> first = offsetAligns.stream().filter(
+                offsetAlign -> offsetAlign.getOldPosition() >= offset + 1).findFirst();
+
         if (first.isPresent()) {
             int index = offsetAligns.indexOf(first.get());
+
             if (index >= 0) {
                 final int diffOffset = offsetAligns.get(index).getDiffOffset();
                 return Optional.of(diffOffset);
@@ -92,8 +95,10 @@ public final class Lookup
     {
         Optional<OffsetAlign> first = offsetAligns.stream().filter(a -> a.getOldPosition() <= offset - 1
                 && offsetAligns.get(offsetAligns.indexOf(a) + 1).getOldPosition() >= offset).findFirst();
+
         if (first.isPresent()) {
             int index = offsetAligns.indexOf(first.get());
+
             if (index >= 0) {
                 final int diffOffset = offsetAligns.get(index).getDiffOffset();
                 return Optional.of(diffOffset);

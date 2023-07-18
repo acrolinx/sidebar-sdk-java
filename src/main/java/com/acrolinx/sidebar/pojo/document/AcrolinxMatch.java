@@ -63,16 +63,17 @@ public class AcrolinxMatch extends ExternalAbstractMatch
             final int eRangeMax = this.extractedRange.getMaximumInteger();
 
             if (this.getExternalContentMatches() != null) {
-                final List<ExternalContentMatch> externalMatches = this.getExternalContentMatches();
-                return new AcrolinxMatch(intRange, new IntRange(eRangeMin, eRangeMax), content, externalMatches);
+                final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
+                return new AcrolinxMatch(intRange, new IntRange(eRangeMin, eRangeMax), content, externalContentMatches);
             }
             return new AcrolinxMatch(intRange, new IntRange(eRangeMin, eRangeMax), content);
         }
 
         if (this.getExternalContentMatches() != null) {
-            final List<ExternalContentMatch> externalMatches = this.getExternalContentMatches();
-            return new AcrolinxMatch(intRange, content, externalMatches);
+            final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
+            return new AcrolinxMatch(intRange, content, externalContentMatches);
         }
+
         return new AcrolinxMatch(intRange, content);
     }
 
@@ -93,22 +94,25 @@ public class AcrolinxMatch extends ExternalAbstractMatch
     {
         final int rangeMin = this.intRange.getMinimumInteger();
         final int rangeMax = this.intRange.getMaximumInteger();
+
         if (this.extractedRange != null) {
             final int eRangeMin = this.extractedRange.getMinimumInteger();
             final int eRangeMax = this.extractedRange.getMaximumInteger();
 
             if (this.getExternalContentMatches() != null) {
-                final List<ExternalContentMatch> externalMatches = this.getExternalContentMatches();
+                final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
                 return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), new IntRange(eRangeMin, eRangeMax), content,
-                        externalMatches);
+                        externalContentMatches);
             }
+
             return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), new IntRange(eRangeMin, eRangeMax), content);
         }
 
         if (this.getExternalContentMatches() != null) {
-            final List<ExternalContentMatch> externalMatches = this.getExternalContentMatches();
-            return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), content, externalMatches);
+            final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
+            return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), content, externalContentMatches);
         }
+
         return new AcrolinxMatch(new IntRange(rangeMin, rangeMax), content);
     }
 }

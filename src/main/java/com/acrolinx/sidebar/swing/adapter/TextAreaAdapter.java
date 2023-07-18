@@ -29,20 +29,20 @@ public class TextAreaAdapter implements InputAdapterInterface
 {
     private static final Logger logger = LoggerFactory.getLogger(TextAreaAdapter.class);
 
-    private final JTextArea textArea;
+    private final JTextArea jTextArea;
     private InputFormat inputFormat;
     private String documentReference;
 
-    public TextAreaAdapter(JTextArea textArea, InputFormat inputFormat, String documentReference)
+    public TextAreaAdapter(JTextArea jTextArea, InputFormat inputFormat, String documentReference)
     {
-        this.textArea = textArea;
+        this.jTextArea = jTextArea;
         this.inputFormat = inputFormat;
         this.documentReference = documentReference;
     }
 
     public JTextArea getTextArea()
     {
-        return textArea;
+        return jTextArea;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TextAreaAdapter implements InputAdapterInterface
     @Override
     public String getContent()
     {
-        return textArea.getText();
+        return jTextArea.getText();
     }
 
     @Override
@@ -79,10 +79,10 @@ public class TextAreaAdapter implements InputAdapterInterface
     {
         int minRange = acrolinxMatches.get(0).getRange().getMinimumInteger();
         int maxRange = acrolinxMatches.get(acrolinxMatches.size() - 1).getRange().getMaximumInteger();
-        Highlighter h = textArea.getHighlighter();
-        h.removeAllHighlights();
+        Highlighter highlighter = jTextArea.getHighlighter();
+        highlighter.removeAllHighlights();
         try {
-            h.addHighlight(minRange, maxRange, DefaultHighlighter.DefaultPainter);
+            highlighter.addHighlight(minRange, maxRange, DefaultHighlighter.DefaultPainter);
         } catch (BadLocationException e) {
             logger.error("", e);
         }
@@ -95,19 +95,19 @@ public class TextAreaAdapter implements InputAdapterInterface
             int minRange = match.getRange().getMinimumInteger();
             int maxRange = match.getRange().getMaximumInteger();
             String replacement = match.getReplacement();
-            Highlighter h = textArea.getHighlighter();
-            h.removeAllHighlights();
-            textArea.replaceRange(replacement, minRange, maxRange);
+            Highlighter highlighter = jTextArea.getHighlighter();
+            highlighter.removeAllHighlights();
+            jTextArea.replaceRange(replacement, minRange, maxRange);
         });
     }
 
     @Override
     public List<IntRange> getCurrentSelection()
     {
-        int selectionStart = this.textArea.getSelectionStart();
-        int selectionEnd = this.textArea.getSelectionEnd();
-        List<IntRange> ranges = new ArrayList<>();
-        ranges.add(new IntRange(selectionStart, selectionEnd));
-        return ranges;
+        int selectionStart = this.jTextArea.getSelectionStart();
+        int selectionEnd = this.jTextArea.getSelectionEnd();
+        List<IntRange> intRanges = new ArrayList<>();
+        intRanges.add(new IntRange(selectionStart, selectionEnd));
+        return intRanges;
     }
 }

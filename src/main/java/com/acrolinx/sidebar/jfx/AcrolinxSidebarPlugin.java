@@ -4,6 +4,7 @@ package com.acrolinx.sidebar.jfx;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,7 +42,6 @@ import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SidebarUtils;
-import com.google.common.base.Preconditions;
 
 import netscape.javascript.JSObject;
 
@@ -69,8 +69,9 @@ abstract class AcrolinxSidebarPlugin
 
     AcrolinxSidebarPlugin(final AcrolinxIntegration acrolinxIntegration, final WebView webView)
     {
-        Preconditions.checkNotNull(acrolinxIntegration, "Workspace should not be null");
-        Preconditions.checkNotNull(acrolinxIntegration.getEditorAdapter(), "EditorAdapter should not be null");
+        Objects.requireNonNull(acrolinxIntegration, "Workspace should not be null");
+        Objects.requireNonNull(acrolinxIntegration.getEditorAdapter(), "EditorAdapter should not be null");
+
         this.acrolinxIntegration = acrolinxIntegration;
         this.webView = webView;
         logger.debug("Injecting Acrolinx Plugin.");
@@ -129,7 +130,7 @@ abstract class AcrolinxSidebarPlugin
     public synchronized void onInitFinished(final JSObject jsObject)
     {
         final Optional<SidebarError> initResult = JSToJavaConverter.getAcrolinxInitResultFromJSObject(jsObject);
-        initResult.ifPresent(sidebarError -> logger.error("", sidebarError));
+        initResult.ifPresent(sidebarError -> logger.error("{}", sidebarError.getErrorCode()));
         acrolinxIntegration.onInitFinished(initResult);
     }
 

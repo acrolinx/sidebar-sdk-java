@@ -13,7 +13,6 @@ import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.ExternalAbstractMatch;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentField;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
-import com.google.common.collect.Lists;
 
 public final class MatchUtils
 {
@@ -76,7 +75,7 @@ public final class MatchUtils
 
     public static <T extends AbstractMatch> List<T> sortByOffsetDesc(final List<T> matches)
     {
-        final List<T> sortedMatches = Lists.newArrayList(matches);
+        final List<T> sortedMatches = new ArrayList<>(matches);
         sortedMatches.sort((first, second) -> {
             final int start = first.getRange().getMinimumInteger() - second.getRange().getMinimumInteger();
 

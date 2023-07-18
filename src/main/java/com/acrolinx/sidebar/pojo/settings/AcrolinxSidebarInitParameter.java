@@ -29,14 +29,14 @@ public class AcrolinxSidebarInitParameter
     private PluginSupportedParameters supported;
     private final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarInitParameter.class);
 
-    AcrolinxSidebarInitParameter(final AcrolinxSidebarInitParameterBuilder builder)
+    AcrolinxSidebarInitParameter(final AcrolinxSidebarInitParameterBuilder acrolinxSidebarInitParameterBuilder)
     {
-        this.serverAddress = builder.serverAddress;
-        this.clientSignature = builder.clientSignature;
-        this.sidebarUrl = builder.sidebarUrl;
-        this.clientLocale = builder.clientLocale;
+        this.serverAddress = acrolinxSidebarInitParameterBuilder.serverAddress;
+        this.clientSignature = acrolinxSidebarInitParameterBuilder.clientSignature;
+        this.sidebarUrl = acrolinxSidebarInitParameterBuilder.sidebarUrl;
+        this.clientLocale = acrolinxSidebarInitParameterBuilder.clientLocale;
         final List<SoftwareComponent> copy = new ArrayList<>();
-        copy.addAll(builder.clientComponents);
+        copy.addAll(acrolinxSidebarInitParameterBuilder.softwareComponents);
         copy.add(SidebarUtils.getJavaSdkSoftwareComponent());
 
         String osID = ("os." + System.getProperty("os.name").replace(" ", "."));
@@ -48,15 +48,15 @@ public class AcrolinxSidebarInitParameter
                 System.getProperty("java.runtime.version"), SoftwareComponentCategory.DETAIL));
 
         this.clientComponents = copy;
-        this.showServerSelector = builder.showServerSelector;
-        this.checkSettings = builder.checkSettings;
-        this.defaultCheckSettings = builder.defaultCheckSettings;
-        this.enableSingleSignOn = builder.enableSingleSignOn;
-        this.enforceHTTPS = builder.enforceHTTPS;
+        this.showServerSelector = acrolinxSidebarInitParameterBuilder.showServerSelector;
+        this.checkSettings = acrolinxSidebarInitParameterBuilder.checkSettings;
+        this.defaultCheckSettings = acrolinxSidebarInitParameterBuilder.defaultCheckSettings;
+        this.enableSingleSignOn = acrolinxSidebarInitParameterBuilder.enableSingleSignOn;
+        this.enforceHTTPS = acrolinxSidebarInitParameterBuilder.enforceHttps;
         this.logFileLocation = LoggingUtils.getLogFileLocation();
-        this.minimumSidebarVersion = builder.minimumSidebarVersion;
-        this.minimumJavaVersion = builder.minimumJavaVersion;
-        this.supported = builder.supported;
+        this.minimumSidebarVersion = acrolinxSidebarInitParameterBuilder.minimumSidebarVersion;
+        this.minimumJavaVersion = acrolinxSidebarInitParameterBuilder.minimumJavaVersion;
+        this.supported = acrolinxSidebarInitParameterBuilder.supported;
 
         this.clientComponents.stream().forEach(component -> logger.info("Software component: {}", component));
         if (this.clientLocale != null) {
@@ -150,12 +150,12 @@ public class AcrolinxSidebarInitParameter
         final String clientSignature;
         String sidebarUrl;
         String clientLocale;
-        final List<SoftwareComponent> clientComponents;
+        final List<SoftwareComponent> softwareComponents;
         boolean showServerSelector;
         CheckSettings checkSettings;
         CheckSettings defaultCheckSettings;
         boolean enableSingleSignOn;
-        boolean enforceHTTPS;
+        boolean enforceHttps;
         String minimumSidebarVersion;
         PluginSupportedParameters supported;
         int minimumJavaVersion;
@@ -166,15 +166,15 @@ public class AcrolinxSidebarInitParameter
          *
          * @param clientSignature This signature will be provided by Acrolinx once the integration got
          *        certified.
-         * @param clientComponents This contains id, name and version of the Acrolinx integration as well as
-         *        other software components that where used.
+         * @param softwareComponents This contains id, name and version of the Acrolinx integration as well
+         *        as other software components that where used.
          * @see SoftwareComponent
          */
         public AcrolinxSidebarInitParameterBuilder(final String clientSignature,
-                final List<SoftwareComponent> clientComponents)
+                final List<SoftwareComponent> softwareComponents)
         {
             this.clientSignature = clientSignature;
-            this.clientComponents = clientComponents;
+            this.softwareComponents = softwareComponents;
         }
 
         /**
@@ -268,9 +268,9 @@ public class AcrolinxSidebarInitParameter
          *
          * @return Returns the AcrolinxInitParameterBuilder for chaining.
          */
-        public AcrolinxSidebarInitParameterBuilder withEnforceHTTPS(final boolean enforceHTTPS)
+        public AcrolinxSidebarInitParameterBuilder withEnforceHTTPS(final boolean enforceHttps)
         {
-            this.enforceHTTPS = enforceHTTPS;
+            this.enforceHttps = enforceHttps;
             return this;
         }
 
