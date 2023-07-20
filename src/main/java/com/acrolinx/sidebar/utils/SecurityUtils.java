@@ -38,6 +38,7 @@ public final class SecurityUtils
         Properties systemProperties = (Properties) System.getProperties().clone();
         systemProperties.forEach((keyObject, value) -> {
             String key = keyObject.toString().toLowerCase();
+
             if (key.startsWith(ACRO_PREFIX)) {
                 logger.info("Setting up environment properties enforced by configuration.");
                 logger.info("{} : {}", key, value);

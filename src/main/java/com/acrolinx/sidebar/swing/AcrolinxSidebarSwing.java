@@ -226,6 +226,6 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
 
     public AcrolinxSidebarJFX getSidebarJFX()
     {
-        return this.sidebarJFX;
+        return sidebarJFX;
     }
 }

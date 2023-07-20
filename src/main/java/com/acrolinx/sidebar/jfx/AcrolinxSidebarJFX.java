@@ -5,6 +5,7 @@ import java.util.List;
 
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
 import javafx.scene.CacheHint;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebErrorEvent;
@@ -91,18 +92,20 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             final Worker.State oldState, final Worker.State newState, final AcrolinxStorage acrolinxStorage)
     {
         logger.debug("state changed: {} : {} -> {}", observedValue.getValue(), oldState, newState);
+
         if (newState == Worker.State.SUCCEEDED) {
             this.injectAcrolinxPlugin(acrolinxStorage);
         }
-        if ("FAILED".equals("" + newState)) {
+
+        if (newState == State.FAILED) {
             final WebView webView = getWebView();
             final WebEngine webEngine = webView.getEngine();
             logger.debug("New state: {}", newState);
-            // noinspection ThrowableResultOfMethodCallIgnored
+
             if (webEngine.getLoadWorker().getException() != null) {
-                // noinspection ThrowableResultOfMethodCallIgnored
                 logger.error("", webEngine.getLoadWorker().getException());
             }
+
             webEngine.loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
         }
     }
@@ -113,6 +116,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
         final WebEngine webEngine = webView.getEngine();
         logger.debug("Sidebar loaded from: {}", webEngine.getLocation());
         final JSObject jsObject = (JSObject) webEngine.executeScript("window");
+
         if (jsObject == null) {
             logger.error("Window Object null!");
         } else {
@@ -125,7 +129,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
             logger.debug("Setting local storage");
             jsObject.setMember("acrolinxStorage", acrolinxStorage);
         }
+
         final PluginSupportedParameters supported = this.acrolinxIntegration.getInitParameters().getSupported();
+
         if ((supported != null) && (supported.isCheckSelection() || supported.isBatchChecking())) {
             acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithOptions(acrolinxIntegration, webView);
         } else {
@@ -208,6 +214,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar
                 webView.getEngine().loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
             }
         }
+
         JFXUtils.invokeInJFXThread(webView.getEngine()::reload);
     }
 

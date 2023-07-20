@@ -138,9 +138,11 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     public void switchSidebar(String documentId) throws AcrolinxException
     {
         final AcrolinxSidebarJFX acrolinxSidebarJFX = sidebars.get(documentId);
+
         if (acrolinxSidebarJFX == null) {
             throw new AcrolinxException("Existing sidebar not found for document Id: " + documentId);
         }
+
         JFXUtils.invokeInJFXThread(() -> {
             if (sidebars.containsKey(documentId)) {
                 Scene scene = getScene();
@@ -165,6 +167,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
         if (removedJFXSidebar == null) {
             throw new AcrolinxException("Sidebar doesn't exist for the given document Id");
         }
+
         if (sidebars.isEmpty()) {
             JFXUtils.invokeInJFXThread(() -> sidebarJFX = null);
             showEmptyMessage();

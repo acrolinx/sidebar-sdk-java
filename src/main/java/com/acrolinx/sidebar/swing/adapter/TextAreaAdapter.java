@@ -31,7 +31,7 @@ public class TextAreaAdapter implements InputAdapterInterface
 
     private final JTextArea jTextArea;
     private InputFormat inputFormat;
-    private String documentReference;
+    private final String documentReference;
 
     public TextAreaAdapter(JTextArea jTextArea, InputFormat inputFormat, String documentReference)
     {
