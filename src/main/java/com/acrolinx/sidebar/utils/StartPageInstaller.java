@@ -53,9 +53,11 @@ public final class StartPageInstaller
 
                 if (assetFile != null) {
                     final Path parent = assetFile.getParent();
+
                     if ((parent != null) && !Files.exists(parent)) {
                         Files.createDirectories(parent);
                     }
+
                     InputStream inputStream = StartPageInstaller.class.getResourceAsStream(
                             "/server-selector" + assetResource);
 
@@ -71,18 +73,25 @@ public final class StartPageInstaller
     {
         final Path userTempDirLocation = SidebarUtils.getUserTempDirLocation();
         final String osName = System.getProperty("os.name");
-        Path acrolinxDir;
-        if (osName.toLowerCase().contains("mac") || osName.contains("windows")) {
-            acrolinxDir = userTempDirLocation.resolve("Acrolinx");
-        } else {
-            acrolinxDir = userTempDirLocation.resolve("acrolinx");
-        }
+        Path acrolinxDir = getAcrolinxDir(userTempDirLocation, osName);
+
         Path serverSelectorDirectory = acrolinxDir.resolve(SERVER_SELECTOR_DIR + "_" + getStartPageVersion());
+
         if (!Files.exists(serverSelectorDirectory)) {
             serverSelectorDirectory = Files.createDirectories(serverSelectorDirectory);
             logger.debug("Creating acrolinx start page directory in: {}", serverSelectorDirectory);
         }
+
         return serverSelectorDirectory;
+    }
+
+    private static Path getAcrolinxDir(final Path userTempDirLocation, final String osName)
+    {
+        if (osName.toLowerCase().contains("mac") || osName.contains("windows")) {
+            return userTempDirLocation.resolve("Acrolinx");
+        }
+
+        return userTempDirLocation.resolve("acrolinx");
     }
 
     /**
@@ -93,10 +102,12 @@ public final class StartPageInstaller
     public static String getStartPageUrl() throws IOException
     {
         final Path assetDir = getDefaultStartPageInstallLocation();
+
         if (!Files.exists(assetDir.resolve("index.html"))) {
             logger.debug("Acrolinx start page not present!");
             exportStartPageResources();
         }
+
         return assetDir.toUri().toString() + "index.html";
     }
 

@@ -290,6 +290,7 @@ abstract class AcrolinxSidebarPlugin
         if ((this.lastCheckedDocumentReference.get() != null) && !"".equals(this.lastCheckedDocumentReference.get())) {
             return this.lastCheckedDocumentReference.get();
         }
+
         return null;
     }
 
@@ -298,6 +299,7 @@ abstract class AcrolinxSidebarPlugin
         if ((this.lastCheckedDocument.get() != null) && !"".equals(this.lastCheckedDocument.get())) {
             return this.lastCheckedDocument.get();
         }
+
         return null;
     }
 
@@ -306,6 +308,7 @@ abstract class AcrolinxSidebarPlugin
         if (this.lastCheckedExternalContent.get() != null) {
             return this.lastCheckedExternalContent.get();
         }
+
         return null;
     }
 
@@ -332,6 +335,7 @@ abstract class AcrolinxSidebarPlugin
             }
             return documentIsOpen;
         });
+
         logger.debug("Opening document in Future task. Future task is running: {}", !openDocumentFuture.isDone());
     }
 

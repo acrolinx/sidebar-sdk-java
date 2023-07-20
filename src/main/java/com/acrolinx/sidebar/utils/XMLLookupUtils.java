@@ -3,6 +3,7 @@ package com.acrolinx.sidebar.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -51,10 +52,10 @@ public final class XMLLookupUtils
         int endOffset = 0;
 
         try {
-            Document doc = buildDocument(xmlContent);
+            Document document = buildDocument(xmlContent);
 
             XPath xPath = XPathFactory.newInstance().newXPath();
-            NodeList nodeList = (NodeList) xPath.compile(xpath).evaluate(doc, XPathConstants.NODESET);
+            NodeList nodeList = (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
 
             if (nodeList.getLength() == 0) {
                 throw new IllegalStateException("Xpath evaluation returned 0 nodes");
@@ -70,13 +71,14 @@ public final class XMLLookupUtils
                 final Node parentNode = node.getParentNode();
 
                 if (parentNode != null) {
-                    if (parentNode.isSameNode(doc)) {
-                        String rootElement = doc.getDocumentElement().getTagName();
+                    if (parentNode.isSameNode(document)) {
+                        String rootElement = document.getDocumentElement().getTagName();
                         String rootElementBegin = "<" + rootElement + ">";
                         String rootElementEnd = "</" + rootElement + ">";
                         return new IntRange(xmlContent.indexOf(rootElementBegin),
                                 xmlContent.lastIndexOf(rootElementEnd) + rootElementEnd.length());
                     }
+
                     nodeName = node.getNodeName();
                     nodeHasAttributes = node.hasAttributes();
                     parentNode.insertBefore(acrolinxSelection, node);
@@ -85,7 +87,7 @@ public final class XMLLookupUtils
                 }
             }
 
-            String documentXml = getDocumentXml(doc);
+            String documentXml = getDocumentXml(document);
             String startTag = "<" + selectionTag + ">";
             String endTag = "</" + selectionTag + ">";
             startOffset = documentXml.indexOf(startTag);
@@ -121,6 +123,7 @@ public final class XMLLookupUtils
         SAXParserFactory saxParserFactory = javax.xml.parsers.SAXParserFactory.newInstance();
         SAXParser saxParser = saxParserFactory.newSAXParser();
         XMLReader xmlReader = saxParser.getXMLReader();
+
         try {
             xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
@@ -128,6 +131,7 @@ public final class XMLLookupUtils
         } catch (SAXException e) {
             logger.error("Some XXE preventing settings are not supported by the current XML Reader library.", e);
         }
+
         return xmlReader;
     }
 
@@ -135,6 +139,7 @@ public final class XMLLookupUtils
     {
         TransformerFactory transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
         Transformer transformer;
+
         try {
             logger.debug("Applying transformation to XML.");
             transformer = transformerFactory.newTransformer();
@@ -144,10 +149,11 @@ public final class XMLLookupUtils
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
-            DocumentType doctype = document.getDoctype();
-            if (doctype != null) {
-                transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctype.getPublicId());
-                transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
+            DocumentType documentType = document.getDoctype();
+
+            if (documentType != null) {
+                transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, documentType.getPublicId());
+                transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, documentType.getSystemId());
             }
 
             StringWriter stringWriter = new StringWriter();
@@ -156,6 +162,7 @@ public final class XMLLookupUtils
         } catch (TransformerException e) {
             logger.debug("Creating XML string from document failed.");
         }
+
         return "";
     }
 
@@ -167,12 +174,12 @@ public final class XMLLookupUtils
         documentBuilder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
 
         try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
+            InputStream inputStream = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
             return documentBuilder.parse(inputStream);
         } catch (Exception e) {
             final String cleanXml = XMLLookupUtils.cleanXML(xmlContent);
-            ByteArrayInputStream input = new ByteArrayInputStream(cleanXml.getBytes(StandardCharsets.UTF_8));
-            return documentBuilder.parse(input);
+            InputStream inputStream = new ByteArrayInputStream(cleanXml.getBytes(StandardCharsets.UTF_8));
+            return documentBuilder.parse(inputStream);
         }
     }
 

@@ -155,7 +155,7 @@ public final class SidebarUtils
         if (resourceInputStream != null) {
             try {
                 properties.load(resourceInputStream);
-                return (String) properties.get("VERSION_JAVA_SDK");
+                return properties.getProperty("VERSION_JAVA_SDK");
             } catch (final IOException e) {
                 logger.error("Could not read java sdk version!", e);
             } finally {

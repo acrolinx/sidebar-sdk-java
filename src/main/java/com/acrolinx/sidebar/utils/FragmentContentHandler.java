@@ -37,6 +37,7 @@ public class FragmentContentHandler extends DefaultHandler
             throws FragmentContentException
     {
         Integer count = elementNameCount.get(qName);
+
         if (null == count) {
             count = 1;
         } else {

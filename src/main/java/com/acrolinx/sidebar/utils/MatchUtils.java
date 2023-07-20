@@ -32,13 +32,15 @@ public final class MatchUtils
     public static List<? extends AbstractMatch> filterDangerousMatches(List<? extends AbstractMatch> list,
             String lastCheckedContent, List<ExternalContentField> lastCheckedExternalContent)
     {
-        return list.stream().filter(m -> {
+        return list.stream().filter(abstractMatch -> {
             // todo: does the external content contain tags that are not external content matches?
-            if (m instanceof ExternalAbstractMatch && ((ExternalAbstractMatch) m).hasExternalContentMatches()) {
-                return isExternalContentMatchAXMLTag((ExternalAbstractMatch) m, lastCheckedExternalContent);
+            if (abstractMatch instanceof ExternalAbstractMatch
+                    && ((ExternalAbstractMatch) abstractMatch).hasExternalContentMatches()) {
+                return isExternalContentMatchAXMLTag((ExternalAbstractMatch) abstractMatch, lastCheckedExternalContent);
             }
-            String matchContent = lastCheckedContent.substring(m.getRange().getMinimumInteger(),
-                    m.getRange().getMaximumInteger());
+
+            String matchContent = lastCheckedContent.substring(abstractMatch.getRange().getMinimumInteger(),
+                    abstractMatch.getRange().getMaximumInteger());
             logger.debug("Checking if match is a tag");
 
             boolean isTag = matchContent.matches("</?\\w+.*?>");
@@ -48,10 +50,10 @@ public final class MatchUtils
         }).collect(Collectors.toList());
     }
 
-    public static boolean isExternalContentMatchAXMLTag(ExternalAbstractMatch match,
+    public static boolean isExternalContentMatchAXMLTag(ExternalAbstractMatch externalAbstractMatch,
             List<ExternalContentField> lastCheckedExternalContent)
     {
-        ExternalContentMatch externalContentMatch = match.getExternalContentMatches().get(0);
+        ExternalContentMatch externalContentMatch = externalAbstractMatch.getExternalContentMatches().get(0);
 
         while (!externalContentMatch.getExternalContentMatches().isEmpty()) {
             externalContentMatch = externalContentMatch.getExternalContentMatches().get(0);

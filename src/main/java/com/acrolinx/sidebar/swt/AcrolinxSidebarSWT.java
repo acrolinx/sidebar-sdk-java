@@ -76,7 +76,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     protected final Browser browser;
     protected final AcrolinxIntegration acrolinxIntegration;
-    private final AcrolinxStorage acrolinxStorage;
+    final AcrolinxStorage acrolinxStorage;
     private final AtomicReference<String> currentlyCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocumentReference = new AtomicReference<>("");
@@ -159,7 +159,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         });
     }
 
-    private void initLocalStorage()
+    void initLocalStorage()
     {
         new BrowserFunction(browser, "getItemP") {
             @Override
@@ -195,7 +195,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         loadScriptJS("localStorageScript.js");
     }
 
-    private Object getSetItemObject(Object[] arguments)
+    Object getSetItemObject(Object[] arguments)
     {
         final String key = arguments[0].toString();
         final String data = arguments[1].toString();
@@ -338,7 +338,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         loadScriptJS("acrolinxPluginScript.js");
     }
 
-    private String runCheckGlobal(Object checkSelection)
+    String runCheckGlobal(Object checkSelection)
     {
         boolean selectionRequested = checkSelection.toString().equals("withCheckSelection");
         logger.info("Check selection requested: {}", selectionRequested);
@@ -367,7 +367,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return "{\"message\": \"Check Global called\"}";
     }
 
-    private String requestCheckForDocumentInBatch(Object documentIdentifier)
+    String requestCheckForDocumentInBatch(Object documentIdentifier)
     {
         final String docIdJsonString = new Gson().toJson(documentIdentifier);
         logger.debug("Batch Check requested for: {}", docIdJsonString);
@@ -385,7 +385,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return "{\"message\": \"Called checkDocumentInBatch\"}";
     }
 
-    private Object runBatchCheck()
+    Object runBatchCheck()
     {
         logger.info("Extracting references");
         try {
@@ -404,7 +404,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         browser.execute("window.acrolinxSidebar.initBatchCheck(" + batchCheckRequestOptions.toString() + ");");
     }
 
-    private Object openDocumentInEditor(Object argument)
+    Object openDocumentInEditor(Object argument)
     {
         ExecutorService executorService = Executors.newFixedThreadPool(1);
         Future<Boolean> openDocumentFuture = executorService.submit(() -> {
@@ -423,17 +423,20 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         try {
             final ClassLoader classLoader = this.getClass().getClassLoader();
             final InputStream inputStream = classLoader.getResourceAsStream(script);
+
             if (inputStream != null) {
-                BufferedReader bufferedReader = new BufferedReader(
-                        new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-                String line;
-                final StringBuilder stringBuilder = new StringBuilder();
-                while ((line = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(line).append("\n");
+                try (BufferedReader bufferedReader = new BufferedReader(
+                        new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+                    String line;
+                    final StringBuilder stringBuilder = new StringBuilder();
+
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line).append('\n');
+                    }
+
+                    final String scriptLoaded = stringBuilder.toString();
+                    browser.evaluate(scriptLoaded);
                 }
-                final String scriptLoaded = stringBuilder.toString();
-                bufferedReader.close();
-                browser.evaluate(scriptLoaded);
             }
         } catch (final Exception e) {
             logger.error("", e);
@@ -659,11 +662,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
     public void toggleVisibility()
     {
-        if (this.browser.isVisible()) {
-            this.browser.setVisible(false);
-        } else {
-            this.browser.setVisible(true);
-        }
+        this.browser.setVisible(!this.browser.isVisible());
     }
 
     public void setVisible(Boolean visibility)
