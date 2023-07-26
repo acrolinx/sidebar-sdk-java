@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,6 +20,7 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
@@ -115,12 +117,13 @@ public final class XMLLookupUtils
         if (startOffset < 0 || endOffset < 0) {
             return new IntRange(0, 0);
         }
+
         return new IntRange(startOffset, endOffset);
     }
 
     private static XMLReader getSecureXMLReader() throws ParserConfigurationException, SAXException
     {
-        SAXParserFactory saxParserFactory = javax.xml.parsers.SAXParserFactory.newInstance();
+        SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         SAXParser saxParser = saxParserFactory.newSAXParser();
         XMLReader xmlReader = saxParser.getXMLReader();
 
@@ -135,14 +138,27 @@ public final class XMLLookupUtils
         return xmlReader;
     }
 
+    /**
+     * @see <a href=
+     *      "https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#transformerfactory">XML
+     *      External Entity Prevention</a>
+     */
+    private static TransformerFactory createTransformerFactory() throws TransformerFactoryConfigurationError
+    {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+
+        return transformerFactory;
+    }
+
     private static String getDocumentXml(Document document)
     {
-        TransformerFactory transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
-        Transformer transformer;
+        TransformerFactory transformerFactory = createTransformerFactory();
 
         try {
             logger.debug("Applying transformation to XML.");
-            transformer = transformerFactory.newTransformer();
+            Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty(OutputKeys.INDENT, "no");
@@ -160,7 +176,7 @@ public final class XMLLookupUtils
             transformer.transform(new DOMSource(document), new StreamResult(stringWriter));
             return stringWriter.getBuffer().toString();
         } catch (TransformerException e) {
-            logger.debug("Creating XML string from document failed.");
+            logger.debug("Creating XML string from document failed", e);
         }
 
         return "";
@@ -169,7 +185,7 @@ public final class XMLLookupUtils
     private static Document buildDocument(String xmlContent)
             throws ParserConfigurationException, IOException, SAXException
     {
-        DocumentBuilderFactory documentBuilderFactory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         documentBuilder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
 
@@ -200,20 +216,23 @@ public final class XMLLookupUtils
         boolean isMalformedXmlFound = false;
         FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xmlReader);
         xmlReader.setContentHandler(fragmentContentHandler);
+
         try {
             xmlReader.parse(new InputSource(new StringReader(contentWithMarkerNode)));
-        } catch (FragmentContentException s) {
-            logger.debug("Custom fragment content exception is received");
+        } catch (FragmentContentException e) {
+            logger.debug("Custom fragment content exception is received", e);
         } catch (Exception e) {
             isMalformedXmlFound = true;
         }
+
         if (isMalformedXmlFound) {
             try {
                 xmlReader.parse(new InputSource(new StringReader(XMLLookupUtils.cleanXML(contentWithMarkerNode))));
-            } catch (FragmentContentException s) {
-                logger.debug("Custom fragment content exception is received");
+            } catch (FragmentContentException e) {
+                logger.debug("Custom fragment content exception is received", e);
             }
         }
+
         String markerXpath = fragmentContentHandler.getMarkerXpath();
         return markerXpath.substring(0, markerXpath.lastIndexOf('/'));
     }
@@ -233,6 +252,7 @@ public final class XMLLookupUtils
         String[] xpath2Elements = xpath2.split("/");
 
         int shortXpathCount = xpath1Elements.length;
+
         if (xpath2Elements.length < xpath1Elements.length) {
             shortXpathCount = xpath2Elements.length;
         }

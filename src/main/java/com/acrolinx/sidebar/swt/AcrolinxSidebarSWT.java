@@ -72,17 +72,17 @@ import com.google.gson.reflect.TypeToken;
  */
 public class AcrolinxSidebarSWT implements AcrolinxSidebar
 {
-    protected static final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSWT.class);
+    private static final Logger logger = LoggerFactory.getLogger(AcrolinxSidebarSWT.class);
 
-    protected final Browser browser;
-    protected final AcrolinxIntegration acrolinxIntegration;
+    final Browser browser;
+    private final AcrolinxIntegration acrolinxIntegration;
     final AcrolinxStorage acrolinxStorage;
     private final AtomicReference<String> currentlyCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedText = new AtomicReference<>("");
     private final AtomicReference<String> lastCheckedDocumentReference = new AtomicReference<>("");
     private final AtomicReference<ExternalContent> lastCheckedExternalContent = new AtomicReference<>();
     private final AtomicReference<ExternalContent> currentExternalContent = new AtomicReference<>();
-    protected final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
+    private final AtomicReference<String> currentDocumentReference = new AtomicReference<>("");
     private final AtomicReference<String> currentCheckId = new AtomicReference<>("");
     private final AtomicReference<Instant> checkStartTime = new AtomicReference<>();
 
@@ -133,6 +133,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
         browser.setLayoutData(gridData);
         browser.setJavascriptEnabled(true);
+
         try {
             final String sidebarUrl = StartPageInstaller.prepareSidebarUrl(acrolinxIntegration.getInitParameters());
             logger.debug("Loading sidebar from: {}", sidebarUrl);
@@ -141,6 +142,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             logger.error("Error while loading sidebar!", e);
             browser.setText(SidebarUtils.SIDEBAR_ERROR_HTML);
         }
+
         browser.addProgressListener(new ProgressListener() {
             @Override
             public void completed(final ProgressEvent progressEvent)
@@ -204,7 +206,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    protected void initSidebar()
+    void initSidebar()
     {
         new BrowserFunction(browser, "overwriteJSLoggingInfoP") {
             @Override
@@ -409,16 +411,19 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         ExecutorService executorService = Executors.newFixedThreadPool(1);
         Future<Boolean> openDocumentFuture = executorService.submit(() -> {
             boolean documentIsOpen = acrolinxIntegration.openDocumentInEditor(argument.toString());
+
             if (!documentIsOpen) {
                 // ToDo: Send a message to the sidebar
             }
+
             return documentIsOpen;
         });
+
         logger.debug("Opening Document in Future task. Future task is running: {}", !openDocumentFuture.isDone());
         return null;
     }
 
-    protected void loadScriptJS(String script)
+    void loadScriptJS(String script)
     {
         try {
             final ClassLoader classLoader = this.getClass().getClassLoader();
@@ -443,7 +448,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         }
     }
 
-    protected Object getOpenLogFileObject()
+    Object getOpenLogFileObject()
     {
         final String logFileLocation = LoggingUtils.getLogFileLocation();
         if (logFileLocation != null && !SidebarUtils.openSystemSpecific(logFileLocation)) {
@@ -452,7 +457,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    protected Object getOpenWindowObject(Object argument)
+    Object getOpenWindowObject(Object argument)
     {
         final String result = argument.toString();
         final String url = AcrolinxSidebarSWT.getUrlFromJs(result);
@@ -466,7 +471,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    protected Object getReplaceRangesObject(Object argument)
+    Object getReplaceRangesObject(Object argument)
     {
         LogMessages.logReplacingRange(logger);
         final List<AcrolinxMatchFromJSON> match = new Gson().fromJson((String) argument,
@@ -479,7 +484,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    protected Object getSelectRangesObject(Object argument)
+    Object getSelectRangesObject(Object argument)
     {
         LogMessages.logSelectingRange(logger);
         final List<AcrolinxMatchFromJSON> match = new Gson().fromJson((String) argument,
@@ -490,7 +495,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    protected Object getOnCheckResultObject(Object argument)
+    Object getOnCheckResultObject(Object argument)
     {
         final Instant checkEndedTime = Instant.now();
         LogMessages.logCheckFinishedWithDurationTime(logger, Duration.between(checkStartTime.get(), checkEndedTime));
@@ -514,7 +519,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return null;
     }
 
-    protected boolean getCanCheckObject()
+    boolean getCanCheckObject()
     {
         final boolean canCheck = (acrolinxIntegration.getEditorAdapter() != null)
                 && !(acrolinxIntegration.getEditorAdapter() instanceof NullEditorAdapter);
@@ -524,7 +529,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         return canCheck;
     }
 
-    protected Object getOnInitFinishedNotificationObject(Object argument)
+    Object getOnInitFinishedNotificationObject(Object argument)
     {
         final String result = argument.toString();
         final JsonObject jsonObject = (JsonObject) JsonParser.parseString(result);
@@ -649,7 +654,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         browser.execute("window.acrolinxSidebar.requestCheckForDocumentInBatch(\"" + documentIdentifier + "\");");
     }
 
-    protected static String getUrlFromJs(final String jsonString)
+    static String getUrlFromJs(final String jsonString)
     {
         final Gson gson = new Gson();
         final AcrolinxURL acrolinxUrl = gson.fromJson(jsonString, AcrolinxURL.class);
