@@ -96,9 +96,11 @@ public final class SidebarUtils
 
         if (logFileLocation != null) {
             final String logFile = new File(logFileLocation).getPath();
+
             if (openSystemSpecific(logFile)) {
                 return;
             }
+
             openLogFileFolderInFileManger();
         }
     }
@@ -187,6 +189,7 @@ public final class SidebarUtils
             logger.error("", e);
             return false;
         }
+
         return true;
     }
 
@@ -250,6 +253,7 @@ public final class SidebarUtils
 
         try {
             final Process process = Runtime.getRuntime().exec(parts.toArray(new String[parts.size()]));
+
             try {
                 final int retval = process.exitValue();
 
@@ -261,7 +265,7 @@ public final class SidebarUtils
                 logger.error("Process crashed.");
                 return false;
             } catch (final IllegalThreadStateException e) {
-                logger.debug("Process is running.");
+                logger.debug("Process is running", e);
                 return true;
             }
         } catch (final IOException e) {
@@ -283,6 +287,7 @@ public final class SidebarUtils
                 version = version.substring(0, indexOfDot);
             }
         }
+
         return Integer.parseInt(version);
     }
 
