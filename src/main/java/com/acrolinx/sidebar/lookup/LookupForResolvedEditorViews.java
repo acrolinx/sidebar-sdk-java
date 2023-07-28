@@ -73,12 +73,14 @@ public class LookupForResolvedEditorViews
         if (!adjustedRangesCopy.isEmpty()) {
             List<AbstractMatch> filteredMatches = getCleanedMatchesWithoutIgnorableWhitespaces(adjustedRangesCopy);
             adjustedRangesCopy = adjustedRangesCopy.stream().filter(match -> {
-                boolean b = !filteredMatches.contains(match);
-                if (!b) {
+                boolean containsMatch = !filteredMatches.contains(match);
+
+                if (!containsMatch) {
                     logger.debug("Removing non found match because contains deleted whitespaces.");
                     logger.debug("{} ({})", match.getRange(), match.getContent());
                 }
-                return b;
+
+                return containsMatch;
             }).collect(Collectors.toList());
         }
 
@@ -117,11 +119,13 @@ public class LookupForResolvedEditorViews
         return adjustedRangesCopy.stream().filter(match -> {
             logger.debug("Filter for ignorable whitespaces");
             boolean ignore = true;
+
             if (match instanceof AcrolinxMatchWithReplacement) {
                 logger.debug(((AcrolinxMatchWithReplacement) match).getReplacement());
                 ignore = "".equals(((AcrolinxMatchWithReplacement) match).getReplacement());
                 logger.debug("Replacement is empty? {}", ignore);
             }
+
             logger.debug(match.getContent());
             logger.debug("match content is space or empty? {}",
                     ("".equals(match.getContent()) || match.getContent().equalsIgnoreCase(" ")));
@@ -151,6 +155,7 @@ public class LookupForResolvedEditorViews
             logger.debug("Get node startOffset: {}", contentNode.getStartOffset());
             String textContent = contentNode.getContent();
             String rangeContent = match.getContent();
+
             if (StringUtils.countMatches(textContent, rangeContent) == 1 && (!(match instanceof ExternalAbstractMatch)
                     || !((ExternalAbstractMatch) match).hasExternalContentMatches()
                     || ((ExternalAbstractMatch) match).getExternalContentMatches().size() < 2)) {
@@ -198,6 +203,7 @@ public class LookupForResolvedEditorViews
                         return;
                     }
                 }
+
                 correctedMatchRange.ifPresent(range -> diffXMLFragmentWithNodeContentFragment(match,
                         contentNodeXmlString, startOffset, textContent, rangeContent, range));
             }
@@ -217,6 +223,7 @@ public class LookupForResolvedEditorViews
             logger.warn("No reference Children while match has external ContentMatches");
             return Optional.empty();
         }
+
         ExternalContentMatch nextExternalContentMatch = match.getExternalContentMatches().get(0);
         IntRange externalContentRange = nextExternalContentMatch.getRange();
         int totalDelta = 0;
@@ -251,6 +258,7 @@ public class LookupForResolvedEditorViews
                 nextExternalContentMatch = nextExternalContentMatch.getExternalContentMatches().get(0);
             }
         }
+
         return Optional.of(new IntRange(totalDelta,
                 totalDelta + externalContentRange.getMaximumInteger() - externalContentRange.getMinimumInteger()));
     }
@@ -264,6 +272,7 @@ public class LookupForResolvedEditorViews
         if (contentFragmentLength < matchStartOffset) {
             return matchStartOffset - contentFragmentLength;
         }
+
         return 0;
     }
 
@@ -276,6 +285,7 @@ public class LookupForResolvedEditorViews
         if (currentDocumentContent.length() > (matchEndOffset + contentFragmentLength)) {
             return matchEndOffset + contentFragmentLength;
         }
+
         return currentDocumentContent.length();
     }
 
@@ -345,21 +355,23 @@ public class LookupForResolvedEditorViews
         logger.debug("Leading whitespaces: {}", leadingWhiteSpaces);
         offsetStart += leadingWhiteSpaces;
         int differedNullOffset = 0;
+
         while (textContent.substring(offsetStart + differedNullOffset, offsetStart + differedNullOffset + 1).matches(
                 WHITESPACE_CHARACTER)) {
             logger.debug("Offsets are null characters");
             differedNullOffset++;
         }
+
         logger.debug("Differed null characters: {}", differedNullOffset);
         offsetStart += differedNullOffset;
         logger.debug("Recalculated start offset: {}", offsetStart);
         int offsetEnd = offsetStart + 1;
         logger.debug("Recalculated end offset: {}", offsetEnd);
         logger.debug("Text Content: {}", textContent.substring(offsetStart, offsetEnd));
+
         if (textContent.substring(offsetStart, offsetEnd).equals(rangeContent)) {
             addFoundRanges(abstractMatch, startOffset, offsetStart, offsetEnd,
                     "Found range for html entity content by diffing content nodes: ");
-
         }
     }
 

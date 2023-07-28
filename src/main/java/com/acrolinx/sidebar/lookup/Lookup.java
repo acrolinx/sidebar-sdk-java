@@ -22,10 +22,12 @@ public final class Lookup
         List<OffsetAlign> offsetAligns = new LinkedList<>();
         final AtomicInteger offsetCountOld = new AtomicInteger(0);
         final AtomicInteger currentDiffOffset = new AtomicInteger(0);
+
         diffs.forEach(diff -> {
             int offsetCountOldInt = offsetCountOld.get();
             int currentDiffOffsetInt = currentDiffOffset.get();
             int diffLengths = diff.text.length();
+
             switch (diff.operation) {
                 case DELETE:
                     offsetCountOld.set(offsetCountOldInt + diffLengths);
@@ -37,8 +39,8 @@ public final class Lookup
                 case EQUAL:
                     offsetCountOld.set(offsetCountOldInt + diffLengths);
                     break;
-
             }
+
             offsetAligns.add(new OffsetAlign(offsetCountOld.get(), currentDiffOffset.get()));
         });
 
@@ -50,13 +52,16 @@ public final class Lookup
     {
         Optional<OffsetAlign> first = offsetAligns.stream().filter(
                 offsetAlign -> offsetAlign.getOldPosition() >= offsetEnd).findFirst();
+
         if (first.isPresent()) {
             int index = offsetAligns.indexOf(first.get());
+
             if (index > 0 && offsetAligns.get(index - 1).getOldPosition() <= offsetStart
                     && diffs.get(index).operation == DiffMatchPatch.Operation.EQUAL) {
                 final int diffOffset = offsetAligns.get(index).getDiffOffset();
                 return Optional.of(new IntRange(offsetStart + diffOffset, offsetEnd + diffOffset));
             }
+
             if (index == 0 && diffs.get(0).operation == DiffMatchPatch.Operation.EQUAL) {
                 return Optional.of(new IntRange(offsetStart, offsetEnd));
             }
@@ -67,10 +72,10 @@ public final class Lookup
 
     public static List<DiffMatchPatch.Diff> getDiffs(String checkedText, String changedText)
     {
-        DiffMatchPatch differ = new DiffMatchPatch();
-        differ.Diff_Timeout = 5;
-        LinkedList<DiffMatchPatch.Diff> diffs = differ.diff_main(checkedText, changedText);
-        differ.diff_cleanupSemanticLossless(diffs);
+        DiffMatchPatch diffMatchPatch = new DiffMatchPatch();
+        diffMatchPatch.Diff_Timeout = 5;
+        LinkedList<DiffMatchPatch.Diff> diffs = diffMatchPatch.diff_main(checkedText, changedText);
+        diffMatchPatch.diff_cleanupSemanticLossless(diffs);
         return Collections.unmodifiableList(diffs);
     }
 
