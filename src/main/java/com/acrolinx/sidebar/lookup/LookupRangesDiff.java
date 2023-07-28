@@ -88,7 +88,6 @@ public class LookupRangesDiff extends LookupRanges
             }
 
             return adJustMatch(match, checkedExternalContent, changedExternalContent);
-
         }).collect(Collectors.toList());
     }
 

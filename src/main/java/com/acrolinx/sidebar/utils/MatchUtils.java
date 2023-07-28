@@ -46,7 +46,6 @@ public final class MatchUtils
             boolean isTag = matchContent.matches("</?\\w+.*?>");
             logger.debug("Is match a tag: {}", isTag);
             return !isTag;
-
         }).collect(Collectors.toList());
     }
 
@@ -89,7 +88,6 @@ public final class MatchUtils
                 }
 
                 return (end > 0) ? -1 : +1;
-
             }
 
             return start > 0 ? -1 : +1;

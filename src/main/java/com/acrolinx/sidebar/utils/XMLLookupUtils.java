@@ -85,7 +85,6 @@ public final class XMLLookupUtils
                     nodeHasAttributes = node.hasAttributes();
                     parentNode.insertBefore(acrolinxSelection, node);
                     acrolinxSelection.appendChild(node);
-
                 }
             }
 
@@ -107,7 +106,6 @@ public final class XMLLookupUtils
             startOffset = StringUtils.ordinalIndexOf(xmlContent, startTagInXml, occurrencesOfStartTag + 1);
             endOffset = StringUtils.ordinalIndexOf(xmlContent, endTagInXML, occurrencesOfEndTag + 1)
                     + endTagInXML.length();
-
         } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException e) {
             logger.error("Unable to find offsets in XMl for xpath: {}", xpath, e);
         } catch (IllegalStateException e) {
@@ -124,18 +122,16 @@ public final class XMLLookupUtils
     private static XMLReader getSecureXMLReader() throws ParserConfigurationException, SAXException
     {
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-        SAXParser saxParser = saxParserFactory.newSAXParser();
-        XMLReader xmlReader = saxParser.getXMLReader();
 
         try {
-            xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            xmlReader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-        } catch (SAXException e) {
+            saxParserFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            saxParserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        } catch (ParserConfigurationException | SAXException e) {
             logger.error("Some XXE preventing settings are not supported by the current XML Reader library.", e);
         }
 
-        return xmlReader;
+        SAXParser saxParser = saxParserFactory.newSAXParser();
+        return saxParser.getXMLReader();
     }
 
     /**
@@ -152,7 +148,7 @@ public final class XMLLookupUtils
         return transformerFactory;
     }
 
-    private static String getDocumentXml(Document document)
+    private static String getDocumentXml(Document document) throws IOException
     {
         TransformerFactory transformerFactory = createTransformerFactory();
 
@@ -172,9 +168,10 @@ public final class XMLLookupUtils
                 transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, documentType.getSystemId());
             }
 
-            StringWriter stringWriter = new StringWriter();
-            transformer.transform(new DOMSource(document), new StreamResult(stringWriter));
-            return stringWriter.getBuffer().toString();
+            try (StringWriter stringWriter = new StringWriter()) {
+                transformer.transform(new DOMSource(document), new StreamResult(stringWriter));
+                return stringWriter.getBuffer().toString();
+            }
         } catch (TransformerException e) {
             logger.debug("Creating XML string from document failed", e);
         }
@@ -189,13 +186,15 @@ public final class XMLLookupUtils
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         documentBuilder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
 
-        try {
-            InputStream inputStream = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
+        try (InputStream inputStream = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8))) {
             return documentBuilder.parse(inputStream);
         } catch (Exception e) {
+            logger.debug("", e);
             final String cleanXml = XMLLookupUtils.cleanXML(xmlContent);
-            InputStream inputStream = new ByteArrayInputStream(cleanXml.getBytes(StandardCharsets.UTF_8));
-            return documentBuilder.parse(inputStream);
+
+            try (InputStream inputStream = new ByteArrayInputStream(cleanXml.getBytes(StandardCharsets.UTF_8))) {
+                return documentBuilder.parse(inputStream);
+            }
         }
     }
 
@@ -222,6 +221,7 @@ public final class XMLLookupUtils
         } catch (FragmentContentException e) {
             logger.debug("Custom fragment content exception is received", e);
         } catch (Exception e) {
+            logger.debug("", e);
             isMalformedXmlFound = true;
         }
 
@@ -237,12 +237,12 @@ public final class XMLLookupUtils
         return markerXpath.substring(0, markerXpath.lastIndexOf('/'));
     }
 
-    public static List<String> getAllXpathInXmlDocument(String xml) throws Exception
+    public static List<String> getAllXpathInXmlDocument(String xmlString) throws Exception
     {
         XMLReader xmlReader = getSecureXMLReader();
         FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xmlReader);
         xmlReader.setContentHandler(fragmentContentHandler);
-        xmlReader.parse(new InputSource(new StringReader(xml)));
+        xmlReader.parse(new InputSource(new StringReader(xmlString)));
         return fragmentContentHandler.getDocumentXpaths();
     }
 
