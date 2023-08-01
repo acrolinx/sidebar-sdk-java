@@ -150,6 +150,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 if (acrolinxStorage != null) {
                     initLocalStorage();
                 }
+
                 initSidebar();
             }
 
@@ -289,6 +290,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 return getSelectRangesObject(arguments[1]);
             }
         };
+
         new BrowserFunction(browser, "replaceRangesP") {
             @Override
             public Object function(final Object[] arguments)
@@ -357,6 +359,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
 
         final ExternalContent externalContent = acrolinxIntegration.getEditorAdapter().getExternalContent();
         currentExternalContent.set(externalContent);
+
         if (externalContent != null) {
             logger.debug("External Content: {}", externalContent);
         }
@@ -397,6 +400,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         } catch (Exception e) {
             logger.error("Initializing batch check failed", e);
         }
+
         return null;
     }
 
@@ -451,9 +455,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     Object getOpenLogFileObject()
     {
         final String logFileLocation = LoggingUtils.getLogFileLocation();
+
         if (logFileLocation != null && !SidebarUtils.openSystemSpecific(logFileLocation)) {
             Program.launch(new File(logFileLocation).getParent());
         }
+
         return null;
     }
 
@@ -461,6 +467,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         final String result = argument.toString();
         final String url = AcrolinxSidebarSWT.getUrlFromJs(result);
+
         if ("".equals(url)) {
             logger.warn("Called to open URL but no URL to open is present.");
         } else if (SidebarUtils.isValidUrl(url)) {
@@ -468,6 +475,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         } else {
             logger.warn("Attempt to open invalid URL: {}", url);
         }
+
         return null;
     }
 
@@ -504,6 +512,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
             final CheckResultFromJSON checkResultObj = new Gson().fromJson(checkResultString,
                     CheckResultFromJSON.class);
             final CheckResult checkResult = checkResultObj.getAsCheckResult();
+
             if (checkResult == null) {
                 logger.info("Check finished with errors.");
             } else {
@@ -516,6 +525,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         } catch (final Exception e) {
             logger.error("", e);
         }
+
         return null;
     }
 
@@ -523,9 +533,11 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         final boolean canCheck = (acrolinxIntegration.getEditorAdapter() != null)
                 && !(acrolinxIntegration.getEditorAdapter() instanceof NullEditorAdapter);
+
         if (!canCheck) {
             logger.warn("Current File Editor not supported for checking or no file present.");
         }
+
         return canCheck;
     }
 
@@ -534,12 +546,14 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         final String result = argument.toString();
         final JsonObject jsonObject = (JsonObject) JsonParser.parseString(result);
         final JsonObject errorJsonObject = jsonObject.getAsJsonObject("error");
+
         if (errorJsonObject != null) {
             final SidebarError sidebarError = new Gson().fromJson(errorJsonObject, SidebarError.class);
             acrolinxIntegration.onInitFinished(Optional.of(sidebarError));
         } else {
             acrolinxIntegration.onInitFinished(Optional.empty());
         }
+
         return null;
     }
 
@@ -589,6 +603,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                         new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
                         ((AcrolinxMatch) match).getExternalContentMatches());
             }
+
             return new CheckedDocumentPart(currentCheckId.get(),
                     new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()));
         }).collect(Collectors.toList());
@@ -614,6 +629,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
                 browser.setText(SidebarUtils.SIDEBAR_ERROR_HTML);
             }
         }
+
         browser.refresh();
     }
 
@@ -623,6 +639,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         if (!"".equals(lastCheckedDocumentReference.get())) {
             return lastCheckedDocumentReference.get();
         }
+
         return null;
     }
 
@@ -637,6 +654,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         if (!"".equals(lastCheckedText.get())) {
             return lastCheckedText.get();
         }
+
         return null;
     }
 
@@ -658,6 +676,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
     {
         final Gson gson = new Gson();
         final AcrolinxURL acrolinxUrl = gson.fromJson(jsonString, AcrolinxURL.class);
+
         if (acrolinxUrl != null) {
             return acrolinxUrl.getUrl();
         }
@@ -691,6 +710,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar
         if (includeCheckSelectionRanges) {
             logger.debug("Including check selection ranges.");
             final List<IntRange> currentSelection = acrolinxIntegration.getEditorAdapter().getCurrentSelection();
+
             if (currentSelection != null) {
                 documentSelection = new DocumentSelection(currentSelection);
             }

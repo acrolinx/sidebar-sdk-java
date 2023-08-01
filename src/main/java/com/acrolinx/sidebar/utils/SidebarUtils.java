@@ -65,6 +65,7 @@ public final class SidebarUtils
                 return false;
             }
         }
+
         return false;
     }
 

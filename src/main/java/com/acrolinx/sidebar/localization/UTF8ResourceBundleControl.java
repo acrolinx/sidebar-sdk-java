@@ -40,6 +40,7 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control
             }
 
             InputStream inputStream;
+
             if (reload) {
                 inputStream = reload(resourceName, classLoader);
             } else {

@@ -39,6 +39,7 @@ public final class FileUtils
                     return InputFormat.TEXT;
             }
         }
+
         return null;
     }
 

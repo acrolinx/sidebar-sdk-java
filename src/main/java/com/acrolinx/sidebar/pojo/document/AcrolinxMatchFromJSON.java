@@ -28,6 +28,7 @@ public class AcrolinxMatchFromJSON
         } else if (externalContentMatches != null) {
             return new AcrolinxMatch(new IntRange(range[0], range[1]), content, externalContentMatches);
         }
+
         return new AcrolinxMatch(new IntRange(range[0], range[1]), content);
     }
 
@@ -39,6 +40,7 @@ public class AcrolinxMatchFromJSON
                         new IntRange(extractedRange[0], extractedRange[1]), content, replacement,
                         externalContentMatches);
             }
+
             return new AcrolinxMatchWithReplacement(new IntRange(range[0], range[1]),
                     new IntRange(extractedRange[0], extractedRange[1]), content, replacement);
         } else if (replacement != null) {
@@ -46,8 +48,10 @@ public class AcrolinxMatchFromJSON
                 return new AcrolinxMatchWithReplacement(content, new IntRange(range[0], range[1]), replacement,
                         externalContentMatches);
             }
+
             return new AcrolinxMatchWithReplacement(content, new IntRange(range[0], range[1]), replacement);
         }
+
         return null;
     }
 }

@@ -147,6 +147,7 @@ public class LookupForResolvedEditorViews
             logger.debug("Mapping range for: {} ({})", match.getRange(), match.getContent());
             ContentNode contentNode = utils.getContentNodeForOffsetInCurrentDocument(
                     match.getRange().getMinimumInteger());
+
             if (contentNode == null || contentNode.getContent() == null)
                 return;
 
@@ -170,9 +171,11 @@ public class LookupForResolvedEditorViews
                 String contentNodeXmlString;
                 // Try to lookup xml fragment in document.
                 Optional<IntRange> correctedMatchRange;
+
                 if (!(match instanceof ExternalAbstractMatch)
                         || !((ExternalAbstractMatch) match).hasExternalContentMatches()) {
                     contentNodeXmlString = contentNode.getAsXMLFragment();
+
                     if (contentNodeXmlString == null || contentNodeXmlString.equals(""))
                         return;
                     final int fragmentStartOffsetInCurrentDocument = findFragmentStartOffsetInCurrentDocument(
@@ -219,6 +222,7 @@ public class LookupForResolvedEditorViews
             logger.error("calcCorrectedMatch was called despite match not having ExternalContentMatches");
             return Optional.empty();
         }
+
         if (xmlTree.referenceChildren.isEmpty()) {
             logger.warn("No reference Children while match has external ContentMatches");
             return Optional.empty();
@@ -249,12 +253,14 @@ public class LookupForResolvedEditorViews
                 nextExternalContentMatch = null;
             } else {
                 Optional<ReferenceTreeNode> optionalReferenceTreeNode = referenceChildren.stream().filter(
-                        n -> n.getStartOffsetInParent() == externalContentRangeMinimum).findFirst();
+                        referenceTreeNode -> referenceTreeNode.getStartOffsetInParent() == externalContentRangeMinimum).findFirst();
+
                 if (optionalReferenceTreeNode.isPresent()) {
                     referencedContentTreeNode = optionalReferenceTreeNode.get();
                 } else {
                     return Optional.empty();
                 }
+
                 nextExternalContentMatch = nextExternalContentMatch.getExternalContentMatches().get(0);
             }
         }
@@ -332,6 +338,7 @@ public class LookupForResolvedEditorViews
         diffOffsetPositionStart.ifPresent(value -> {
             logger.debug("Mapped to offset: {}", value);
             logger.debug("range min in is: {}", intRange.getMinimumInteger());
+
             if ((intRange.getMinimumInteger() + value) >= 0) {
                 findRangeInResolvedText(abstractMatch, contentNodeXmlString, startOffset, textContent, rangeContent,
                         intRange, value);
@@ -392,6 +399,7 @@ public class LookupForResolvedEditorViews
             logger.debug("Mapping range for by diffing editors: {} ({})", match.getRange(), match.getContent());
             Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs, offsetMappingArray,
                     match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger());
+
             if (correctedMatch.isPresent()) {
                 AbstractMatch copy = match.setRange(correctedMatch.get());
                 logForDebugFoundContent(match);
@@ -411,11 +419,14 @@ public class LookupForResolvedEditorViews
             String resolvedViewContent)
     {
         abstractMatches.forEach(abstractMatch -> {
-            if (abstractMatch.getContent().length() <= 1)
+            if (abstractMatch.getContent().length() <= 1) {
                 return;
+            }
+
             if (abstractMatch instanceof ExternalAbstractMatch
-                    && ((ExternalAbstractMatch) abstractMatch).hasExternalContentMatches())
+                    && ((ExternalAbstractMatch) abstractMatch).hasExternalContentMatches()) {
                 return;
+            }
 
             String contentUpToMatch = currentDocumentContent.substring(0,
                     abstractMatch.getRange().getMaximumInteger()).replaceAll("</?\\w+.*?>", "");
@@ -431,6 +442,7 @@ public class LookupForResolvedEditorViews
                 mappedRanges.add(abstractMatch);
             }
         });
+
     }
 
     private static void logForDebugCurrentRanges(AbstractMatch abstractMatch)

@@ -93,6 +93,7 @@ public class TextAdapter implements InputAdapterInterface
             String t = text.get();
             text.set(t.substring(0, minRange) + replacement + t.substring(maxRange));
         });
+
         textWidget.clearSelection();
         textWidget.setText(text.get());
     }

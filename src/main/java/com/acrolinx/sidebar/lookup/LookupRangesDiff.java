@@ -33,6 +33,7 @@ public class LookupRangesDiff extends LookupRanges
         boolean anyEmpty = abstractMatches.stream().anyMatch(abstractMatch -> {
             Optional<IntRange> correctedMatch = Lookup.getCorrectedMatch(diffs, offsetMappingArray,
                     abstractMatch.getRange().getMinimumInteger(), abstractMatch.getRange().getMaximumInteger());
+
             if (correctedMatch.isPresent()) {
                 AbstractMatch copy = abstractMatch.setRange(correctedMatch.get());
                 returnValues.add(copy);

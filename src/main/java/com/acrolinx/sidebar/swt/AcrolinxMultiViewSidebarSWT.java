@@ -8,8 +8,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.AcrolinxStorage;
@@ -64,16 +64,20 @@ public class AcrolinxMultiViewSidebarSWT
     public void addSidebar(String documentId, AcrolinxIntegration acrolinxIntegration) throws AcrolinxException
     {
         final AcrolinxSidebarSWT existingSidebar = this.sidebarSWTMap.get(documentId);
+
         if (existingSidebar != null) {
             throw new AcrolinxException("Sidebar already exists for document id: " + documentId);
         }
+
         this.hideAllSidebars();
         final AcrolinxSidebarSWT acrolinxSidebarSWT;
+
         if (this.container instanceof Shell) {
             acrolinxSidebarSWT = new AcrolinxSidebarSWT((Shell) container, acrolinxIntegration, this.acrolinxStorage);
         } else {
             acrolinxSidebarSWT = new AcrolinxSidebarSWT(container, acrolinxIntegration, this.acrolinxStorage);
         }
+
         this.sidebarSWTMap.put(documentId, acrolinxSidebarSWT);
         acrolinxSidebarSWT.reload();
         this.stackLayout.topControl = acrolinxSidebarSWT.browser;
@@ -89,9 +93,11 @@ public class AcrolinxMultiViewSidebarSWT
     {
         this.hideAllSidebars();
         final AcrolinxSidebarSWT acrolinxSidebarSWT = this.sidebarSWTMap.get(documentId);
+
         if (acrolinxSidebarSWT == null) {
             throw new AcrolinxException("Existing sidebar not found for document Id.");
         }
+
         acrolinxSidebarSWT.setVisible(true);
         this.stackLayout.topControl = acrolinxSidebarSWT.browser;
         container.layout(true, true);
@@ -104,11 +110,15 @@ public class AcrolinxMultiViewSidebarSWT
     public void removeSidebar(String documentId) throws AcrolinxException
     {
         final AcrolinxSidebarSWT sidebarRemoved = this.sidebarSWTMap.remove(documentId);
+
         if (sidebarRemoved == null) {
+
             throw new AcrolinxException("Sidebar doesn't exist for the given document Id");
         }
+
         sidebarRemoved.setVisible(false);
         sidebarRemoved.browser.dispose();
+
         if (this.sidebarSWTMap.isEmpty()) {
             showDefaultSidebar();
         }
@@ -125,6 +135,7 @@ public class AcrolinxMultiViewSidebarSWT
                 return entry.getValue();
             }
         }
+
         return null;
     }
 

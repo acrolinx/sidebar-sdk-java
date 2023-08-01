@@ -163,6 +163,7 @@ final class JSToJavaConverter
                     BASE_64_ENCODED_GZIPPED_DOCUMENT_CONTENT);
             return new AcrolinxPluginConfiguration(isBase64EncodedGzippedDocumentContent);
         }
+
         return new AcrolinxPluginConfiguration(false);
     }
 
@@ -195,6 +196,7 @@ final class JSToJavaConverter
             final int originalEnd = Integer.parseInt((slotI.getMember(ORIGINAL_END).toString()));
 
             final Object externalContentMatchesJSObj = slotI.getMember(EXTERNAL_CONTENT_MATCHES);
+
             if (!(externalContentMatchesJSObj.equals(UNDEFINED))
                     && Integer.parseInt(((JSObject) externalContentMatchesJSObj).getMember(LENGTH).toString()) > 0) {
                 nestedExternalContentMatches = getExternalContentMatchFromJSObject(

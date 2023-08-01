@@ -28,6 +28,7 @@ public class CheckResultFromJSON
             logger.warn("Message: {}, Code: {}", sidebarError.getMessage(), sidebarError.getErrorCode());
             return null;
         }
+
         return new CheckResult(checkedPart.getAsCheckResult(), getEmbedCheckInformation(), inputFormat);
     }
 

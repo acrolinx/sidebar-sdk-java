@@ -37,6 +37,7 @@ public final class LoggingUtils
         if (propertyValueString.contains("mac")) {
             return Paths.get(userTempDirLocation.toString(), "Logs", "Acrolinx", applicationName);
         }
+
         if (propertyValueString.contains("win")) {
             return Paths.get(userTempDirLocation.toString(), "Acrolinx", "Logs", applicationName);
         }
@@ -51,6 +52,7 @@ public final class LoggingUtils
             if (inputStream != null) {
                 inputStream.close();
             }
+
             return;
         }
 
@@ -97,6 +99,7 @@ public final class LoggingUtils
         String logFileLocation = "";
         File clientLogFile;
         FileAppender<?> fileAppender = null;
+
         if (!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)) {
             return null;
         }
@@ -106,6 +109,7 @@ public final class LoggingUtils
         for (ch.qos.logback.classic.Logger logger : lContext.getLoggerList()) {
             for (Iterator<Appender<ILoggingEvent>> index = logger.iteratorForAppenders(); index.hasNext();) {
                 Object enumElement = index.next();
+
                 if (enumElement instanceof FileAppender) {
                     fileAppender = (FileAppender<?>) enumElement;
                 }
