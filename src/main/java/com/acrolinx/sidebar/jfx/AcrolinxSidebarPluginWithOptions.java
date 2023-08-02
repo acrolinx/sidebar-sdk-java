@@ -33,6 +33,7 @@ public class AcrolinxSidebarPluginWithOptions extends AcrolinxSidebarPlugin
             if (jsObject.getMember("selection") != null) {
                 selection = Boolean.parseBoolean(jsObject.getMember("selection").toString());
             }
+
             if (jsObject.getMember("batchCheck") != null) {
                 batchCheck = Boolean.parseBoolean(jsObject.getMember("batchCheck").toString());
             }
@@ -49,6 +50,7 @@ public class AcrolinxSidebarPluginWithOptions extends AcrolinxSidebarPlugin
                     return false;
                 }
             });
+
             logger.debug("Extracting references in Future task. Future task is running: {}", !initBatchFuture.isDone());
         } else {
             final CheckContent checkContent = getCheckContentFromClient();

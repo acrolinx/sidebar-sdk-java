@@ -51,6 +51,7 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
                 return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
                         replacement, this.getExternalContentMatches());
             }
+
             return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
                     replacement);
         }
@@ -59,6 +60,7 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
             return new AcrolinxMatchWithReplacement(getContent(), intRange, replacement,
                     this.getExternalContentMatches());
         }
+
         return new AcrolinxMatchWithReplacement(getContent(), intRange, replacement);
     }
 
@@ -76,6 +78,7 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
                 return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
                         replacement, this.getExternalContentMatches());
             }
+
             return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
                     replacement);
         }
@@ -84,6 +87,7 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
             return new AcrolinxMatchWithReplacement(getContent(), intRange, replacement,
                     this.getExternalContentMatches());
         }
+
         return new AcrolinxMatchWithReplacement(getContent(), intRange, replacement);
     }
 
@@ -104,6 +108,7 @@ public class AcrolinxMatchWithReplacement extends AcrolinxMatch
                 return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
                         getReplacement(), externalContentMatches);
             }
+
             return new AcrolinxMatchWithReplacement(intRange, new IntRange(minRange, maxRange), getContent(),
                     getReplacement());
         }

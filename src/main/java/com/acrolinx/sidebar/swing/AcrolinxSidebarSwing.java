@@ -68,6 +68,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         if (keyEvent.getKeyCode() == KeyEvent.VK_V && isMetaOrCtrlModifier(keyEvent)) {
             keyEvent.consume();
         }
+
         super.processKeyEvent(keyEvent);
     }
 
@@ -113,6 +114,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
                 // we only need resize event to be handled
             }
         });
+
         final Scene scene = new Scene(webview);
         setScene(scene);
         setVisible(true);
@@ -180,6 +182,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         if (sidebarJFX != null) {
             return sidebarJFX.getLastCheckedDocumentReference();
         }
+
         return "";
     }
 
@@ -189,6 +192,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         if (sidebarJFX != null) {
             return sidebarJFX.getLastCheckedDocument();
         }
+
         return "";
     }
 
@@ -197,6 +201,7 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar
         if (sidebarJFX != null) {
             return sidebarJFX.getLastCheckedExternalContent();
         }
+
         return null;
     }
 

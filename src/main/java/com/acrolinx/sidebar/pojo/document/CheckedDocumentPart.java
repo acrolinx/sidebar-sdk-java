@@ -52,6 +52,7 @@ public class CheckedDocumentPart
             return "{checkId: \"" + checkId + "\", range:[" + intRange.getMinimumInteger() + ","
                     + intRange.getMaximumInteger() + "], externalContent:" + externalContent.toString() + "}";
         }
+
         return "{checkId: \"" + checkId + "\", range:[" + intRange.getMinimumInteger() + ","
                 + intRange.getMaximumInteger() + "]}";
     }

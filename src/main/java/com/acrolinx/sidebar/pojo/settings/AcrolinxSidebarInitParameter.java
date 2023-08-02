@@ -59,6 +59,7 @@ public class AcrolinxSidebarInitParameter
         this.supported = acrolinxSidebarInitParameterBuilder.supported;
 
         this.clientComponents.stream().forEach(component -> logger.info("Software component: {}", component));
+
         if (this.clientLocale != null) {
             logger.info("Plugin initialized with client locale: {}", this.clientLocale);
         }
@@ -75,6 +76,7 @@ public class AcrolinxSidebarInitParameter
 
         if (this.minimumJavaVersion != 0) {
             logger.info("Required Java Version is: {}", this.minimumJavaVersion);
+
             if (SidebarUtils.getSystemJavaVersion() < this.minimumJavaVersion) {
                 logger.warn("The current Java version {} does not fulfill the requirements.",
                         SidebarUtils.getSystemJavaVersion());

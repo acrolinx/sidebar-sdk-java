@@ -19,6 +19,7 @@ public class ExternalContentMatch
             List<ExternalContentMatch> externalContentMatches)
     {
         this(id, type, originalBegin, originalEnd);
+
         if (externalContentMatches != null) {
             this.externalContentMatches = externalContentMatches;
         } else {
@@ -61,6 +62,7 @@ public class ExternalContentMatch
         if (externalContentMatches == null) {
             externalContentMatches = new ArrayList<>();
         }
+
         return externalContentMatches;
     }
 

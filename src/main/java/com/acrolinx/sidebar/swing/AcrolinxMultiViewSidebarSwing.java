@@ -103,9 +103,11 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     public void addSidebar(AcrolinxIntegration acrolinxIntegration, String documentId) throws AcrolinxException
     {
         final AcrolinxSidebarJFX existingSidebar = sidebars.get(documentId);
+
         if (existingSidebar != null) {
             throw new AcrolinxException("Sidebar already exists for document id: " + documentId);
         }
+
         JFXUtils.invokeInJFXThread(() -> {
             sidebarJFX = new AcrolinxSidebarJFX(acrolinxIntegration, acrolinxStorage);
             final WebView webview = sidebarJFX.getWebView();
@@ -115,15 +117,18 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
             final float i = (float) getWidth() / 300;
             sidebarJFX.setZoom(i);
             Scene scene;
+
             if (getScene() != null) {
                 scene = getScene();
                 scene.setRoot(webview);
             } else {
                 scene = new Scene(webview);
             }
+
             if (!sidebars.containsKey(documentId)) {
                 sidebars.put(documentId, sidebarJFX);
             }
+
             setScene(scene);
             setVisible(true);
         });
@@ -178,6 +183,7 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing implemen
     {
         JFXUtils.invokeInJFXThread(() -> {
             Scene scene = getScene();
+
             if (scene == null) {
                 setScene(new Scene(new Group(), 300.0, 600.0));
                 scene = getScene();

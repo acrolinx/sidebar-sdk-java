@@ -66,6 +66,7 @@ public class AcrolinxMatch extends ExternalAbstractMatch
                 final List<ExternalContentMatch> externalContentMatches = this.getExternalContentMatches();
                 return new AcrolinxMatch(intRange, new IntRange(eRangeMin, eRangeMax), content, externalContentMatches);
             }
+
             return new AcrolinxMatch(intRange, new IntRange(eRangeMin, eRangeMax), content);
         }
 

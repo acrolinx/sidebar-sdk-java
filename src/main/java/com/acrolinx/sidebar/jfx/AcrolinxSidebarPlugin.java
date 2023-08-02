@@ -95,6 +95,7 @@ abstract class AcrolinxSidebarPlugin
         logger.info("Get window object from webview...");
         JSObject jsobj = null;
         int count = 0;
+
         while ((count < 6) && (jsobj == null)) {
             try {
                 logger.info("Fetching Window object. Attempt: {}", count);
@@ -111,6 +112,7 @@ abstract class AcrolinxSidebarPlugin
                 logger.warn("Window object not available. Trying again. Attempt: {}", count);
             }
         }
+
         return jsobj;
     }
 
@@ -185,6 +187,7 @@ abstract class AcrolinxSidebarPlugin
         final Instant checkEndedTime = Instant.now();
         LogMessages.logCheckFinishedWithDurationTime(logger, Duration.between(checkStartedTime, checkEndedTime));
         final CheckResult checkResult = JSToJavaConverter.getCheckResultFromJSObject(jsObject);
+
         if (checkResult == null) {
             logger.info("Check finished with errors.");
         } else {
@@ -220,6 +223,7 @@ abstract class AcrolinxSidebarPlugin
                         new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()),
                         ((AcrolinxMatch) match).getExternalContentMatches());
             }
+
             return new CheckedDocumentPart(currentCheckId.get(),
                     new IntRange(match.getRange().getMinimumInteger(), match.getRange().getMaximumInteger()));
         }).collect(Collectors.toList());
@@ -243,14 +247,17 @@ abstract class AcrolinxSidebarPlugin
         inputFormatRef.set(acrolinxIntegration.getEditorAdapter().getInputFormat());
         currentDocumentReference.set(acrolinxIntegration.getEditorAdapter().getDocumentReference());
         DocumentSelection documentSelection = null;
+
         if (includeCheckSelectionRanges) {
             logger.debug("Including check selection ranges.");
             final List<IntRange> currentSelection = acrolinxIntegration.getEditorAdapter().getCurrentSelection();
             checkSelectionRange.set(currentSelection);
+
             if (currentSelection != null) {
                 documentSelection = new DocumentSelection(checkSelectionRange.get());
             }
         }
+
         return new CheckOptions(new RequestDescription(currentDocumentReference.get()), inputFormatRef.get(),
                 documentSelection, externalContent);
     }
@@ -330,9 +337,11 @@ abstract class AcrolinxSidebarPlugin
         logger.debug("openDocumentInEditor is called...");
         Future<Boolean> openDocumentFuture = executorService.submit(() -> {
             boolean documentIsOpen = acrolinxIntegration.openDocumentInEditor(documentIdentifier);
+
             if (!documentIsOpen) {
                 // ToDo: Send a message to the sidebar
             }
+
             return documentIsOpen;
         });
 
