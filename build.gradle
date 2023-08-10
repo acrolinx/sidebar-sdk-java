@@ -14,7 +14,7 @@ plugins {
 	id 'com.github.node-gradle.node' version '3.5.0'
 	id 'com.github.hierynomus.license' version '0.16.1'
 	id 'com.github.hierynomus.license-report' version '0.16.1'
-	id 'org.openjfx.javafxplugin' version '0.0.10' apply false
+	id 'org.openjfx.javafxplugin' version '0.0.14' apply false
 	id 'org.sonarqube' version '4.0.0.2929'
 	id 'com.diffplug.spotless' version '6.13.0'
 }
