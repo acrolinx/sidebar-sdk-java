@@ -79,7 +79,7 @@ jobs:
           CUSTOM_TAG: ${{ steps.deploy.outputs.TAGNAME }}
 
       - name: Deploy JavaDoc
-        uses: JamesIves/github-pages-deploy-action@4.1.5
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
         if: steps.deploy.outputs.RELEASE == 'true' && github.ref == 'refs/heads/main'
         with:
           branch: gh-pages
