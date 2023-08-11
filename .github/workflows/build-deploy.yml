@@ -11,8 +11,6 @@ on:
 jobs:
   Sonar-Check:
     runs-on: ubuntu-latest
-    env:
-      SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -26,16 +24,16 @@ jobs:
           java-version: '11'
           java-package: 'jdk+fx'
 
-      - name: Sonar Scan Project
-        run: ./gradlew jacocoTestReport sonar
+      - name: Sonar analysis
+        uses: gradle/gradle-build-action@a4cf152f482c7ca97ef56ead29bf08bcd953284c
+        env:
+          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+        with:
+          arguments: jacocoTestReport sonar
 
   Build:
     runs-on: ubuntu-latest
     env:
-      ACROLINX_URL: ${{ secrets.ACROLINX_URL }}
-      ACROLINX_API_USERNAME: ${{ secrets.ACROLINX_API_USERNAME }}
-      ACROLINX_API_TOKEN: ${{ secrets.ACROLINX_API_TOKEN }}
-      ACROLINX_API_SSO_TOKEN: ${{ secrets.ACROLINX_API_SSO_TOKEN }}
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
       ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
@@ -61,11 +59,15 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@56b90f209b02bf6d1deae490e9ef18b21a389cd4
 
-      - name: Build Gradle Project
-        run: ./gradlew build
+      - name: Gradle build
+        uses: gradle/gradle-build-action@a4cf152f482c7ca97ef56ead29bf08bcd953284c
+        with:
+          arguments: build
 
-      - name: Create JavaDoc
-        run: ./gradlew javadoc
+      - name: Create Javadoc
+        uses: gradle/gradle-build-action@a4cf152f482c7ca97ef56ead29bf08bcd953284c
+        with:
+          arguments: javadoc
 
       - name: Deploy artifacts
         id: deploy
@@ -78,7 +80,7 @@ jobs:
         env:
           CUSTOM_TAG: ${{ steps.deploy.outputs.TAGNAME }}
 
-      - name: Deploy JavaDoc
+      - name: Deploy Javadoc
         uses: JamesIves/github-pages-deploy-action@v4.4.3
         if: steps.deploy.outputs.RELEASE == 'true' && github.ref == 'refs/heads/main'
         with:
