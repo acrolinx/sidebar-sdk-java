@@ -15,7 +15,7 @@ plugins {
 	id 'com.github.hierynomus.license-report' version '0.16.1'
 	id 'org.openjfx.javafxplugin' version '0.0.14' apply false
 	id 'org.sonarqube' version '4.0.0.2929'
-	id 'com.diffplug.spotless' version '6.13.0'
+	id 'com.diffplug.spotless' version '6.20.0'
 }
 
 switch ( OperatingSystem.current() ) {
