@@ -12,7 +12,6 @@ plugins {
 	id 'io.codearte.nexus-staging' version '0.30.0'
 	id 'de.marcphilipp.nexus-publish' version '0.4.0'
 	id 'com.github.node-gradle.node' version '3.5.0'
-	id 'com.github.hierynomus.license' version '0.16.1'
 	id 'com.github.hierynomus.license-report' version '0.16.1'
 	id 'org.openjfx.javafxplugin' version '0.0.14' apply false
 	id 'org.sonarqube' version '4.0.0.2929'
@@ -230,7 +229,7 @@ publishing {
 						licenses {
 							license {
 								name 'The Apache Software License, Version 2.0'
-								url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+								url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
 								distribution 'repo'
 							}
 						}
@@ -347,21 +346,9 @@ configurations.all {
 	}
 }
 
-license {
-	header rootProject.file('LICENSE_HEADER')
-	skipExistingHeaders true
-	include("**/*.java")
-}
-
 downloadLicenses {
 	includeProjectDependencies true
 	dependencyConfiguration = "compileClasspath"
-}
-
-task checkLicenseHeaders {
-	doLast {
-		println 'If this fails run \'./gradlew licenseFormat\' to apply missing headers'
-	}
 }
 
 tasks.named('test') {
@@ -392,9 +379,6 @@ spotless {
 
 processResources.dependsOn copyServerSelectorRessources
 processResources.dependsOn convertLocalizationEncoding
-licenseMain.dependsOn checkLicenseHeaders
-licenseMain.dependsOn copyServerSelectorRessources
-licenseTest.dependsOn checkLicenseHeaders
 jar.dependsOn 'downloadLicenses'
 jar.dependsOn createVersionPropertiesFile
 test.dependsOn javadoc
