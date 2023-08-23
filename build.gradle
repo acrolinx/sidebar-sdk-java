@@ -182,22 +182,6 @@ javadoc {
 	failOnError = false
 }
 
-task sourcesJar(type: Jar) {
-	archiveClassifier = 'sources'
-	from sourceSets.main.allJava
-}
-
-task javadocJar(type: Jar) {
-	archiveClassifier = 'javadoc'
-	from javadoc.destinationDir
-}
-
-artifacts {
-	archives jar
-	archives javadocJar
-	archives sourcesJar
-}
-
 def devId = "Acrolinx Open Source"
 def devName = "Acrolinx"
 def devEmail = "opensource@acrolinx.com"
@@ -206,8 +190,6 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			from components.java
-			artifact sourcesJar
-			artifact javadocJar
 			afterEvaluate {
 				pom.withXml {
 					Node pomNode = asNode()
@@ -355,6 +337,11 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+java {
+	withJavadocJar()
+	withSourcesJar()
+}
+
 jacocoTestReport {
 	dependsOn test
 	reports {
@@ -377,9 +364,9 @@ spotless {
 	}
 }
 
+sourcesJar.dependsOn copyServerSelectorRessources
 processResources.dependsOn copyServerSelectorRessources
 processResources.dependsOn convertLocalizationEncoding
 jar.dependsOn 'downloadLicenses'
 jar.dependsOn createVersionPropertiesFile
 test.dependsOn javadoc
-javadocJar.dependsOn javadoc
