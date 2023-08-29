@@ -8,10 +8,12 @@ public enum SoftwareComponentCategory
      * the server. Version information about this components might be displayed more prominently.
      */
     MAIN,
+
     /**
      * Version information about such components are displayed in the about dialog.
      */
     DEFAULT,
+
     /**
      * Version information about such components are displayed in the detail section of the about dialog
      * or not at all.
