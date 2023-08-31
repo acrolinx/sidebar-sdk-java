@@ -128,9 +128,6 @@ git commit
 git push
 ```
 
-	If your build on Travis was successful,
-	a new snapshot version will be automatically available via the [Maven snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/acrolinx/client/sidebar-sdk/).
-
 2. Once you tested your new features, remove the snapshot from the `currentVersion` property in the `gradle.properties` file.
 
 3. Commit and push your changes. If all goes right, the artifact is released to
@@ -151,32 +148,6 @@ and drop falsely created repositories, before starting a new release build.
 5. Once the tag is pushed to GitHub, TravisCI will automatically update the [API documentation on the GitHub Pages](https://acrolinx.github.io/sidebar-sdk-java/).
 
 6. Don't forget to commit and push a new SNAPSHOT version.
-
-### Dependency Updates
-
-To check if the SDK uses any outdated libraries, run:
-
-```bash
-./gradlew dependencyUpdates -Drevision=release
-```
-
-This will generate a report in the projects' build folder. Check the report to find any outdated libraries.
-
-To update the dependency libraries, run the following Gradle task. This will update to the latest stable release version
-and exclude any alpha or beta versions.
-
-```bash
-./gradlew useLatestVersions && ./gradlew useLatestVersionsCheck
-```
-
-### Vulnerable Dependencies Check
-
-```bash
-./gradlew dependencyCheckAnalyze --info
-```
-
-This generates an HTML report in the projects build folder. It lists all vulnerable dependencies and where they're
-referenced found by the [Dependency-Check-Gradle](https://github.com/jeremylong/dependency-check-gradle) plugin.
 
 ## References
 

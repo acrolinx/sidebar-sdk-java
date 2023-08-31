@@ -4,13 +4,6 @@ echo "Starting publish script"
 
 GRADLE_PROPERTIES_FILE=gradle.properties
 
-is_not_substring(){
-	if [ -z "${2##*$1*}" ]; then
-			return 1
-		else return 0
-	fi
-}
-
 getProperty()
 {
 	PROP_KEY=$1
