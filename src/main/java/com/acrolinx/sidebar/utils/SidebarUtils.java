@@ -225,11 +225,11 @@ public final class SidebarUtils
 
     public static boolean openSystemSpecific(final String path)
     {
-        final OSUtils.EnumOS os = OSUtils.getOS();
+        final OSUtils.EnumOS enumOs = OSUtils.getOS();
 
-        if (os.isMac() && runCommand("open", "-R", path)) {
+        if (enumOs.isMac() && runCommand("open", "-R", path)) {
             return true;
-        } else if (os.isWindows() && runCommand("explorer", "/select,", "\"" + path + "\"")) {
+        } else if (enumOs.isWindows() && runCommand("explorer", "/select,", "\"" + path + "\"")) {
             return true;
         }
 

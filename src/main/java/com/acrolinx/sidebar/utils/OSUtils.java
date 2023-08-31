@@ -8,7 +8,13 @@ public final class OSUtils
 {
     public enum EnumOS
     {
-        LINUX, MACOS, UNKNOWN, WINDOWS;
+        LINUX,
+
+        MACOS,
+
+        UNKNOWN,
+
+        WINDOWS;
 
         public boolean isLinux()
         {

@@ -108,10 +108,10 @@ public final class LoggingUtils
 
         for (ch.qos.logback.classic.Logger logger : lContext.getLoggerList()) {
             for (Iterator<Appender<ILoggingEvent>> index = logger.iteratorForAppenders(); index.hasNext();) {
-                Object enumElement = index.next();
+                Object object = index.next();
 
-                if (enumElement instanceof FileAppender) {
-                    fileAppender = (FileAppender<?>) enumElement;
+                if (object instanceof FileAppender) {
+                    fileAppender = (FileAppender<?>) object;
                 }
             }
         }
