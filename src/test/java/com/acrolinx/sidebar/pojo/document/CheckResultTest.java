@@ -4,7 +4,6 @@ package com.acrolinx.sidebar.pojo.document;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

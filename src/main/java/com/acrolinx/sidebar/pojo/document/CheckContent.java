@@ -1,11 +1,10 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.document;
 
-import javax.annotation.Nullable;
-
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentBuilder;
 import com.google.gson.Gson;
+import javax.annotation.Nullable;
 
 public class CheckContent
 {

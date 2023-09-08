@@ -4,12 +4,10 @@ package com.acrolinx.sidebar.utils;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.ArrayList;
-
-import org.junit.jupiter.api.Test;
-
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder;
+import java.util.ArrayList;
+import org.junit.jupiter.api.Test;
 
 class StartPageInstallerTest
 {

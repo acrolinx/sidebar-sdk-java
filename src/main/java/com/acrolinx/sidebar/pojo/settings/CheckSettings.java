@@ -1,9 +1,8 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.settings;
 
-import org.apache.commons.lang3.SerializationUtils;
-
 import com.google.gson.Gson;
+import org.apache.commons.lang3.SerializationUtils;
 
 public class CheckSettings
 {

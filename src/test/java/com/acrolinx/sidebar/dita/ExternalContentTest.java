@@ -5,15 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.junit.jupiter.api.Test;
-
 import com.acrolinx.sidebar.pojo.document.CheckContent;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentBuilder;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentField;
+import java.util.List;
+import java.util.UUID;
+import org.junit.jupiter.api.Test;
 
 class ExternalContentTest
 {

@@ -1,14 +1,13 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.acrolinx.sidebar.pojo.SidebarError;
 import com.acrolinx.sidebar.pojo.document.CheckResult;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.pojo.settings.CheckOptions;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * This interface needs be implemented to integrate Acrolinx with an editor or editing environment.

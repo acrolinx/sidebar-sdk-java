@@ -1,10 +1,9 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.lookup;
 
+import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import java.io.Serializable;
 import java.util.Comparator;
-
-import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 
 public class MatchComparator implements Comparator<AbstractMatch>, Serializable
 {

@@ -1,11 +1,10 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.document.externalcontent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExternalContentMatch
 {

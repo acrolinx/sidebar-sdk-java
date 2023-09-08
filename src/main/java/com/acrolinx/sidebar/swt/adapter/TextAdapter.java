@@ -1,13 +1,6 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.swt.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Text;
-
 import com.acrolinx.sidebar.InputAdapterInterface;
 import com.acrolinx.sidebar.lookup.MatchComparator;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
@@ -15,6 +8,11 @@ import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Text Adapter for SWT TEXT Widget.

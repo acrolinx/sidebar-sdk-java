@@ -2,7 +2,6 @@
 package com.acrolinx.sidebar.localization;
 
 import java.util.Locale;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

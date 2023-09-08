@@ -1,10 +1,9 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.document;
 
+import com.acrolinx.sidebar.pojo.settings.InputFormat;
 import java.util.Map;
 import java.util.Optional;
-
-import com.acrolinx.sidebar.pojo.settings.InputFormat;
 
 public class CheckResult
 {

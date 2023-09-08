@@ -3,13 +3,11 @@ package com.acrolinx.sidebar.pojo.document;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
-
-import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 
 class CheckedDocumentPartTest
 {

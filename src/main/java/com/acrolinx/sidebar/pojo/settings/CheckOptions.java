@@ -1,10 +1,9 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.settings;
 
-import javax.annotation.Nullable;
-
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.google.gson.Gson;
+import javax.annotation.Nullable;
 
 /**
  * Check options define how the Acrolinx Server handles document to check.
