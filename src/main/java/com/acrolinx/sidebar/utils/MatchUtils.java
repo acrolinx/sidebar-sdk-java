@@ -1,18 +1,16 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.ExternalAbstractMatch;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentField;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class MatchUtils
 {

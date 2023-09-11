@@ -1,6 +1,8 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
+import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
+import com.google.common.base.Strings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,12 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Properties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
-import com.google.common.base.Strings;
 
 public final class StartPageInstaller
 {

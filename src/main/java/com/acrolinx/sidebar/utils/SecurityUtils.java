@@ -2,7 +2,6 @@
 package com.acrolinx.sidebar.utils;
 
 import java.util.Properties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

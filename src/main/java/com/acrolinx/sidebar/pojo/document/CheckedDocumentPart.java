@@ -1,10 +1,9 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.document;
 
-import java.util.List;
-
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 import com.google.gson.Gson;
+import java.util.List;
 
 public class CheckedDocumentPart
 {

@@ -1,13 +1,11 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.document;
 
+import com.acrolinx.sidebar.pojo.SidebarError;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.acrolinx.sidebar.pojo.SidebarError;
 
 public class CheckResultFromJSON
 {

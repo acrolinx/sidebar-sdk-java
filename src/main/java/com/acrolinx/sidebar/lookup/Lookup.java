@@ -1,14 +1,13 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.lookup;
 
+import com.acrolinx.sidebar.pojo.document.IntRange;
+import com.acrolinx.sidebar.utils.DiffMatchPatch;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import com.acrolinx.sidebar.pojo.document.IntRange;
-import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
 public final class Lookup
 {

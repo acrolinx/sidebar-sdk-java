@@ -5,12 +5,10 @@ import static com.acrolinx.sidebar.lookup.Lookup.createOffsetMappingArray;
 import static com.acrolinx.sidebar.lookup.Lookup.getDiffs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.acrolinx.sidebar.utils.DiffMatchPatch;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
-
-import com.acrolinx.sidebar.utils.DiffMatchPatch;
 
 class LookupTest
 {

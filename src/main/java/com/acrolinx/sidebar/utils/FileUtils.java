@@ -1,10 +1,9 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
+import com.acrolinx.sidebar.pojo.settings.InputFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.acrolinx.sidebar.pojo.settings.InputFormat;
 
 public final class FileUtils
 {

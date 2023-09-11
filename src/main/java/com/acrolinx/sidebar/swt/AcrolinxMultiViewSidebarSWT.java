@@ -1,21 +1,19 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.swt;
 
+import com.acrolinx.sidebar.AcrolinxIntegration;
+import com.acrolinx.sidebar.AcrolinxStorage;
+import com.acrolinx.sidebar.localization.LocalizedStrings;
+import com.acrolinx.sidebar.localization.Localizer;
+import com.acrolinx.sidebar.utils.AcrolinxException;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-
-import com.acrolinx.sidebar.AcrolinxIntegration;
-import com.acrolinx.sidebar.AcrolinxStorage;
-import com.acrolinx.sidebar.localization.LocalizedStrings;
-import com.acrolinx.sidebar.localization.Localizer;
-import com.acrolinx.sidebar.utils.AcrolinxException;
 
 // TODO: Hide default view on addition of first sidebar.
 public class AcrolinxMultiViewSidebarSWT

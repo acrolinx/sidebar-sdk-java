@@ -1,10 +1,9 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.settings;
 
-import java.util.List;
-
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.google.gson.Gson;
+import java.util.List;
 
 public class DocumentSelection
 {

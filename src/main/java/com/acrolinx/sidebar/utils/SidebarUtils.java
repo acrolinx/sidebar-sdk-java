@@ -1,6 +1,8 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
+import com.acrolinx.sidebar.pojo.settings.SoftwareComponent;
+import com.acrolinx.sidebar.pojo.settings.SoftwareComponentCategory;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -15,12 +17,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.acrolinx.sidebar.pojo.settings.SoftwareComponent;
-import com.acrolinx.sidebar.pojo.settings.SoftwareComponentCategory;
 
 public final class SidebarUtils
 {

@@ -1,11 +1,10 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.document.externalcontent;
 
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import com.google.gson.Gson;
 
 /**
  * Only supported with Acrolinx Platform 2019.10 (Sidebar version 14.16) and newer.

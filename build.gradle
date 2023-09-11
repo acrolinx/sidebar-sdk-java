@@ -351,7 +351,8 @@ jacocoTestReport {
 
 spotless {
 	java {
-		importOrderFile rootProject.file('spotless.importorder')
+		importOrder()
+		removeUnusedImports()
 		eclipse().configFile rootProject.file('spotless.eclipseformat.xml')
 		licenseHeaderFile rootProject.file('spotless.license.java')
 	}

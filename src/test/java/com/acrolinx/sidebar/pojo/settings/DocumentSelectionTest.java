@@ -1,13 +1,11 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.settings;
 
+import com.acrolinx.sidebar.pojo.document.IntRange;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import com.acrolinx.sidebar.pojo.document.IntRange;
 
 class DocumentSelectionTest
 {

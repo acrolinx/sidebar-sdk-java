@@ -2,7 +2,6 @@
 package com.acrolinx.sidebar.utils;
 
 import java.time.Duration;
-
 import org.slf4j.Logger;
 
 /**

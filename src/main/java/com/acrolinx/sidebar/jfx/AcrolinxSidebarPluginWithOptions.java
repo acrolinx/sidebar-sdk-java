@@ -1,18 +1,15 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.jfx;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.concurrent.Future;
-
-import javafx.scene.web.WebView;
-
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.document.CheckContent;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
 import com.acrolinx.sidebar.utils.LogMessages;
-
+import java.time.Instant;
+import java.util.List;
+import java.util.concurrent.Future;
+import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 
 public class AcrolinxSidebarPluginWithOptions extends AcrolinxSidebarPlugin

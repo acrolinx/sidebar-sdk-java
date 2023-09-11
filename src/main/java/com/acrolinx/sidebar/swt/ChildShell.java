@@ -1,13 +1,12 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.swt;
 
+import com.acrolinx.sidebar.utils.IconUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
-import com.acrolinx.sidebar.utils.IconUtils;
 
 public class ChildShell
 {
