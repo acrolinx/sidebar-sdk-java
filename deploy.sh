@@ -2,20 +2,16 @@
 
 echo "Starting publish script"
 
-GRADLE_PROPERTIES_FILE=gradle.properties
-
-getProperty()
-{
+getProperty() {
 	PROP_KEY=$1
 	PROP_VALUE=`cat "./gradle.properties" | grep "$PROP_KEY" | cut -d'=' -f2`
 	echo $PROP_VALUE
 }
 
-
-PROJECT_VERSION=$(getProperty "currentVersion")
+readonly PROJECT_VERSION=$(getProperty "currentVersion")
 echo "Current Version: $PROJECT_VERSION"
 
-if ! [[ "$PROJECT_VERSION" =~ ^[0-9]+((.[0-9]+)?)+$ ]]; then
+if [[ "$PROJECT_VERSION" == *"SNAPSHOT"* ]]; then
 	echo "Publishing snapshot version to snapshot repo..."
 	if ./gradlew publishToSonatype; then
 		echo "Published snapshot version to snapshot repo..."

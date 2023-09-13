@@ -145,9 +145,7 @@ and drop falsely created repositories, before starting a new release build.
 	./gradlew createGithubReleaseTag -Dorg.ajoberstar.grgit.auth.username=someone -Dorg.ajoberstar.grgit.auth.password=mysecretpassword
 ```
 
-5. Once the tag is pushed to GitHub, TravisCI will automatically update the [API documentation on the GitHub Pages](https://acrolinx.github.io/sidebar-sdk-java/).
-
-6. Don't forget to commit and push a new SNAPSHOT version.
+5. Don't forget to commit and push a new SNAPSHOT version.
 
 ## References
 
