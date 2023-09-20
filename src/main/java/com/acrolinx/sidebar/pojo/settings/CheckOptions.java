@@ -12,7 +12,7 @@ public class CheckOptions
 {
     private final InputFormat inputFormat;
     private final RequestDescription requestDescription;
-    private final DocumentSelection documentSelection;
+    private final DocumentSelection selection;
     private final ExternalContent externalContent;
 
     /**
@@ -20,12 +20,12 @@ public class CheckOptions
      * @param requestDescription Contains the document reference. This can be an id or path to identify
      *        the document.
      */
-    public CheckOptions(RequestDescription requestDescription, InputFormat inputFormat,
-            DocumentSelection documentSelection, @Nullable ExternalContent externalContent)
+    public CheckOptions(RequestDescription requestDescription, InputFormat inputFormat, DocumentSelection selection,
+            @Nullable ExternalContent externalContent)
     {
         this.requestDescription = requestDescription;
         this.inputFormat = inputFormat;
-        this.documentSelection = documentSelection;
+        this.selection = selection;
         this.externalContent = externalContent;
     }
 
