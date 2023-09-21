@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class AcrolinxSidebarInitParameterTest
 {
     @Test
-    void testToString()
+    void toStringTest()
     {
         String osName = System.getProperty("os.name", "Win");
         String osVersion = System.getProperty("os.version", "13.5.1");
