@@ -12,36 +12,14 @@ class CheckOptionsTest
     @Test
     void testToStringHasTheProperKeys()
     {
-        CheckOptions checkOptions = getCheckOptions();
+        CheckOptions checkOptions = createCheckOptions();
 
         Assertions.assertEquals(
                 "{\"inputFormat\":\"AUTO\",\"requestDescription\":{\"documentReference\":\"foo\"},\"selection\":{\"ranges\":[[0,0]]},\"externalContent\":{}}",
                 checkOptions.toString());
     }
 
-    @Test
-    void testToStringFailsIfNoValidKeysProvided()
-    {
-        CheckOptions checkOptions = getCheckOptions();
-
-        Assertions.assertNotEquals(
-                "{\"inputFormat\":\"AUTO\",\"requestDescription\":{\"documentReference\":\"foo\"},\"documentSelection\":{\"ranges\":[[0,0]]},\"externalContent\":{}}",
-                checkOptions.toString());
-        Assertions.assertNotEquals(
-                "{\"inputFormat\":\"AUTO\",\"requestDescription\":{\"reference\":\"foo\"},\"selection\":{\"ranges\":[[0,0]]},\"externalContent\":{}}",
-                checkOptions.toString());
-        Assertions.assertNotEquals(
-                "{\"format\":\"AUTO\",\"requestDescription\":{\"documentReference\":\"foo\"},\"selection\":{\"ranges\":[[0,0]]},\"externalContent\":{}}",
-                checkOptions.toString());
-        Assertions.assertNotEquals(
-                "{\"inputFormat\":\"AUTO\",\"description\":{\"documentReference\":\"foo\"},\"selection\":{\"ranges\":[[0,0]]},\"externalContent\":{}}",
-                checkOptions.toString());
-        Assertions.assertNotEquals(
-                "{\"inputFormat\":\"AUTO\",\"requestDescription\":{\"documentReference\":\"foo\"},\"documentSelection\":{\"ranges\":[[0,0]]},\"content\":{}}",
-                checkOptions.toString());
-    }
-
-    private static CheckOptions getCheckOptions()
+    private static CheckOptions createCheckOptions()
     {
         RequestDescription requestDescription = new RequestDescription("foo");
 
