@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class CheckOptionsTest
 {
     @Test
-    void testToStringHasTheProperKeys()
+    void toStringTest()
     {
         CheckOptions checkOptions = createCheckOptions();
 
