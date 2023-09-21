@@ -3,6 +3,7 @@ package com.acrolinx.sidebar.pojo.settings;
 
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,5 +28,13 @@ class DocumentSelectionTest
         intRanges.add(new IntRange(12, 12));
         DocumentSelection documentSelection = new DocumentSelection(intRanges);
         Assertions.assertEquals("{\"ranges\":[[12,12]]}", documentSelection.toString());
+    }
+
+    @Test
+    void testToString()
+    {
+        DocumentSelection documentSelection = new DocumentSelection(Collections.singletonList(new IntRange(0, 1)));
+
+        Assertions.assertEquals("{\"ranges\":[[0,1]]}", documentSelection.toString());
     }
 }

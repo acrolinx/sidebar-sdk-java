@@ -7,6 +7,7 @@ import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class CheckedDocumentPartTest
@@ -27,5 +28,14 @@ class CheckedDocumentPartTest
         assertEquals("{checkId: \"id0\", range:[2,3], externalContent:[{" + "\"id\":\"overview.dita\","
                 + "\"type\":\"ditaReferences\",\"originalBegin\":25,\"originalEnd\":35,\"externalContentMatches\":[{\"id\":\"chapter11.dita\",\"type\":\"ditaReferences\",\"originalBegin\":75,\"originalEnd\":90,\"externalContentMatches\":[]}]}]}",
                 partWithExternalContent.getAsJS());
+    }
+
+    @Test
+    void testToString()
+    {
+        CheckedDocumentPart checkedDocumentPart = new CheckedDocumentPart("foo", new IntRange(0, 1));
+
+        Assertions.assertEquals("{\"checkId\":\"foo\",\"intRange\":{\"min\":0,\"max\":1}}",
+                checkedDocumentPart.toString());
     }
 }
