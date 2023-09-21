@@ -28,7 +28,7 @@ class AcrolinxSidebarInitParameterTest
                     "{\"clientSignature\":\"foo\",\"clientComponents\":[{\"id\":\"foo\",\"name\":\"bar\",\"version\":\"buzz\"},{\"id\":\"com.acrolinx.sidebar.java\",\"name\":\"Java SDK\",\"category\":\"DETAIL\"},{\"id\":\"os.Win\",\"name\":\"Win\",\"version\":\"13.5.1\",\"category\":\"DETAIL\"},{\"id\":\"java.runtime.Zuul\",\"name\":\"OpenJDK Runtime Environment\",\"version\":\"1.8.0_382-c05\",\"category\":\"DETAIL\"}],\"showServerSelector\":false,\"enableSingleSignOn\":false,\"enforceHTTPS\":false,\"logFileLocation\":\"\",\"minimumJavaVersion\":0,\"logger\":{\"name\":\"com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter\"}}",
                     acrolinxSidebarInitParameter.toString());
         } finally {
-            restoreSystemPropertiesProperties(systemProperties);
+            restoreSystemProperties(systemProperties);
         }
     }
 
@@ -61,7 +61,7 @@ class AcrolinxSidebarInitParameterTest
         return new AcrolinxSidebarInitParameter(acrolinxSidebarInitParameterBuilder);
     }
 
-    private static void restoreSystemPropertiesProperties(SystemProperties systemProperties)
+    private static void restoreSystemProperties(SystemProperties systemProperties)
     {
         System.setProperty(OS_NAME, systemProperties.getOsName());
         System.setProperty(OS_VERSION, systemProperties.getOsVersion());
