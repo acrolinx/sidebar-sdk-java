@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 
 class SoftwareComponentTest
 {
-
     @Test
-    void testToString()
+    void toStringTest()
     {
         SoftwareComponent softwareComponent = new SoftwareComponent("foo", "bar", "buzz");
 

@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 
 class BatchCheckRequestOptionsTest
 {
-
     @Test
-    void testToString()
+    void toStringTest()
     {
         BatchCheckRequestOptions batchCheckRequestOptions = new BatchCheckRequestOptions("foo", "bar");
 

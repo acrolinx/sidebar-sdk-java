@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 
 class SidebarMessageTest
 {
-
     @Test
-    void testToString()
+    void toStringTest()
     {
         SidebarMessage sidebarMessage = new SidebarMessage("foo", "bar", SidebarMessageType.SUCCESS);
 

@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 
 class SidebarConfigurationTest
 {
-
     @Test
-    void testToString()
+    void toStringTest()
     {
         SidebarConfiguration sidebarConfiguration = new SidebarConfiguration(false);
 

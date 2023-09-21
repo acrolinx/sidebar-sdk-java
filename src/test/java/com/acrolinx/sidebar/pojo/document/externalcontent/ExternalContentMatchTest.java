@@ -11,7 +11,7 @@ class ExternalContentMatchTest
 {
 
     @Test
-    void testToString()
+    void toStringTest()
     {
         ExternalContentMatch externalContentMatch = new ExternalContentMatch("foo", "bar", 0, 1,
                 Collections.emptyList());

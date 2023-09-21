@@ -31,7 +31,7 @@ class DocumentSelectionTest
     }
 
     @Test
-    void testToString()
+    void toStringTest()
     {
         DocumentSelection documentSelection = new DocumentSelection(Collections.singletonList(new IntRange(0, 1)));
 

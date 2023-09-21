@@ -31,7 +31,7 @@ class CheckedDocumentPartTest
     }
 
     @Test
-    void testToString()
+    void toStringTest()
     {
         CheckedDocumentPart checkedDocumentPart = new CheckedDocumentPart("foo", new IntRange(0, 1));
 

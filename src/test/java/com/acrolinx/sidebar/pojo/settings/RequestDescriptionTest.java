@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 
 class RequestDescriptionTest
 {
-
     @Test
-    void testToString()
+    void toStringTest()
     {
         RequestDescription requestDescription = new RequestDescription("foo");
 

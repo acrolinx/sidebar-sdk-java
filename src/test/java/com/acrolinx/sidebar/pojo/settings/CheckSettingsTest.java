@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 
 class CheckSettingsTest
 {
-
     @Test
-    void testToString()
+    void toStringTest()
     {
         CheckSettings checkSettings = new CheckSettings("en", "foo", new String[]{"buzz"}, true, true, true, true, true,
                 true, new String[]{"buzz"});
