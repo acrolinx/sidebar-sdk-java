@@ -23,7 +23,7 @@ class CheckOptionsTest
     {
         RequestDescription requestDescription = new RequestDescription("foo");
 
-        DocumentSelection documentSelection = new DocumentSelection(Collections.singletonList(new IntRange(0, 0)));
+        DocumentSelection documentSelection = new DocumentSelection(Collections.singletonList(new IntRange(0, 1)));
 
         ExternalContent externalContent = new ExternalContent(null, null, null, null);
 
