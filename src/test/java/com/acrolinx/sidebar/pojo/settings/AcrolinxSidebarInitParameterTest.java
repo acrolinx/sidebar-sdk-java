@@ -18,7 +18,7 @@ class AcrolinxSidebarInitParameterTest
     @Test
     void toStringTest()
     {
-        Properties properties = (Properties) System.getProperties().clone();
+        final Properties properties = (Properties) System.getProperties().clone();
 
         try {
             setSystemProperties();
