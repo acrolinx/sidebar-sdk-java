@@ -15,7 +15,7 @@ class CheckOptionsTest
         CheckOptions checkOptions = createCheckOptions();
 
         Assertions.assertEquals(
-                "{\"inputFormat\":\"AUTO\",\"requestDescription\":{\"documentReference\":\"foo\"},\"selection\":{\"ranges\":[[0,0]]},\"externalContent\":{}}",
+                "{\"inputFormat\":\"AUTO\",\"requestDescription\":{\"documentReference\":\"foo\"},\"selection\":{\"ranges\":[[0,1]]},\"externalContent\":{}}",
                 checkOptions.toString());
     }
 
