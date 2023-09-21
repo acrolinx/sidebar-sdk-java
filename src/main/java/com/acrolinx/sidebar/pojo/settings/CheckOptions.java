@@ -3,6 +3,7 @@ package com.acrolinx.sidebar.pojo.settings;
 
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import javax.annotation.Nullable;
 
 /**
@@ -12,6 +13,7 @@ public class CheckOptions
 {
     private final InputFormat inputFormat;
     private final RequestDescription requestDescription;
+    @SerializedName("selection")
     private final DocumentSelection documentSelection;
     private final ExternalContent externalContent;
 
