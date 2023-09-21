@@ -15,7 +15,7 @@ class CheckOptionsTest
         CheckOptions checkOptions = createCheckOptions();
 
         Assertions.assertEquals(
-                "{\"inputFormat\":\"AUTO\",\"requestDescription\":{\"documentReference\":\"foo\"},\"selection\":{\"ranges\":[[0,1]]},\"externalContent\":{}}",
+                "{\"inputFormat\":\"AUTO\",\"requestDescription\":{\"documentReference\":\"foo\"},\"selection\":{\"ranges\":[[0,1]]},\"externalContent\":{\"textReplacements\":[],\"entities\":[],\"ditaReferences\":[],\"xincludeReferences\":[]}}",
                 checkOptions.toString());
     }
 
@@ -25,7 +25,8 @@ class CheckOptionsTest
 
         DocumentSelection documentSelection = new DocumentSelection(Collections.singletonList(new IntRange(0, 1)));
 
-        ExternalContent externalContent = new ExternalContent(null, null, null, null);
+        ExternalContent externalContent = new ExternalContent(Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList());
 
         return new CheckOptions(requestDescription, InputFormat.AUTO, documentSelection, externalContent);
     }
