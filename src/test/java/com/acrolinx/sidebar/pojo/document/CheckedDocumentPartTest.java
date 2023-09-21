@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 class CheckedDocumentPartTest
 {
     @Test
-    void getAsJS()
+    void getAsJSTest()
     {
         CheckedDocumentPart checkedDocumentPart = new CheckedDocumentPart("id0", new IntRange(2, 3));
         assertEquals("{checkId: \"id0\", range:[2,3]}", checkedDocumentPart.getAsJS());

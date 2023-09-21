@@ -1,14 +1,11 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.document.externalcontent;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ExternalContentFieldTest
 {
-
     @Test
     void toStringTest()
     {
