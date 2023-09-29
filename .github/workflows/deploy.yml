@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Build:
+  Deploy:
     runs-on: ubuntu-latest
     env:
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
@@ -23,6 +23,11 @@ jobs:
           java-version: '8'
           distribution: 'zulu'
           java-package: 'jdk+fx'
+
+      - name: Gradle build
+        uses: gradle/gradle-build-action@b5126f31dbc19dd434c3269bf8c28c315e121da2
+        with:
+          arguments: build
 
       - name: Create Javadoc
         uses: gradle/gradle-build-action@b5126f31dbc19dd434c3269bf8c28c315e121da2
