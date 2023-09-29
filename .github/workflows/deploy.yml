@@ -1,36 +1,8 @@
 name: Build and Deploy
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  schedule:
-    - cron: '0 3 * * *'
   workflow_dispatch:
 
 jobs:
-  Sonar-Check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'zulu'
-          java-package: 'jdk+fx'
-
-      - name: Sonar analysis
-        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
-        env:
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
-        with:
-          arguments: jacocoTestReport sonar
-
   Build:
     runs-on: ubuntu-latest
     env:
@@ -38,8 +10,6 @@ jobs:
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
       ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
       ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
-      ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.SONATYPE_PW }}
-      ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.SONATYPE_USERNAME }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       BUILD_NUMBER: ${{ github.run_number }}
 
@@ -54,23 +24,16 @@ jobs:
           distribution: 'zulu'
           java-package: 'jdk+fx'
 
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@56b90f209b02bf6d1deae490e9ef18b21a389cd4
-
-      - name: Gradle build
-        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
-        with:
-          arguments: build
-
       - name: Create Javadoc
-        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
+        uses: gradle/gradle-build-action@b5126f31dbc19dd434c3269bf8c28c315e121da2
         with:
           arguments: javadoc
 
       - name: Deploy artifacts
         id: deploy
         if: github.ref == 'refs/heads/main'
-        run: ./deploy.sh
+        run: |
+          ./gradlew publishToSonatype closeAndReleaseStagingRepository --stacktrace --warning-mode all
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.67.0
