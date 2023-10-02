@@ -8,7 +8,7 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id 'org.ajoberstar.grgit' version '4.1.1'
-    id "io.github.gradle-nexus.publish-plugin" version "1.3.0"
+    id 'net.researchgate.release' version '3.0.2'
     id 'com.github.node-gradle.node' version '7.0.0'
     id 'com.github.hierynomus.license-report' version '0.16.1'
     id 'org.openjfx.javafxplugin' version '0.0.14' apply false
@@ -216,24 +216,25 @@ publishing {
             }
         }
     }
-}
 
-// Configure Nexus
-nexusPublishing {
-    connectTimeout = Duration.ofMinutes(5);
-    clientTimeout = Duration.ofMinutes(5);
-
-    transitionCheckOptions {
-        maxRetries.set(40)
-        delayBetween.set(Duration.ofMillis(4000))
-    }
-
-    // Snapshot versions are not published
     repositories {
         maven {
-            nexusUrl =  uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            snapshotRepositoryUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = sonatypeUsername
+                password = sonatypePassword
+            }
         }
+    }
+}
+
+release {
+    failOnCommitNeeded = false
+    failOnPublishNeeded = false
+
+    svn {
+        username.set(serviceAccountUsername)
+        password.set(serviceAccountPassword)
     }
 }
 
