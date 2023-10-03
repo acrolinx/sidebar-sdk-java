@@ -8,20 +8,17 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class ChildShell
-{
-    private final Shell child;
+public class ChildShell {
+  private final Shell child;
 
-    public ChildShell(Shell parent, Display display)
-    {
-        child = new Shell(parent, SWT.DIALOG_TRIM);
-        child.setLayout(new FillLayout());
-        child.setText("Acrolinx Sidebar");
-        child.setImage(new Image(display, IconUtils.getAcrolinxIcon_24_24_AsStream()));
-    }
+  public ChildShell(Shell parent, Display display) {
+    child = new Shell(parent, SWT.DIALOG_TRIM);
+    child.setLayout(new FillLayout());
+    child.setText("Acrolinx Sidebar");
+    child.setImage(new Image(display, IconUtils.getAcrolinxIcon_24_24_AsStream()));
+  }
 
-    public Shell getShell()
-    {
-        return child;
-    }
+  public Shell getShell() {
+    return child;
+  }
 }

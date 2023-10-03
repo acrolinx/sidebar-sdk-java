@@ -1,24 +1,20 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.lookup;
 
-public class OffsetAlign
-{
-    private final int oldPosition;
-    private final int diffOffset;
+public class OffsetAlign {
+  private final int oldPosition;
+  private final int diffOffset;
 
-    public OffsetAlign(int oldPosition, int diffOffset)
-    {
-        this.oldPosition = oldPosition;
-        this.diffOffset = diffOffset;
-    }
+  public OffsetAlign(int oldPosition, int diffOffset) {
+    this.oldPosition = oldPosition;
+    this.diffOffset = diffOffset;
+  }
 
-    public int getOldPosition()
-    {
-        return oldPosition;
-    }
+  public int getOldPosition() {
+    return oldPosition;
+  }
 
-    public int getDiffOffset()
-    {
-        return diffOffset;
-    }
+  public int getDiffOffset() {
+    return diffOffset;
+  }
 }

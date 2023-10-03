@@ -7,27 +7,30 @@ import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class CheckOptionsTest
-{
-    @Test
-    void toStringTest()
-    {
-        CheckOptions checkOptions = createCheckOptions();
+class CheckOptionsTest {
+  @Test
+  void toStringTest() {
+    CheckOptions checkOptions = createCheckOptions();
 
-        Assertions.assertEquals(
-                "{\"inputFormat\":\"AUTO\",\"requestDescription\":{\"documentReference\":\"foo\"},\"selection\":{\"ranges\":[[0,1]]},\"externalContent\":{\"textReplacements\":[],\"entities\":[],\"ditaReferences\":[],\"xincludeReferences\":[]}}",
-                checkOptions.toString());
-    }
+    Assertions.assertEquals(
+        "{\"inputFormat\":\"AUTO\",\"requestDescription\":{\"documentReference\":\"foo\"},\"selection\":{\"ranges\":[[0,1]]},\"externalContent\":{\"textReplacements\":[],\"entities\":[],\"ditaReferences\":[],\"xincludeReferences\":[]}}",
+        checkOptions.toString());
+  }
 
-    private static CheckOptions createCheckOptions()
-    {
-        RequestDescription requestDescription = new RequestDescription("foo");
+  private static CheckOptions createCheckOptions() {
+    RequestDescription requestDescription = new RequestDescription("foo");
 
-        DocumentSelection documentSelection = new DocumentSelection(Collections.singletonList(new IntRange(0, 1)));
+    DocumentSelection documentSelection =
+        new DocumentSelection(Collections.singletonList(new IntRange(0, 1)));
 
-        ExternalContent externalContent = new ExternalContent(Collections.emptyList(), Collections.emptyList(),
-                Collections.emptyList(), Collections.emptyList());
+    ExternalContent externalContent =
+        new ExternalContent(
+            Collections.emptyList(),
+            Collections.emptyList(),
+            Collections.emptyList(),
+            Collections.emptyList());
 
-        return new CheckOptions(requestDescription, InputFormat.AUTO, documentSelection, externalContent);
-    }
+    return new CheckOptions(
+        requestDescription, InputFormat.AUTO, documentSelection, externalContent);
+  }
 }

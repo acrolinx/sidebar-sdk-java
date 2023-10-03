@@ -1,20 +1,17 @@
 /* Copyright (c) 2018-present Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.settings;
 
-/**
- * Available formats used by the Acrolinx Server to process the check.
- */
-public enum InputFormat
-{
-    AUTO,
+/** Available formats used by the Acrolinx Server to process the check. */
+public enum InputFormat {
+  AUTO,
 
-    HTML,
+  HTML,
 
-    MARKDOWN,
+  MARKDOWN,
 
-    TEXT,
+  TEXT,
 
-    WORD_XML,
+  WORD_XML,
 
-    XML
+  XML
 }

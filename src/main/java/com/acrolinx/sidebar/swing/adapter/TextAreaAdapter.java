@@ -19,92 +19,84 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Demo adapter for Swing JTextArea.
- * 
+ *
  * @see InputAdapterInterface
  */
-public class TextAreaAdapter implements InputAdapterInterface
-{
-    private static final Logger logger = LoggerFactory.getLogger(TextAreaAdapter.class);
+public class TextAreaAdapter implements InputAdapterInterface {
+  private static final Logger logger = LoggerFactory.getLogger(TextAreaAdapter.class);
 
-    private final JTextArea jTextArea;
-    private InputFormat inputFormat;
-    private final String documentReference;
+  private final JTextArea jTextArea;
+  private InputFormat inputFormat;
+  private final String documentReference;
 
-    public TextAreaAdapter(JTextArea jTextArea, InputFormat inputFormat, String documentReference)
-    {
-        this.jTextArea = jTextArea;
-        this.inputFormat = inputFormat;
-        this.documentReference = documentReference;
+  public TextAreaAdapter(JTextArea jTextArea, InputFormat inputFormat, String documentReference) {
+    this.jTextArea = jTextArea;
+    this.inputFormat = inputFormat;
+    this.documentReference = documentReference;
+  }
+
+  public JTextArea getTextArea() {
+    return jTextArea;
+  }
+
+  @Override
+  public InputFormat getInputFormat() {
+    return inputFormat;
+  }
+
+  public void setInputFormat(InputFormat inputFormat) {
+    this.inputFormat = inputFormat;
+  }
+
+  @Override
+  public String getContent() {
+    return jTextArea.getText();
+  }
+
+  @Override
+  public ExternalContent getExternalContent() {
+    return null;
+  }
+
+  @Override
+  public String getDocumentReference() {
+    return documentReference;
+  }
+
+  @Override
+  public void selectRanges(String checkId, List<AcrolinxMatch> acrolinxMatches) {
+    int minRange = acrolinxMatches.get(0).getRange().getMinimumInteger();
+    int maxRange = acrolinxMatches.get(acrolinxMatches.size() - 1).getRange().getMaximumInteger();
+    Highlighter highlighter = jTextArea.getHighlighter();
+    highlighter.removeAllHighlights();
+    try {
+      highlighter.addHighlight(minRange, maxRange, DefaultHighlighter.DefaultPainter);
+    } catch (BadLocationException e) {
+      logger.error("", e);
     }
+  }
 
-    public JTextArea getTextArea()
-    {
-        return jTextArea;
-    }
+  @Override
+  public void replaceRanges(String checkId, List<AcrolinxMatchWithReplacement> matches) {
+    matches.stream()
+        .sorted(new MatchComparator().reversed())
+        .forEach(
+            match -> {
+              int minRange = match.getRange().getMinimumInteger();
+              int maxRange = match.getRange().getMaximumInteger();
+              String replacement = match.getReplacement();
+              Highlighter highlighter = jTextArea.getHighlighter();
+              highlighter.removeAllHighlights();
+              jTextArea.replaceRange(replacement, minRange, maxRange);
+            });
+  }
 
-    @Override
-    public InputFormat getInputFormat()
-    {
-        return inputFormat;
-    }
-
-    public void setInputFormat(InputFormat inputFormat)
-    {
-        this.inputFormat = inputFormat;
-    }
-
-    @Override
-    public String getContent()
-    {
-        return jTextArea.getText();
-    }
-
-    @Override
-    public ExternalContent getExternalContent()
-    {
-        return null;
-    }
-
-    @Override
-    public String getDocumentReference()
-    {
-        return documentReference;
-    }
-
-    @Override
-    public void selectRanges(String checkId, List<AcrolinxMatch> acrolinxMatches)
-    {
-        int minRange = acrolinxMatches.get(0).getRange().getMinimumInteger();
-        int maxRange = acrolinxMatches.get(acrolinxMatches.size() - 1).getRange().getMaximumInteger();
-        Highlighter highlighter = jTextArea.getHighlighter();
-        highlighter.removeAllHighlights();
-        try {
-            highlighter.addHighlight(minRange, maxRange, DefaultHighlighter.DefaultPainter);
-        } catch (BadLocationException e) {
-            logger.error("", e);
-        }
-    }
-
-    @Override
-    public void replaceRanges(String checkId, List<AcrolinxMatchWithReplacement> matches)
-    {
-        matches.stream().sorted(new MatchComparator().reversed()).forEach(match -> {
-            int minRange = match.getRange().getMinimumInteger();
-            int maxRange = match.getRange().getMaximumInteger();
-            String replacement = match.getReplacement();
-            Highlighter highlighter = jTextArea.getHighlighter();
-            highlighter.removeAllHighlights();
-            jTextArea.replaceRange(replacement, minRange, maxRange);
-        });
-    }
-
-    @Override
-    public List<IntRange> getCurrentSelection()
-    {
-        int selectionStart = this.jTextArea.getSelectionStart();
-        int selectionEnd = this.jTextArea.getSelectionEnd();
-        List<IntRange> intRanges = new ArrayList<>();
-        intRanges.add(new IntRange(selectionStart, selectionEnd));
-        return intRanges;
-    }
+  @Override
+  public List<IntRange> getCurrentSelection() {
+    int selectionStart = this.jTextArea.getSelectionStart();
+    int selectionEnd = this.jTextArea.getSelectionEnd();
+    List<IntRange> intRanges = new ArrayList<>();
+    intRanges.add(new IntRange(selectionStart, selectionEnd));
+    return intRanges;
+  }
 }
