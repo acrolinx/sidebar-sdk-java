@@ -13,56 +13,49 @@ import java.util.Optional;
  * This interface needs be implemented to integrate Acrolinx with an editor or editing environment.
  * These methods are called by the Acrolinx Sidebar to interact with the editor.
  *
- * Remember to activate logging by using LoggingUtils.setupDefaultLogging() on application/plugin
+ * <p>Remember to activate logging by using LoggingUtils.setupDefaultLogging() on application/plugin
  * start.
  */
-public interface AcrolinxIntegration
-{
-    /**
-     * Adapter to extract the text to be checked. It needs to be an implementation of
-     * InputAdapterInterface.
-     *
-     * @see InputAdapterInterface
-     */
-    InputAdapterInterface getEditorAdapter();
+public interface AcrolinxIntegration {
+  /**
+   * Adapter to extract the text to be checked. It needs to be an implementation of
+   * InputAdapterInterface.
+   *
+   * @see InputAdapterInterface
+   */
+  InputAdapterInterface getEditorAdapter();
 
-    /**
-     * Gets the parameters used to initialize the Acrolinx Sidebar.
-     *
-     * @see AcrolinxSidebarInitParameter
-     */
-    AcrolinxSidebarInitParameter getInitParameters();
+  /**
+   * Gets the parameters used to initialize the Acrolinx Sidebar.
+   *
+   * @see AcrolinxSidebarInitParameter
+   */
+  AcrolinxSidebarInitParameter getInitParameters();
 
-    /**
-     * Notifies the Acrolinx Integration about the checks result.
-     */
-    void onCheckResult(CheckResult checkResult);
+  /** Notifies the Acrolinx Integration about the checks result. */
+  void onCheckResult(CheckResult checkResult);
 
-    /**
-     * Notifies the Acrolinx Integration about the result of the initializing process.
-     */
-    void onInitFinished(Optional<SidebarError> initResult);
+  /** Notifies the Acrolinx Integration about the result of the initializing process. */
+  void onInitFinished(Optional<SidebarError> initResult);
 
-    /**
-     * Opens the given document in editor and notifies the sidebar that the document has been opened.
-     */
-    boolean openDocumentInEditor(String documentIdentifier);
+  /**
+   * Opens the given document in editor and notifies the sidebar that the document has been opened.
+   */
+  boolean openDocumentInEditor(String documentIdentifier);
 
-    /**
-     * Extracts all the references that should be listed for background check
-     *
-     * @return List<BatchCheckRequestOptions>
-     */
-    List<BatchCheckRequestOptions> extractReferences();
+  /**
+   * Extracts all the references that should be listed for background check
+   *
+   * @return List<BatchCheckRequestOptions>
+   */
+  List<BatchCheckRequestOptions> extractReferences();
 
-    /**
-     * Called together with getContentForDocument before running the background check on the given
-     * document.
-     */
-    CheckOptions getCheckOptionsForDocument(String documentIdentifier);
+  /**
+   * Called together with getContentForDocument before running the background check on the given
+   * document.
+   */
+  CheckOptions getCheckOptionsForDocument(String documentIdentifier);
 
-    /**
-     * Gets the content for a requested background check
-     */
-    String getContentForDocument(String documentIdentifier);
+  /** Gets the content for a requested background check */
+  String getContentForDocument(String documentIdentifier);
 }

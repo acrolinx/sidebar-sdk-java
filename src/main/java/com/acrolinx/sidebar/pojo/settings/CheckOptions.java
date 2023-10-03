@@ -6,45 +6,43 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import javax.annotation.Nullable;
 
-/**
- * Check options define how the Acrolinx Server handles document to check.
- */
-public class CheckOptions
-{
-    private final InputFormat inputFormat;
-    private final RequestDescription requestDescription;
-    @SerializedName("selection")
-    private final DocumentSelection documentSelection;
-    private final ExternalContent externalContent;
+/** Check options define how the Acrolinx Server handles document to check. */
+public class CheckOptions {
+  private final InputFormat inputFormat;
+  private final RequestDescription requestDescription;
 
-    /**
-     * @param inputFormat Check InputFormat for valid formats.
-     * @param requestDescription Contains the document reference. This can be an id or path to identify
-     *        the document.
-     */
-    public CheckOptions(RequestDescription requestDescription, InputFormat inputFormat,
-            DocumentSelection documentSelection, @Nullable ExternalContent externalContent)
-    {
-        this.requestDescription = requestDescription;
-        this.inputFormat = inputFormat;
-        this.documentSelection = documentSelection;
-        this.externalContent = externalContent;
-    }
+  @SerializedName("selection")
+  private final DocumentSelection documentSelection;
 
-    public InputFormat getInputFormat()
-    {
-        return inputFormat;
-    }
+  private final ExternalContent externalContent;
 
-    public RequestDescription getRequestDescription()
-    {
-        return requestDescription;
-    }
+  /**
+   * @param inputFormat Check InputFormat for valid formats.
+   * @param requestDescription Contains the document reference. This can be an id or path to
+   *     identify the document.
+   */
+  public CheckOptions(
+      RequestDescription requestDescription,
+      InputFormat inputFormat,
+      DocumentSelection documentSelection,
+      @Nullable ExternalContent externalContent) {
+    this.requestDescription = requestDescription;
+    this.inputFormat = inputFormat;
+    this.documentSelection = documentSelection;
+    this.externalContent = externalContent;
+  }
 
-    @Override
-    public String toString()
-    {
-        Gson gson = new Gson();
-        return gson.toJson(this);
-    }
+  public InputFormat getInputFormat() {
+    return inputFormat;
+  }
+
+  public RequestDescription getRequestDescription() {
+    return requestDescription;
+  }
+
+  @Override
+  public String toString() {
+    Gson gson = new Gson();
+    return gson.toJson(this);
+  }
 }

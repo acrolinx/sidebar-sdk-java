@@ -8,159 +8,186 @@ import com.acrolinx.sidebar.pojo.document.IntRange;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class XMLLookupUtilsTest
-{
-    private static final String XML_CONTENT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-            + "<bookstore xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-            + "           xsi:noNamespaceSchemaLocation=\"BookStore.xsd\">\n"
-            + "    <book price=\"730.54\" ISBN=\"string\" publicationdate=\"2016-02-27\">\n"
-            + "        <title>Some hideous story about monsters</title>\n" + "        <author>\n"
-            + "            <first-name>Max</first-name>\n" + "            <last-name>Muster</last-name>\n"
-            + "        </author>\n" + "        <genre>Fantastic Fantasy</genre>\n" + "    </book>\n"
-            + "    <book price=\"6738.774\" ISBN=\"string\">\n"
-            + "        <title>Little munchkins on adventures</title>\n" + "        <author>\n"
-            + "            <first-name>Susi</first-name>\n" + "            <last-name>Some Name</last-name>\n"
-            + "        </author>\n" + "    </book>\n" + "</bookstore>\n";
+class XMLLookupUtilsTest {
+  private static final String XML_CONTENT =
+      "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+          + "<bookstore xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+          + "           xsi:noNamespaceSchemaLocation=\"BookStore.xsd\">\n"
+          + "    <book price=\"730.54\" ISBN=\"string\" publicationdate=\"2016-02-27\">\n"
+          + "        <title>Some hideous story about monsters</title>\n"
+          + "        <author>\n"
+          + "            <first-name>Max</first-name>\n"
+          + "            <last-name>Muster</last-name>\n"
+          + "        </author>\n"
+          + "        <genre>Fantastic Fantasy</genre>\n"
+          + "    </book>\n"
+          + "    <book price=\"6738.774\" ISBN=\"string\">\n"
+          + "        <title>Little munchkins on adventures</title>\n"
+          + "        <author>\n"
+          + "            <first-name>Susi</first-name>\n"
+          + "            <last-name>Some Name</last-name>\n"
+          + "        </author>\n"
+          + "    </book>\n"
+          + "</bookstore>\n";
 
-    @Test
-    void findOffsetInXmlStringByXpath()
-    {
-        IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(XML_CONTENT,
-                "//bookstore[1]/book[1]/genre[1]");
-        assertEquals(414, offsetForXPATH.getMinimumInteger());
-        assertEquals(446, offsetForXPATH.getMaximumInteger());
-        assertEquals("<genre>Fantastic Fantasy</genre>", XML_CONTENT.substring(414, 446));
-    }
+  @Test
+  void findOffsetInXmlStringByXpath() {
+    IntRange offsetForXPATH =
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
+            XML_CONTENT, "//bookstore[1]/book[1]/genre[1]");
+    assertEquals(414, offsetForXPATH.getMinimumInteger());
+    assertEquals(446, offsetForXPATH.getMaximumInteger());
+    assertEquals("<genre>Fantastic Fantasy</genre>", XML_CONTENT.substring(414, 446));
+  }
 
-    @Test
-    void findXpathByOffset() throws Exception
-    {
-        int index = XML_CONTENT.indexOf("Fantastic");
-        String xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT, index, index + "Fantastic".length());
-        assertEquals("//bookstore[1]/book[1]/genre[1]", xpathByOffset);
+  @Test
+  void findXpathByOffset() throws Exception {
+    int index = XML_CONTENT.indexOf("Fantastic");
+    String xpathByOffset =
+        XMLLookupUtils.findXpathByOffset(XML_CONTENT, index, index + "Fantastic".length());
+    assertEquals("//bookstore[1]/book[1]/genre[1]", xpathByOffset);
 
-        index = XML_CONTENT.indexOf("Some Name");
-        xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT, index, index + "Some Name".length());
-        assertEquals("//bookstore[1]/book[2]/author[1]/last-name[1]", xpathByOffset);
-    }
+    index = XML_CONTENT.indexOf("Some Name");
+    xpathByOffset =
+        XMLLookupUtils.findXpathByOffset(XML_CONTENT, index, index + "Some Name".length());
+    assertEquals("//bookstore[1]/book[2]/author[1]/last-name[1]", xpathByOffset);
+  }
 
-    @Test
-    void testCommonXpath()
-    {
-        assertEquals("//para[1]/p[2]/sub[1]",
-                XMLLookupUtils.getCommonXpath("//para[1]/p[2]/sub[1]", "//para[1]/p[2]/sub[1]"));
-        assertEquals("//para[1]/p[2]", XMLLookupUtils.getCommonXpath("//para[1]/p[2]", "//para[1]/p[2]/sub[1]"));
-        assertEquals("//para[1]/p[2]", XMLLookupUtils.getCommonXpath("//para[1]/p[2]/sub[1]", "//para[1]/p[2]"));
-        assertEquals("//para[1]/p[2]",
-                XMLLookupUtils.getCommonXpath("//para[1]/p[2]/sub[1]/", "//para[1]/p[2]/sub[2]"));
-    }
+  @Test
+  void testCommonXpath() {
+    assertEquals(
+        "//para[1]/p[2]/sub[1]",
+        XMLLookupUtils.getCommonXpath("//para[1]/p[2]/sub[1]", "//para[1]/p[2]/sub[1]"));
+    assertEquals(
+        "//para[1]/p[2]", XMLLookupUtils.getCommonXpath("//para[1]/p[2]", "//para[1]/p[2]/sub[1]"));
+    assertEquals(
+        "//para[1]/p[2]", XMLLookupUtils.getCommonXpath("//para[1]/p[2]/sub[1]", "//para[1]/p[2]"));
+    assertEquals(
+        "//para[1]/p[2]",
+        XMLLookupUtils.getCommonXpath("//para[1]/p[2]/sub[1]/", "//para[1]/p[2]/sub[2]"));
+  }
 
-    @Test
-    void testXHTMLContent() throws Exception
-    {
-        String XHtmlContent = "<!--Arbortext, Inc., 1988-2019, v.4002-->\n"
-                + "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n"
-                + " \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-                + "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" + "<head>\n"
-                + "<title>TEST_CONTAINER</title><?Pub Caret -1>\n"
-                + "<meta content=\"text/html; charset=iso-8859-1\" http-equiv=\"content-type\">\n" + "</head>\n"
-                + "<body>\t\t\t \t\t\t<div>\t\t\t\t<img\n" + "alt=\"notice that all my quotes are in\n"
-                + " place for attribute values\" src=\"logoBlackBlue.png\"> \t\t\t\t</div> \t\t\t</body>\n" + "</html>";
-        int index = XHtmlContent.indexOf("TEST_CONTAINER");
-        String xpathByOffset = XMLLookupUtils.findXpathByOffset(XHtmlContent, index, index + "TEST_CONTAINER".length());
-        assertEquals("//html[1]/head[1]/title[1]", xpathByOffset);
-    }
+  @Test
+  void testXHTMLContent() throws Exception {
+    String XHtmlContent =
+        "<!--Arbortext, Inc., 1988-2019, v.4002-->\n"
+            + "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n"
+            + " \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+            + "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
+            + "<head>\n"
+            + "<title>TEST_CONTAINER</title><?Pub Caret -1>\n"
+            + "<meta content=\"text/html; charset=iso-8859-1\" http-equiv=\"content-type\">\n"
+            + "</head>\n"
+            + "<body>\t\t\t \t\t\t<div>\t\t\t\t<img\n"
+            + "alt=\"notice that all my quotes are in\n"
+            + " place for attribute values\" src=\"logoBlackBlue.png\"> \t\t\t\t</div> \t\t\t</body>\n"
+            + "</html>";
+    int index = XHtmlContent.indexOf("TEST_CONTAINER");
+    String xpathByOffset =
+        XMLLookupUtils.findXpathByOffset(XHtmlContent, index, index + "TEST_CONTAINER".length());
+    assertEquals("//html[1]/head[1]/title[1]", xpathByOffset);
+  }
 
-    @Test
-    void testGetAllXpathsFromDocument() throws Exception
-    {
-        final List<String> allXpathInXmlDocument = XMLLookupUtils.getAllXpathInXmlDocument(XML_CONTENT);
-        assertEquals(12, allXpathInXmlDocument.size());
-    }
+  @Test
+  void testGetAllXpathsFromDocument() throws Exception {
+    final List<String> allXpathInXmlDocument = XMLLookupUtils.getAllXpathInXmlDocument(XML_CONTENT);
+    assertEquals(12, allXpathInXmlDocument.size());
+  }
 
-    @Test
-    void testCleanXML()
-    {
-        String xhtmlContent = "<!--Arbortext, Inc., 1988-2019, v.4002-->\n"
-                + "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n"
-                + " \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-                + "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" + "<head>\n"
-                + "<title>TEST_CONTAINER</title><?Pub Caret -1>\n"
-                + "<meta content=\"text/html; charset=iso-8859-1\" http-equiv=\"content-type\">\n" + "</head>\n"
-                + "<body>\t\t\t \t\t\t<div>\t\t\t\t<img\n" + "alt=\"notice that all my quotes are in\n"
-                + " place for attribute values\" src=\"logoBlackBlue.png\"> \t\t\t\t</div> \t\t\t</body>\n" + "</html>";
-        final String cleanXml = XMLLookupUtils.cleanXML(xhtmlContent);
-        assertTrue(cleanXml.contains("</meta>"));
-    }
+  @Test
+  void testCleanXML() {
+    String xhtmlContent =
+        "<!--Arbortext, Inc., 1988-2019, v.4002-->\n"
+            + "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n"
+            + " \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+            + "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
+            + "<head>\n"
+            + "<title>TEST_CONTAINER</title><?Pub Caret -1>\n"
+            + "<meta content=\"text/html; charset=iso-8859-1\" http-equiv=\"content-type\">\n"
+            + "</head>\n"
+            + "<body>\t\t\t \t\t\t<div>\t\t\t\t<img\n"
+            + "alt=\"notice that all my quotes are in\n"
+            + " place for attribute values\" src=\"logoBlackBlue.png\"> \t\t\t\t</div> \t\t\t</body>\n"
+            + "</html>";
+    final String cleanXml = XMLLookupUtils.cleanXML(xhtmlContent);
+    assertTrue(cleanXml.contains("</meta>"));
+  }
 
-    @Test
-    void testFindOffsetInXmlStringByXpathAdmonition()
-    {
-        String content = "<!DOCTYPE procedure PUBLIC \"-//Scania//DTD -//WINGS DTD 2.00//EN\" \"wings.dtd\"><procedure class=\"description\" original-language=\"sv-SE\" type=\"remove\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><wsm-description-title its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">9- och 13-litersmotor [XPI]</wsm-description-title><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8d699\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"environment\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">firrst Tänk på miljön, undvik middle  spill och använd uppsamlingskärl lasst</p></admonition><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8eb67\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"note\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">onee Använd hjullyftar för att förenkla twoo borttagningen fourr och ditsättningen av motorn threee</p></admonition></procedure>";
-        IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content,
-                "//procedure[1]/admonition[1]/p[1]");
-        assertEquals(531, offsetForXPATH.getMinimumInteger());
-        assertEquals(672, offsetForXPATH.getMaximumInteger());
-        assertEquals(
-                "<p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">firrst Tänk på miljön, undvik middle  spill och använd uppsamlingskärl lasst</p>",
-                content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
-    }
+  @Test
+  void testFindOffsetInXmlStringByXpathAdmonition() {
+    String content =
+        "<!DOCTYPE procedure PUBLIC \"-//Scania//DTD -//WINGS DTD 2.00//EN\" \"wings.dtd\"><procedure class=\"description\" original-language=\"sv-SE\" type=\"remove\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><wsm-description-title its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">9- och 13-litersmotor [XPI]</wsm-description-title><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8d699\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"environment\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">firrst Tänk på miljön, undvik middle  spill och använd uppsamlingskärl lasst</p></admonition><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8eb67\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"note\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">onee Använd hjullyftar för att förenkla twoo borttagningen fourr och ditsättningen av motorn threee</p></admonition></procedure>";
+    IntRange offsetForXPATH =
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
+            content, "//procedure[1]/admonition[1]/p[1]");
+    assertEquals(531, offsetForXPATH.getMinimumInteger());
+    assertEquals(672, offsetForXPATH.getMaximumInteger());
+    assertEquals(
+        "<p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">firrst Tänk på miljön, undvik middle  spill och använd uppsamlingskärl lasst</p>",
+        content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
+  }
 
-    @Test
-    void testFindOffsetInXmlStringByXpathAdmonition2()
-    {
-        String content = "<!DOCTYPE procedure PUBLIC \"-//Scania//DTD -//WINGS DTD 2.00//EN\" \"wings.dtd\"><procedure class=\"description\" original-language=\"sv-SE\" type=\"remove\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><wsm-description-title its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">9- och 13-litersmotor [XPI]</wsm-description-title><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8d699\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"environment\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">firrst Tänk på miljön, undvik middle  spill och använd uppsamlingskärl lasst</p></admonition><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8eb67\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"note\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">onee Använd hjullyftar för att förenkla twoo borttagningen fourr och ditsättningen av motorn threee</p></admonition></procedure>";
-        IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content,
-                "//procedure[1]/admonition[2]/p[1]");
-        assertEquals(872, offsetForXPATH.getMinimumInteger());
-        assertEquals(1036, offsetForXPATH.getMaximumInteger());
-        assertEquals(
-                "<p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">onee Använd hjullyftar för att förenkla twoo borttagningen fourr och ditsättningen av motorn threee</p>",
-                content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
-    }
+  @Test
+  void testFindOffsetInXmlStringByXpathAdmonition2() {
+    String content =
+        "<!DOCTYPE procedure PUBLIC \"-//Scania//DTD -//WINGS DTD 2.00//EN\" \"wings.dtd\"><procedure class=\"description\" original-language=\"sv-SE\" type=\"remove\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><wsm-description-title its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">9- och 13-litersmotor [XPI]</wsm-description-title><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8d699\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"environment\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">firrst Tänk på miljön, undvik middle  spill och använd uppsamlingskärl lasst</p></admonition><admonition class=\"admonition\" dctm:obj_id=\"09010d2e80b8eb67\" dctm:obj_status=\"Read-Only\" dctm:version_label=\"CURRENT\" type=\"note\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">onee Använd hjullyftar för att förenkla twoo borttagningen fourr och ditsättningen av motorn threee</p></admonition></procedure>";
+    IntRange offsetForXPATH =
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
+            content, "//procedure[1]/admonition[2]/p[1]");
+    assertEquals(872, offsetForXPATH.getMinimumInteger());
+    assertEquals(1036, offsetForXPATH.getMaximumInteger());
+    assertEquals(
+        "<p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">onee Använd hjullyftar för att förenkla twoo borttagningen fourr och ditsättningen av motorn threee</p>",
+        content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
+  }
 
-    @Test
-    void testFindOffsetInXmlStringByXpathSimple()
-    {
-        String content = "<x><y>Thiss iss tesst.</y></x>";
-        IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/y[1]");
-        assertEquals("<y>Thiss iss tesst.</y>",
-                content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
-    }
+  @Test
+  void testFindOffsetInXmlStringByXpathSimple() {
+    String content = "<x><y>Thiss iss tesst.</y></x>";
+    IntRange offsetForXPATH =
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/y[1]");
+    assertEquals(
+        "<y>Thiss iss tesst.</y>",
+        content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
+  }
 
-    @Test
-    void testFindOffsetInXmlStringByXpathRootElement()
-    {
-        String content = "<x>The root element test</x>";
-        IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]");
-        assertEquals(content,
-                content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
-    }
+  @Test
+  void testFindOffsetInXmlStringByXpathRootElement() {
+    String content = "<x>The root element test</x>";
+    IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]");
+    assertEquals(
+        content,
+        content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
+  }
 
-    @Test
-    void testFindOffsetInXmlStringByXpathRepeatedElements()
-    {
-        String content = "<x>Root<x>Child1<x>Child2<x>Child3</x></x></x></x>";
-        IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/x[1]/x[1]/x[1]");
-        assertEquals("<x>Child3</x>",
-                content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
-    }
+  @Test
+  void testFindOffsetInXmlStringByXpathRepeatedElements() {
+    String content = "<x>Root<x>Child1<x>Child2<x>Child3</x></x></x></x>";
+    IntRange offsetForXPATH =
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/x[1]/x[1]/x[1]");
+    assertEquals(
+        "<x>Child3</x>",
+        content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
+  }
 
-    @Test
-    void testFindOffsetInXmlStringByXpathSiblingInRepeatedElements()
-    {
-        String content = "<x>Root<x>Child1<x>Child2<x>Child3</x></x></x><x>Sibling</x></x>";
-        IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/x[2]");
-        assertEquals("<x>Sibling</x>",
-                content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
-    }
+  @Test
+  void testFindOffsetInXmlStringByXpathSiblingInRepeatedElements() {
+    String content = "<x>Root<x>Child1<x>Child2<x>Child3</x></x></x><x>Sibling</x></x>";
+    IntRange offsetForXPATH =
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/x[2]");
+    assertEquals(
+        "<x>Sibling</x>",
+        content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
+  }
 
-    @Test
-    void testFindOffsetInXmlStringByXpathAdditionalSpacesInAttributes()
-    {
-        String content = "<x>Root<x>Child1<x>Child2<x>Child3</x></x></x><x  a=\"abc\"   b=\"pqr\">Sibling</x></x>";
-        IntRange offsetForXPATH = XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/x[2]");
-        assertEquals("<x  a=\"abc\"   b=\"pqr\">Sibling</x>",
-                content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
-    }
+  @Test
+  void testFindOffsetInXmlStringByXpathAdditionalSpacesInAttributes() {
+    String content =
+        "<x>Root<x>Child1<x>Child2<x>Child3</x></x></x><x  a=\"abc\"   b=\"pqr\">Sibling</x></x>";
+    IntRange offsetForXPATH =
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(content, "//x[1]/x[2]");
+    assertEquals(
+        "<x  a=\"abc\"   b=\"pqr\">Sibling</x>",
+        content.substring(offsetForXPATH.getMinimumInteger(), offsetForXPATH.getMaximumInteger()));
+  }
 }

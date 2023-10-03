@@ -12,50 +12,42 @@ import java.util.List;
 
 /**
  * Use as fallback input adapter.
- * 
+ *
  * @see InputAdapterInterface
  */
-public class NullEditorAdapter implements InputAdapterInterface
-{
-    @Override
-    public InputFormat getInputFormat()
-    {
-        return null;
-    }
+public class NullEditorAdapter implements InputAdapterInterface {
+  @Override
+  public InputFormat getInputFormat() {
+    return null;
+  }
 
-    @Override
-    public String getContent()
-    {
-        return null;
-    }
+  @Override
+  public String getContent() {
+    return null;
+  }
 
-    @Override
-    public ExternalContent getExternalContent()
-    {
-        return null;
-    }
+  @Override
+  public ExternalContent getExternalContent() {
+    return null;
+  }
 
-    @Override
-    public String getDocumentReference()
-    {
-        return null;
-    }
+  @Override
+  public String getDocumentReference() {
+    return null;
+  }
 
-    @Override
-    public void selectRanges(String checkId, List<AcrolinxMatch> acrolinxMatches)
-    {
-        //
-    }
+  @Override
+  public void selectRanges(String checkId, List<AcrolinxMatch> acrolinxMatches) {
+    //
+  }
 
-    @Override
-    public void replaceRanges(String checkId, List<AcrolinxMatchWithReplacement> matches)
-    {
-        //
-    }
+  @Override
+  public void replaceRanges(String checkId, List<AcrolinxMatchWithReplacement> matches) {
+    //
+  }
 
-    @Override
-    public List<IntRange> getCurrentSelection()
-    {
-        return Collections.emptyList();
-    }
+  @Override
+  public List<IntRange> getCurrentSelection() {
+    return Collections.emptyList();
+  }
 }
