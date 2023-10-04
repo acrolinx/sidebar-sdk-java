@@ -3,7 +3,6 @@ import org.gradle.internal.os.OperatingSystem
 import java.time.Duration
 
 plugins {
-	id 'idea'
 	id 'java-library'
 	id 'jacoco'
 	id 'maven-publish'
@@ -39,8 +38,8 @@ dependencies {
 	api 'com.google.guava:guava:32.1.2-jre'
 	compileOnly "org.eclipse.platform:$swtNatives:$SWT_VERSION"
 
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 repositories {
@@ -69,9 +68,6 @@ tasks.withType(Javadoc) {
 
 project.version = currentVersion
 group = 'com.acrolinx.client'
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
@@ -338,6 +334,7 @@ tasks.named('test') {
 }
 
 java {
+	sourceCompatibility = JavaVersion.VERSION_1_8
 	withJavadocJar()
 	withSourcesJar()
 }
