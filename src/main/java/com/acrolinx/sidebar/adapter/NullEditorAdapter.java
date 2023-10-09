@@ -38,12 +38,12 @@ public class NullEditorAdapter implements InputAdapterInterface {
 
   @Override
   public void selectRanges(String checkId, List<AcrolinxMatch> acrolinxMatches) {
-    //
+    // do nothing
   }
 
   @Override
   public void replaceRanges(String checkId, List<AcrolinxMatchWithReplacement> matches) {
-    //
+    // do nothing
   }
 
   @Override
