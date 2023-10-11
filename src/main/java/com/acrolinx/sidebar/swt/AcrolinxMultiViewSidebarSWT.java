@@ -108,7 +108,6 @@ public class AcrolinxMultiViewSidebarSWT {
     final AcrolinxSidebarSWT sidebarRemoved = this.sidebarSWTMap.remove(documentId);
 
     if (sidebarRemoved == null) {
-
       throw new AcrolinxException("Sidebar doesn't exist for the given document Id");
     }
 
