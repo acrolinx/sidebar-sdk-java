@@ -123,7 +123,7 @@ jar {
 	}
 }
 
-task copyServerSelectorRessources(type: Copy, dependsOn: npm_install) {
+task copyServerSelectorResources(type: Copy, dependsOn: npm_install) {
 	doFirst {
 		def mainDir = new File('src/main/resources')
 		def subDir = new File(mainDir, 'server-selector')
@@ -362,8 +362,8 @@ spotless {
 	}
 }
 
-sourcesJar.dependsOn copyServerSelectorRessources
-processResources.dependsOn copyServerSelectorRessources
+sourcesJar.dependsOn copyServerSelectorResources
+processResources.dependsOn copyServerSelectorResources
 processResources.dependsOn convertLocalizationEncoding
 jar.dependsOn 'downloadLicenses'
 jar.dependsOn createVersionPropertiesFile
