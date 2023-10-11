@@ -1,4 +1,4 @@
-name: Release Stable Version
+name: Release Snapshot Version
 on:
   workflow_dispatch:
 
@@ -9,7 +9,7 @@ jobs:
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
       ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
-      ORG_GRADLE_PROJECT_mavenRepo: prod
+      ORG_GRADLE_PROJECT_mavenRepo: snapshot
       ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
       ORG_GRADLE_PROJECT_serviceAccountUsername: ${{ secrets.SERVICE_ACCOUNT_USERNAME }}
       ORG_GRADLE_PROJECT_serviceAccountPassword: ${{ secrets.SERVICE_ACCOUNT_PASSWORD }}
@@ -21,19 +21,19 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
           java-version: '8'
           distribution: 'zulu'
           java-package: 'jdk+fx'
 
       - name: Gradle build
-        uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
+        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
         with:
           arguments: build
 
       - name: Create Javadoc
-        uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
+        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
         with:
           arguments: javadoc
 
@@ -49,7 +49,7 @@ jobs:
           CUSTOM_TAG: ${{ steps.deploy.outputs.TAGNAME }}
 
       - name: Deploy Javadoc
-        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
         if: steps.deploy.outputs.RELEASE == 'true' && github.ref == 'refs/heads/main'
         with:
           branch: gh-pages
