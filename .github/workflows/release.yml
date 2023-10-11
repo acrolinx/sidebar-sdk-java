@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Release Stable
 on:
   workflow_dispatch:
 
@@ -39,8 +39,7 @@ jobs:
       - name: Deploy artifacts
         id: deploy
         if: github.ref == 'refs/heads/main'
-        run: |
-          ./gradlew release -Prelease.useAutomaticVersion=true --stacktrace --warning-mode all
+        run: ./gradlew release -Prelease.useAutomaticVersion=true --stacktrace --warning-mode all
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.67.0

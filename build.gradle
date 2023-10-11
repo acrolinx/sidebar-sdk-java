@@ -60,7 +60,7 @@ sonar {
 	}
 }
 
-tasks.withType(Javadoc).configureEach {
+tasks.withType(Javadoc) {
 	options.addStringOption('Xdoclint:none', '-quiet')
 	options.memberLevel = JavadocMemberLevel.PUBLIC
 }
@@ -291,6 +291,7 @@ tasks.named('test') {
 }
 
 java {
+	sourceCompatibility = JavaVersion.VERSION_1_8
 	withJavadocJar()
 	withSourcesJar()
 }
