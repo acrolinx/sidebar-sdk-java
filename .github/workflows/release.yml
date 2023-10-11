@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Release Stable
 on:
   workflow_dispatch:
 
@@ -27,20 +27,19 @@ jobs:
           java-package: 'jdk+fx'
 
       - name: Gradle build
-        uses: gradle/gradle-build-action@b5126f31dbc19dd434c3269bf8c28c315e121da2
+        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
         with:
           arguments: build
 
       - name: Create Javadoc
-        uses: gradle/gradle-build-action@b5126f31dbc19dd434c3269bf8c28c315e121da2
+        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
         with:
           arguments: javadoc
 
       - name: Deploy artifacts
         id: deploy
         if: github.ref == 'refs/heads/main'
-        run: |
-          ./gradlew release -Prelease.useAutomaticVersion=true --stacktrace --warning-mode all
+        run: ./gradlew release -Prelease.useAutomaticVersion=true --stacktrace --warning-mode all
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.67.0
