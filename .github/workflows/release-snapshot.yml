@@ -1,4 +1,4 @@
-name: Release Stable Version
+name: Release Snapshot Version
 on:
   workflow_dispatch:
 
@@ -9,7 +9,7 @@ jobs:
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
       ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
-      ORG_GRADLE_PROJECT_mavenRepo: prod
+      ORG_GRADLE_PROJECT_mavenRepo: snapshot
       ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
       ORG_GRADLE_PROJECT_serviceAccountUsername: ${{ secrets.SERVICE_ACCOUNT_USERNAME }}
       ORG_GRADLE_PROJECT_serviceAccountPassword: ${{ secrets.SERVICE_ACCOUNT_PASSWORD }}

@@ -204,7 +204,8 @@ publishing {
 	}
 	repositories {
 		maven {
-			url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+			url = mavenRepo == "prod" ? "https://oss.sonatype.org/service/local/staging/deploy/maven2/" :
+					mavenRepo == "snapshot" ? "https://oss.sonatype.org/content/repositories/snapshots/" : ""
 			credentials {
 				username = sonatypeUsername
 				password = sonatypePassword
