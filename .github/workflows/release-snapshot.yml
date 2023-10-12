@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Deploy:
+  Release-Snapshot:
     runs-on: ubuntu-latest
     env:
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
