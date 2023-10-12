@@ -217,11 +217,6 @@ publishing {
 release {
 	failOnCommitNeeded = false
 	failOnPublishNeeded = false
-
-	svn {
-		username.set(serviceAccountUsername)
-		password.set(serviceAccountPassword)
-	}
 }
 
 signing {
