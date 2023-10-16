@@ -24,6 +24,14 @@ jobs:
         with:
           arguments: javadoc
 
+      - name: Read Version Property
+        uses: BrycensRanch/read-properties-action@v1.0.3
+        id: version
+        with:
+          file: gradle.properties
+          property: currentVersion
+        run: echo "::set-output name=TAGNAME::release-${{ steps.version.outputs.version }}"
+
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.67.0
         env:
