@@ -1,9 +1,9 @@
-name: Build and Deploy
+name: Create Javadoc and Tag
 on:
   workflow_dispatch:
 
 jobs:
-  Build:
+  Create-Javadoc-And-Tag:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
