@@ -2,7 +2,7 @@ name: Create Javadoc and Tag
 on:
   workflow_dispatch:
     inputs:
-      tags:
+      tagName:
         description: 'Tag for Release'
         type: string
         required: true
@@ -32,7 +32,7 @@ jobs:
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.67.0
         env:
-          CUSTOM_TAG: ${{ inputs.tags }}
+          CUSTOM_TAG: ${{ inputs.tagName }}
 
       - name: Deploy Javadoc
         uses: JamesIves/github-pages-deploy-action@v4.4.3
