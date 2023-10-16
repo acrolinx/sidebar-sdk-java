@@ -6,15 +6,12 @@ jobs:
   Release-Snapshot:
     runs-on: ubuntu-latest
     env:
+      BUILD_NUMBER: ${{ github.run_number }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
       ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
-      ORG_GRADLE_PROJECT_mavenRepo: snapshot
       ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
-      ORG_GRADLE_PROJECT_serviceAccountUsername: ${{ secrets.SERVICE_ACCOUNT_USERNAME }}
-      ORG_GRADLE_PROJECT_serviceAccountPassword: ${{ secrets.SERVICE_ACCOUNT_PASSWORD }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      BUILD_NUMBER: ${{ github.run_number }}
 
     steps:
       - name: Checkout
@@ -32,25 +29,7 @@ jobs:
         with:
           arguments: build
 
-      - name: Create Javadoc
-        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
-        with:
-          arguments: javadoc
-
       - name: Deploy artifacts
         id: deploy
         if: github.ref == 'refs/heads/main'
-        run: ./gradlew release -Prelease.useAutomaticVersion=true --stacktrace
-
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.67.0
-        if: steps.deploy.outputs.RELEASE == 'true' && github.ref == 'refs/heads/main'
-        env:
-          CUSTOM_TAG: ${{ steps.deploy.outputs.TAGNAME }}
-
-      - name: Deploy Javadoc
-        uses: JamesIves/github-pages-deploy-action@v4.4.3
-        if: steps.deploy.outputs.RELEASE == 'true' && github.ref == 'refs/heads/main'
-        with:
-          branch: gh-pages
-          folder: "docs/"
+        run: ./gradlew publishToSonatype closeAndReleaseStagingRepository --stacktrace

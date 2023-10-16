@@ -6,15 +6,12 @@ jobs:
   Release-Stable:
     runs-on: ubuntu-latest
     env:
+      BUILD_NUMBER: ${{ github.run_number }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
       ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
-      ORG_GRADLE_PROJECT_mavenRepo: prod
       ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
-      ORG_GRADLE_PROJECT_serviceAccountUsername: ${{ secrets.SERVICE_ACCOUNT_USERNAME }}
-      ORG_GRADLE_PROJECT_serviceAccountPassword: ${{ secrets.SERVICE_ACCOUNT_PASSWORD }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      BUILD_NUMBER: ${{ github.run_number }}
 
     steps:
       - name: Checkout
@@ -40,7 +37,8 @@ jobs:
       - name: Deploy artifacts
         id: deploy
         if: github.ref == 'refs/heads/main'
-        run: ./gradlew release -Prelease.useAutomaticVersion=true --stacktrace
+        run: |
+          ./gradlew publishToSonatype closeAndReleaseStagingRepository --stacktrace
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.67.0
