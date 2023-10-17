@@ -351,7 +351,7 @@ spotless {
 		importOrder()
 		removeUnusedImports()
 		googleJavaFormat()
-		licenseHeaderFile rootProject.file('spotless.license.java')
+		licenseHeader '/* Copyright (c) $YEAR-present Acrolinx GmbH */'
 	}
 	format 'misc', {
 		target '*.gradle', '*.md', '.gitignore', '*.sh'
