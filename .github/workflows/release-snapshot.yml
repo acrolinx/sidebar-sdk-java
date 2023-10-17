@@ -32,4 +32,4 @@ jobs:
       - name: Deploy artifacts
         id: deploy
         if: github.ref == 'refs/heads/main'
-        run: ./gradlew publishToSonatype closeAndReleaseStagingRepository --stacktrace
+        run: ./gradlew publishToSonatype --stacktrace
