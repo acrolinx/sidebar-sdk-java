@@ -1,6 +1,11 @@
 name: Release Stable Version
 on:
   workflow_dispatch:
+    inputs:
+      tagName:
+        description: Tag to Release
+        required: true
+        type: string
 
 jobs:
   Release-Stable:
@@ -44,7 +49,7 @@ jobs:
         uses: anothrNick/github-tag-action@1.67.0
         if: steps.deploy.outputs.RELEASE == 'true' && github.ref == 'refs/heads/main'
         env:
-          CUSTOM_TAG: ${{ steps.deploy.outputs.TAGNAME }}
+          CUSTOM_TAG: ${{ inputs.tagName }}
 
       - name: Deploy Javadoc
         uses: JamesIves/github-pages-deploy-action@v4.5.0
