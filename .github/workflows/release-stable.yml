@@ -40,14 +40,14 @@ jobs:
           arguments: javadoc
 
       - name: Deploy artifacts
-        id: deploy
         if: github.ref == 'refs/heads/main'
-        run: |
-          ./gradlew publishToSonatype closeAndReleaseStagingRepository --stacktrace
+        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
+        with:
+          arguments: publishToSonatype closeAndReleaseStagingRepository --stacktrace
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.67.0
-        if: steps.deploy.outputs.RELEASE == 'true' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         env:
           CUSTOM_TAG: ${{ inputs.tagName }}
 

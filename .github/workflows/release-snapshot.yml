@@ -30,6 +30,6 @@ jobs:
           arguments: build
 
       - name: Deploy artifacts
-        id: deploy
-        if: github.ref == 'refs/heads/main'
-        run: ./gradlew publishToSonatype --stacktrace
+        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
+        with:
+          arguments: ./gradlew publishToSonatype --stacktrace
