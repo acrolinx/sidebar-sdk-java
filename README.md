@@ -58,9 +58,9 @@ Note that, if you’re using Java version 11 or later you’ll need to provide t
 [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
 Have a look at the [`build.gradle`](build.gradle) file if you use Gradle.
 2. Implement:
-	+ `AcrolinxIntegrationInterface`, and the
-	+ `InputAdapterInterface`.
-	+ The `AcrolinxSidebarInitParameterBuilder` helps you initialize the Acrolinx Sidebar.
+    + `AcrolinxIntegrationInterface`, and the
+    + `InputAdapterInterface`.
+    + The `AcrolinxSidebarInitParameterBuilder` helps you initialize the Acrolinx Sidebar.
 3. Check out the [Sidebar SDK Java API Reference](https://acrolinx.github.io/sidebar-sdk-java/) for more details.
 
 ![Architecture and Interfaces](img/ArchitectureInterfaces.png)
@@ -68,18 +68,18 @@ Have a look at the [`build.gradle`](build.gradle) file if you use Gradle.
 ## SDK Features
 
 1. Support for UI-frameworks:
-	+ JavaFX
-	+ Swing
-	+ SWT (For Windows WebView2 required for Sidebar version 15 or higher, other platforms will use default Browser)
+    + JavaFX
+    + Swing
+    + SWT (For Windows WebView2 required for Sidebar version 15 or higher, other platforms will use default Browser)
 2. `LookupRangesDiff` - Provides [lookup](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/text-lookup.md)
 functionality.
 3. **Start page**: Provides an interactive way to sign in to Acrolinx with built-in error handling.
 4. Provides [logging](https://github.com/acrolinx/sidebar-sdk-dotnet/blob/main/Acrolinx.Sidebar/Util/Logging/Logger.cs).
 Logging can be activated via:
 
-	```java
-	LoggingUtils.setupLogging("AcrolinxDemoClientJFX");
-	```
+    ```java
+    LoggingUtils.setupLogging("AcrolinxDemoClientJFX");
+    ```
 
 5. Provides an `AcrolinxStorage` that can be used to persist Sidebar settings in the data store of the host editors.
 If not set, the SDK will default to the browsers LocalStorage.
@@ -142,7 +142,7 @@ and drop falsely created repositories, before starting a new release build.
 4. Run the Gradle Task for creating a release tag and pushing it GitHub:
 
 ```bash
-	./gradlew createGithubReleaseTag -Dorg.ajoberstar.grgit.auth.username=someone -Dorg.ajoberstar.grgit.auth.password=mysecretpassword
+    ./gradlew createGithubReleaseTag -Dorg.ajoberstar.grgit.auth.username=someone -Dorg.ajoberstar.grgit.auth.password=mysecretpassword
 ```
 
 5. Don't forget to commit and push a new SNAPSHOT version.
