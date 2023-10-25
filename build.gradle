@@ -3,29 +3,29 @@ import org.gradle.internal.os.OperatingSystem
 import java.time.Duration
 
 plugins {
-	id 'java-library'
-	id 'jacoco'
-	id 'maven-publish'
-	id 'signing'
-	id 'org.ajoberstar.grgit' version '4.1.1'
-	id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
-	id 'com.github.node-gradle.node' version '7.0.1'
-	id 'com.github.hierynomus.license-report' version '0.16.1'
-	id 'org.openjfx.javafxplugin' version '0.0.14' apply false
-	id 'org.sonarqube' version '4.0.0.2929'
-	id 'com.diffplug.spotless' version '6.13.0'
+    id 'java-library'
+    id 'jacoco'
+    id 'maven-publish'
+    id 'signing'
+    id 'org.ajoberstar.grgit' version '4.1.1'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
+    id 'com.github.node-gradle.node' version '7.0.1'
+    id 'com.github.hierynomus.license-report' version '0.16.1'
+    id 'org.openjfx.javafxplugin' version '0.0.14' apply false
+    id 'org.sonarqube' version '4.0.0.2929'
+    id 'com.diffplug.spotless' version '6.13.0'
 }
 
 switch (OperatingSystem.current()) {
-	case OperatingSystem.WINDOWS:
-		project.ext.swtNatives = "org.eclipse.swt.win32.win32.x86_64"
-		break
-	case OperatingSystem.LINUX:
-		project.ext.swtNatives = "org.eclipse.swt.gtk.linux.x86_64"
-		break
-	case OperatingSystem.MAC_OS:
-		project.ext.swtNatives = "org.eclipse.swt.cocoa.macosx.x86_64"
-		break
+    case OperatingSystem.WINDOWS:
+        project.ext.swtNatives = "org.eclipse.swt.win32.win32.x86_64"
+        break
+    case OperatingSystem.LINUX:
+        project.ext.swtNatives = "org.eclipse.swt.gtk.linux.x86_64"
+        break
+    case OperatingSystem.MAC_OS:
+        project.ext.swtNatives = "org.eclipse.swt.cocoa.macosx.x86_64"
+        break
 }
 
 dependencies {
@@ -42,27 +42,27 @@ dependencies {
 }
 
 repositories {
-	mavenCentral()
-	maven {
-		url "https://maven-eclipse.github.io/maven"
-	}
+    mavenCentral()
+    maven {
+        url "https://maven-eclipse.github.io/maven"
+    }
 }
 
 node {
-	download = true
+    download = true
 }
 
 sonar {
-	properties {
-		property "sonar.organization", "acrolinx"
-		property "sonar.projectKey", "acrolinx_sidebar-sdk-java"
-		property "sonar.host.url", "https://sonarcloud.io"
-	}
+    properties {
+        property "sonar.organization", "acrolinx"
+        property "sonar.projectKey", "acrolinx_sidebar-sdk-java"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
 
 tasks.withType(Javadoc) {
-	options.addStringOption('Xdoclint:none', '-quiet')
-	options.memberLevel = JavadocMemberLevel.PUBLIC
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.memberLevel = JavadocMemberLevel.PUBLIC
 }
 
 project.version = currentVersion
@@ -78,88 +78,88 @@ def fullVersion = "${project.version}.${buildVersion}"
 def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
 
 task createVersionPropertiesFile {
-	doFirst {
-		def Properties versionProps = new Properties()
-		def versionPropsFile = file('versionJavaSDK.properties')
-		if (versionPropsFile.exists())
-			versionProps.load(new FileInputStream(versionPropsFile))
-		def code = "${fullVersion}"
-		versionProps['VERSION_JAVA_SDK'] = code.toString()
-		versionProps.store(versionPropsFile.newWriter(), null)
-	}
+    doFirst {
+        def Properties versionProps = new Properties()
+        def versionPropsFile = file('versionJavaSDK.properties')
+        if (versionPropsFile.exists())
+            versionProps.load(new FileInputStream(versionPropsFile))
+        def code = "${fullVersion}"
+        versionProps['VERSION_JAVA_SDK'] = code.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+    }
 }
 
 jar {
-	archiveFileName = "${artifactName}-${fullVersion}.jar"
-	manifest {
-		attributes(
-				"Implementation-Title": "${artifactName}",
-				"Implementation-Version": "${fullVersion}",
-				"Specification-Title": "${artifactName}",
-				"Specification-Version": project.version
-		)
-	}
-	from("$projectDir") {
-		include 'versionJavaSDK.properties'
-	}
-	from("$rootDir") {
-		include 'dependency-licenses/*.html'
-	}
+    archiveFileName = "${artifactName}-${fullVersion}.jar"
+    manifest {
+        attributes(
+                "Implementation-Title": "${artifactName}",
+                "Implementation-Version": "${fullVersion}",
+                "Specification-Title": "${artifactName}",
+                "Specification-Version": project.version
+        )
+    }
+    from("$projectDir") {
+        include 'versionJavaSDK.properties'
+    }
+    from("$rootDir") {
+        include 'dependency-licenses/*.html'
+    }
 }
 
 task copyServerSelectorResources(type: Copy, dependsOn: npm_install) {
-	doFirst {
-		def mainDir = new File('src/main/resources')
-		def subDir = new File(mainDir, 'server-selector')
-		if (subDir.exists()) {
-			def result = subDir.deleteDir()
-			assert result
-		}
-		subDir.mkdirs()
-	}
-	from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline')
-	into('src/main/resources/server-selector')
+    doFirst {
+        def mainDir = new File('src/main/resources')
+        def subDir = new File(mainDir, 'server-selector')
+        if (subDir.exists()) {
+            def result = subDir.deleteDir()
+            assert result
+        }
+        subDir.mkdirs()
+    }
+    from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline')
+    into('src/main/resources/server-selector')
 }
 
 task convertLocalizationEncoding() {
-	def dir = new File("$projectDir/src/main/resources/localization_iso-8859-1/")
-	if (!dir.exists()) {
-		dir.mkdirs()
-	}
-	def sourceDir = new File("$projectDir/src/main/resources/localization")
-	sourceDir.eachFile {
-		pFile ->
-			if (pFile.name.endsWith(".properties")) {
-				def f = pFile.getText('utf-8')
-				def pFileName = pFile.name
-				if (!pFileName.contains("_ja")) {
-					def write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + pFileName)
-					write.createNewFile();
-					write.write(f, 'ISO-8859-1')
-				} else {
-					def write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + pFileName)
-					write.createNewFile();
-					StringBuilder b = new StringBuilder();
-					for (char c : f.toCharArray()) {
-						//noinspection GroovyAssignabilityCheck
-						if (c >= 128)
-						//noinspection GroovyAssignabilityCheck
-							b.append("\\u").append(String.format("%04X", (int) c));
-						else
-							b.append(c);
-					}
-					def string = b.toString();
-					write.write(string, 'ISO-8859-1')
-				}
-			}
-	}
+    def dir = new File("$projectDir/src/main/resources/localization_iso-8859-1/")
+    if (!dir.exists()) {
+        dir.mkdirs()
+    }
+    def sourceDir = new File("$projectDir/src/main/resources/localization")
+    sourceDir.eachFile {
+        pFile ->
+            if (pFile.name.endsWith(".properties")) {
+                def f = pFile.getText('utf-8')
+                def pFileName = pFile.name
+                if (!pFileName.contains("_ja")) {
+                    def write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + pFileName)
+                    write.createNewFile();
+                    write.write(f, 'ISO-8859-1')
+                } else {
+                    def write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + pFileName)
+                    write.createNewFile();
+                    StringBuilder b = new StringBuilder();
+                    for (char c : f.toCharArray()) {
+                        //noinspection GroovyAssignabilityCheck
+                        if (c >= 128)
+                        //noinspection GroovyAssignabilityCheck
+                            b.append("\\u").append(String.format("%04X", (int) c));
+                        else
+                            b.append(c);
+                    }
+                    def string = b.toString();
+                    write.write(string, 'ISO-8859-1')
+                }
+            }
+    }
 }
 
 javadoc {
-	source = sourceSets.main.allJava
-	destinationDir = new File(rootProject.projectDir, "docs/")
-	classpath += sourceSets.main.runtimeClasspath
-	failOnError = false
+    source = sourceSets.main.allJava
+    destinationDir = new File(rootProject.projectDir, "docs/")
+    classpath += sourceSets.main.runtimeClasspath
+    failOnError = false
 }
 
 def devId = "Acrolinx Open Source"
@@ -167,149 +167,149 @@ def devName = "Acrolinx"
 def devEmail = "opensource@acrolinx.com"
 
 publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-			afterEvaluate {
-				pom.withXml {
-					Node pomNode = asNode()
-					pomNode.dependencies.'*'.findAll() {
-						it.groupId.text() == 'eclipse-swt-deps'
-					}.each() {
-						it.parent().remove(it)
-					}
-					asNode().children().last() + {
-						resolveStrategy = Closure.DELEGATE_FIRST
-						name 'sidebar-sdk'
-						description 'Acrolinx Sidebar SDK to build Acrolinx integrations for Java FX, Swing or SWT based clients.'
-						url 'https://github.com/acrolinx/sidebar-sdk-java'
-						scm {
-							url 'https://github.com/acrolinx/sidebar-sdk-java'
-							connection 'scm:git@github.com:acrolinx/sidebar-sdk-java.git'
-							developerConnection 'scm:git@github.com:acrolinx/sidebar-sdk-java.git'
-						}
-						licenses {
-							license {
-								name 'The Apache Software License, Version 2.0'
-								url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
-								distribution 'repo'
-							}
-						}
-						developers {
-							developer {
-								id devId
-								name devName
-								email devEmail
-								organization 'Acrolinx'
-								organizationUrl 'https://www.acrolinx.com/'
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            afterEvaluate {
+                pom.withXml {
+                    Node pomNode = asNode()
+                    pomNode.dependencies.'*'.findAll() {
+                        it.groupId.text() == 'eclipse-swt-deps'
+                    }.each() {
+                        it.parent().remove(it)
+                    }
+                    asNode().children().last() + {
+                        resolveStrategy = Closure.DELEGATE_FIRST
+                        name 'sidebar-sdk'
+                        description 'Acrolinx Sidebar SDK to build Acrolinx integrations for Java FX, Swing or SWT based clients.'
+                        url 'https://github.com/acrolinx/sidebar-sdk-java'
+                        scm {
+                            url 'https://github.com/acrolinx/sidebar-sdk-java'
+                            connection 'scm:git@github.com:acrolinx/sidebar-sdk-java.git'
+                            developerConnection 'scm:git@github.com:acrolinx/sidebar-sdk-java.git'
+                        }
+                        licenses {
+                            license {
+                                name 'The Apache Software License, Version 2.0'
+                                url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                                distribution 'repo'
+                            }
+                        }
+                        developers {
+                            developer {
+                                id devId
+                                name devName
+                                email devEmail
+                                organization 'Acrolinx'
+                                organizationUrl 'https://www.acrolinx.com/'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Configure Nexus
 nexusPublishing {
-	connectTimeout = Duration.ofMinutes(5);
-	clientTimeout = Duration.ofMinutes(5);
+    connectTimeout = Duration.ofMinutes(5);
+    clientTimeout = Duration.ofMinutes(5);
 
-	transitionCheckOptions {
-		maxRetries.set(40)
-		delayBetween.set(Duration.ofSeconds(5))
-	}
+    transitionCheckOptions {
+        maxRetries.set(40)
+        delayBetween.set(Duration.ofSeconds(5))
+    }
 
-	repositories {
-		sonatype {
-			nexusUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-			snapshotRepositoryUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-		}
-	}
+    repositories {
+        sonatype {
+            nexusUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+            snapshotRepositoryUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+        }
+    }
 }
 
 signing {
-	required { isReleaseBuild }
-	def signingKey = findProperty("signingKey") as String
-	def signingPassword = findProperty("signingPassword") as String
+    required { isReleaseBuild }
+    def signingKey = findProperty("signingKey") as String
+    def signingPassword = findProperty("signingPassword") as String
 
-	useInMemoryPgpKeys(signingKey, signingPassword)
-	sign publishing.publications.mavenJava
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
 }
 
 def isNonStable = { String version ->
-	def nonStableKeyword = ['alpha'].any { it -> version.toUpperCase().contains(it) }
-	return nonStableKeyword
+    def nonStableKeyword = ['alpha'].any { it -> version.toUpperCase().contains(it) }
+    return nonStableKeyword
 }
 
 task createGithubReleaseTag {
-	doLast {
-		println 'Creating Github Release Tag'
-		if (isReleaseBuild) {
-			grgit.open(currentDir: rootDir)
-			def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
-			println 'Finding tags'
-			if (!hasOldReleaseVersion) {
-				println 'is new release version'
-			} else {
-				println 'This version was already released'
-			}
-		} else {
-			println 'NO RELEASE VERSION'
-			throw new GradleException('NO APPROPRIATE RELEASE VERSION')
-		}
-	}
+    doLast {
+        println 'Creating Github Release Tag'
+        if (isReleaseBuild) {
+            grgit.open(currentDir: rootDir)
+            def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
+            println 'Finding tags'
+            if (!hasOldReleaseVersion) {
+                println 'is new release version'
+            } else {
+                println 'This version was already released'
+            }
+        } else {
+            println 'NO RELEASE VERSION'
+            throw new GradleException('NO APPROPRIATE RELEASE VERSION')
+        }
+    }
 }
 
 if (Integer.parseInt(Jvm.current().getJavaVersion().getMajorVersion()) >= 11) {
-	apply plugin: 'org.openjfx.javafxplugin'
+    apply plugin: 'org.openjfx.javafxplugin'
 
-	javafx {
-		modules = ["javafx.web", "javafx.swing"]
-		configuration = 'compileOnly'
-	}
+    javafx {
+        modules = ["javafx.web", "javafx.swing"]
+        configuration = 'compileOnly'
+    }
 }
 
 configurations.all {
-	resolutionStrategy {
-		dependencySubstitution {
-			// The maven property ${osgi.platform} is not handled by Gradle
-			// so we replace the dependency, using the osgi platform from the project settings
-			def os = System.getProperty("os.name").toLowerCase()
-			if (os.contains("windows")) {
-				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:$SWT_VERSION")
-			}
-			else if (os.contains("linux")) {
-				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:$SWT_VERSION")
-			}
-			else if (os.contains("mac")) {
-				substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:$SWT_VERSION")
-			}
-		}
-	}
+    resolutionStrategy {
+        dependencySubstitution {
+            // The maven property ${osgi.platform} is not handled by Gradle
+            // so we replace the dependency, using the osgi platform from the project settings
+            def os = System.getProperty("os.name").toLowerCase()
+            if (os.contains("windows")) {
+                substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:$SWT_VERSION")
+            }
+            else if (os.contains("linux")) {
+                substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:$SWT_VERSION")
+            }
+            else if (os.contains("mac")) {
+                substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:$SWT_VERSION")
+            }
+        }
+    }
 }
 
 downloadLicenses {
-	includeProjectDependencies true
-	dependencyConfiguration = "compileClasspath"
+    includeProjectDependencies true
+    dependencyConfiguration = "compileClasspath"
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	withJavadocJar()
-	withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
 }
 
 jacocoTestReport {
-	dependsOn test
-	reports {
-		xml.required = true
-	}
+    dependsOn test
+    reports {
+        xml.required = true
+    }
 }
 
 spotless {
