@@ -1,6 +1,8 @@
 name: Release Stable Version
 on:
   workflow_dispatch:
+permissions:
+  contents: write
 
 jobs:
   Release-Stable:
@@ -36,7 +38,10 @@ jobs:
           arguments: removeSnapshotSuffix
 
       - name: Remove Snapshot Suffix
-        run: git commit -m "Release v${{ steps.removeSnap.TAGNAME }}"
+        run: |
+          git config --global user.name 'acrolinx-machine-user-for-integrations'
+          git config --global user.email 'danjela.lura@acrolinx.net'
+          git commit -m "Release v${{ steps.removeSnap.TAGNAME }}"
 
       - name: Create Javadoc
         uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
