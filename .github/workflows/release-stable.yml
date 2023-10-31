@@ -66,9 +66,9 @@ jobs:
         id: incrementSnap
         uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
         with:
-          arguments: removeSnapshotSuffix
+          arguments: incrementSnapshotVersion
 
-      - name: Add Snapshot Suffix
+      - name: Commit Snapshot Suffix
         run: git commit -m "Update version from ${{ steps.incrementSnap.OLDVERSION }} to ${{ steps.incrementSnap.NEWVERSION }}"
 
       - name: Push Changes to Main
