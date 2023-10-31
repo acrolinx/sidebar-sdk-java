@@ -60,6 +60,59 @@ sonar {
     }
 }
 
+def getFixAndFullVersion() {
+    def currentVersion = currentVersion.split("\\.")
+    def lastVersionNumber = currentVersion[currentVersion.length - 1]
+
+    return [lastVersionNumber, currentVersion]
+}
+
+def setVersionProperty(String newVersion) {
+    ant.propertyfile(file: "gradle.properties") {
+        entry(key: "currentVersion", value: newVersion)
+    }
+}
+
+tasks.register('removeSnapshotSuffix') {
+    doLast {
+        logger.info("Removing version suffix")
+        println("Current build version: $currentVersion")
+        def (lastVersionNumber, currentVersionParts) = getFixAndFullVersion()
+        lastVersionNumber = lastVersionNumber.replace('-SNAPSHOT', '')
+
+        def newVersion = currentVersionParts.take(2).join(".") + "." + lastVersionNumber
+        println("New build version: ${newVersion}")
+
+        setVersionProperty(newVersion)
+
+        exec {
+            commandLine("echo", "::set-output name=TAGNAME::release-$newVersion")
+        }
+    }
+}
+
+tasks.register('incrementSnapshotVersion') {
+    doLast {
+        println("Current build version: $currentVersion")
+        def (lastVersionNumber, currentVersionParts) = getFixAndFullVersion()
+
+        if (!lastVersionNumber.contains("-SNAPSHOT")) {
+            def last = Integer.parseInt(lastVersionNumber)
+            currentVersionParts[currentVersionParts.length - 1] = Integer.toString(last + 1)
+
+            def newVersion = currentVersionParts.join(".") + "-SNAPSHOT"
+            println("New build version: ${newVersion}")
+
+            setVersionProperty(newVersion)
+
+            exec {
+                commandLine("echo", "::set-output name=OLDVERSION::$currentVersion")
+                commandLine("echo", "::set-output name=NEWVERSION::$newVersion")
+            }
+        }
+    }
+}
+
 tasks.withType(Javadoc) {
     options.addStringOption('Xdoclint:none', '-quiet')
     options.memberLevel = JavadocMemberLevel.PUBLIC

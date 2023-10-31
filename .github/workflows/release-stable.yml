@@ -1,11 +1,6 @@
 name: Release Stable Version
 on:
   workflow_dispatch:
-    inputs:
-      tagName:
-        description: Tag to Release
-        required: true
-        type: string
 
 jobs:
   Release-Stable:
@@ -34,6 +29,15 @@ jobs:
         with:
           arguments: build
 
+      - name: Remove Snapshot Suffix
+        id: removeSnap
+        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
+        with:
+          arguments: removeSnapshotSuffix
+
+      - name: Remove Snapshot Suffix
+        run: git commit -m "Release v${{ steps.removeSnap.TAGNAME }}"
+
       - name: Create Javadoc
         uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
         with:
@@ -49,7 +53,7 @@ jobs:
         uses: anothrNick/github-tag-action@1.67.0
         if: github.ref == 'refs/heads/main'
         env:
-          CUSTOM_TAG: ${{ inputs.tagName }}
+          CUSTOM_TAG: ${{ steps.removeSnap.TAGNAME }}
 
       - name: Deploy Javadoc
         uses: JamesIves/github-pages-deploy-action@v4.5.0
@@ -57,3 +61,15 @@ jobs:
         with:
           branch: gh-pages
           folder: "docs/"
+
+      - name: Increment Snapshot Version
+        id: incrementSnap
+        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
+        with:
+          arguments: removeSnapshotSuffix
+
+      - name: Add Snapshot Suffix
+        run: git commit -m "Update version from ${{ steps.incrementSnap.OLDVERSION }} to ${{ steps.incrementSnap.NEWVERSION }}"
+
+      - name: Push Changes to Main
+        run: git push origin main
