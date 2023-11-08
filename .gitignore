@@ -10,7 +10,7 @@
 
 # IntelliJ IDEA
 .idea/
-.iml
+*.iml
 
 # Node
 node_modules/
