@@ -52,6 +52,7 @@ public final class XMLLookupUtils {
       Document document = buildDocument(xmlContent);
 
       XPath xPath = XPathFactory.newInstance().newXPath();
+      xPath.setNamespaceContext(new NamespaceResolver(document));
       NodeList nodeList =
           (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
 
@@ -187,6 +188,7 @@ public final class XMLLookupUtils {
   private static Document buildDocument(String xmlContent)
       throws ParserConfigurationException, IOException, SAXException {
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    documentBuilderFactory.setNamespaceAware(true);
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
     documentBuilderFactory.setFeature(
