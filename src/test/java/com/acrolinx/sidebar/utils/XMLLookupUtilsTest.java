@@ -33,42 +33,6 @@ class XMLLookupUtilsTest {
   private static final String XML_CONTENT_WITH_NAMESPACES =
       "<proc:procedure xmlns:proc=\"urn:com.asml.itms.procedure/1.0\" xmlns:chg=\"urn:com.asml.itms.change/1.0\" xmlns:prf=\"urn:com.asml.itms.profile/1.0\" xmlns:ssp=\"urn:com.asml.itms.ssp/1.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" documentname=\"eht115.rem\" family=\"TWINSCAN_NXE\" lang=\"en\" proctype=\"Remove\" status=\"Provisional\" subsystem=\"HandlingAndTransport\" xsi:schemaLocation=\"urn:com.asml.itms.procedure/1.0 procedure.xsd\"><RSUITE:METADATA xmlns:RSUITE=\"http://www.reallysi.com\"><RSUITE:SYSTEM><RSUITE:ID>31915903</RSUITE:ID><RSUITE:DISPLAYNAME>eht115.rem</RSUITE:DISPLAYNAME><RSUITE:USER>fneto</RSUITE:USER><RSUITE:CREATEDATE>2022-08-03T14:19:37.224Z</RSUITE:CREATEDATE><RSUITE:LASTMODIFIED>2023-07-28T09:45:49.686Z</RSUITE:LASTMODIFIED></RSUITE:SYSTEM><RSUITE:LAYERED><RSUITE:DATA RSUITE:ID=\"31915905\" RSUITE:NAME=\"Status\">Incomplete</RSUITE:DATA><RSUITE:DATA RSUITE:ID=\"31915980\" RSUITE:NAME=\"beingCreated\">false</RSUITE:DATA></RSUITE:LAYERED></RSUITE:METADATA><p>Some text that we nees to check fot errors.</p></proc:procedure>";
 
-  public static final String XML_WITH_NAMESPACE_2 =
-      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-          + "<!--Arbortext, Inc., 1988-2021, v.4002-->\n"
-          + "<!DOCTYPE task PUBLIC \"-//Scania//DTD -//WINGS DTD 1.00//EN\" \"wings.dtd\">\n"
-          + "<task class=\"description\" original-language=\"sv-SE\" xml:lang=\"sv-SE\" xmlns:dctm=\"http://www.documentum.com\">\n"
-          + "<metadata>\n"
-          + "<prim_indexterm its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\"><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\"></p></prim_indexterm>\n"
-          + "<keyword its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\"><term></term></keyword></metadata>\n"
-          + "<description-title its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">Visa oljenivån i kombinationsinstrumentet</description-title>\n"
-          + "<shortdesc>\n"
-          + "<p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">Den aktuella oljenivån visas i kombinationsinstrumentet efter att du slagit på spänningen. </p>\n"
-          + "</shortdesc><?Pub Caret -1?>\n"
-          + "<taskbody>\n"
-          + "<xi:include href=\"x-wc://file=s0003944050.xml\" xmlns:xi=\"http://www.w3.org/2001/XInclude\">\n"
-          + "<xi:fallback><!--Fallback markup for \"x-wc://file=s0003944050.xml\"--></xi:fallback>\n"
-          + "</xi:include>\n"
-          + "<p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">En korrekt visning av motorns oljenivå kan endast ske om all olja finns i oljesumpen. Därför är det lämpligt att avläsa oljenivån i kombinationsinstrumentet innan du startar motorn och kör iväg med fordonet.</p>\n"
-          + "<stepsdrm type=\"ordered\">\n"
-          + "<stepdrm>\n"
-          + "<cmd><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">Vrid startnyckeln till körläge.</p></cmd>\n"
-          + "</stepdrm>\n"
-          + "<stepdrm>\n"
-          + "<cmd><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">Tryck på OK-knappen och välj i menyn <i its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\"><ui-ref value=\"UI_ICL\">Inställning</ui-ref></i> > <i its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\"><ui-ref value=\"UI_ICL\">Startkontroll</ui-ref></i> > <i its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\"><ui-ref value=\"UI_ICL\">Visa oljenivå</ui-ref></i>.</p></cmd>\n"
-          + "<info><p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">Oljenivån visas med en liggande stapel.</p>\n"
-          + "<xi:include href=\"x-wc://file=s0004858393.xml\" xmlns:xi=\"http://www.w3.org/2001/XInclude\">\n"
-          + "<xi:fallback><!--Fallback markup for \"x-wc://file=s0004858393.xml\"--></xi:fallback>\n"
-          + "</xi:include>\n"
-          + "</info>\n"
-          + "</stepdrm>\n"
-          + "</stepsdrm>\n"
-          + "<!--JIRA DRM-1718-->\n"
-          + "<p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">Om oljan behöver fyllas på visas det i kombinationsinstrumentet vilken mängd du ska fylla på med.</p>\n"
-          + "<p its:translate=\"yes\" xmlns:its=\"http://www.w3.org/TR/its/\">Oljenivån visas så länge fordonet står stilla, men högst 30 minuter efter motorstart.</p>\n"
-          + "</taskbody>\n"
-          + "</task>";
-
   public static final String XML_PATH = "//proc:procedure[1]/p[1]";
 
   @Test
