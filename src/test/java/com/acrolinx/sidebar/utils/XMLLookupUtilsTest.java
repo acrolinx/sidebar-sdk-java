@@ -31,7 +31,9 @@ class XMLLookupUtilsTest {
           + "</bookstore>\n";
 
   private static final String XML_CONTENT_WITH_NAMESPACES =
-      "<proc:procedure xmlns:proc=\"urn:com.asml.itms.procedure/1.0\" xmlns:chg=\"urn:com.asml.itms.change/1.0\" xmlns:prf=\"urn:com.asml.itms.profile/1.0\" xmlns:ssp=\"urn:com.asml.itms.ssp/1.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" documentname=\"eht115.rem\" family=\"TWINSCAN_NXE\" lang=\"en\" proctype=\"Remove\" status=\"Provisional\" subsystem=\"HandlingAndTransport\" xsi:schemaLocation=\"urn:com.asml.itms.procedure/1.0 procedure.xsd\"><RSUITE:METADATA xmlns:RSUITE=\"http://www.reallysi.com\"><RSUITE:SYSTEM><RSUITE:ID>31915903</RSUITE:ID><RSUITE:DISPLAYNAME>eht115.rem</RSUITE:DISPLAYNAME><RSUITE:USER>fneto</RSUITE:USER><RSUITE:CREATEDATE>2022-08-03T14:19:37.224Z</RSUITE:CREATEDATE><RSUITE:LASTMODIFIED>2023-07-28T09:45:49.686Z</RSUITE:LASTMODIFIED></RSUITE:SYSTEM><RSUITE:LAYERED><RSUITE:DATA RSUITE:ID=\"31915905\" RSUITE:NAME=\"Status\">Incomplete</RSUITE:DATA><RSUITE:DATA RSUITE:ID=\"31915980\" RSUITE:NAME=\"beingCreated\">false</RSUITE:DATA></RSUITE:LAYERED></RSUITE:METADATA><p>Some text that we nees to check fot errors.</p></proc:procedure>";
+      "<proc:procedure xmlns:proc=\"urn:com.asml.itms.procedure/1.0\">\n"
+          + "    <p>Some text that we nees to check fot errors.</p>\n"
+          + "</proc:procedure>";
 
   public static final String XML_PATH = "//proc:procedure[1]/p[1]";
 
@@ -39,11 +41,11 @@ class XMLLookupUtilsTest {
   void findOffsetInXmlStringByXpathWithNamespace() {
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(XML_CONTENT_WITH_NAMESPACES, XML_PATH);
-    assertEquals(974, offsetForXPATH.getMinimumInteger());
-    assertEquals(1024, offsetForXPATH.getMaximumInteger());
+    assertEquals(66, offsetForXPATH.getMinimumInteger());
+    assertEquals(116, offsetForXPATH.getMaximumInteger());
     assertEquals(
         "<p>Some text that we nees to check fot errors.</p>",
-        XML_CONTENT_WITH_NAMESPACES.substring(974, 1024));
+        XML_CONTENT_WITH_NAMESPACES.substring(66, 116));
   }
 
   @Test
@@ -58,7 +60,7 @@ class XMLLookupUtilsTest {
 
   @Test
   void findXpathByOffsetWithNamespace() throws Exception {
-    String xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT_WITH_NAMESPACES, 995, 999);
+    String xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT_WITH_NAMESPACES, 87, 91);
     assertEquals(XML_PATH, xpathByOffset);
   }
 
