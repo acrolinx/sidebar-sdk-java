@@ -31,7 +31,7 @@ class XMLLookupUtilsTest {
           + "</bookstore>\n";
 
   private static final String XML_CONTENT_WITH_NAMESPACES =
-      "<proc:procedure xmlns:proc=\"urn:com.asml.itms.procedure/1.0\">\n"
+      "<proc:procedure xmlns:proc=\"urn:com.acrolinx.itms.procedure/1.0\">\n"
           + "    <p>Some text that we nees to check fot errors.</p>\n"
           + "</proc:procedure>";
 
@@ -41,11 +41,11 @@ class XMLLookupUtilsTest {
   void findOffsetInXmlStringByXpathWithNamespace() {
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(XML_CONTENT_WITH_NAMESPACES, XML_PATH);
-    assertEquals(66, offsetForXPATH.getMinimumInteger());
-    assertEquals(116, offsetForXPATH.getMaximumInteger());
+    assertEquals(70, offsetForXPATH.getMinimumInteger());
+    assertEquals(120, offsetForXPATH.getMaximumInteger());
     assertEquals(
         "<p>Some text that we nees to check fot errors.</p>",
-        XML_CONTENT_WITH_NAMESPACES.substring(66, 116));
+        XML_CONTENT_WITH_NAMESPACES.substring(70, 120));
   }
 
   @Test
