@@ -162,7 +162,7 @@ public final class XMLLookupUtils {
       logger.debug("Applying transformation to XML.");
       Transformer transformer = transformerFactory.newTransformer();
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-      transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+      transformer.setOutputProperty(OutputKeys.METHOD, "html");
       transformer.setOutputProperty(OutputKeys.INDENT, "no");
       transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
       transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");

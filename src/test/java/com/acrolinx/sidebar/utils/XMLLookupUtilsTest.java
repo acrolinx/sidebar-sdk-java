@@ -35,12 +35,35 @@ class XMLLookupUtilsTest {
           + "    <p>Some text that we nees to check fot errors.</p>\n"
           + "</proc:procedure>";
 
-  public static final String XML_PATH = "//proc:procedure[1]/p[1]";
+  public static final String XML_PATH_WITH_NAMESPACE = "//proc:procedure[1]/p[1]";
+
+  public static final String XML_WITH_BLANK_TAGS =
+      "<proc:procedure xmlns:proc=\"urn:com.acrolinx.itms.procedure/1.0\">\n"
+          + "    <p>Some text that we nees to check fot errors.</p>\n"
+          + "    <p></p>\n"
+          + "    <p>This should be processed as well</p>\n"
+          + "</proc:procedure>";
+
+  public static final String XML_PATH_FOR_CONTENT_WITH_EMPTY_TAGS = "//proc:procedure[1]/p[3]";
+
+  @Test
+  void findOffsetInXmlStringByXpathWithNamespaceAndEmptyTag() {
+    IntRange offsetForXPATH =
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
+            XML_WITH_BLANK_TAGS, XML_PATH_FOR_CONTENT_WITH_EMPTY_TAGS);
+
+    assertEquals(137, offsetForXPATH.getMinimumInteger());
+    assertEquals(176, offsetForXPATH.getMaximumInteger());
+    assertEquals(
+        "<p>This should be processed as well</p>", XML_WITH_BLANK_TAGS.substring(137, 176));
+  }
 
   @Test
   void findOffsetInXmlStringByXpathWithNamespace() {
     IntRange offsetForXPATH =
-        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(XML_CONTENT_WITH_NAMESPACES, XML_PATH);
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
+            XML_CONTENT_WITH_NAMESPACES, XML_PATH_WITH_NAMESPACE);
+
     assertEquals(70, offsetForXPATH.getMinimumInteger());
     assertEquals(120, offsetForXPATH.getMaximumInteger());
     assertEquals(
@@ -61,7 +84,7 @@ class XMLLookupUtilsTest {
   @Test
   void findXpathByOffsetWithNamespace() throws Exception {
     String xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT_WITH_NAMESPACES, 87, 91);
-    assertEquals(XML_PATH, xpathByOffset);
+    assertEquals(XML_PATH_WITH_NAMESPACE, xpathByOffset);
   }
 
   @Test
