@@ -127,6 +127,8 @@ public final class XMLLookupUtils {
     try {
       saxParserFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
       saxParserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+      saxParserFactory.setFeature(
+          "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
     } catch (ParserConfigurationException | SAXException e) {
       logger.error(
           "Some XXE preventing settings are not supported by the current XML Reader library.", e);
@@ -143,7 +145,9 @@ public final class XMLLookupUtils {
    */
   private static TransformerFactory createTransformerFactory()
       throws TransformerFactoryConfigurationError {
-    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    TransformerFactory transformerFactory =
+        TransformerFactory.newInstance(
+            "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
 
