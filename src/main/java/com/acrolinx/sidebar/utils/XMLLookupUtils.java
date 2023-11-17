@@ -187,9 +187,12 @@ public final class XMLLookupUtils {
   private static Document buildDocument(String xmlContent)
       throws ParserConfigurationException, IOException, SAXException {
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+    documentBuilderFactory.setFeature(
+        "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-    documentBuilder.setEntityResolver(
-        (publicId, systemId) -> new InputSource(new StringReader("")));
 
     try (InputStream inputStream =
         new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8))) {
