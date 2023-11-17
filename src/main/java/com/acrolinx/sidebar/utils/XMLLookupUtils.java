@@ -218,7 +218,7 @@ public final class XMLLookupUtils {
   }
 
   public static String findXpathByOffset(String xmlContent, int offsetStart, int offsetEnd)
-      throws Exception {
+      throws ParserConfigurationException, SAXException, IOException {
     String contentWithMarkerNode =
         xmlContent.substring(0, offsetStart)
             + "<acroseparator>"
@@ -253,7 +253,8 @@ public final class XMLLookupUtils {
     return markerXpath.substring(0, markerXpath.lastIndexOf('/'));
   }
 
-  public static List<String> getAllXpathInXmlDocument(String xmlString) throws Exception {
+  public static List<String> getAllXpathInXmlDocument(String xmlString)
+      throws ParserConfigurationException, SAXException, IOException {
     XMLReader xmlReader = getSecureXMLReader();
     FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xmlReader);
     xmlReader.setContentHandler(fragmentContentHandler);
