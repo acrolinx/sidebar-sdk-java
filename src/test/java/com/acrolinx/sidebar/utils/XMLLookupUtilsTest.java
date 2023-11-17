@@ -5,98 +5,98 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.acrolinx.sidebar.pojo.document.IntRange;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 class XMLLookupUtilsTest {
-  private static final String XML_CONTENT =
-      "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-          + "<bookstore xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-          + "           xsi:noNamespaceSchemaLocation=\"BookStore.xsd\">\n"
-          + "    <book price=\"730.54\" ISBN=\"string\" publicationdate=\"2016-02-27\">\n"
-          + "        <title>Some hideous story about monsters</title>\n"
-          + "        <author>\n"
-          + "            <first-name>Max</first-name>\n"
-          + "            <last-name>Muster</last-name>\n"
-          + "        </author>\n"
-          + "        <genre>Fantastic Fantasy</genre>\n"
-          + "    </book>\n"
-          + "    <book price=\"6738.774\" ISBN=\"string\">\n"
-          + "        <title>Little munchkins on adventures</title>\n"
-          + "        <author>\n"
-          + "            <first-name>Susi</first-name>\n"
-          + "            <last-name>Some Name</last-name>\n"
-          + "        </author>\n"
-          + "    </book>\n"
-          + "</bookstore>\n";
+  private static String readFileContent(String path) throws IOException {
+    try (Stream<String> lines = Files.lines(Paths.get(path))) {
+      return lines.collect(Collectors.joining("\n"));
+    }
+  }
 
-  private static final String XML_CONTENT_WITH_NAMESPACES =
-      "<proc:procedure xmlns:proc=\"urn:com.acrolinx.itms.procedure/1.0\">\n"
-          + "    <p>Some text that we nees to check fot errors.</p>\n"
-          + "</proc:procedure>";
-
-  public static final String XML_PATH_WITH_NAMESPACE = "//proc:procedure[1]/p[1]";
-
-  public static final String XML_WITH_BLANK_TAGS =
-      "<proc:procedure xmlns:proc=\"urn:com.acrolinx.itms.procedure/1.0\">\n"
-          + "    <p>Some text that we nees to check fot errors.</p>\n"
-          + "    <p></p>\n"
-          + "    <p>This should be processed as well</p>\n"
-          + "</proc:procedure>";
-
-  public static final String XML_PATH_FOR_CONTENT_WITH_EMPTY_TAGS = "//proc:procedure[1]/p[3]";
-
-  @Test
-  void findOffsetInXmlStringByXpathWithNamespaceAndEmptyTag() {
-    IntRange offsetForXPATH =
-        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
-            XML_WITH_BLANK_TAGS, XML_PATH_FOR_CONTENT_WITH_EMPTY_TAGS);
-
-    assertEquals(137, offsetForXPATH.getMinimumInteger());
-    assertEquals(176, offsetForXPATH.getMaximumInteger());
-    assertEquals(
-        "<p>This should be processed as well</p>", XML_WITH_BLANK_TAGS.substring(137, 176));
+  private static String getXmlContent() throws IOException {
+    return readFileContent("src/test/resources/xml/xml-with-no-namespace.xml");
   }
 
   @Test
-  void findOffsetInXmlStringByXpathWithNamespace() {
+  void findOffsetInXmlStringByXpathWithNamespaceAndEmptyTagAndComment() throws IOException {
+    final String xmlPath = "//proc:procedure[1]/p[4]";
+    final String xmlContent =
+        readFileContent("src/test/resources/xml/xml-with-namespace-empty-tag-and-comment.xml");
+
     IntRange offsetForXPATH =
-        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
-            XML_CONTENT_WITH_NAMESPACES, XML_PATH_WITH_NAMESPACE);
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xmlPath);
+
+    assertEquals(212, offsetForXPATH.getMinimumInteger());
+    assertEquals(236, offsetForXPATH.getMaximumInteger());
+    assertEquals("<p>That's how it is!</p>", xmlContent.substring(212, 236));
+  }
+
+  @Test
+  void findOffsetInXmlStringByXpathWithNamespaceAndEmptyTag() throws IOException {
+    final String xmlPath = "//proc:procedure[1]/p[3]";
+    final String xmlContent =
+        readFileContent("src/test/resources/xml/xml-with-namespace-and-empty-tag.xml");
+
+    IntRange offsetForXPATH =
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xmlPath);
+
+    assertEquals(137, offsetForXPATH.getMinimumInteger());
+    assertEquals(176, offsetForXPATH.getMaximumInteger());
+    assertEquals("<p>This should be processed as well</p>", xmlContent.substring(137, 176));
+  }
+
+  @Test
+  void findOffsetInXmlStringByXpathWithNamespace() throws IOException {
+    final String xmlPath = "//proc:procedure[1]/p[1]";
+    final String xmlContent = readFileContent("src/test/resources/xml/xml-with-namespace.xml");
+
+    IntRange offsetForXPATH =
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xmlPath);
 
     assertEquals(70, offsetForXPATH.getMinimumInteger());
     assertEquals(120, offsetForXPATH.getMaximumInteger());
     assertEquals(
-        "<p>Some text that we nees to check fot errors.</p>",
-        XML_CONTENT_WITH_NAMESPACES.substring(70, 120));
+        "<p>Some text that we nees to check fot errors.</p>", xmlContent.substring(70, 120));
   }
 
   @Test
-  void findOffsetInXmlStringByXpath() {
+  void findOffsetInXmlStringByXpath() throws IOException {
+    final String xmlContent = getXmlContent();
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
-            XML_CONTENT, "//bookstore[1]/book[1]/genre[1]");
+            xmlContent, "//bookstore[1]/book[1]/genre[1]");
     assertEquals(414, offsetForXPATH.getMinimumInteger());
     assertEquals(446, offsetForXPATH.getMaximumInteger());
-    assertEquals("<genre>Fantastic Fantasy</genre>", XML_CONTENT.substring(414, 446));
+    assertEquals("<genre>Fantastic Fantasy</genre>", xmlContent.substring(414, 446));
   }
 
   @Test
   void findXpathByOffsetWithNamespace() throws Exception {
-    String xpathByOffset = XMLLookupUtils.findXpathByOffset(XML_CONTENT_WITH_NAMESPACES, 87, 91);
-    assertEquals(XML_PATH_WITH_NAMESPACE, xpathByOffset);
+    final String xmlPath = "//proc:procedure[1]/p[1]";
+    final String xmlContent = readFileContent("src/test/resources/xml/xml-with-namespace.xml");
+
+    String xpathByOffset = XMLLookupUtils.findXpathByOffset(xmlContent, 87, 91);
+    assertEquals(xmlPath, xpathByOffset);
   }
 
   @Test
   void findXpathByOffset() throws Exception {
-    int index = XML_CONTENT.indexOf("Fantastic");
+    final String xmlContent = getXmlContent();
+    int index = xmlContent.indexOf("Fantastic");
     String xpathByOffset =
-        XMLLookupUtils.findXpathByOffset(XML_CONTENT, index, index + "Fantastic".length());
+        XMLLookupUtils.findXpathByOffset(xmlContent, index, index + "Fantastic".length());
     assertEquals("//bookstore[1]/book[1]/genre[1]", xpathByOffset);
 
-    index = XML_CONTENT.indexOf("Some Name");
+    index = xmlContent.indexOf("Some Name");
     xpathByOffset =
-        XMLLookupUtils.findXpathByOffset(XML_CONTENT, index, index + "Some Name".length());
+        XMLLookupUtils.findXpathByOffset(xmlContent, index, index + "Some Name".length());
     assertEquals("//bookstore[1]/book[2]/author[1]/last-name[1]", xpathByOffset);
   }
 
@@ -137,7 +137,8 @@ class XMLLookupUtilsTest {
 
   @Test
   void testGetAllXpathsFromDocument() throws Exception {
-    final List<String> allXpathInXmlDocument = XMLLookupUtils.getAllXpathInXmlDocument(XML_CONTENT);
+    final String xmlContent = getXmlContent();
+    final List<String> allXpathInXmlDocument = XMLLookupUtils.getAllXpathInXmlDocument(xmlContent);
     assertEquals(12, allXpathInXmlDocument.size());
   }
 
