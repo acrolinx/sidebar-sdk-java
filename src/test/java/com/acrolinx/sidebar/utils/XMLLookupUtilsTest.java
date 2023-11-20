@@ -6,32 +6,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 class XMLLookupUtilsTest {
-  private static String readFileContent(String path) throws IOException {
-    try (Stream<String> lines = Files.lines(Paths.get(path))) {
-      return lines.collect(Collectors.joining("\n"));
-    }
-  }
-
-  private static String getXmlContent() throws IOException {
-    return readFileContent("src/test/resources/xml/xml-with-no-namespace.xml");
+  private static String readFileContent(String fileName) throws IOException {
+    return new String(
+        Files.readAllBytes(Paths.get("src/test/resources/xml/", fileName)), StandardCharsets.UTF_8);
   }
 
   @Test
   void findOffsetInXmlStringByXpathWithNamespaceAndEmptyTagAndComment() throws IOException {
-    final String xmlPath = "//proc:procedure[1]/p[4]";
-    final String xmlContent =
-        readFileContent("src/test/resources/xml/xml-with-namespace-empty-tag-and-comment.xml");
+    final String xPathString = "//proc:procedure[1]/p[4]";
+    final String xmlContent = readFileContent("xml-with-namespace-empty-tag-and-comment.xml");
 
     IntRange offsetForXPATH =
-        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xmlPath);
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xPathString);
 
     assertEquals(212, offsetForXPATH.getMinimumInteger());
     assertEquals(236, offsetForXPATH.getMaximumInteger());
@@ -40,12 +33,11 @@ class XMLLookupUtilsTest {
 
   @Test
   void findOffsetInXmlStringByXpathWithNamespaceAndEmptyTag() throws IOException {
-    final String xmlPath = "//proc:procedure[1]/p[3]";
-    final String xmlContent =
-        readFileContent("src/test/resources/xml/xml-with-namespace-and-empty-tag.xml");
+    final String xPathString = "//proc:procedure[1]/p[3]";
+    final String xmlContent = readFileContent("xml-with-namespace-and-empty-tag.xml");
 
     IntRange offsetForXPATH =
-        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xmlPath);
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xPathString);
 
     assertEquals(137, offsetForXPATH.getMinimumInteger());
     assertEquals(176, offsetForXPATH.getMaximumInteger());
@@ -54,11 +46,11 @@ class XMLLookupUtilsTest {
 
   @Test
   void findOffsetInXmlStringByXpathWithNamespace() throws IOException {
-    final String xmlPath = "//proc:procedure[1]/p[1]";
-    final String xmlContent = readFileContent("src/test/resources/xml/xml-with-namespace.xml");
+    final String xPathString = "//proc:procedure[1]/p[1]";
+    final String xmlContent = readFileContent("xml-with-namespace.xml");
 
     IntRange offsetForXPATH =
-        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xmlPath);
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xPathString);
 
     assertEquals(70, offsetForXPATH.getMinimumInteger());
     assertEquals(120, offsetForXPATH.getMaximumInteger());
@@ -68,7 +60,7 @@ class XMLLookupUtilsTest {
 
   @Test
   void findOffsetInXmlStringByXpath() throws IOException {
-    final String xmlContent = getXmlContent();
+    final String xmlContent = readFileContent("xml-with-no-namespace.xml");
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
             xmlContent, "//bookstore[1]/book[1]/genre[1]");
@@ -79,16 +71,16 @@ class XMLLookupUtilsTest {
 
   @Test
   void findXpathByOffsetWithNamespace() throws Exception {
-    final String xmlPath = "//proc:procedure[1]/p[1]";
-    final String xmlContent = readFileContent("src/test/resources/xml/xml-with-namespace.xml");
+    final String xPathString = "//proc:procedure[1]/p[1]";
+    final String xmlContent = readFileContent("xml-with-namespace.xml");
 
     String xpathByOffset = XMLLookupUtils.findXpathByOffset(xmlContent, 87, 91);
-    assertEquals(xmlPath, xpathByOffset);
+    assertEquals(xPathString, xpathByOffset);
   }
 
   @Test
   void findXpathByOffset() throws Exception {
-    final String xmlContent = getXmlContent();
+    final String xmlContent = readFileContent("xml-with-no-namespace.xml");
     int index = xmlContent.indexOf("Fantastic");
     String xpathByOffset =
         XMLLookupUtils.findXpathByOffset(xmlContent, index, index + "Fantastic".length());
@@ -137,7 +129,7 @@ class XMLLookupUtilsTest {
 
   @Test
   void testGetAllXpathsFromDocument() throws Exception {
-    final String xmlContent = getXmlContent();
+    final String xmlContent = readFileContent("xml-with-no-namespace.xml");
     final List<String> allXpathInXmlDocument = XMLLookupUtils.getAllXpathInXmlDocument(xmlContent);
     assertEquals(12, allXpathInXmlDocument.size());
   }

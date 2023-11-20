@@ -52,7 +52,7 @@ public final class XMLLookupUtils {
       Document document = buildDocument(xmlContent);
 
       XPath xPath = XPathFactory.newInstance().newXPath();
-      xPath.setNamespaceContext(new NamespaceResolver(document));
+      xPath.setNamespaceContext(NamespaceResolver.create(document));
       NodeList nodeList =
           (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
 

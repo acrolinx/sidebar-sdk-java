@@ -1,16 +1,25 @@
 /* Copyright (c) 2023-present Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import org.w3c.dom.Document;
 
-public class NamespaceResolver implements NamespaceContext {
+public final class NamespaceResolver implements NamespaceContext {
   private final Document sourceDocument;
 
-  public NamespaceResolver(Document document) {
+  public static NamespaceContext create(Document document) {
+    return new NamespaceResolver(document);
+  }
+
+  private NamespaceResolver(Document document) {
     sourceDocument = document;
+  }
+
+  private NamespaceResolver() {
+    throw new IllegalArgumentException("Cannot initialize final class");
   }
 
   @Override
@@ -23,12 +32,12 @@ public class NamespaceResolver implements NamespaceContext {
   }
 
   @Override
-  public String getPrefix(String namespaceURI) {
-    return sourceDocument.lookupPrefix(namespaceURI);
+  public String getPrefix(String namespaceUri) {
+    return sourceDocument.lookupPrefix(namespaceUri);
   }
 
   @Override
   public Iterator getPrefixes(String namespaceURI) {
-    return null;
+    return new ArrayList<>().listIterator();
   }
 }
