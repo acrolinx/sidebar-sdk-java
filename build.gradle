@@ -73,6 +73,12 @@ def setVersionProperty(String newVersion) {
     }
 }
 
+def executeCommand(String command, String argument) {
+    exec {
+        commandLine(command, argument)
+    }
+}
+
 tasks.register('removeSnapshotSuffix') {
     doLast {
         logger.info("Removing version suffix")
@@ -85,9 +91,7 @@ tasks.register('removeSnapshotSuffix') {
 
         setVersionProperty(newVersion)
 
-        exec {
-            commandLine("echo", "::set-output name=TAGNAME::release-$newVersion")
-        }
+        executeCommand("echo", "::set-output name=TAGNAME::release-$newVersion")
     }
 }
 
@@ -105,10 +109,8 @@ tasks.register('incrementSnapshotVersion') {
 
             setVersionProperty(newVersion)
 
-            exec {
-                commandLine("echo", "::set-output name=OLDVERSION::$currentVersion")
-                commandLine("echo", "::set-output name=NEWVERSION::$newVersion")
-            }
+            executeCommand("echo", "::set-output name=OLDVERSION::$currentVersion")
+            executeCommand("echo", "::set-output name=NEWVERSION::$newVersion")
         }
     }
 }
