@@ -18,6 +18,11 @@ class XMLLookupUtilsTest {
         Files.readAllBytes(Paths.get("src/test/resources/xml/", fileName)), StandardCharsets.UTF_8);
   }
 
+  private static void verifyIntRange(IntRange intRange, int startOffset, int endOffset) {
+    assertEquals(startOffset, intRange.getMinimumInteger());
+    assertEquals(endOffset, intRange.getMaximumInteger());
+  }
+
   @Test
   void findOffsetInXmlStringByXpathWithNamespaceAndEmptyTagAndComment() throws IOException {
     final String xPathString = "//proc:procedure[1]/p[4]";
@@ -26,9 +31,11 @@ class XMLLookupUtilsTest {
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xPathString);
 
-    assertEquals(212, offsetForXPATH.getMinimumInteger());
-    assertEquals(236, offsetForXPATH.getMaximumInteger());
-    assertEquals("<p>That's how it is!</p>", xmlContent.substring(212, 236));
+    final int expectedStartOffset = 212;
+    final int expectedEndOffset = 236;
+    verifyIntRange(offsetForXPATH, expectedStartOffset, expectedEndOffset);
+    assertEquals(
+        "<p>That's how it is!</p>", xmlContent.substring(expectedStartOffset, expectedEndOffset));
   }
 
   @Test
@@ -39,9 +46,12 @@ class XMLLookupUtilsTest {
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xPathString);
 
-    assertEquals(137, offsetForXPATH.getMinimumInteger());
-    assertEquals(176, offsetForXPATH.getMaximumInteger());
-    assertEquals("<p>This should be processed as well</p>", xmlContent.substring(137, 176));
+    final int expectedStartOffset = 137;
+    final int expectedEndOffset = 176;
+    verifyIntRange(offsetForXPATH, expectedStartOffset, expectedEndOffset);
+    assertEquals(
+        "<p>This should be processed as well</p>",
+        xmlContent.substring(expectedStartOffset, expectedEndOffset));
   }
 
   @Test
@@ -52,10 +62,12 @@ class XMLLookupUtilsTest {
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xPathString);
 
-    assertEquals(70, offsetForXPATH.getMinimumInteger());
-    assertEquals(120, offsetForXPATH.getMaximumInteger());
+    final int expectedStartOffset = 70;
+    final int expectedEndOffset = 120;
+    verifyIntRange(offsetForXPATH, expectedStartOffset, expectedEndOffset);
     assertEquals(
-        "<p>Some text that we nees to check fot errors.</p>", xmlContent.substring(70, 120));
+        "<p>Some text that we nees to check fot errors.</p>",
+        xmlContent.substring(expectedStartOffset, expectedEndOffset));
   }
 
   @Test
@@ -64,9 +76,13 @@ class XMLLookupUtilsTest {
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
             xmlContent, "//bookstore[1]/book[1]/genre[1]");
-    assertEquals(414, offsetForXPATH.getMinimumInteger());
-    assertEquals(446, offsetForXPATH.getMaximumInteger());
-    assertEquals("<genre>Fantastic Fantasy</genre>", xmlContent.substring(414, 446));
+
+    final int expectedStartOffset = 414;
+    final int expectedEndOffset = 446;
+    verifyIntRange(offsetForXPATH, expectedStartOffset, expectedEndOffset);
+    assertEquals(
+        "<genre>Fantastic Fantasy</genre>",
+        xmlContent.substring(expectedStartOffset, expectedEndOffset));
   }
 
   @Test
