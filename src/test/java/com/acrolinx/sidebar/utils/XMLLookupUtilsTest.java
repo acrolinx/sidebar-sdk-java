@@ -31,8 +31,8 @@ class XMLLookupUtilsTest {
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xPathString);
 
-    final int expectedStartOffset = 212;
-    final int expectedEndOffset = 236;
+    final int expectedStartOffset = 251;
+    final int expectedEndOffset = 275;
     verifyIntRange(offsetForXPATH, expectedStartOffset, expectedEndOffset);
     assertEquals(
         "<p>That's how it is!</p>", xmlContent.substring(expectedStartOffset, expectedEndOffset));
@@ -46,8 +46,8 @@ class XMLLookupUtilsTest {
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xPathString);
 
-    final int expectedStartOffset = 137;
-    final int expectedEndOffset = 176;
+    final int expectedStartOffset = 176;
+    final int expectedEndOffset = 215;
     verifyIntRange(offsetForXPATH, expectedStartOffset, expectedEndOffset);
     assertEquals(
         "<p>This should be processed as well</p>",
@@ -62,8 +62,8 @@ class XMLLookupUtilsTest {
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(xmlContent, xPathString);
 
-    final int expectedStartOffset = 70;
-    final int expectedEndOffset = 120;
+    final int expectedStartOffset = 109;
+    final int expectedEndOffset = 159;
     verifyIntRange(offsetForXPATH, expectedStartOffset, expectedEndOffset);
     assertEquals(
         "<p>Some text that we nees to check fot errors.</p>",
@@ -90,7 +90,7 @@ class XMLLookupUtilsTest {
     final String xPathString = "//proc:procedure[1]/p[1]";
     final String xmlContent = readFileContent("xml-with-namespace.xml");
 
-    String xpathByOffset = XMLLookupUtils.findXpathByOffset(xmlContent, 87, 91);
+    String xpathByOffset = XMLLookupUtils.findXpathByOffset(xmlContent, 130, 134);
     assertEquals(xPathString, xpathByOffset);
   }
 
