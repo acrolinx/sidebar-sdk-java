@@ -18,10 +18,6 @@ public final class NamespaceResolver implements NamespaceContext {
     sourceDocument = document;
   }
 
-  private NamespaceResolver() {
-    throw new IllegalArgumentException("Cannot initialize final class");
-  }
-
   @Override
   public String getNamespaceURI(String prefix) {
     if (prefix.equals(XMLConstants.DEFAULT_NS_PREFIX)) {
@@ -37,7 +33,7 @@ public final class NamespaceResolver implements NamespaceContext {
   }
 
   @Override
-  public Iterator getPrefixes(String namespaceURI) {
+  public Iterator getPrefixes(String namespaceUri) {
     return new ArrayList<>().listIterator();
   }
 }
