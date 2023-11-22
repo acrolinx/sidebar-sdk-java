@@ -52,6 +52,7 @@ public final class XMLLookupUtils {
       Document document = buildDocument(xmlContent);
 
       XPath xPath = XPathFactory.newInstance().newXPath();
+      xPath.setNamespaceContext(NamespaceResolver.create(document));
       NodeList nodeList =
           (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
 
@@ -161,7 +162,7 @@ public final class XMLLookupUtils {
       logger.debug("Applying transformation to XML.");
       Transformer transformer = transformerFactory.newTransformer();
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-      transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+      transformer.setOutputProperty(OutputKeys.METHOD, "html");
       transformer.setOutputProperty(OutputKeys.INDENT, "no");
       transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
       transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
@@ -187,6 +188,7 @@ public final class XMLLookupUtils {
   private static Document buildDocument(String xmlContent)
       throws ParserConfigurationException, IOException, SAXException {
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    documentBuilderFactory.setNamespaceAware(true);
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
     documentBuilderFactory.setFeature(
@@ -216,7 +218,7 @@ public final class XMLLookupUtils {
   }
 
   public static String findXpathByOffset(String xmlContent, int offsetStart, int offsetEnd)
-      throws Exception {
+      throws ParserConfigurationException, SAXException, IOException {
     String contentWithMarkerNode =
         xmlContent.substring(0, offsetStart)
             + "<acroseparator>"
@@ -251,7 +253,8 @@ public final class XMLLookupUtils {
     return markerXpath.substring(0, markerXpath.lastIndexOf('/'));
   }
 
-  public static List<String> getAllXpathInXmlDocument(String xmlString) throws Exception {
+  public static List<String> getAllXpathInXmlDocument(String xmlString)
+      throws ParserConfigurationException, SAXException, IOException {
     XMLReader xmlReader = getSecureXMLReader();
     FragmentContentHandler fragmentContentHandler = new FragmentContentHandler(xmlReader);
     xmlReader.setContentHandler(fragmentContentHandler);
