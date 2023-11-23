@@ -187,7 +187,9 @@ public final class XMLLookupUtils {
 
   private static Document buildDocument(String xmlContent)
       throws ParserConfigurationException, IOException, SAXException {
-    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory documentBuilderFactory =
+        DocumentBuilderFactory.newInstance(
+            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl", null);
     documentBuilderFactory.setNamespaceAware(true);
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
