@@ -81,7 +81,7 @@ def isMasterBranch = false
 
 task task1 {
     exec {
-        commandLine("echo", "::set-output name=foo::bar")
+        commandLine("echo", "foo=bar >> \$GITHUB_OUTPUT")
     }
 }
 
