@@ -84,9 +84,8 @@ task task1 {
         println("Query github output...")
         String githubOutput = System.getenv('GITHUB_OUTPUT');
         println(githubOutput)
-        exec {
-            commandLine = ['bash', '-c', 'echo foo=bar >> $GITHUB_OUTPUT' ]
-        }
+        File file = new File(githubOutput);
+        file.append("foo=bar\n")
     }
 }
 
