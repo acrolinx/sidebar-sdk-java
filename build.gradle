@@ -80,8 +80,10 @@ def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
 def isMasterBranch = false
 
 task task1 {
-    exec {
-        commandLine("echo", "foo=bar >> \$GITHUB_OUTPUT")
+    doLast {
+        exec {
+            commandLine = ['bash', '-c', 'echo foo=bar >> $GITHUB_OUTPUT' ]
+        }
     }
 }
 
