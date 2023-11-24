@@ -81,6 +81,9 @@ def isMasterBranch = false
 
 task task1 {
     doLast {
+        println("Query github output...")
+        String githubOutput = System.getenv('GITHUB_OUTPUT');
+        println(githubOutput)
         exec {
             commandLine = ['bash', '-c', 'echo foo=bar >> $GITHUB_OUTPUT' ]
         }
