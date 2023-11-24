@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Foo and Bar
 on:
   push:
     branches: [ main ]

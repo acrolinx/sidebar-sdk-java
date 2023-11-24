@@ -26,4 +26,4 @@ jobs:
           arguments: task1
 
       - name: Sample Step
-        run: "echo Here is the ${{ steps.build.outputs.foo }}"
+        run: echo "Here is the ${{ steps.build.outputs.foo }}"
