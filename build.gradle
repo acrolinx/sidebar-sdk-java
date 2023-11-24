@@ -79,6 +79,12 @@ def fullVersion = "${project.version}.${buildVersion}"
 def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
 def isMasterBranch = false
 
+task task1 {
+    exec {
+        commandLine("echo", "foo=bar", '>> $GITHUB_OUTPUT')
+    }
+}
+
 task getIsMasterBranch {
     def branch = ""
     def proc = "git rev-parse --abbrev-ref HEAD".execute()

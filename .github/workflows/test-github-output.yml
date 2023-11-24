@@ -1,0 +1,28 @@
+name: Build and Deploy
+on:
+  workflow_dispatch:
+
+jobs:
+  FooBar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'zulu'
+          java-package: 'jdk+fx'
+
+      - name: Gradle build
+        id: build
+        uses: gradle/gradle-build-action@842c587ad8aa4c68eeba24c396e15af4c2e9f30a
+        with:
+          arguments: task1
+
+      - name: Sample Step
+        run: "echo Here is the ${{ steps.build.outputs.foo }}"
