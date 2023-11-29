@@ -79,6 +79,12 @@ def executeCommand(String command, String argument) {
     }
 }
 
+static def setGithubOutput(String name, String value) {
+    String githubOutput = System.getenv('GITHUB_OUTPUT')
+    File file = new File(githubOutput)
+    file.append("$name=$value\n")
+}
+
 tasks.register('removeSnapshotSuffix') {
     doLast {
         logger.info("Removing version suffix")
@@ -91,7 +97,7 @@ tasks.register('removeSnapshotSuffix') {
 
         setVersionProperty(newVersion)
 
-        executeCommand("echo", "::set-output name=TAGNAME::release-$newVersion")
+        setGithubOutput("TAGNAME", "release-$newVersion")
     }
 }
 
@@ -109,8 +115,8 @@ tasks.register('incrementSnapshotVersion') {
 
             setVersionProperty(newVersion)
 
-            executeCommand("echo", "::set-output name=OLDVERSION::$currentVersion")
-            executeCommand("echo", "::set-output name=NEWVERSION::$newVersion")
+            setGithubOutput("OLDVERSION", currentVersion)
+            setGithubOutput("NEWVERSION", "$newVersion")
         }
     }
 }
