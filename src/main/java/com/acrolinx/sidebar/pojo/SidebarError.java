@@ -1,4 +1,4 @@
-/* Copyright (c) 2018-present Acrolinx GmbH */
+/* Copyright (c) 2018 Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo;
 
 /** Error Object returned if an error occurred within the Acrolinx Sidebar. */

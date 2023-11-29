@@ -1,4 +1,4 @@
-/* Copyright (c) 2023-present Acrolinx GmbH */
+/* Copyright (c) 2023 Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
 import java.util.ArrayList;
