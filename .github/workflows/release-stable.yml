@@ -39,8 +39,8 @@ jobs:
 
       - name: Remove Snapshot Suffix
         run: |
-          git config --global user.name 'acrolinx-machine-user-for-integrations'
-          git config --global user.email 'danjela.lura@acrolinx.net'
+          git config --global user.name ${{ env.GITHUB_MACHINE_USER_NAME }}
+          git config --global user.email ${{ env.GITHUB_MACHINE_USER_EMAIL }}
           git commit -m "Release v${{ steps.removeSnapshot.TAGNAME }}"
 
       - name: Create Javadoc
