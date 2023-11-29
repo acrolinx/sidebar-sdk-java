@@ -73,12 +73,6 @@ def setVersionProperty(String newVersion) {
     }
 }
 
-def executeCommand(String command, String argument) {
-    exec {
-        commandLine(command, argument)
-    }
-}
-
 static def setGithubOutput(String name, String value) {
     String githubOutput = System.getenv('GITHUB_OUTPUT')
     File file = new File(githubOutput)
