@@ -1,4 +1,4 @@
-/* Copyright (c) 2018-present Acrolinx GmbH */
+/* Copyright (c) 2018 Acrolinx GmbH */
 package com.acrolinx.sidebar.swt.adapter;
 
 import com.acrolinx.sidebar.InputAdapterInterface;
