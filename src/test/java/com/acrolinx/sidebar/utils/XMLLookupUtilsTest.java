@@ -92,8 +92,8 @@ class XMLLookupUtilsTest {
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
             xmlContent, "//html[1]/body[1]/div[1]/p[1]");
 
-    final int expectedStartOffset = 394;
-    final int expectedEndOffset = 432;
+    final int expectedStartOffset = 405;
+    final int expectedEndOffset = 443;
     verifyIntRange(offsetForXPATH, expectedStartOffset, expectedEndOffset);
     assertEquals(
         "<p>Another paraggraph with errorss</p>",
@@ -114,7 +114,7 @@ class XMLLookupUtilsTest {
     final String xPathString = "//html[1]/body[1]/div[1]/p[1]";
     final String xmlContent = readFileContent("xml-with-default-namespace.xml");
 
-    String xpathByOffset = XMLLookupUtils.findXpathByOffset(xmlContent, 405, 415);
+    String xpathByOffset = XMLLookupUtils.findXpathByOffset(xmlContent, 416, 426);
     assertEquals(xPathString, xpathByOffset);
   }
 
