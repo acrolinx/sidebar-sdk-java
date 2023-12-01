@@ -56,6 +56,11 @@ public final class XMLLookupUtils {
       NodeList nodeList =
           (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
 
+      if (nodeList.getLength() == 0) {// load document without context awareness
+        document = buildDocumentWithoutNamespaceAwareness(xmlContent);
+        nodeList = (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
+      }
+
       if (nodeList.getLength() == 0) {
         throw new IllegalStateException("Xpath evaluation returned 0 nodes");
       }
@@ -191,6 +196,33 @@ public final class XMLLookupUtils {
         DocumentBuilderFactory.newInstance(
             "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl", null);
     documentBuilderFactory.setNamespaceAware(true);
+    documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+    documentBuilderFactory.setFeature(
+        "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+
+    try (InputStream inputStream =
+        new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8))) {
+      return documentBuilder.parse(inputStream);
+    } catch (Exception e) {
+      logger.debug("", e);
+      final String cleanXml = XMLLookupUtils.cleanXML(xmlContent);
+
+      try (InputStream inputStream =
+          new ByteArrayInputStream(cleanXml.getBytes(StandardCharsets.UTF_8))) {
+        return documentBuilder.parse(inputStream);
+      }
+    }
+  }
+
+  private static Document buildDocumentWithoutNamespaceAwareness(String xmlContent)
+      throws ParserConfigurationException, IOException, SAXException {
+    DocumentBuilderFactory documentBuilderFactory =
+        DocumentBuilderFactory.newInstance(
+            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl", null);
+    documentBuilderFactory.setNamespaceAware(false);
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
     documentBuilderFactory.setFeature(
