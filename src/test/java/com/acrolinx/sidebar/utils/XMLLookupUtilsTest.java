@@ -87,16 +87,16 @@ class XMLLookupUtilsTest {
 
   @Test
   void findOffsetInXmlStringWithDefaultNamespaceByXpath() throws IOException {
-    final String xmlContent = readFileContent("xml-with-default-namespace.xml");
+    final String xmlContent = readFileContent("xml-with-default-namespace-2.xml");
     IntRange offsetForXPATH =
         XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
             xmlContent, "//html[1]/body[1]/div[1]/p[1]");
 
-    final int expectedStartOffset = 405;
-    final int expectedEndOffset = 443;
+    final int expectedStartOffset = 394;
+    final int expectedEndOffset = 418;
     verifyIntRange(offsetForXPATH, expectedStartOffset, expectedEndOffset);
     assertEquals(
-        "<p>Another paraggraph with errorss</p>",
+        "<p>Another paragraph</p>",
         xmlContent.substring(expectedStartOffset, expectedEndOffset));
   }
 
