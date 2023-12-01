@@ -56,7 +56,7 @@ public final class XMLLookupUtils {
       NodeList nodeList =
           (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
 
-      if (nodeList.getLength() == 0) {// load document without context awareness
+      if (nodeList.getLength() == 0) { // load document without context awareness
         document = buildDocumentWithoutNamespaceAwareness(xmlContent);
         nodeList = (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
       }
