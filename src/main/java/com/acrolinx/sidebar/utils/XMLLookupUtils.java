@@ -49,14 +49,14 @@ public final class XMLLookupUtils {
     int endOffset = 0;
 
     try {
-      Document document = buildDocument(xmlContent);
+      Document document = buildDocumentWithNamespaceAwareness(xmlContent);
 
       XPath xPath = XPathFactory.newInstance().newXPath();
       xPath.setNamespaceContext(NamespaceResolver.create(document));
       NodeList nodeList =
           (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
 
-      if (nodeList.getLength() == 0) { // load document without context awareness
+      if (nodeList.getLength() == 0) {
         document = buildDocumentWithoutNamespaceAwareness(xmlContent);
         nodeList = (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
       }
@@ -190,7 +190,7 @@ public final class XMLLookupUtils {
     return "";
   }
 
-  private static Document buildDocument(String xmlContent)
+  private static Document buildDocumentWithNamespaceAwareness(String xmlContent)
       throws ParserConfigurationException, IOException, SAXException {
     DocumentBuilderFactory documentBuilderFactory = createDocumentBuilderFactory();
     documentBuilderFactory.setNamespaceAware(true);
