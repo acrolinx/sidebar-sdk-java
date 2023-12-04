@@ -192,11 +192,16 @@ public final class XMLLookupUtils {
 
   private static Document buildDocument(String xmlContent)
       throws ParserConfigurationException, IOException, SAXException {
-    DocumentBuilderFactory documentBuilderFactory =
-        DocumentBuilderFactory.newInstance(
-            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl", null);
+    DocumentBuilderFactory documentBuilderFactory = createDocumentBuilderFactory();
     documentBuilderFactory.setNamespaceAware(true);
-    setDocumentBuilderFactoryAttributes(documentBuilderFactory);
+
+    return parseXmlContent(xmlContent, documentBuilderFactory);
+  }
+
+  private static Document buildDocumentWithoutNamespaceAwareness(String xmlContent)
+      throws ParserConfigurationException, IOException, SAXException {
+    DocumentBuilderFactory documentBuilderFactory = createDocumentBuilderFactory();
+    documentBuilderFactory.setNamespaceAware(false);
 
     return parseXmlContent(xmlContent, documentBuilderFactory);
   }
@@ -220,23 +225,16 @@ public final class XMLLookupUtils {
     }
   }
 
-  private static Document buildDocumentWithoutNamespaceAwareness(String xmlContent)
-      throws ParserConfigurationException, IOException, SAXException {
+  private static DocumentBuilderFactory createDocumentBuilderFactory()
+      throws ParserConfigurationException {
     DocumentBuilderFactory documentBuilderFactory =
         DocumentBuilderFactory.newInstance(
             "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl", null);
-    documentBuilderFactory.setNamespaceAware(false);
-    setDocumentBuilderFactoryAttributes(documentBuilderFactory);
-
-    return parseXmlContent(xmlContent, documentBuilderFactory);
-  }
-
-  private static void setDocumentBuilderFactoryAttributes(
-      DocumentBuilderFactory documentBuilderFactory) throws ParserConfigurationException {
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
     documentBuilderFactory.setFeature(
         "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+    return documentBuilderFactory;
   }
 
   public static String cleanXML(String markup) {
