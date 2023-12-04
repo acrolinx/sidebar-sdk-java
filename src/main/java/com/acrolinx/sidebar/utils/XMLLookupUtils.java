@@ -196,11 +196,14 @@ public final class XMLLookupUtils {
         DocumentBuilderFactory.newInstance(
             "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl", null);
     documentBuilderFactory.setNamespaceAware(true);
-    documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-    documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-    documentBuilderFactory.setFeature(
-        "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+    setDocumentBuilderFactoryAttributes(documentBuilderFactory);
 
+    return parseXmlContent(xmlContent, documentBuilderFactory);
+  }
+
+  private static Document parseXmlContent(
+      String xmlContent, DocumentBuilderFactory documentBuilderFactory)
+      throws ParserConfigurationException, IOException, SAXException {
     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 
     try (InputStream inputStream =
@@ -223,25 +226,17 @@ public final class XMLLookupUtils {
         DocumentBuilderFactory.newInstance(
             "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl", null);
     documentBuilderFactory.setNamespaceAware(false);
+    setDocumentBuilderFactoryAttributes(documentBuilderFactory);
+
+    return parseXmlContent(xmlContent, documentBuilderFactory);
+  }
+
+  private static void setDocumentBuilderFactoryAttributes(
+      DocumentBuilderFactory documentBuilderFactory) throws ParserConfigurationException {
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
     documentBuilderFactory.setFeature(
         "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
-    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-
-    try (InputStream inputStream =
-        new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8))) {
-      return documentBuilder.parse(inputStream);
-    } catch (Exception e) {
-      logger.debug("", e);
-      final String cleanXml = XMLLookupUtils.cleanXML(xmlContent);
-
-      try (InputStream inputStream =
-          new ByteArrayInputStream(cleanXml.getBytes(StandardCharsets.UTF_8))) {
-        return documentBuilder.parse(inputStream);
-      }
-    }
   }
 
   public static String cleanXML(String markup) {
