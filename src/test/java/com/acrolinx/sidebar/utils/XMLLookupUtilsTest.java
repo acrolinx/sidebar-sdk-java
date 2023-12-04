@@ -86,11 +86,35 @@ class XMLLookupUtilsTest {
   }
 
   @Test
+  void findOffsetInXmlStringWithDefaultNamespaceByXpath() throws IOException {
+    final String xmlContent = readFileContent("xml-with-default-namespace.xml");
+    IntRange offsetForXPATH =
+        XMLLookupUtils.findOffsetForNodeInXmlStringByXpath(
+            xmlContent, "//html[1]/head[1]/title[1]");
+
+    final int expectedStartOffset = 102;
+    final int expectedEndOffset = 129;
+    verifyIntRange(offsetForXPATH, expectedStartOffset, expectedEndOffset);
+    assertEquals(
+        "<title>A good title</title>",
+        xmlContent.substring(expectedStartOffset, expectedEndOffset));
+  }
+
+  @Test
   void findXpathByOffsetWithNamespace() throws Exception {
     final String xPathString = "//proc:procedure[1]/p[1]";
     final String xmlContent = readFileContent("xml-with-namespace.xml");
 
     String xpathByOffset = XMLLookupUtils.findXpathByOffset(xmlContent, 130, 134);
+    assertEquals(xPathString, xpathByOffset);
+  }
+
+  @Test
+  void findXpathByOffsetForXmlWithDefaultNamespace() throws Exception {
+    final String xPathString = "//html[1]/head[1]/title[1]";
+    final String xmlContent = readFileContent("xml-with-default-namespace.xml");
+
+    String xpathByOffset = XMLLookupUtils.findXpathByOffset(xmlContent, 111, 115);
     assertEquals(xPathString, xpathByOffset);
   }
 

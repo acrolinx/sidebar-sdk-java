@@ -49,12 +49,17 @@ public final class XMLLookupUtils {
     int endOffset = 0;
 
     try {
-      Document document = buildDocument(xmlContent);
+      Document document = buildDocumentWithNamespaceAwareness(xmlContent);
 
       XPath xPath = XPathFactory.newInstance().newXPath();
       xPath.setNamespaceContext(NamespaceResolver.create(document));
       NodeList nodeList =
           (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
+
+      if (nodeList.getLength() == 0) {
+        document = buildDocumentWithoutNamespaceAwareness(xmlContent);
+        nodeList = (NodeList) xPath.compile(xpath).evaluate(document, XPathConstants.NODESET);
+      }
 
       if (nodeList.getLength() == 0) {
         throw new IllegalStateException("Xpath evaluation returned 0 nodes");
@@ -185,17 +190,25 @@ public final class XMLLookupUtils {
     return "";
   }
 
-  private static Document buildDocument(String xmlContent)
+  private static Document buildDocumentWithNamespaceAwareness(String xmlContent)
       throws ParserConfigurationException, IOException, SAXException {
-    DocumentBuilderFactory documentBuilderFactory =
-        DocumentBuilderFactory.newInstance(
-            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl", null);
+    DocumentBuilderFactory documentBuilderFactory = createDocumentBuilderFactory();
     documentBuilderFactory.setNamespaceAware(true);
-    documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-    documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-    documentBuilderFactory.setFeature(
-        "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
+    return parseXmlContent(xmlContent, documentBuilderFactory);
+  }
+
+  private static Document buildDocumentWithoutNamespaceAwareness(String xmlContent)
+      throws ParserConfigurationException, IOException, SAXException {
+    DocumentBuilderFactory documentBuilderFactory = createDocumentBuilderFactory();
+    documentBuilderFactory.setNamespaceAware(false);
+
+    return parseXmlContent(xmlContent, documentBuilderFactory);
+  }
+
+  private static Document parseXmlContent(
+      String xmlContent, DocumentBuilderFactory documentBuilderFactory)
+      throws ParserConfigurationException, IOException, SAXException {
     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 
     try (InputStream inputStream =
@@ -210,6 +223,18 @@ public final class XMLLookupUtils {
         return documentBuilder.parse(inputStream);
       }
     }
+  }
+
+  private static DocumentBuilderFactory createDocumentBuilderFactory()
+      throws ParserConfigurationException {
+    DocumentBuilderFactory documentBuilderFactory =
+        DocumentBuilderFactory.newInstance(
+            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl", null);
+    documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+    documentBuilderFactory.setFeature(
+        "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+    return documentBuilderFactory;
   }
 
   public static String cleanXML(String markup) {
