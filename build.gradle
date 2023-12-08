@@ -60,11 +60,11 @@ sonar {
     }
 }
 
-def getFixAndFullVersion() {
+String[] getFixAndFullVersion() {
     def currentVersion = currentVersion.split("\\.")
     def lastVersionNumber = currentVersion[currentVersion.length - 1]
 
-    return [lastVersionNumber, currentVersion]
+    return [lastVersionNumber, currentVersion[0] + "." + currentVersion[1]]
 }
 
 def setVersionProperty(String newVersion) {
@@ -83,10 +83,10 @@ tasks.register('removeSnapshotSuffix') {
     doLast {
         logger.info("Removing version suffix")
         println("Current build version: $currentVersion")
-        def (lastVersionNumber, currentVersionParts) = getFixAndFullVersion()
-        lastVersionNumber = lastVersionNumber.replace('-SNAPSHOT', '')
+        String[] lastVersionNumberAndBaseVersion = getFixAndFullVersion()
+        String lastVersionNumber = lastVersionNumberAndBaseVersion[0].replace('-SNAPSHOT', '')
 
-        def newVersion = currentVersionParts.take(2).join(".") + "." + lastVersionNumber
+        String newVersion = lastVersionNumberAndBaseVersion[1] + "." + lastVersionNumber
         println("New build version: ${newVersion}")
 
         setVersionProperty(newVersion)
