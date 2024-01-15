@@ -81,7 +81,7 @@ static def setGithubOutput(String name, String value) {
 
 tasks.register('removeSnapshotSuffix') {
     doLast {
-        logger.info("Removing version suffix")
+        println("Removing version suffix")
         println("Current build version: $currentVersion")
         String[] lastVersionNumberAndBaseVersion = getFixAndFullVersion()
         String lastVersionNumber = lastVersionNumberAndBaseVersion[0].replace('-SNAPSHOT', '')
@@ -97,14 +97,15 @@ tasks.register('removeSnapshotSuffix') {
 
 tasks.register('incrementSnapshotVersion') {
     doLast {
+        println("Incrementing snapshot version")
         println("Current build version: $currentVersion")
-        def (lastVersionNumber, currentVersionParts) = getFixAndFullVersion()
+        String[] lastVersionNumberAndBaseVersion = getFixAndFullVersion()
+        String lastVersionNumber = lastVersionNumberAndBaseVersion[0]
 
         if (!lastVersionNumber.contains("-SNAPSHOT")) {
-            def last = Integer.parseInt(lastVersionNumber)
-            currentVersionParts[currentVersionParts.length - 1] = Integer.toString(last + 1)
+            int last = Integer.parseInt(lastVersionNumber) + 1
+            String newVersion = lastVersionNumberAndBaseVersion[1] + "." + last + "-SNAPSHOT"
 
-            def newVersion = currentVersionParts.join(".") + "-SNAPSHOT"
             println("New build version: ${newVersion}")
 
             setVersionProperty(newVersion)
