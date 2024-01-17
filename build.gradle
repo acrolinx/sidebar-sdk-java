@@ -68,9 +68,21 @@ String[] getFixAndFullVersion() {
 }
 
 def setVersionProperty(String newVersion) {
-    ant.propertyfile(file: "gradle.properties") {
-        entry(key: "currentVersion", value: newVersion)
+    String propertyName = 'currentVersion'
+
+    File gradlePropertiesFile = file('gradle.properties')
+
+    List<String> lines = gradlePropertiesFile.text.readLines()
+
+    List<String> updatedLines = lines.collect { line ->
+        if (line.startsWith("${propertyName}=")) {
+            "${propertyName}=${newVersion}"
+        } else {
+            line
+        }
     }
+
+    gradlePropertiesFile.text = updatedLines.join('\n')
 }
 
 static def setGithubOutput(String name, String value) {
