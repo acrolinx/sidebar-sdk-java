@@ -55,8 +55,7 @@ jobs:
           arguments: publishToSonatype closeAndReleaseStagingRepository --stacktrace
 
       - name: Create and Push Tag
-        run: |
-          git tag ${{ steps.removeSnapshot.TAGNAME }}
+        run: git tag ${{ steps.removeSnapshot.TAGNAME }}
 
       - name: Deploy Javadoc
         uses: JamesIves/github-pages-deploy-action@v4.5.0
