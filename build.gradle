@@ -72,9 +72,9 @@ def setVersionProperty(String newVersion) {
 
     File gradlePropertiesFile = file('gradle.properties')
 
-    List<String> lines = gradlePropertiesFile.text.readLines()
+    List<String> propertyFileContent = gradlePropertiesFile.text.readLines()
 
-    List<String> updatedLines = lines.collect { line ->
+    List<String> updatedPropertyFileContent = propertyFileContent.collect { line ->
         if (line.startsWith("${propertyName}=")) {
             "${propertyName}=${newVersion}"
         } else {
@@ -82,7 +82,7 @@ def setVersionProperty(String newVersion) {
         }
     }
 
-    gradlePropertiesFile.text = updatedLines.join('\n')
+    gradlePropertiesFile.text = updatedPropertyFileContent.join('\n')
 }
 
 static def setGithubOutput(String name, String value) {
