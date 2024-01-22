@@ -37,7 +37,7 @@ jobs:
         with:
           arguments: removeSnapshotSuffix
 
-      - name: Remove Snapshot Suffix
+      - name: Commit Current Version
         run: |
           git config --global user.name ${{ env.GITHUB_MACHINE_USER_NAME }}
           git config --global user.email ${{ env.GITHUB_MACHINE_USER_EMAIL }}
@@ -73,5 +73,5 @@ jobs:
       - name: Commit Snapshot Suffix
         run: git commit -m "Update version from ${{ steps.incrementSnapshotVersion.OLDVERSION }} to ${{ steps.incrementSnapshotVersion.NEWVERSION }}"
 
-      - name: Push Changes to Main
-        run: git push origin main
+      - name: Push Changes
+        run: git push
