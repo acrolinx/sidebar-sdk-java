@@ -73,3 +73,6 @@ jobs:
 
       - name: Push Changes
         run: git push origin main
+
+      - name: Create Draft Release
+        run: gh release create ${{ steps.removeSnapshot.TAGNAME }} --verify-tag --draft --generate-notes
