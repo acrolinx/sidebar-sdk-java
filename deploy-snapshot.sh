@@ -19,4 +19,6 @@ if [[ "$PROJECT_VERSION" == *"SNAPSHOT"* ]]; then
     else
         exit 1
     fi
+else
+  echo "Could not publish snapshot as the current version does not have -SNAPSHOT"
 fi

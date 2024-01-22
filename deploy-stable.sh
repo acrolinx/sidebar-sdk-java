@@ -33,4 +33,6 @@ if [[ ! "$PROJECT_VERSION" == *"SNAPSHOT"* ]]; then
         else
             exit 1
         fi
+else
+  echo "Could not publish stable as the current version has -SNAPSHOT"
 fi
