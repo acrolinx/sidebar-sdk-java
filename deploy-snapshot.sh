@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting publish script"
+echo "Starting snapshot publishing script"
 
 getProperty() {
     PROP_KEY=$1
