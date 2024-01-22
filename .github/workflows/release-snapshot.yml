@@ -1,0 +1,46 @@
+name: Release Snapshot Version
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  Release-Snapshot:
+    runs-on: ubuntu-latest
+    env:
+      ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
+      ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
+      ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.SONATYPE_PW }}
+      ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.SONATYPE_USERNAME }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      BUILD_NUMBER: ${{ github.run_number }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'zulu'
+          java-package: 'jdk+fx'
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@56b90f209b02bf6d1deae490e9ef18b21a389cd4
+
+      - name: Gradle build
+        uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
+        with:
+          arguments: build
+
+      - name: Create Javadoc
+        uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
+        with:
+          arguments: javadoc
+
+      - name: Deploy artifacts
+        id: deploy
+        run: ./deploy-snapshot.sh
