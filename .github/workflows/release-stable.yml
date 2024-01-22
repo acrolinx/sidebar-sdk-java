@@ -74,4 +74,3 @@ jobs:
         run: git commit -m "Update version from ${{ steps.incrementSnapshotVersion.OLDVERSION }} to ${{ steps.incrementSnapshotVersion.NEWVERSION }}"
 
       - name: Push Changes
-        run: git push
