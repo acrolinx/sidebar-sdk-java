@@ -10,6 +10,7 @@ jobs:
     env:
       BUILD_NUMBER: ${{ github.run_number }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_ACTOR: ${{ github.actor }}
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
       ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
@@ -39,7 +40,7 @@ jobs:
 
       - name: Commit Current Version
         run: |
-          git config --global user.name ${{ env.GITHUB_MACHINE_USER_NAME }}
+          git config --global user.name $GITHUB_ACTOR
           git config --global user.email ${{ env.GITHUB_MACHINE_USER_EMAIL }}
           git commit -m "Release v${{ steps.removeSnapshot.TAGNAME }}"
 
