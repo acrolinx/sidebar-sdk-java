@@ -1,7 +1,12 @@
 import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.os.OperatingSystem
 
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardOpenOption
 import java.time.Duration
+import java.util.stream.Collectors
 
 plugins {
     id 'java-library'
@@ -61,71 +66,72 @@ sonar {
     }
 }
 
-String[] getFixAndFullVersion() {
-    def currentVersion = currentVersion.split("\\.")
-    def lastVersionNumber = currentVersion[currentVersion.length - 1]
+String createNewSnapshotVersion() {
+    final String[] currentVersion = currentVersion.split("\\.")
+    final int incrementedPatchVersion = Integer.parseInt(currentVersion[currentVersion.length - 1]) + 1
 
-    return [lastVersionNumber, currentVersion[0] + "." + currentVersion[1]]
+    return currentVersion[0] + '.' + currentVersion[1] + '.' + incrementedPatchVersion + '-SNAPSHOT'
 }
 
-def setVersionProperty(String newVersion) {
-    String propertyName = 'currentVersion'
+static void updateVersionProperty(String versionString) {
+    final String propertyName = 'currentVersion'
 
-    File gradlePropertiesFile = file('gradle.properties')
+    final java.nio.file.Path gradlePropertiesPath = Paths.get("gradle.properties")
 
-    List<String> propertyFileContent = gradlePropertiesFile.text.readLines()
-
-    List<String> updatedPropertyFileContent = propertyFileContent.collect { line ->
-        if (line.startsWith("${propertyName}=")) {
-            "${propertyName}=${newVersion}"
-        } else {
-            line
-        }
+    if (!Files.exists(gradlePropertiesPath)) {
+        throw new IllegalStateException("File does not exist: " + gradlePropertiesPath)
     }
 
-    gradlePropertiesFile.text = updatedPropertyFileContent.join('\n')
+    final List<String> propertyFileContent = Files.readAllLines(gradlePropertiesPath)
+
+    final List<String> updatedPropertyFileContent = propertyFileContent.stream()
+            .map(line -> {
+                if (line.startsWith("$propertyName=")) {
+                    "$propertyName=$versionString"
+                } else {
+                    line
+                }
+            })
+            .collect(Collectors.toList())
+
+    Files.write(gradlePropertiesPath, updatedPropertyFileContent)
 }
 
-static def setGithubOutput(String name, String value) {
-    String githubOutput = System.getenv('GITHUB_OUTPUT')
-    File file = new File(githubOutput)
-    file.append("$name=$value\n")
+static void setGithubOutput(String name, String value) {
+    final String githubOutput = System.getenv('GITHUB_OUTPUT')
+    final java.nio.file.Path githubOutputPath = Paths.get(githubOutput);
+    Files.write(githubOutputPath, "$name=$value\n".getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND)
 }
 
 tasks.register('removeSnapshotSuffix') {
     doLast {
-        println("Removing version suffix")
-        println("Current build version: $currentVersion")
-        String[] lastVersionNumberAndBaseVersion = getFixAndFullVersion()
-        String lastVersionNumber = lastVersionNumberAndBaseVersion[0].replace('-SNAPSHOT', '')
+        println("Current version: $currentVersion")
 
-        String newVersion = lastVersionNumberAndBaseVersion[1] + "." + lastVersionNumber
-        println("New build version: ${newVersion}")
+        if (!currentVersion.endsWith("-SNAPSHOT")) {
+            throw new IllegalStateException("Current version is not a snapshot: " + currentVersion)
+        }
 
-        setVersionProperty(newVersion)
+        final String releaseVersion = currentVersion.replace("-SNAPSHOT", "")
 
-        setGithubOutput("TAGNAME", "release-$newVersion")
+        println("Stable version: $releaseVersion")
+
+        updateVersionProperty(releaseVersion)
+
+        setGithubOutput("OLD_SNAPSHOT_VERSION", "$currentVersion")
+        setGithubOutput("RELEASE_VERSION", "$releaseVersion")
     }
 }
 
 tasks.register('incrementSnapshotVersion') {
     doLast {
-        println("Incrementing snapshot version")
-        println("Current build version: $currentVersion")
-        String[] lastVersionNumberAndBaseVersion = getFixAndFullVersion()
-        String lastVersionNumber = lastVersionNumberAndBaseVersion[0]
+        println("Current version: $currentVersion")
+        final String newSnapshotVersion = createNewSnapshotVersion()
 
-        if (!lastVersionNumber.contains("-SNAPSHOT")) {
-            int last = Integer.parseInt(lastVersionNumber) + 1
-            String newVersion = lastVersionNumberAndBaseVersion[1] + "." + last + "-SNAPSHOT"
+        println("New snapshot version: $newSnapshotVersion")
 
-            println("New build version: ${newVersion}")
+        updateVersionProperty(newSnapshotVersion)
 
-            setVersionProperty(newVersion)
-
-            setGithubOutput("OLDVERSION", currentVersion)
-            setGithubOutput("NEWVERSION", "$newVersion")
-        }
+        setGithubOutput("NEW_SNAPSHOT_VERSION", newSnapshotVersion)
     }
 }
 

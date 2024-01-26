@@ -10,7 +10,6 @@ jobs:
     env:
       BUILD_NUMBER: ${{ github.run_number }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      GITHUB_ACTOR: ${{ github.actor }}
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
       ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
@@ -36,29 +35,33 @@ jobs:
           arguments: build
 
       - name: Remove Snapshot Suffix
-        id: removeSnapshot
+        id: removeSnapshotSuffix
         uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
         with:
-          arguments: removeSnapshotSuffix
+          arguments: removeSnapshotSuffixSuffix
 
       - name: Commit Current Version
         run: |
-          git config --global user.name $GITHUB_ACTOR
-          git config --global user.email ${{ env.GITHUB_MACHINE_USER_EMAIL }}
-          git commit -m "Release v${{ steps.removeSnapshot.TAGNAME }}"
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email opensource@acrolinx.com
+          git commit -m "Update version from ${{ steps.removeSnapshotSuffix.OLD_SNAPSHOT_VERSION }} to ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }}"
+
+      - name: Create Tag Name
+        id: createTagName
+        run: echo "TAG_NAME=release-${{ steps.removeSnapshotSuffix.RELEASE_VERSION }}" >> "$GITHUB_OUTPUT"
+
+      - name: Create Tag
+        run: git tag ${{ steps.createTagName.TAG_NAME }}
 
       - name: Create Javadoc
         uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
         with:
           arguments: javadoc
 
-      - name: Deploy Artifacts
-        uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
+      - name: Publish Artifacts
+        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
         with:
-          arguments: publishToSonatype closeAndReleaseStagingRepository --stacktrace
-
-      - name: Create and Push Tag
-        run: git tag ${{ steps.removeSnapshot.TAGNAME }}
+          arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository --stacktrace
 
       - name: Deploy Javadoc
         uses: JamesIves/github-pages-deploy-action@v4.5.0
@@ -66,17 +69,17 @@ jobs:
           branch: gh-pages
           folder: "docs/"
 
-      - name: Increment Snapshot Version
+      - name: Increment Version and Add Snapshot Suffix
         id: incrementSnapshotVersion
-        uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
+        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
         with:
           arguments: incrementSnapshotVersion
 
       - name: Commit Snapshot Suffix
-        run: git commit -m "Update version from ${{ steps.incrementSnapshotVersion.OLDVERSION }} to ${{ steps.incrementSnapshotVersion.NEWVERSION }}"
+        run: git commit -m "Update version from ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }} to ${{ steps.incrementSnapshotVersion.NEW_SNAPSHOT_VERSION }}"
 
       - name: Push Changes
-        run: git push origin main
+        run: git push
 
       - name: Create Draft Release
-        run: gh release create ${{ steps.removeSnapshot.TAGNAME }} --verify-tag --draft --generate-notes
+        run: gh release create ${{ steps.createTagName.TAG_NAME }} --verify-tag --draft
