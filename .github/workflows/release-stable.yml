@@ -42,8 +42,8 @@ jobs:
 
       - name: Commit Current Version
         run: |
-          git config --global user.name ${{ github.actor }}
-          git config --global user.email opensource@acrolinx.com
+          git config user.name ${{ github.actor }}
+          git config user.email opensource@acrolinx.com
           git commit -m "Update version from ${{ steps.removeSnapshotSuffix.OLD_SNAPSHOT_VERSION }} to ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }}"
 
       - name: Create Tag Name
@@ -75,7 +75,7 @@ jobs:
         with:
           arguments: incrementSnapshotVersion
 
-      - name: Commit Snapshot Suffix
+      - name: Commit New Snapshot Version
         run: git commit -m "Update version from ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }} to ${{ steps.incrementSnapshotVersion.NEW_SNAPSHOT_VERSION }}"
 
       - name: Push Changes

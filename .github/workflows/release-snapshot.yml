@@ -32,7 +32,7 @@ jobs:
         with:
           arguments: build
 
-      - name: Deploy artifacts
+      - name: Publish Artifacts
         uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
         with:
           arguments: publishToSonatype --stacktrace

@@ -70,7 +70,7 @@ String createNewSnapshotVersion() {
     final String[] currentVersion = currentVersion.split("\\.")
     final int incrementedPatchVersion = Integer.parseInt(currentVersion[currentVersion.length - 1]) + 1
 
-    return currentVersion[0] + '.' + currentVersion[1] + '.' + incrementedPatchVersion + '-SNAPSHOT'
+    return currentVersion[0] + '.' + currentVersion[1] + '.' + incrementedPatchVersion + "-SNAPSHOT"
 }
 
 static void updateVersionProperty(String versionString) {
