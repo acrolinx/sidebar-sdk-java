@@ -44,6 +44,7 @@ jobs:
         run: |
           git config user.name ${{ github.actor }}
           git config user.email opensource@acrolinx.com
+          git add gradle.properties
           git commit -m "Update version from ${{ steps.removeSnapshotSuffix.OLD_SNAPSHOT_VERSION }} to ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }}"
 
       - name: Create Tag Name
@@ -76,7 +77,9 @@ jobs:
           arguments: incrementSnapshotVersion
 
       - name: Commit New Snapshot Version
-        run: git commit -m "Update version from ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }} to ${{ steps.incrementSnapshotVersion.NEW_SNAPSHOT_VERSION }}"
+        run: |
+          git add gradle.properties
+          git commit -m "Update version from ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }} to ${{ steps.incrementSnapshotVersion.NEW_SNAPSHOT_VERSION }}"
 
       - name: Push Changes
         run: git push
