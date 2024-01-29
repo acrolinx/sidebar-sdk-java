@@ -237,70 +237,41 @@ javadoc {
     failOnError = false
 }
 
-def devId = "Acrolinx Open Source"
-def devName = "Acrolinx"
-def devEmail = "opensource@acrolinx.com"
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
-            afterEvaluate {
-                pom.withXml {
-                    Node pomNode = asNode()
-                    pomNode.dependencies.'*'.findAll() {
-                        it.groupId.text() == 'eclipse-swt-deps'
-                    }.each() {
-                        it.parent().remove(it)
+            from(components.java)
+
+            pom {
+                name.set("sidebar-sdk")
+                description.set("Acrolinx Sidebar SDK to build Acrolinx integrations for Java FX, Swing or SWT based clients.")
+                url.set("https://github.com/acrolinx/sidebar-sdk-java")
+                licenses {
+                    license {
+                        name.set("The Apache Software License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
                     }
-                    asNode().children().last() + {
-                        resolveStrategy = Closure.DELEGATE_FIRST
-                        name 'sidebar-sdk'
-                        description 'Acrolinx Sidebar SDK to build Acrolinx integrations for Java FX, Swing or SWT based clients.'
-                        url 'https://github.com/acrolinx/sidebar-sdk-java'
-                        scm {
-                            url 'https://github.com/acrolinx/sidebar-sdk-java'
-                            connection 'scm:git@github.com:acrolinx/sidebar-sdk-java.git'
-                            developerConnection 'scm:git@github.com:acrolinx/sidebar-sdk-java.git'
-                        }
-                        licenses {
-                            license {
-                                name 'The Apache Software License, Version 2.0'
-                                url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
-                                distribution 'repo'
-                            }
-                        }
-                        developers {
-                            developer {
-                                id devId
-                                name devName
-                                email devEmail
-                                organization 'Acrolinx'
-                                organizationUrl 'https://www.acrolinx.com/'
-                            }
-                        }
+                }
+                developers {
+                    developer {
+                        id.set("Acrolinx Open Source")
+                        name.set("Acrolinx")
+                        email.set("opensource@acrolinx.com")
                     }
+                }
+                scm {
+                    connection.set("scm:git@github.com:acrolinx/sidebar-sdk-java.git")
+                    developerConnection.set("scm:git@github.com:acrolinx/sidebar-sdk-java.git")
+                    url.set("https://github.com/acrolinx/sidebar-sdk-java")
                 }
             }
         }
     }
 }
 
-// Configure Nexus
 nexusPublishing {
-    connectTimeout = Duration.ofMinutes(5);
-    clientTimeout = Duration.ofMinutes(5);
-
-    transitionCheckOptions {
-        maxRetries.set(40)
-        delayBetween.set(Duration.ofSeconds(5))
-    }
-
     repositories {
-        sonatype {
-            nexusUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            snapshotRepositoryUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-        }
+        sonatype()
     }
 }
 
