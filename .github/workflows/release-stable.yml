@@ -92,7 +92,7 @@ jobs:
           git commit -m "Update version from $RELEASE_VERSION to $NEW_SNAPSHOT_VERSION"
 
       - name: Push Changes
-        run: git push origin HEAD
+        run: git push -u origin HEAD
 
       - name: Create Draft Release
         env:
