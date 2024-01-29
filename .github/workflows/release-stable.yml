@@ -92,7 +92,9 @@ jobs:
           git commit -m "Update version from $RELEASE_VERSION to $NEW_SNAPSHOT_VERSION"
 
       - name: Push Changes
-        run: git push -u origin HEAD
+        env:
+          TAG_NAME: ${{ steps.createTagName.outputs.TAG_NAME }}
+        run: git push --atomic --set-upstream origin HEAD $TAG_NAME
 
       - name: Create Draft Release
         env:
