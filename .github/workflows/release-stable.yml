@@ -41,18 +41,25 @@ jobs:
           arguments: removeSnapshotSuffix
 
       - name: Commit Current Version
+        env:
+          OLD_SNAPSHOT_VERSION: ${{ steps.removeSnapshotSuffix.OLD_SNAPSHOT_VERSION }}
+          RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }}
         run: |
           git config user.name ${{ github.actor }}
           git config user.email opensource@acrolinx.com
           git add gradle.properties
-          git commit -m "Update version from ${{ steps.removeSnapshotSuffix.OLD_SNAPSHOT_VERSION }} to ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }}"
+          git commit -m "Update version from $OLD_SNAPSHOT_VERSION to $RELEASE_VERSION"
 
       - name: Create Tag Name
         id: createTagName
-        run: echo "TAG_NAME=release-${{ steps.removeSnapshotSuffix.RELEASE_VERSION }}" >> "$GITHUB_OUTPUT"
+        env:
+          RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }}
+        run: echo "TAG_NAME=release-$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Create Tag
-        run: git tag ${{ steps.createTagName.TAG_NAME }}
+        env:
+          TAG_NAME: ${{ steps.createTagName.TAG_NAME }}
+        run: git tag $TAG_NAME
 
       - name: Create Javadoc
         uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
@@ -77,12 +84,17 @@ jobs:
           arguments: incrementSnapshotVersion
 
       - name: Commit New Snapshot Version
+        env:
+          RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }}
+          NEW_SNAPSHOT_VERSION: ${{ steps.incrementSnapshotVersion.NEW_SNAPSHOT_VERSION }}
         run: |
           git add gradle.properties
-          git commit -m "Update version from ${{ steps.removeSnapshotSuffix.RELEASE_VERSION }} to ${{ steps.incrementSnapshotVersion.NEW_SNAPSHOT_VERSION }}"
+          git commit -m "Update version from $RELEASE_VERSION to $NEW_SNAPSHOT_VERSION"
 
       - name: Push Changes
         run: git push
 
       - name: Create Draft Release
-        run: gh release create ${{ steps.createTagName.TAG_NAME }} --verify-tag --draft
+        env:
+          TAG_NAME: ${{ steps.createTagName.TAG_NAME }}
+        run: gh release create $TAG_NAME --verify-tag --draft
