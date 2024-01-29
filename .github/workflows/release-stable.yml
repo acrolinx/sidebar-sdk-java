@@ -38,7 +38,7 @@ jobs:
         id: removeSnapshotSuffix
         uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
         with:
-          arguments: removeSnapshotSuffixSuffix
+          arguments: removeSnapshotSuffix
 
       - name: Commit Current Version
         run: |
