@@ -276,36 +276,10 @@ nexusPublishing {
 }
 
 signing {
-    required { isReleaseBuild }
     def signingKey = findProperty("signingKey") as String
     def signingPassword = findProperty("signingPassword") as String
-
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign publishing.publications.mavenJava
-}
-
-def isNonStable = { String version ->
-    def nonStableKeyword = ['alpha'].any { it -> version.toUpperCase().contains(it) }
-    return nonStableKeyword
-}
-
-task createGithubReleaseTag {
-    doLast {
-        println 'Creating Github Release Tag'
-        if (isReleaseBuild) {
-            grgit.open(currentDir: rootDir)
-            def hasOldReleaseVersion = grgit.tag.list().find { it.getName() == "release-${project.version}" }
-            println 'Finding tags'
-            if (!hasOldReleaseVersion) {
-                println 'is new release version'
-            } else {
-                println 'This version was already released'
-            }
-        } else {
-            println 'NO RELEASE VERSION'
-            throw new GradleException('NO APPROPRIATE RELEASE VERSION')
-        }
-    }
 }
 
 if (Integer.parseInt(Jvm.current().getJavaVersion().getMajorVersion()) >= 11) {

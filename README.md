@@ -117,36 +117,6 @@ Follow the guidelines provided by Microsoft to install the [WebView2 Runtime](ht
 
 ## Instructions for Contributing Code
 
-### Branches and Releasing
-
-1. Please add new features using the `main` branch, or submit a pull request.
-
-```bash
-git checkout main
-# make your changes
-git commit
-git push
-```
-
-2. Once you tested your new features, remove the snapshot from the `currentVersion` property in the `gradle.properties` file.
-
-3. Commit and push your changes. If all goes right, the artifact is released to
-[Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
-Note that it might take quite a while until the new version shows up in
-[Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.acrolinx.client%22%20a%3A%22sidebar-sdk%22%20).
-
-If that build fails, you might have to sign in into
-[Nexus Repository Manager](https://oss.sonatype.org/#welcome),
-and drop falsely created repositories, before starting a new release build.
-
-4. Run the Gradle Task for creating a release tag and pushing it GitHub:
-
-```bash
-    ./gradlew createGithubReleaseTag -Dorg.ajoberstar.grgit.auth.username=someone -Dorg.ajoberstar.grgit.auth.password=mysecretpassword
-```
-
-5. Don't forget to commit and push a new SNAPSHOT version.
-
 ## References
 
 * The [Sidebar DEMO Java](https://github.com/acrolinx/acrolinx-sidebar-demo-java) is built based on this SDK.
