@@ -1,9 +1,5 @@
 name: Release Snapshot Version
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -12,10 +8,10 @@ jobs:
     env:
       BUILD_NUMBER: ${{ github.run_number }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
+      ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
       ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
       ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
-      ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.SONATYPE_PW }}
-      ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.SONATYPE_USERNAME }}
 
     steps:
       - name: Checkout
@@ -36,11 +32,7 @@ jobs:
         with:
           arguments: build
 
-      - name: Create Javadoc
+      - name: Publish Artifacts
         uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
         with:
-          arguments: javadoc
-
-      - name: Deploy artifacts
-        id: deploy
-        run: ./deploy-snapshot.sh
+          arguments: publishToSonatype --stacktrace

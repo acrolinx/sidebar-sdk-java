@@ -1,10 +1,8 @@
 name: Release Stable Version
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
+permissions:
+  contents: write
 
 jobs:
   Release-Stable:
@@ -16,8 +14,6 @@ jobs:
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
       ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
       ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
-      ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.SONATYPE_PW }}
-      ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.SONATYPE_USERNAME }}
 
     steps:
       - name: Checkout
@@ -38,25 +34,69 @@ jobs:
         with:
           arguments: build
 
+      - name: Remove Snapshot Suffix
+        id: removeSnapshotSuffix
+        uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
+        with:
+          arguments: removeSnapshotSuffix
+
+      - name: Commit Current Version
+        env:
+          OLD_SNAPSHOT_VERSION: ${{ steps.removeSnapshotSuffix.outputs.OLD_SNAPSHOT_VERSION }}
+          RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
+        run: |
+          git config user.name ${{ github.actor }}
+          git config user.email opensource@acrolinx.com
+          git add gradle.properties
+          git commit -m "Update version from $OLD_SNAPSHOT_VERSION to $RELEASE_VERSION"
+
+      - name: Create Tag Name
+        id: createTagName
+        env:
+          RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
+        run: echo "TAG_NAME=release-$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Create Tag
+        env:
+          TAG_NAME: ${{ steps.createTagName.outputs.TAG_NAME }}
+        run: git tag $TAG_NAME
+
       - name: Create Javadoc
         uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
         with:
           arguments: javadoc
 
-      - name: Deploy artifacts
-        id: deploy
-        if: github.ref == 'refs/heads/main'
-        run: ./deploy-stable.sh
-
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.67.0
-        if: steps.deploy.outputs.RELEASE == 'true' && github.ref == 'refs/heads/main'
-        env:
-          CUSTOM_TAG: ${{ steps.deploy.outputs.TAGNAME }}
+      - name: Publish Artifacts
+        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
+        with:
+          arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository --stacktrace
 
       - name: Deploy Javadoc
         uses: JamesIves/github-pages-deploy-action@v4.5.0
-        if: steps.deploy.outputs.RELEASE == 'true' && github.ref == 'refs/heads/main'
         with:
           branch: gh-pages
           folder: "docs/"
+
+      - name: Increment Version and Add Snapshot Suffix
+        id: incrementSnapshotVersion
+        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
+        with:
+          arguments: incrementSnapshotVersion
+
+      - name: Commit New Snapshot Version
+        env:
+          RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
+          NEW_SNAPSHOT_VERSION: ${{ steps.incrementSnapshotVersion.outputs.NEW_SNAPSHOT_VERSION }}
+        run: |
+          git add gradle.properties
+          git commit -m "Update version from $RELEASE_VERSION to $NEW_SNAPSHOT_VERSION"
+
+      - name: Push Changes
+        env:
+          TAG_NAME: ${{ steps.createTagName.outputs.TAG_NAME }}
+        run: git push --atomic --set-upstream origin HEAD $TAG_NAME
+
+      - name: Create Draft Release
+        env:
+          TAG_NAME: ${{ steps.createTagName.outputs.TAG_NAME }}
+        run: gh release create $TAG_NAME --verify-tag --draft
