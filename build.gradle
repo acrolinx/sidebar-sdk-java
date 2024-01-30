@@ -1,11 +1,7 @@
-import org.gradle.internal.jvm.Jvm
-import org.gradle.internal.os.OperatingSystem
-
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
-import java.time.Duration
 import java.util.stream.Collectors
 
 plugins {
@@ -13,7 +9,6 @@ plugins {
     id 'jacoco'
     id 'maven-publish'
     id 'signing'
-    id 'org.ajoberstar.grgit' version '4.1.1'
     id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
     id 'com.github.node-gradle.node' version '7.0.1'
     id 'com.github.hierynomus.license-report' version '0.16.1'
@@ -22,17 +17,22 @@ plugins {
     id 'com.diffplug.spotless' version '6.13.0'
 }
 
-switch (OperatingSystem.current()) {
-    case OperatingSystem.WINDOWS:
-        project.ext.swtNatives = "org.eclipse.swt.win32.win32.x86_64"
-        break
-    case OperatingSystem.LINUX:
-        project.ext.swtNatives = "org.eclipse.swt.gtk.linux.x86_64"
-        break
-    case OperatingSystem.MAC_OS:
-        project.ext.swtNatives = "org.eclipse.swt.cocoa.macosx.x86_64"
-        break
+private static String getOsgiPlatformValue() {
+    String osName = System.getProperty('os.name').toLowerCase()
+
+    if (osName.contains('windows')) {
+        return 'win32.win32.x86_64'
+    } else if (osName.contains('linux')) {
+        return 'gtk.linux.x86_64'
+    } else if (osName.contains('mac')) {
+        return 'cocoa.macosx.x86_64';
+    }
+
+    throw new GradleException('unknown OS name: ' + osName)
 }
+
+final String SWT_VERSION = '3.116.100'
+final String OSGI_PLATFORM = getOsgiPlatformValue()
 
 dependencies {
     api 'com.google.code.gson:gson:2.10.1'
@@ -41,7 +41,7 @@ dependencies {
     api 'org.slf4j:slf4j-api:2.0.11'
     api 'org.jsoup:jsoup:1.17.2'
     api 'com.google.guava:guava:33.0.0-jre'
-    compileOnly "org.eclipse.platform:$swtNatives:$SWT_VERSION"
+    compileOnly "org.eclipse.platform:org.eclipse.swt.$OSGI_PLATFORM:$SWT_VERSION"
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -66,14 +66,14 @@ sonar {
     }
 }
 
-String createNewSnapshotVersion() {
+private String createNewSnapshotVersion() {
     final String[] currentVersion = currentVersion.split("\\.")
     final int incrementedPatchVersion = Integer.parseInt(currentVersion[currentVersion.length - 1]) + 1
 
     return currentVersion[0] + '.' + currentVersion[1] + '.' + incrementedPatchVersion + "-SNAPSHOT"
 }
 
-static void updateVersionProperty(String versionString) {
+private static void updateVersionProperty(final String versionString) {
     final String propertyName = 'currentVersion'
 
     final java.nio.file.Path gradlePropertiesPath = Paths.get("gradle.properties")
@@ -97,7 +97,7 @@ static void updateVersionProperty(String versionString) {
     Files.write(gradlePropertiesPath, updatedPropertyFileContent)
 }
 
-static void setGithubOutput(String name, String value) {
+static void setGithubOutput(final String name, final String value) {
     final String githubOutput = System.getenv('GITHUB_OUTPUT')
     final java.nio.file.Path githubOutputPath = Paths.get(githubOutput);
     Files.write(githubOutputPath, "$name=$value\n".getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND)
@@ -146,19 +146,18 @@ group = 'com.acrolinx.client'
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
-def buildNumber = System.getenv('BUILD_NUMBER');
-def buildVersion = buildNumber != null ? buildNumber : 123
-def artifactName = "sidebar-sdk"
-def fullVersion = "${project.version}.${buildVersion}"
-def isReleaseBuild = !fullVersion.contains('SNAPSHOT')
+String buildNumber = System.getenv('BUILD_NUMBER');
+String buildVersion = buildNumber != null ? buildNumber : 123
+String artifactName = "sidebar-sdk"
+String fullVersion = "${project.version}.${buildVersion}"
 
 task createVersionPropertiesFile {
     doFirst {
-        def Properties versionProps = new Properties()
-        def versionPropsFile = file('versionJavaSDK.properties')
+        Properties versionProps = new Properties()
+        File versionPropsFile = new File('versionJavaSDK.properties')
         if (versionPropsFile.exists())
             versionProps.load(new FileInputStream(versionPropsFile))
-        def code = "${fullVersion}"
+        GString code = "${fullVersion}"
         versionProps['VERSION_JAVA_SDK'] = code.toString()
         versionProps.store(versionPropsFile.newWriter(), null)
     }
@@ -184,10 +183,10 @@ jar {
 
 task copyServerSelectorResources(type: Copy, dependsOn: npm_install) {
     doFirst {
-        def mainDir = new File('src/main/resources')
-        def subDir = new File(mainDir, 'server-selector')
+        File mainDir = new File('src/main/resources')
+        File subDir = new File(mainDir, 'server-selector')
         if (subDir.exists()) {
-            def result = subDir.deleteDir()
+            boolean result = subDir.deleteDir()
             assert result
         }
         subDir.mkdirs()
@@ -197,44 +196,44 @@ task copyServerSelectorResources(type: Copy, dependsOn: npm_install) {
 }
 
 task convertLocalizationEncoding() {
-    def dir = new File("$projectDir/src/main/resources/localization_iso-8859-1/")
-    if (!dir.exists()) {
-        dir.mkdirs()
+    File directory = new File("$projectDir/src/main/resources/localization_iso-8859-1/")
+
+    if (!directory.exists()) {
+        directory.mkdirs()
     }
-    def sourceDir = new File("$projectDir/src/main/resources/localization")
-    sourceDir.eachFile {
-        pFile ->
-            if (pFile.name.endsWith(".properties")) {
-                def f = pFile.getText('utf-8')
-                def pFileName = pFile.name
-                if (!pFileName.contains("_ja")) {
-                    def write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + pFileName)
-                    write.createNewFile();
-                    write.write(f, 'ISO-8859-1')
-                } else {
-                    def write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + pFileName)
-                    write.createNewFile();
-                    StringBuilder b = new StringBuilder();
-                    for (char c : f.toCharArray()) {
-                        //noinspection GroovyAssignabilityCheck
-                        if (c >= 128)
-                        //noinspection GroovyAssignabilityCheck
-                            b.append("\\u").append(String.format("%04X", (int) c));
-                        else
-                            b.append(c);
+
+    File sourceDirectory = new File("$projectDir/src/main/resources/localization")
+    sourceDirectory.eachFile {
+    file ->
+        if (file.name.endsWith(".properties")) {
+            String fileContents = file.getText('utf-8')
+            String fileName = file.name
+
+            File write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + fileName)
+            write.createNewFile();
+
+            if (!fileName.contains("_ja")) {
+                write.write(fileContents, 'ISO-8859-1')
+            } else {
+                StringBuilder stringBuilder = new StringBuilder();
+
+                for (char charValue : fileContents.toCharArray()) {
+                    if (charValue >= 128) {
+                        stringBuilder.append("\\u").append(String.format("%04X", (int) charValue));
+                    } else {
+                        stringBuilder.append(charValue);
                     }
-                    def string = b.toString();
-                    write.write(string, 'ISO-8859-1')
                 }
+
+                String string = stringBuilder.toString();
+                write.write(string, 'ISO-8859-1')
             }
+        }
     }
 }
 
 javadoc {
-    source = sourceSets.main.allJava
-    destinationDir = new File(rootProject.projectDir, "docs/")
-    classpath += sourceSets.main.runtimeClasspath
-    failOnError = false
+    options.addStringOption('Xdoclint:all,-missing', '-quiet')
 }
 
 publishing {
@@ -276,34 +275,24 @@ nexusPublishing {
 }
 
 signing {
-    def signingKey = findProperty("signingKey") as String
-    def signingPassword = findProperty("signingPassword") as String
+    final String signingKey = findProperty("signingKey")
+    final String signingPassword = findProperty("signingPassword")
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign publishing.publications.mavenJava
 }
 
-if (Integer.parseInt(Jvm.current().getJavaVersion().getMajorVersion()) >= 11) {
+if (JavaVersion.current().isJava11Compatible()) {
     apply plugin: 'org.openjfx.javafxplugin'
 
     javafx {
-        modules = ["javafx.web", "javafx.swing"]
-        configuration = 'compileOnly'
+        modules = [ 'javafx.swing', 'javafx.web' ]
     }
 }
 
 configurations.all {
     resolutionStrategy {
         dependencySubstitution {
-            // The maven property ${osgi.platform} is not handled by Gradle
-            // so we replace the dependency, using the osgi platform from the project settings
-            def os = System.getProperty("os.name").toLowerCase()
-            if (os.contains("windows")) {
-                substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.win32.win32.x86_64:$SWT_VERSION")
-            } else if (os.contains("linux")) {
-                substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64:$SWT_VERSION")
-            } else if (os.contains("mac")) {
-                substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.cocoa.macosx.x86_64:$SWT_VERSION")
-            }
+            substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.$OSGI_PLATFORM:$SWT_VERSION")
         }
     }
 }
@@ -338,7 +327,7 @@ spotless {
         licenseHeader '/* Copyright (c) $YEAR Acrolinx GmbH */'
     }
     format 'misc', {
-        target '*.gradle', '*.md', '.gitignore', '*.sh'
+        target '.gitignore', '*.gradle', '*.md', '*.properties'
 
         indentWithSpaces()
         trimTrailingWhitespace()
@@ -351,4 +340,3 @@ processResources.dependsOn copyServerSelectorResources
 processResources.dependsOn convertLocalizationEncoding
 jar.dependsOn 'downloadLicenses'
 jar.dependsOn createVersionPropertiesFile
-test.dependsOn javadoc

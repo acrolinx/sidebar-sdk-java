@@ -43,11 +43,7 @@ public interface AcrolinxIntegration {
    */
   boolean openDocumentInEditor(String documentIdentifier);
 
-  /**
-   * Extracts all the references that should be listed for background check
-   *
-   * @return List<BatchCheckRequestOptions>
-   */
+  /** Extracts all the references that should be listed for background check */
   List<BatchCheckRequestOptions> extractReferences();
 
   /**

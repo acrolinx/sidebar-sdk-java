@@ -56,11 +56,6 @@ jobs:
           TAG_NAME: ${{ steps.createTagName.outputs.TAG_NAME }}
         run: git tag $TAG_NAME
 
-      - name: Create Javadoc
-        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
-        with:
-          arguments: javadoc
-
       - name: Publish Artifacts
         uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
         with:
@@ -75,7 +70,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.5.0
         with:
           branch: gh-pages
-          folder: "docs/"
+          folder: "build/docs/javadoc/"
 
       - name: Increment Version and Add Snapshot Suffix
         id: incrementSnapshotVersion
