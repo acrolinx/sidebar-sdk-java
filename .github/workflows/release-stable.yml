@@ -99,4 +99,4 @@ jobs:
       - name: Create Draft Release
         env:
           TAG_NAME: ${{ steps.createTagName.outputs.TAG_NAME }}
-        run: gh release create $TAG_NAME --verify-tag --draft
+        run: gh release create $TAG_NAME --title $TAG_NAME --verify-tag --draft
