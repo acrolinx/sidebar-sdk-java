@@ -9,6 +9,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check ref_type
+        if: github.ref_type != 'branch'
+        run: |
+          echo "This workflow can only be triggered on a branch!"
+          exit 1
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -42,6 +48,7 @@ jobs:
         run: |
           git config user.name ${{ github.actor }}
           git config user.email opensource@acrolinx.com
+          git checkout -b publish-v$RELEASE_VERSION
           git add gradle.properties
           git commit -m "Update version from $OLD_SNAPSHOT_VERSION to $RELEASE_VERSION"
 
@@ -90,6 +97,12 @@ jobs:
         env:
           TAG_NAME: ${{ steps.createTagName.outputs.TAG_NAME }}
         run: git push --atomic --set-upstream origin HEAD $TAG_NAME
+
+      - name: Create GitHub PR
+        env:
+          RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
+          CHECKOUT_BRANCH_NAME: ${{ github.ref_name }}
+        run: gh pr create --title "Release $RELEASE_VERSION" --base "$CHECKOUT_BRANCH_NAME" --assignee @me --reviewer /acrolinx/integrationdevs-java
 
       - name: Create Draft Release
         env:
