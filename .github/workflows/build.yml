@@ -23,7 +23,7 @@ jobs:
           java-package: 'jdk+fx'
 
       - name: Sonar analysis
-        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
+        uses: gradle/actions/setup-gradle@v3
         env:
           SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
         with:
@@ -47,6 +47,6 @@ jobs:
         uses: gradle/wrapper-validation-action@56b90f209b02bf6d1deae490e9ef18b21a389cd4
 
       - name: Gradle build
-        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: build
