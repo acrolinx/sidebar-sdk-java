@@ -1,3 +1,5 @@
+import groovy.transform.Field
+
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -25,14 +27,18 @@ private static String getOsgiPlatformValue() {
     } else if (osName.contains('linux')) {
         return 'gtk.linux.x86_64'
     } else if (osName.contains('mac')) {
-        return 'cocoa.macosx.x86_64';
+        return 'cocoa.macosx.x86_64'
     }
 
     throw new GradleException('unknown OS name: ' + osName)
 }
 
-final String SWT_VERSION = '3.116.100'
-final String OSGI_PLATFORM = getOsgiPlatformValue()
+@Field
+private static final String SWT_VERSION = '3.116.100'
+@Field
+private static final String OSGI_PLATFORM = getOsgiPlatformValue()
+@Field
+private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT"
 
 dependencies {
     api 'com.google.code.gson:gson:2.10.1'
@@ -70,7 +76,7 @@ private String createNewSnapshotVersion() {
     final String[] currentVersion = currentVersion.split("\\.")
     final int incrementedPatchVersion = Integer.parseInt(currentVersion[currentVersion.length - 1]) + 1
 
-    return currentVersion[0] + '.' + currentVersion[1] + '.' + incrementedPatchVersion + "-SNAPSHOT"
+    return currentVersion[0] + '.' + currentVersion[1] + '.' + incrementedPatchVersion + SNAPSHOT_SUFFIX
 }
 
 private static void updateVersionProperty(final String versionString) {
@@ -99,7 +105,7 @@ private static void updateVersionProperty(final String versionString) {
 
 static void setGithubOutput(final String name, final String value) {
     final String githubOutput = System.getenv('GITHUB_OUTPUT')
-    final java.nio.file.Path githubOutputPath = Paths.get(githubOutput);
+    final java.nio.file.Path githubOutputPath = Paths.get(githubOutput)
     Files.write(githubOutputPath, "$name=$value\n".getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND)
 }
 
@@ -107,11 +113,11 @@ tasks.register('removeSnapshotSuffix') {
     doLast {
         println("Current version: $currentVersion")
 
-        if (!currentVersion.endsWith("-SNAPSHOT")) {
+        if (!currentVersion.endsWith(SNAPSHOT_SUFFIX)) {
             throw new IllegalStateException("Current version is not a snapshot: " + currentVersion)
         }
 
-        final String releaseVersion = currentVersion.replace("-SNAPSHOT", "")
+        final String releaseVersion = currentVersion.replace(SNAPSHOT_SUFFIX, "")
 
         println("Stable version: $releaseVersion")
 
@@ -146,7 +152,7 @@ group = 'com.acrolinx.client'
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
-String buildNumber = System.getenv('BUILD_NUMBER');
+String buildNumber = System.getenv('BUILD_NUMBER')
 String buildVersion = buildNumber != null ? buildNumber : 123
 String artifactName = "sidebar-sdk"
 String fullVersion = "${project.version}.${buildVersion}"
@@ -183,14 +189,16 @@ jar {
 
 task copyServerSelectorResources(type: Copy, dependsOn: npm_install) {
     doFirst {
-        File mainDir = new File('src/main/resources')
-        File subDir = new File(mainDir, 'server-selector')
-        if (subDir.exists()) {
-            boolean result = subDir.deleteDir()
-            assert result
+        File mainDirectory = new File('src/main/resources')
+        File subDirectory = new File(mainDirectory, 'server-selector')
+
+        if (subDirectory.exists()) {
+            assert subDirectory.deleteDir()
         }
-        subDir.mkdirs()
+
+        subDirectory.mkdirs()
     }
+
     from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline')
     into('src/main/resources/server-selector')
 }
@@ -210,22 +218,22 @@ task convertLocalizationEncoding() {
             String fileName = file.name
 
             File write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + fileName)
-            write.createNewFile();
+            write.createNewFile()
 
             if (!fileName.contains("_ja")) {
                 write.write(fileContents, 'ISO-8859-1')
             } else {
-                StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder stringBuilder = new StringBuilder()
 
                 for (char charValue : fileContents.toCharArray()) {
                     if (charValue >= 128) {
-                        stringBuilder.append("\\u").append(String.format("%04X", (int) charValue));
+                        stringBuilder.append("\\u").append(String.format("%04X", (int) charValue))
                     } else {
-                        stringBuilder.append(charValue);
+                        stringBuilder.append(charValue)
                     }
                 }
 
-                String string = stringBuilder.toString();
+                String string = stringBuilder.toString()
                 write.write(string, 'ISO-8859-1')
             }
         }
