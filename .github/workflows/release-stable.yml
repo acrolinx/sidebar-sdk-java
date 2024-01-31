@@ -103,7 +103,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
           CHECKOUT_BRANCH_NAME: ${{ github.ref_name }}
-        run: gh pr create --title "Release $RELEASE_VERSION" --body "Releasing stable version $$RELEASE_VERSION" --base "$CHECKOUT_BRANCH_NAME" --assignee @me --reviewer /acrolinx/integrationdevs-java
+        run: gh pr create --title "Release $RELEASE_VERSION" --body "" --base "$CHECKOUT_BRANCH_NAME" --assignee @me --reviewer /acrolinx/integrationdevs-java
 
       - name: Create Draft Release
         env:
