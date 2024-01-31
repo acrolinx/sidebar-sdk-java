@@ -28,7 +28,7 @@ jobs:
           BUILD_NUMBER: ${{ github.run_number }}
 
       - name: Publish Artifacts
-        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: publishToSonatype --stacktrace
         env:

@@ -23,7 +23,7 @@ jobs:
         uses: gradle/wrapper-validation-action@56b90f209b02bf6d1deae490e9ef18b21a389cd4
 
       - name: Gradle build
-        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: build
         env:
@@ -31,7 +31,7 @@ jobs:
 
       - name: Remove Snapshot Suffix
         id: removeSnapshotSuffix
-        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: removeSnapshotSuffix
 
@@ -57,7 +57,7 @@ jobs:
         run: git tag $TAG_NAME
 
       - name: Publish Artifacts
-        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository --stacktrace
         env:
@@ -74,7 +74,7 @@ jobs:
 
       - name: Increment Version and Add Snapshot Suffix
         id: incrementSnapshotVersion
-        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: incrementSnapshotVersion
 
