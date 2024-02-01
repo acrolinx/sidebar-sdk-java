@@ -1,8 +1,6 @@
 name: Release Stable Version
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: [ create-pull-request ]
 permissions:
   contents: write
   pull-requests: write
