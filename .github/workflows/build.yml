@@ -2,8 +2,6 @@ name: Build
 on:
   push:
   pull_request:
-  repository_dispatch:
-    types: [ create-pull-request ]
   schedule:
     - cron: '0 3 * * *'
   workflow_dispatch:
