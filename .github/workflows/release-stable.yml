@@ -39,7 +39,7 @@ jobs:
           OLD_SNAPSHOT_VERSION: ${{ steps.removeSnapshotSuffix.outputs.OLD_SNAPSHOT_VERSION }}
           RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
         run: |
-          git config user.name ${{ github.actor }}
+          git config user.name acrolinx-opensource
           git config user.email opensource@acrolinx.com
           git add gradle.properties
           git commit -m "Update version from $OLD_SNAPSHOT_VERSION to $RELEASE_VERSION"
@@ -82,7 +82,7 @@ jobs:
           RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
           NEW_SNAPSHOT_VERSION: ${{ steps.incrementSnapshotVersion.outputs.NEW_SNAPSHOT_VERSION }}
         run: |
-          git config user.name ${{ github.actor }}
+          git config user.name acrolinx-opensource
           git config user.email opensource@acrolinx.com
           git add gradle.properties
           git commit -m "Update version from $RELEASE_VERSION to $NEW_SNAPSHOT_VERSION"
@@ -91,7 +91,7 @@ jobs:
         env:
           TAG_NAME: ${{ steps.createTagName.outputs.TAG_NAME }}
         run: |
-          git config user.name ${{ github.actor }}
+          git config user.name acrolinx-opensource
           git config user.email opensource@acrolinx.com
           git push --atomic --set-upstream origin HEAD $TAG_NAME
 
