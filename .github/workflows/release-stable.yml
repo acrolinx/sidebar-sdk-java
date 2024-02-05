@@ -27,7 +27,7 @@ jobs:
           java-package: 'jdk+fx'
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@27152f6fa06a6b8062ef7195c795692e51fc2c81
+        uses: gradle/wrapper-validation-action@v2
 
       - name: Gradle build
         uses: gradle/actions/setup-gradle@v3
@@ -75,7 +75,7 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
 
       - name: Deploy Javadoc
-        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: "build/docs/javadoc/"
