@@ -157,18 +157,6 @@ String buildVersion = buildNumber != null ? buildNumber : 123
 String artifactName = "sidebar-sdk"
 String fullVersion = "${project.version}.${buildVersion}"
 
-task createVersionPropertiesFile {
-    doFirst {
-        Properties versionProps = new Properties()
-        File versionPropsFile = new File('versionJavaSDK.properties')
-        if (versionPropsFile.exists())
-            versionProps.load(new FileInputStream(versionPropsFile))
-        GString code = "${fullVersion}"
-        versionProps['VERSION_JAVA_SDK'] = code.toString()
-        versionProps.store(versionPropsFile.newWriter(), null)
-    }
-}
-
 jar {
     archiveFileName = "${artifactName}-${fullVersion}.jar"
     manifest {
@@ -178,9 +166,6 @@ jar {
                 "Specification-Title": "${artifactName}",
                 "Specification-Version": project.version
         )
-    }
-    from("$projectDir") {
-        include 'versionJavaSDK.properties'
     }
     from("$rootDir") {
         include 'dependency-licenses/*.html'
@@ -347,4 +332,3 @@ sourcesJar.dependsOn copyServerSelectorResources
 processResources.dependsOn copyServerSelectorResources
 processResources.dependsOn convertLocalizationEncoding
 jar.dependsOn 'downloadLicenses'
-jar.dependsOn createVersionPropertiesFile

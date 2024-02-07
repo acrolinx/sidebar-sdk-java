@@ -15,8 +15,11 @@ import java.net.URLConnection;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
-import java.util.Properties;
+import java.util.Optional;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,40 +142,35 @@ public final class SidebarUtils {
   }
 
   private static String getCurrentSdkImplementationVersion() {
-    // Need version from properties file to get proper version number in case sdk gets packed
-    // into fat jar
-    final String versionFromPropertiesFile = getJavaSdkVersionFromPropertiesFile();
+    final Optional<String> versionFromManifestFile = getJavaSdkVersionFromManifestFile();
 
-    if (versionFromPropertiesFile == null) {
-      return SidebarUtils.class.getPackage().getImplementationVersion();
-    }
-
-    return versionFromPropertiesFile;
+    return versionFromManifestFile.orElseGet(
+        () -> SidebarUtils.class.getPackage().getImplementationVersion());
   }
 
-  private static String getJavaSdkVersionFromPropertiesFile() {
-    final String resourceName = "/versionJavaSDK.properties";
-    final Properties properties = new Properties();
-    final InputStream resourceInputStream = SidebarUtils.class.getResourceAsStream(resourceName);
+  private static Optional<String> getJavaSdkVersionFromManifestFile() {
+    final ClassLoader classLoader = SidebarUtils.class.getClassLoader();
 
-    if (resourceInputStream != null) {
-      try {
-        properties.load(resourceInputStream);
-        return properties.getProperty("VERSION_JAVA_SDK");
-      } catch (final IOException e) {
-        logger.error("Could not read java sdk version!", e);
-      } finally {
-        try {
-          resourceInputStream.close();
-        } catch (final IOException e) {
-          logger.error("Could not close resource stream or stream already cleaned up!", e);
+    try {
+      final Enumeration<URL> enumeration = classLoader.getResources("META-INF/MANIFEST.MF");
+
+      while (enumeration.hasMoreElements()) {
+        final URL url = enumeration.nextElement();
+
+        try (final InputStream inputStream = url.openStream()) {
+          Manifest manifest = new Manifest(inputStream);
+          Attributes attributes = manifest.getMainAttributes();
+
+          if ("sidebar-sdk".equals(attributes.getValue("Implementation-Title"))) {
+            return Optional.ofNullable(attributes.getValue("Implementation-Version"));
+          }
         }
       }
-    } else {
-      logger.error("Version properties file for Java SDK not found!");
+    } catch (IOException e) {
+      logger.error("", e);
     }
 
-    return null;
+    return Optional.empty();
   }
 
   /**
