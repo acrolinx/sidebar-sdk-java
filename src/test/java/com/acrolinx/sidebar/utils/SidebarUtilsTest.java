@@ -51,7 +51,7 @@ class SidebarUtilsTest {
   void getJavaSdkSoftwareComponentTest() {
     final SoftwareComponent softwareComponent = SidebarUtils.getJavaSdkSoftwareComponent();
     Assertions.assertEquals(
-        "{\"id\":\"com.acrolinx.sidebar.java\",\"name\":\"Java SDK\",\"version\":\"2.5.12.123\",\"category\":\"DETAIL\"}",
+        "{\"id\":\"com.acrolinx.sidebar.java\",\"name\":\"Java SDK\",\"version\":\"2.5.12\",\"category\":\"DETAIL\"}",
         softwareComponent.toString());
   }
 }

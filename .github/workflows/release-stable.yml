@@ -33,8 +33,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           arguments: build
-        env:
-          BUILD_NUMBER: ${{ github.run_number }}
 
       - name: Remove Snapshot Suffix
         id: removeSnapshotSuffix
