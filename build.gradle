@@ -148,11 +148,14 @@ final String artifactName = "sidebar-sdk"
 jar {
     manifest {
         attributes(
-                "Implementation-Title": artifactName,
-                "Implementation-Version": version,
-                "Specification-Title": artifactName,
-                "Specification-Version": version
+            "Implementation-Title": artifactName,
+            "Implementation-Version": version,
+            "Specification-Title": artifactName,
+            "Specification-Version": version
         )
+    }
+    from(project.projectDir) {
+        include 'LICENSE'
     }
 }
 
