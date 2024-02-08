@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
 Implementation-Title: sidebar-sdk
-Implementation-Version: 2.5.12.123
+Implementation-Version: 2.5.12
 Specification-Title: sidebar-sdk
 Specification-Version: 2.5.12

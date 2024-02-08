@@ -146,25 +146,21 @@ tasks.withType(Javadoc) {
     options.memberLevel = JavadocMemberLevel.PUBLIC
 }
 
-project.version = currentVersion
 group = 'com.acrolinx.client'
+version = currentVersion
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
-String buildNumber = System.getenv('BUILD_NUMBER')
-String buildVersion = buildNumber != null ? buildNumber : 123
-String artifactName = "sidebar-sdk"
-String fullVersion = "${project.version}.${buildVersion}"
+final String artifactName = "sidebar-sdk"
 
 jar {
-    archiveFileName = "${artifactName}-${fullVersion}.jar"
     manifest {
         attributes(
-                "Implementation-Title": "${artifactName}",
-                "Implementation-Version": "${fullVersion}",
-                "Specification-Title": "${artifactName}",
-                "Specification-Version": project.version
+                "Implementation-Title": artifactName,
+                "Implementation-Version": version,
+                "Specification-Title": artifactName,
+                "Specification-Version": version
         )
     }
     from("$rootDir") {
