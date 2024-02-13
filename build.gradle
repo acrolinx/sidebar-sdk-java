@@ -148,10 +148,10 @@ final String artifactName = "sidebar-sdk"
 jar {
     manifest {
         attributes(
-            "Implementation-Title": artifactName,
-            "Implementation-Version": version,
-            "Specification-Title": artifactName,
-            "Specification-Version": version
+                "Implementation-Title": artifactName,
+                "Implementation-Version": version,
+                "Specification-Title": artifactName,
+                "Specification-Version": version
         )
     }
     from(project.projectDir) {
@@ -159,20 +159,12 @@ jar {
     }
 }
 
-task copyServerSelectorResources(type: Copy, dependsOn: npm_install) {
-    doFirst {
-        File mainDirectory = new File('src/main/resources')
-        File subDirectory = new File(mainDirectory, 'server-selector')
+processResources {
+    dependsOn npm_install
 
-        if (subDirectory.exists()) {
-            assert subDirectory.deleteDir()
-        }
-
-        subDirectory.mkdirs()
+    from ('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline/') {
+        into 'server-selector'
     }
-
-    from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline')
-    into('src/main/resources/server-selector')
 }
 
 task convertLocalizationEncoding() {
@@ -184,31 +176,31 @@ task convertLocalizationEncoding() {
 
     File sourceDirectory = new File("$projectDir/src/main/resources/localization")
     sourceDirectory.eachFile {
-    file ->
-        if (file.name.endsWith(".properties")) {
-            String fileContents = file.getText('utf-8')
-            String fileName = file.name
+        File file ->
+            if (file.name.endsWith(".properties")) {
+                String fileContents = file.getText('utf-8')
+                String fileName = file.name
 
-            File write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + fileName)
-            write.createNewFile()
+                File write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + fileName)
+                write.createNewFile()
 
-            if (!fileName.contains("_ja")) {
-                write.write(fileContents, 'ISO-8859-1')
-            } else {
-                StringBuilder stringBuilder = new StringBuilder()
+                if (!fileName.contains("_ja")) {
+                    write.write(fileContents, 'ISO-8859-1')
+                } else {
+                    StringBuilder stringBuilder = new StringBuilder()
 
-                for (char charValue : fileContents.toCharArray()) {
-                    if (charValue >= 128) {
-                        stringBuilder.append("\\u").append(String.format("%04X", (int) charValue))
-                    } else {
-                        stringBuilder.append(charValue)
+                    for (char charValue : fileContents.toCharArray()) {
+                        if (charValue >= 128) {
+                            stringBuilder.append("\\u").append(String.format("%04X", (int) charValue))
+                        } else {
+                            stringBuilder.append(charValue)
+                        }
                     }
-                }
 
-                String string = stringBuilder.toString()
-                write.write(string, 'ISO-8859-1')
+                    String string = stringBuilder.toString()
+                    write.write(string, 'ISO-8859-1')
+                }
             }
-        }
     }
 }
 
@@ -265,7 +257,7 @@ if (JavaVersion.current().isJava11Compatible()) {
     apply plugin: 'org.openjfx.javafxplugin'
 
     javafx {
-        modules = [ 'javafx.swing', 'javafx.web' ]
+        modules = ['javafx.swing', 'javafx.web']
     }
 }
 
@@ -310,6 +302,4 @@ spotless {
     }
 }
 
-sourcesJar.dependsOn copyServerSelectorResources
-processResources.dependsOn copyServerSelectorResources
 processResources.dependsOn convertLocalizationEncoding
