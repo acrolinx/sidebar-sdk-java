@@ -15,7 +15,6 @@
 # Node
 node_modules/
 
-# Other generated file
+# Other files
 docs/
 src/main/resources/localization_iso-8859-1/
-src/main/resources/server-selector/
