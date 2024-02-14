@@ -269,7 +269,7 @@ configurations.all {
     }
 }
 
-tasks.named('test') {
+tasks.named('test', Test) {
     useJUnitPlatform()
 }
 
