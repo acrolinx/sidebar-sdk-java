@@ -2,7 +2,6 @@
 package com.acrolinx.sidebar.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder;
@@ -13,7 +12,7 @@ class StartPageInstallerTest {
   @Test
   void getServerSelectorVersion() {
     final String serverSelectorVersion = StartPageInstaller.getStartPageVersion();
-    assertNotNull(serverSelectorVersion);
+    assertEquals("3.4.1.327", serverSelectorVersion);
   }
 
   @Test
