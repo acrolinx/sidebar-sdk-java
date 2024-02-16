@@ -146,6 +146,7 @@ compileTestJava.options.encoding = 'UTF-8'
 final String artifactName = "sidebar-sdk"
 
 jar {
+    archivesBaseName = artifactName
     manifest {
         attributes(
                 "Implementation-Title": artifactName,
