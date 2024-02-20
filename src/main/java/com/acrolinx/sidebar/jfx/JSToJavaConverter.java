@@ -124,7 +124,7 @@ final class JSToJavaConverter {
     final Object checkError = jsObject.getMember(ERROR);
 
     if ((checkError != null) && !checkError.toString().equals(UNDEFINED)) {
-      logger.warn(((JSObject) checkError).getMember(MESSAGE).toString());
+      logger.warn("{}", ((JSObject) checkError).getMember(MESSAGE));
       return null;
     }
 

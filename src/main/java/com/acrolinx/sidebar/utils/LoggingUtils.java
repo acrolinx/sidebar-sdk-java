@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.Objects;
 import org.slf4j.LoggerFactory;
@@ -28,14 +27,14 @@ public final class LoggingUtils {
     String propertyValueString = System.getProperty("os.name").toLowerCase();
 
     if (propertyValueString.contains("mac")) {
-      return Paths.get(userTempDirLocation.toString(), "Logs", "Acrolinx", applicationName);
+      return Path.of(userTempDirLocation.toString(), "Logs", "Acrolinx", applicationName);
     }
 
     if (propertyValueString.contains("win")) {
-      return Paths.get(userTempDirLocation.toString(), "Acrolinx", "Logs", applicationName);
+      return Path.of(userTempDirLocation.toString(), "Acrolinx", "Logs", applicationName);
     }
 
-    return Paths.get(userTempDirLocation.toString(), "acrolinx", "logs", applicationName);
+    return Path.of(userTempDirLocation.toString(), "acrolinx", "logs", applicationName);
   }
 
   private static void loadLogFileConfig(InputStream inputStream, String applicationName)

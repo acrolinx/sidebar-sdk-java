@@ -8,7 +8,6 @@ import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import org.eclipse.swt.graphics.Point;
@@ -91,8 +90,6 @@ public class TextAdapter implements InputAdapterInterface {
   @Override
   public List<IntRange> getCurrentSelection() {
     Point selection = this.textWidget.getSelection();
-    List<IntRange> intRanges = new ArrayList<>();
-    intRanges.add(new IntRange(selection.x, selection.y));
-    return intRanges;
+    return List.of(new IntRange(selection.x, selection.y));
   }
 }

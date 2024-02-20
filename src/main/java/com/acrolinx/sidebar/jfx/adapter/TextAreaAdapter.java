@@ -8,7 +8,6 @@ import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.TextArea;
@@ -84,8 +83,6 @@ public class TextAreaAdapter implements InputAdapterInterface {
     final IndexRange selection = this.textArea.getSelection();
     final int start = selection.getStart();
     final int end = selection.getEnd();
-    final List<IntRange> intRanges = new ArrayList<>();
-    intRanges.add(new IntRange(start, end));
-    return intRanges;
+    return List.of(new IntRange(start, end));
   }
 }

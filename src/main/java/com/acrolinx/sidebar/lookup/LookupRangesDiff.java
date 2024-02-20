@@ -121,7 +121,7 @@ public class LookupRangesDiff extends LookupRanges {
             .filter((ExternalContentField old) -> old.getId().equals(match.getId()))
             .findFirst();
 
-    if (!optionalCheckedField.isPresent() || !optionalChangedField.isPresent()) {
+    if (optionalCheckedField.isEmpty() || optionalChangedField.isEmpty()) {
       return match;
     }
 

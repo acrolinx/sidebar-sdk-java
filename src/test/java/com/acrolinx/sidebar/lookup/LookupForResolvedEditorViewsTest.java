@@ -120,10 +120,11 @@ class LookupForResolvedEditorViewsTest {
 
   @Test
   void testLookupIgnoreWhiteSpace() {
-    List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(246, 247), "a"));
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(251, 252), " "));
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(255, 260), "apple"));
+    List<AcrolinxMatch> acrolinxMatches =
+        List.of(
+            new AcrolinxMatch(new IntRange(246, 247), "a"),
+            new AcrolinxMatch(new IntRange(251, 252), " "),
+            new AcrolinxMatch(new IntRange(255, 260), "apple"));
 
     LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
     Optional<List<? extends AbstractMatch>> abstractMatches =
@@ -245,8 +246,8 @@ class LookupForResolvedEditorViewsTest {
 
   @Test
   void testLookupFindMatchInNode() {
-    List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(1021, 1027), "wastee"));
+    List<AcrolinxMatch> acrolinxMatches =
+        List.of(new AcrolinxMatch(new IntRange(1021, 1027), "wastee"));
 
     LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
     Optional<List<? extends AbstractMatch>> abstractMatches =
@@ -293,8 +294,8 @@ class LookupForResolvedEditorViewsTest {
 
   @Test
   void testLookupFindMatchInNode2() {
-    List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(1021, 1027), "tast"));
+    List<AcrolinxMatch> acrolinxMatches =
+        List.of(new AcrolinxMatch(new IntRange(1021, 1027), "tast"));
 
     LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
     Optional<List<? extends AbstractMatch>> abstractMatches =
@@ -421,11 +422,11 @@ class LookupForResolvedEditorViewsTest {
             + "    <related-links/>\n"
             + "</glossentry>\n";
 
-    List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
-
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(347, 351), "very"));
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(351, 352), " "));
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(352, 362), "seasobable"));
+    List<AcrolinxMatch> acrolinxMatches =
+        List.of(
+            new AcrolinxMatch(new IntRange(347, 351), "very"),
+            new AcrolinxMatch(new IntRange(351, 352), " "),
+            new AcrolinxMatch(new IntRange(352, 362), "seasobable"));
 
     acrolinxMatches.stream()
         .forEach(
@@ -743,15 +744,14 @@ class LookupForResolvedEditorViewsTest {
         authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
         contentNode.getContent());
 
-    List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
-
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(272, 276), "<"));
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(276, 280), "caar"));
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(280, 284), ">"));
-
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(288, 292), "<"));
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(292, 297), "nicce"));
-    acrolinxMatches.add(new AcrolinxMatch(new IntRange(297, 301), ">"));
+    List<AcrolinxMatch> acrolinxMatches =
+        List.of(
+            new AcrolinxMatch(new IntRange(272, 276), "<"),
+            new AcrolinxMatch(new IntRange(276, 280), "caar"),
+            new AcrolinxMatch(new IntRange(280, 284), ">"),
+            new AcrolinxMatch(new IntRange(288, 292), "<"),
+            new AcrolinxMatch(new IntRange(292, 297), "nicce"),
+            new AcrolinxMatch(new IntRange(297, 301), ">"));
 
     LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
     Optional<List<? extends AbstractMatch>> abstractMatches =
@@ -819,17 +819,17 @@ class LookupForResolvedEditorViewsTest {
         authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
         contentNode.getContent());
 
-    List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
-
     int pTagAndWhiteSpace = 4;
-    acrolinxMatches.add(
-        new AcrolinxMatch(
-            new IntRange(
-                documentContentBeforeContentNode.length() + pTagAndWhiteSpace,
-                documentContentBeforeContentNode.length()
-                    + pTagAndWhiteSpace
-                    + matchContent.length()),
-            matchContent));
+
+    List<AcrolinxMatch> acrolinxMatches =
+        List.of(
+            new AcrolinxMatch(
+                new IntRange(
+                    documentContentBeforeContentNode.length() + pTagAndWhiteSpace,
+                    documentContentBeforeContentNode.length()
+                        + pTagAndWhiteSpace
+                        + matchContent.length()),
+                matchContent));
 
     LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
     Optional<List<? extends AbstractMatch>> abstractMatches =
@@ -911,21 +911,21 @@ class LookupForResolvedEditorViewsTest {
         authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
         contentNode.getContent());
 
-    List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
-
     int pTagAndWhiteSpace = 4;
-    List<ExternalContentMatch> externalContentMatches = new ArrayList<>();
     ExternalContentMatch externalContentMatch =
         new ExternalContentMatch(
             "id", "dita", pTagAndWhiteSpace, pTagAndWhiteSpace + matchContent.length());
-    externalContentMatches.add(externalContentMatch);
-    acrolinxMatches.add(
-        new AcrolinxMatch(
-            new IntRange(
-                documentContentBeforeContentNode.length(),
-                documentContentBeforeContentNode.length() + referencedContentTag.length()),
-            matchContent,
-            externalContentMatches));
+
+    List<ExternalContentMatch> externalContentMatches = List.of(externalContentMatch);
+
+    List<AcrolinxMatch> acrolinxMatches =
+        List.of(
+            new AcrolinxMatch(
+                new IntRange(
+                    documentContentBeforeContentNode.length(),
+                    documentContentBeforeContentNode.length() + referencedContentTag.length()),
+                matchContent,
+                externalContentMatches));
 
     LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
     Optional<List<? extends AbstractMatch>> abstractMatches =
@@ -1008,21 +1008,21 @@ class LookupForResolvedEditorViewsTest {
         authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
         contentNode.getContent());
 
-    List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
-
     int pTagAndWhiteSpace = 4;
-    List<ExternalContentMatch> externalContentMatches = new ArrayList<>();
     ExternalContentMatch externalContentMatch =
         new ExternalContentMatch(
             "id", "dita", pTagAndWhiteSpace, pTagAndWhiteSpace + matchContent.length());
-    externalContentMatches.add(externalContentMatch);
-    acrolinxMatches.add(
-        new AcrolinxMatch(
-            new IntRange(
-                documentContentBeforeContentNode.length(),
-                documentContentBeforeContentNode.length() + referencedContentTag.length()),
-            matchContent,
-            externalContentMatches));
+
+    List<ExternalContentMatch> externalContentMatches = List.of(externalContentMatch);
+
+    List<AcrolinxMatch> acrolinxMatches =
+        List.of(
+            new AcrolinxMatch(
+                new IntRange(
+                    documentContentBeforeContentNode.length(),
+                    documentContentBeforeContentNode.length() + referencedContentTag.length()),
+                matchContent,
+                externalContentMatches));
 
     LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
     Optional<List<? extends AbstractMatch>> abstractMatches =
@@ -1118,18 +1118,15 @@ class LookupForResolvedEditorViewsTest {
         authorViewContent.substring(contentNode.getStartOffset(), contentNode.getEndOffset()),
         contentNode.getContent());
 
-    List<AcrolinxMatch> acrolinxMatches = new ArrayList<>();
-
     int divTag = 5;
     int pTag = 3;
     int pTagAndWhiteSpace = pTag + 1;
-    List<ExternalContentMatch> nestedExternalContentMatches = new ArrayList<>();
     ExternalContentMatch nestedContentMatch =
         new ExternalContentMatch(
             "id2", "dita", pTagAndWhiteSpace, pTagAndWhiteSpace + matchContent.length());
-    nestedExternalContentMatches.add(nestedContentMatch);
 
-    List<ExternalContentMatch> externalContentMatches = new ArrayList<>();
+    List<ExternalContentMatch> nestedExternalContentMatches = List.of(nestedContentMatch);
+
     ExternalContentMatch externalContentMatch =
         new ExternalContentMatch(
             "id",
@@ -1138,14 +1135,16 @@ class LookupForResolvedEditorViewsTest {
             divTag + secondReferencedContentTag.length(),
             nestedExternalContentMatches);
 
-    externalContentMatches.add(externalContentMatch);
-    acrolinxMatches.add(
-        new AcrolinxMatch(
-            new IntRange(
-                documentContentBeforeContentNode.length(),
-                documentContentBeforeContentNode.length() + referencedContentTag.length()),
-            matchContent,
-            externalContentMatches));
+    List<ExternalContentMatch> externalContentMatches = List.of(externalContentMatch);
+
+    List<AcrolinxMatch> acrolinxMatches =
+        List.of(
+            new AcrolinxMatch(
+                new IntRange(
+                    documentContentBeforeContentNode.length(),
+                    documentContentBeforeContentNode.length() + referencedContentTag.length()),
+                matchContent,
+                externalContentMatches));
 
     LookupForResolvedEditorViews lookup = new LookupForResolvedEditorViews();
     Optional<List<? extends AbstractMatch>> abstractMatches =
