@@ -151,9 +151,7 @@ public final class XMLLookupUtils {
    */
   private static TransformerFactory createTransformerFactory()
       throws TransformerFactoryConfigurationError {
-    TransformerFactory transformerFactory =
-        TransformerFactory.newInstance(
-            "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
+    TransformerFactory transformerFactory = TransformerFactory.newDefaultInstance();
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
 
@@ -227,9 +225,7 @@ public final class XMLLookupUtils {
 
   private static DocumentBuilderFactory createDocumentBuilderFactory()
       throws ParserConfigurationException {
-    DocumentBuilderFactory documentBuilderFactory =
-        DocumentBuilderFactory.newInstance(
-            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl", null);
+    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
     documentBuilderFactory.setFeature(

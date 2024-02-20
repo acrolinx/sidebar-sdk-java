@@ -6,16 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class XMLLookupUtilsTest {
   private static String readFileContent(String fileName) throws IOException {
-    return new String(
-        Files.readAllBytes(Paths.get("src/test/resources/xml/", fileName)), StandardCharsets.UTF_8);
+    return Files.readString(Path.of("src/test/resources/xml/", fileName));
   }
 
   private static void verifyIntRange(IntRange intRange, int startOffset, int endOffset) {

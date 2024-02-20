@@ -8,7 +8,6 @@ import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
@@ -95,8 +94,6 @@ public class TextAreaAdapter implements InputAdapterInterface {
   public List<IntRange> getCurrentSelection() {
     int selectionStart = this.jTextArea.getSelectionStart();
     int selectionEnd = this.jTextArea.getSelectionEnd();
-    List<IntRange> intRanges = new ArrayList<>();
-    intRanges.add(new IntRange(selectionStart, selectionEnd));
-    return intRanges;
+    return List.of(new IntRange(selectionStart, selectionEnd));
   }
 }

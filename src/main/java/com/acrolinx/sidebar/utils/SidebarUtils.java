@@ -13,7 +13,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -196,10 +195,10 @@ public final class SidebarUtils {
 
     if (propertyValueString.contains("mac")) {
       String temDirProp = System.getProperty("user.home");
-      return Paths.get(temDirProp, "Library");
+      return Path.of(temDirProp, "Library");
     }
 
-    return Paths.get(System.getProperty("java.io.tmpdir"));
+    return Path.of(System.getProperty("java.io.tmpdir"));
   }
 
   /** Internal use. */

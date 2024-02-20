@@ -67,7 +67,7 @@ public final class MatchUtils {
             .filter(externalContentField -> externalContentField.getId().equals(externalContentId))
             .findFirst();
 
-    if (!optionalExternalContentField.isPresent()) {
+    if (optionalExternalContentField.isEmpty()) {
       logger.warn("Field for externalContentMatch has not been found");
       return false;
     }
