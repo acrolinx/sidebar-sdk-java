@@ -22,9 +22,9 @@ public final class NamespaceResolver implements NamespaceContext {
   public String getNamespaceURI(String prefix) {
     if (prefix.equals(XMLConstants.DEFAULT_NS_PREFIX)) {
       return sourceDocument.lookupNamespaceURI(null);
-    } else {
-      return sourceDocument.lookupNamespaceURI(prefix);
     }
+
+    return sourceDocument.lookupNamespaceURI(prefix);
   }
 
   @Override

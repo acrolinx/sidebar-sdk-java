@@ -9,7 +9,7 @@ import ch.qos.logback.classic.LoggerContext;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class LoggingUtilsTest {
     String logFileLocation = LoggingUtils.getLogFileLocation();
     Assertions.assertTrue(logFileLocation.contains("TEST"));
     ((LoggerContext) LoggerFactory.getILoggerFactory()).stop();
-    Files.deleteIfExists(Paths.get(new URI(logFileLocation)));
+    Files.deleteIfExists(Path.of(new URI(logFileLocation)));
   }
 
   @Test
@@ -41,7 +41,7 @@ class LoggingUtilsTest {
     Assertions.assertNotNull(logFileLocation);
 
     final List<String> strings =
-        Files.readAllLines(Paths.get(new URI(logFileLocation)), StandardCharsets.UTF_8);
+        Files.readAllLines(Path.of(new URI(logFileLocation)), StandardCharsets.UTF_8);
     strings.stream()
         .forEach(
             string -> {
@@ -50,7 +50,7 @@ class LoggingUtilsTest {
             });
 
     ((LoggerContext) LoggerFactory.getILoggerFactory()).stop();
-    Files.deleteIfExists(Paths.get(new URI(logFileLocation)));
+    Files.deleteIfExists(Path.of(new URI(logFileLocation)));
   }
 
   @Test
@@ -68,7 +68,7 @@ class LoggingUtilsTest {
     Assertions.assertNotNull(logFileLocation);
 
     final List<String> strings =
-        Files.readAllLines(Paths.get(new URI(logFileLocation)), StandardCharsets.UTF_8);
+        Files.readAllLines(Path.of(new URI(logFileLocation)), StandardCharsets.UTF_8);
     strings.stream()
         .forEach(
             string -> {
@@ -77,7 +77,7 @@ class LoggingUtilsTest {
             });
 
     ((LoggerContext) LoggerFactory.getILoggerFactory()).stop();
-    Files.deleteIfExists(Paths.get(new URI(logFileLocation)));
+    Files.deleteIfExists(Path.of(new URI(logFileLocation)));
     System.clearProperty("acrolog.level");
   }
 
@@ -97,10 +97,10 @@ class LoggingUtilsTest {
     Assertions.assertNotNull(logFileLocation);
 
     final List<String> strings =
-        Files.readAllLines(Paths.get(new URI(logFileLocation)), StandardCharsets.UTF_8);
+        Files.readAllLines(Path.of(new URI(logFileLocation)), StandardCharsets.UTF_8);
     strings.stream().forEach(string -> assertEquals("", string));
     ((LoggerContext) LoggerFactory.getILoggerFactory()).stop();
-    Files.deleteIfExists(Paths.get(new URI(logFileLocation)));
+    Files.deleteIfExists(Path.of(new URI(logFileLocation)));
     System.clearProperty("acrolog.level");
   }
 

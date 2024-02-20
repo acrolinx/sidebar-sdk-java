@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder;
-import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class StartPageInstallerTest {
@@ -18,7 +18,7 @@ class StartPageInstallerTest {
   @Test
   void prepareSidebarUrlWithStartPage() throws Exception {
     final AcrolinxSidebarInitParameterBuilder builder =
-        new AcrolinxSidebarInitParameterBuilder("123", new ArrayList<>());
+        new AcrolinxSidebarInitParameterBuilder("123", List.of());
 
     final AcrolinxSidebarInitParameter acrolinxSidebarInitParameter = builder.build();
 
@@ -30,7 +30,7 @@ class StartPageInstallerTest {
   @Test
   void prepareSidebarUrlWithSidebar() {
     final AcrolinxSidebarInitParameterBuilder builder =
-        new AcrolinxSidebarInitParameterBuilder("123", new ArrayList<>());
+        new AcrolinxSidebarInitParameterBuilder("123", List.of());
     builder.withSidebarUrl("https://127.0.0.1");
     builder.withShowServerSelector(false);
 
@@ -43,7 +43,7 @@ class StartPageInstallerTest {
   @Test
   void prepareSidebarUrlWithStartPageIfSidebarUrlIsSetBut() throws Exception {
     final AcrolinxSidebarInitParameterBuilder builder =
-        new AcrolinxSidebarInitParameterBuilder("123", new ArrayList<>());
+        new AcrolinxSidebarInitParameterBuilder("123", List.of());
     builder.withSidebarUrl("https://127.0.0.1");
     builder.withShowServerSelector(true);
 
@@ -57,7 +57,7 @@ class StartPageInstallerTest {
   @Test
   void prepareSidebarUrlWithStartPageIfServerUrlIsSetButServerSelector() throws Exception {
     final AcrolinxSidebarInitParameterBuilder builder =
-        new AcrolinxSidebarInitParameterBuilder("123", new ArrayList<>());
+        new AcrolinxSidebarInitParameterBuilder("123", List.of());
     builder.withServerAddress("https://127.0.0.1");
     builder.withShowServerSelector(true);
 
@@ -71,7 +71,7 @@ class StartPageInstallerTest {
   @Test
   void prepareSidebarUrlWithStartPageIfServerUrlIsSet() throws Exception {
     final AcrolinxSidebarInitParameterBuilder builder =
-        new AcrolinxSidebarInitParameterBuilder("123", new ArrayList<>());
+        new AcrolinxSidebarInitParameterBuilder("123", List.of());
     builder.withServerAddress("https://127.0.0.1");
     builder.withShowServerSelector(false);
 
