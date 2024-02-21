@@ -49,7 +49,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
@@ -685,7 +684,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
   }
 
   private CheckOptions getCheckSettingsFromClient(
-      final boolean includeCheckSelectionRanges, @Nullable ExternalContent externalContent) {
+      final boolean includeCheckSelectionRanges, ExternalContent externalContent) {
     InputFormat inputFormat = acrolinxIntegration.getEditorAdapter().getInputFormat();
     String docRef = acrolinxIntegration.getEditorAdapter().getDocumentReference();
     currentDocumentReference.set(docRef);

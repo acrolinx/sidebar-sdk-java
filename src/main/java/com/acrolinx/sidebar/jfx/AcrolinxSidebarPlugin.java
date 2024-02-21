@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import javafx.scene.web.WebView;
-import javax.annotation.Nullable;
 import netscape.javascript.JSObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -249,7 +248,7 @@ abstract class AcrolinxSidebarPlugin {
   }
 
   private CheckOptions getCheckSettingsFromClient(
-      final boolean includeCheckSelectionRanges, @Nullable ExternalContent externalContent) {
+      final boolean includeCheckSelectionRanges, ExternalContent externalContent) {
     inputFormatRef.set(acrolinxIntegration.getEditorAdapter().getInputFormat());
     currentDocumentReference.set(acrolinxIntegration.getEditorAdapter().getDocumentReference());
     DocumentSelection documentSelection = null;

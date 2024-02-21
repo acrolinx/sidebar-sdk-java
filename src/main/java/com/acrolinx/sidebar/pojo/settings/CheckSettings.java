@@ -2,7 +2,6 @@
 package com.acrolinx.sidebar.pojo.settings;
 
 import com.google.gson.Gson;
-import org.apache.commons.lang3.SerializationUtils;
 
 public class CheckSettings {
   private final String language;
@@ -33,14 +32,14 @@ public class CheckSettings {
       String[] termStatuses) {
     this.language = language;
     this.ruleSetName = ruleSetName;
-    this.termSets = SerializationUtils.clone(termSets);
+    this.termSets = termSets.clone();
     this.checkSpelling = checkSpelling;
     this.checkGrammar = checkGrammar;
     this.checkStyle = checkStyle;
     this.checkReuse = checkReuse;
     this.harvestTerms = harvestTerms;
     this.checkSeo = checkSeo;
-    this.termStatuses = SerializationUtils.clone(termStatuses);
+    this.termStatuses = termStatuses.clone();
   }
 
   @Override

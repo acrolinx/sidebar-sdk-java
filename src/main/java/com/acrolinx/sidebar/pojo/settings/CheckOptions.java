@@ -4,7 +4,6 @@ package com.acrolinx.sidebar.pojo.settings;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import javax.annotation.Nullable;
 
 /** Check options define how the Acrolinx Server handles document to check. */
 public class CheckOptions {
@@ -25,7 +24,7 @@ public class CheckOptions {
       RequestDescription requestDescription,
       InputFormat inputFormat,
       DocumentSelection documentSelection,
-      @Nullable ExternalContent externalContent) {
+      ExternalContent externalContent) {
     this.requestDescription = requestDescription;
     this.inputFormat = inputFormat;
     this.documentSelection = documentSelection;

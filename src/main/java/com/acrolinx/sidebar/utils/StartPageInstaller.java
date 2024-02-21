@@ -2,7 +2,6 @@
 package com.acrolinx.sidebar.utils;
 
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
-import com.google.common.base.Strings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -122,7 +121,11 @@ public final class StartPageInstaller {
   public static boolean isExportRequired(
       final AcrolinxSidebarInitParameter acrolinxSidebarInitParameter) {
     return acrolinxSidebarInitParameter.getShowServerSelector()
-        || Strings.isNullOrEmpty(acrolinxSidebarInitParameter.getSidebarUrl());
+        || isNullOrEmpty(acrolinxSidebarInitParameter.getSidebarUrl());
+  }
+
+  private static boolean isNullOrEmpty(String string) {
+    return string == null || string.isEmpty();
   }
 
   private StartPageInstaller() {
