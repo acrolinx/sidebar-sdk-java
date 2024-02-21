@@ -142,15 +142,12 @@ version = currentVersion
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
-final String artifactName = "sidebar-sdk"
-
 jar {
-    archivesBaseName = artifactName
     manifest {
         attributes(
-                "Implementation-Title": artifactName,
+                "Implementation-Title": rootProject.name,
                 "Implementation-Version": version,
-                "Specification-Title": artifactName,
+                "Specification-Title": rootProject.name,
                 "Specification-Version": version
         )
     }
@@ -214,7 +211,7 @@ publishing {
             from(components.java)
 
             pom {
-                name.set("sidebar-sdk")
+                name.set("sidebar-sdk-java")
                 description.set("Acrolinx Sidebar SDK to build Acrolinx integrations for Java FX, Swing or SWT based clients.")
                 url.set("https://github.com/acrolinx/sidebar-sdk-java")
                 licenses {
