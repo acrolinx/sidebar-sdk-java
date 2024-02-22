@@ -33,7 +33,7 @@ private static String getOsgiPlatformValue() {
 }
 
 @Field
-private static final String SWT_VERSION = '3.122.0'
+private static final String SWT_VERSION = '3.123.0'
 @Field
 private static final String OSGI_PLATFORM = getOsgiPlatformValue()
 @Field
