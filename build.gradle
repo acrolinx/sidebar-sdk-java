@@ -244,6 +244,7 @@ nexusPublishing {
 }
 
 signing {
+    required = false
     final String signingKey = findProperty("signingKey")
     final String signingPassword = findProperty("signingPassword")
     useInMemoryPgpKeys(signingKey, signingPassword)
