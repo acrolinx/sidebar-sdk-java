@@ -159,45 +159,8 @@ jar {
 processResources {
     dependsOn npm_install
 
-    from ('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline/') {
+    from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline/') {
         into 'server-selector'
-    }
-}
-
-task convertLocalizationEncoding() {
-    File directory = new File("$projectDir/src/main/resources/localization_iso-8859-1/")
-
-    if (!directory.exists()) {
-        directory.mkdirs()
-    }
-
-    File sourceDirectory = new File("$projectDir/src/main/resources/localization")
-    sourceDirectory.eachFile {
-        File file ->
-            if (file.name.endsWith(".properties")) {
-                String fileContents = file.getText('utf-8')
-                String fileName = file.name
-
-                File write = new File("$projectDir/src/main/resources/localization_iso-8859-1/" + fileName)
-                write.createNewFile()
-
-                if (!fileName.contains("_ja")) {
-                    write.write(fileContents, 'ISO-8859-1')
-                } else {
-                    StringBuilder stringBuilder = new StringBuilder()
-
-                    for (char charValue : fileContents.toCharArray()) {
-                        if (charValue >= 128) {
-                            stringBuilder.append("\\u").append(String.format("%04X", (int) charValue))
-                        } else {
-                            stringBuilder.append(charValue)
-                        }
-                    }
-
-                    String string = stringBuilder.toString()
-                    write.write(string, 'ISO-8859-1')
-                }
-            }
     }
 }
 
@@ -295,5 +258,3 @@ spotless {
         endWithNewline()
     }
 }
-
-processResources.dependsOn convertLocalizationEncoding
