@@ -215,6 +215,7 @@ signing {
 }
 
 javafx {
+    version = '19'
     modules = ['javafx.swing', 'javafx.web']
 }
 
