@@ -160,7 +160,7 @@ public final class SidebarUtils {
           Manifest manifest = new Manifest(inputStream);
           Attributes attributes = manifest.getMainAttributes();
 
-          if ("sidebar-sdk".equals(attributes.getValue("Implementation-Title"))) {
+          if ("sidebar-sdk-java".equals(attributes.getValue("Implementation-Title"))) {
             return Optional.ofNullable(attributes.getValue("Implementation-Version"));
           }
         }
