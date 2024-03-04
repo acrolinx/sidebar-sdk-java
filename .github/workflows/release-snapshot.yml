@@ -28,7 +28,7 @@ jobs:
       - name: Publish Artifacts
         uses: gradle/actions/setup-gradle@v3
         with:
-          arguments: publishToSonatype --stacktrace
+          arguments: publishToSonatype
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
