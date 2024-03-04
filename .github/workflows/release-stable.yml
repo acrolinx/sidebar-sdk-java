@@ -10,14 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check ref_type
-        if: github.ref_type != 'branch'
-        run: |
-          echo "This workflow can only be triggered on a branch!"
-          exit 1
-
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -45,9 +41,8 @@ jobs:
           OLD_SNAPSHOT_VERSION: ${{ steps.removeSnapshotSuffix.outputs.OLD_SNAPSHOT_VERSION }}
           RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
         run: |
-          git config user.name ${{ github.actor }}
+          git config user.name acrolinx-opensource
           git config user.email opensource@acrolinx.com
-          git checkout -b publish-v$RELEASE_VERSION
           git add gradle.properties
           git commit -m "Update version from $OLD_SNAPSHOT_VERSION to $RELEASE_VERSION"
 
@@ -89,20 +84,18 @@ jobs:
           RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
           NEW_SNAPSHOT_VERSION: ${{ steps.incrementSnapshotVersion.outputs.NEW_SNAPSHOT_VERSION }}
         run: |
+          git config user.name acrolinx-opensource
+          git config user.email opensource@acrolinx.com
           git add gradle.properties
           git commit -m "Update version from $RELEASE_VERSION to $NEW_SNAPSHOT_VERSION"
 
       - name: Push Changes
         env:
           TAG_NAME: ${{ steps.createTagName.outputs.TAG_NAME }}
-        run: git push --atomic --set-upstream origin HEAD $TAG_NAME
-
-      - name: Create GitHub PR
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
-          CHECKOUT_BRANCH_NAME: ${{ github.ref_name }}
-        run: gh pr create --title "Release $RELEASE_VERSION" --body "" --base "$CHECKOUT_BRANCH_NAME" --reviewer ${{ github.actor }}
+        run: |
+          git config user.name acrolinx-opensource
+          git config user.email opensource@acrolinx.com
+          git push --atomic --set-upstream origin HEAD $TAG_NAME
 
       - name: Create Draft Release
         env:
