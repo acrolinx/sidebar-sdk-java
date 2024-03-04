@@ -8,6 +8,9 @@ permissions:
 jobs:
   Release-Stable:
     runs-on: ubuntu-latest
+    env:
+      GIT_USER_NAME: acrolinx-opensource
+      GIT_USER_EMAIL: opensource@acrolinx.com
 
     steps:
       - name: Checkout
@@ -39,8 +42,8 @@ jobs:
           OLD_SNAPSHOT_VERSION: ${{ steps.removeSnapshotSuffix.outputs.OLD_SNAPSHOT_VERSION }}
           RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
         run: |
-          git config user.name acrolinx-opensource
-          git config user.email opensource@acrolinx.com
+          git config user.name $GIT_USER_NAME
+          git config user.email $GIT_USER_EMAIL
           git checkout -b publish-v$RELEASE_VERSION
           git add gradle.properties
           git commit -m "Update version from $OLD_SNAPSHOT_VERSION to $RELEASE_VERSION"
@@ -59,7 +62,7 @@ jobs:
       - name: Publish Artifacts
         uses: gradle/actions/setup-gradle@v3
         with:
-          arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository --stacktrace
+          arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.CODE_SIGNING_PRIV_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
@@ -83,8 +86,8 @@ jobs:
           RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
           NEW_SNAPSHOT_VERSION: ${{ steps.incrementSnapshotVersion.outputs.NEW_SNAPSHOT_VERSION }}
         run: |
-          git config user.name acrolinx-opensource
-          git config user.email opensource@acrolinx.com
+          git config user.name $GIT_USER_NAME
+          git config user.email $GIT_USER_EMAIL
           git add gradle.properties
           git commit -m "Update version from $RELEASE_VERSION to $NEW_SNAPSHOT_VERSION"
 
@@ -92,8 +95,8 @@ jobs:
         env:
           TAG_NAME: ${{ steps.createTagName.outputs.TAG_NAME }}
         run: |
-          git config user.name acrolinx-opensource
-          git config user.email opensource@acrolinx.com
+          git config user.name $GIT_USER_NAME
+          git config user.email $GIT_USER_EMAIL
           git push --atomic --set-upstream origin HEAD $TAG_NAME
 
       - name: Create GitHub PR
