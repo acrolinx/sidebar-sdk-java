@@ -106,7 +106,7 @@ jobs:
           CHECKOUT_BRANCH_NAME: ${{ github.ref_name }}
         run: |
           gh pr create --title "Release $RELEASE_VERSION" --body "" --base "$CHECKOUT_BRANCH_NAME" --reviewer ${{ github.actor }}
-          gh pr merge $CHECKOUT_BRANCH_NAME --auto --rebase
+          gh pr merge publish-v$RELEASE_VERSION --auto --rebase
 
       - name: Create Draft Release
         env:
