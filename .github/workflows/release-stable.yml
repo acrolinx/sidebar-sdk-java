@@ -105,7 +105,7 @@ jobs:
           RELEASE_VERSION: ${{ steps.removeSnapshotSuffix.outputs.RELEASE_VERSION }}
           CHECKOUT_BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          gh pr create --title "Release $RELEASE_VERSION" --body "" --base "$CHECKOUT_BRANCH_NAME" --reviewer /acrolinx/integrationdevs-java
+          gh pr create --title "Release $RELEASE_VERSION" --body "" --base "$CHECKOUT_BRANCH_NAME" --reviewer ${{ github.actor }}
           gh pr merge --auto
 
       - name: Create Draft Release
