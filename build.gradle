@@ -218,11 +218,9 @@ javafx {
     modules = ['javafx.swing', 'javafx.web']
 }
 
-configurations.all {
-    resolutionStrategy {
-        dependencySubstitution {
-            substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.$OSGI_PLATFORM:$SWT_VERSION")
-        }
+configurations.configureEach {
+    resolutionStrategy.dependencySubstitution {
+        substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.$OSGI_PLATFORM:$SWT_VERSION")
     }
 }
 
