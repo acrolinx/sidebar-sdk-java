@@ -18,26 +18,15 @@ plugins {
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
-private static String getOsgiPlatformValue() {
-    String osName = System.getProperty('os.name').toLowerCase()
-
-    if (osName.contains('windows')) {
-        return 'win32.win32.x86_64'
-    } else if (osName.contains('linux')) {
-        return 'gtk.linux.x86_64'
-    } else if (osName.contains('mac')) {
-        return 'cocoa.macosx.x86_64'
+configurations.configureEach {
+    resolutionStrategy.dependencySubstitution {
+        substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.$OSGI_PLATFORM:$SWT_VERSION")
     }
-
-    throw new GradleException('unknown OS name: ' + osName)
 }
 
-@Field
-private static final String SWT_VERSION = '3.123.0'
-@Field
-private static final String OSGI_PLATFORM = getOsgiPlatformValue()
-@Field
-private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT"
+repositories {
+    mavenCentral()
+}
 
 dependencies {
     api 'com.google.code.gson:gson:2.10.1'
@@ -50,96 +39,23 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-repositories {
-    mavenCentral()
-}
-
-node {
-    download = true
-}
-
-sonar {
-    properties {
-        property "sonar.organization", "acrolinx"
-        property "sonar.projectKey", "acrolinx_sidebar-sdk-java"
-        property "sonar.host.url", "https://sonarcloud.io"
-    }
-}
-
-private String createNewSnapshotVersion() {
-    final String[] currentVersion = currentVersion.split("\\.")
-    final int incrementedPatchVersion = Integer.parseInt(currentVersion[currentVersion.length - 1]) + 1
-
-    return currentVersion[0] + '.' + currentVersion[1] + '.' + incrementedPatchVersion + SNAPSHOT_SUFFIX
-}
-
-private static void updateVersionProperty(final String versionString) {
-    final String propertyName = 'currentVersion'
-
-    final java.nio.file.Path gradlePropertiesPath = Paths.get("gradle.properties")
-
-    if (!Files.exists(gradlePropertiesPath)) {
-        throw new IllegalStateException("File does not exist: " + gradlePropertiesPath)
-    }
-
-    final List<String> propertyFileContent = Files.readAllLines(gradlePropertiesPath)
-
-    final List<String> updatedPropertyFileContent = propertyFileContent.stream()
-            .map(line -> {
-                if (line.startsWith("$propertyName=")) {
-                    "$propertyName=$versionString"
-                } else {
-                    line
-                }
-            })
-            .collect(Collectors.toList())
-
-    Files.write(gradlePropertiesPath, updatedPropertyFileContent)
-}
-
-private static void setGithubOutput(final String name, final String value) {
-    final String githubOutput = System.getenv('GITHUB_OUTPUT')
-    final java.nio.file.Path githubOutputPath = Paths.get(githubOutput)
-    Files.write(githubOutputPath, "$name=$value\n".getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND)
-}
-
-tasks.register('removeSnapshotSuffix') {
-    doLast {
-        println("Current version: $currentVersion")
-
-        if (!currentVersion.endsWith(SNAPSHOT_SUFFIX)) {
-            throw new IllegalStateException("Current version is not a snapshot: " + currentVersion)
-        }
-
-        final String releaseVersion = currentVersion.replace(SNAPSHOT_SUFFIX, "")
-
-        println("Stable version: $releaseVersion")
-
-        updateVersionProperty(releaseVersion)
-
-        setGithubOutput("OLD_SNAPSHOT_VERSION", "$currentVersion")
-        setGithubOutput("RELEASE_VERSION", "$releaseVersion")
-    }
-}
-
-tasks.register('incrementSnapshotVersion') {
-    doLast {
-        println("Current version: $currentVersion")
-        final String newSnapshotVersion = createNewSnapshotVersion()
-
-        println("New snapshot version: $newSnapshotVersion")
-
-        updateVersionProperty(newSnapshotVersion)
-
-        setGithubOutput("NEW_SNAPSHOT_VERSION", newSnapshotVersion)
-    }
-}
-
 group = 'com.acrolinx.client'
 version = currentVersion
 
-compileJava.options.encoding = 'UTF-8'
-compileTestJava.options.encoding = 'UTF-8'
+compileJava {
+    options.encoding = "UTF-8"
+}
+
+compileTestJava {
+    options.encoding = "UTF-8"
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+    }
+}
 
 jar {
     manifest {
@@ -155,16 +71,37 @@ jar {
     }
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc {
+    options.addStringOption('Xdoclint:all,-missing', '-quiet')
+}
+
+javafx {
+    version = '19'
+    modules = ['javafx.swing', 'javafx.web']
+}
+
+nexusPublishing {
+    repositories {
+        sonatype()
+    }
+}
+
+node {
+    download = true
+}
+
 processResources {
     dependsOn npm_install
 
     from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline/') {
         into 'server-selector'
     }
-}
-
-javadoc {
-    options.addStringOption('Xdoclint:all,-missing', '-quiet')
 }
 
 publishing {
@@ -199,12 +136,6 @@ publishing {
     }
 }
 
-nexusPublishing {
-    repositories {
-        sonatype()
-    }
-}
-
 signing {
     required = false
     final String signingKey = findProperty("signingKey")
@@ -213,31 +144,11 @@ signing {
     sign publishing.publications.mavenJava
 }
 
-javafx {
-    version = '19'
-    modules = ['javafx.swing', 'javafx.web']
-}
-
-configurations.configureEach {
-    resolutionStrategy.dependencySubstitution {
-        substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') using module("org.eclipse.platform:org.eclipse.swt.$OSGI_PLATFORM:$SWT_VERSION")
-    }
-}
-
-tasks.named('test', Test) {
-    useJUnitPlatform()
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    withJavadocJar()
-    withSourcesJar()
-}
-
-jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.required = true
+sonar {
+    properties {
+        property "sonar.organization", "acrolinx"
+        property "sonar.projectKey", "acrolinx_sidebar-sdk-java"
+        property "sonar.host.url", "https://sonarcloud.io"
     }
 }
 
@@ -255,4 +166,98 @@ spotless {
         trimTrailingWhitespace()
         endWithNewline()
     }
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+}
+
+tasks.register('incrementSnapshotVersion') {
+    doLast {
+        println("Current version: $currentVersion")
+        final String newSnapshotVersion = createNewSnapshotVersion(currentVersion)
+
+        println("New snapshot version: $newSnapshotVersion")
+
+        updateVersionProperty(newSnapshotVersion)
+
+        setGitHubOutput("NEW_SNAPSHOT_VERSION", newSnapshotVersion)
+    }
+}
+
+tasks.register('removeSnapshotSuffix') {
+    doLast {
+        println("Current version: $currentVersion")
+
+        if (!currentVersion.endsWith(SNAPSHOT_SUFFIX)) {
+            throw new IllegalStateException("Current version is not a snapshot: " + currentVersion)
+        }
+
+        final String releaseVersion = currentVersion.replace(SNAPSHOT_SUFFIX, "")
+
+        println("Stable version: $releaseVersion")
+
+        updateVersionProperty(releaseVersion)
+
+        setGitHubOutput("OLD_SNAPSHOT_VERSION", "$currentVersion")
+        setGitHubOutput("RELEASE_VERSION", "$releaseVersion")
+    }
+}
+
+@Field
+private static final String OSGI_PLATFORM = getOsgiPlatformValue()
+@Field
+private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT"
+@Field
+private static final String SWT_VERSION = '3.123.0'
+
+private static String createNewSnapshotVersion(final String versionString) {
+    final String[] versionParts = versionString.split("\\.")
+    final int incrementedPatchVersion = Integer.parseInt(versionParts[versionParts.length - 1]) + 1
+
+    return versionParts[0] + '.' + versionParts[1] + '.' + incrementedPatchVersion + SNAPSHOT_SUFFIX
+}
+
+private static String getOsgiPlatformValue() {
+    String osName = System.getProperty('os.name').toLowerCase()
+
+    if (osName.contains('windows')) {
+        return 'win32.win32.x86_64'
+    } else if (osName.contains('linux')) {
+        return 'gtk.linux.x86_64'
+    } else if (osName.contains('mac')) {
+        return 'cocoa.macosx.x86_64'
+    }
+
+    throw new GradleException('unknown OS name: ' + osName)
+}
+
+private static void setGitHubOutput(final String name, final String value) {
+    final String gitHubOutput = System.getenv('GITHUB_OUTPUT')
+    final java.nio.file.Path gitHubOutputPath = Paths.get(gitHubOutput)
+    Files.write(gitHubOutputPath, "$name=$value\n".getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND)
+}
+
+private static void updateVersionProperty(final String versionString) {
+    final String propertyName = 'currentVersion'
+
+    final java.nio.file.Path gradlePropertiesPath = Paths.get("gradle.properties")
+
+    if (!Files.exists(gradlePropertiesPath)) {
+        throw new IllegalStateException("File does not exist: " + gradlePropertiesPath)
+    }
+
+    final List<String> propertyFileContent = Files.readAllLines(gradlePropertiesPath)
+
+    final List<String> updatedPropertyFileContent = propertyFileContent.stream()
+            .map(line -> {
+                if (line.startsWith("$propertyName=")) {
+                    "$propertyName=$versionString"
+                } else {
+                    line
+                }
+            })
+            .collect(Collectors.toList())
+
+    Files.write(gradlePropertiesPath, updatedPropertyFileContent)
 }
