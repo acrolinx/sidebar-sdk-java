@@ -99,6 +99,13 @@ node {
 processResources {
     dependsOn npm_install
 
+    doFirst {
+        File resourcesDir = sourceSets.main.output.resourcesDir
+        resourcesDir.mkdirs()
+        File versionPropertyFile = new File(resourcesDir, 'sidebar-sdk-java-version.properties')
+        versionPropertyFile.text = "sidebar-sdk-java-version=$currentVersion"
+    }
+
     from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline/') {
         into 'server-selector'
     }

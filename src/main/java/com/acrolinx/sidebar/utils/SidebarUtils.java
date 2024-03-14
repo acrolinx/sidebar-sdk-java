@@ -14,11 +14,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
+import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -141,30 +139,21 @@ public final class SidebarUtils {
   }
 
   private static String getCurrentSdkImplementationVersion() {
-    final Optional<String> versionFromManifestFile = getJavaSdkVersionFromManifestFile();
+    final Optional<String> versionFromManifestFile = getJavaSdkVersionFromPropertiesFile();
 
     return versionFromManifestFile.orElseGet(
         () -> SidebarUtils.class.getPackage().getImplementationVersion());
   }
 
-  private static Optional<String> getJavaSdkVersionFromManifestFile() {
+  private static Optional<String> getJavaSdkVersionFromPropertiesFile() {
     final ClassLoader classLoader = SidebarUtils.class.getClassLoader();
 
-    try {
-      final Enumeration<URL> enumeration = classLoader.getResources("META-INF/MANIFEST.MF");
+    try (InputStream inputStream =
+        classLoader.getResourceAsStream("sidebar-sdk-java-version.properties")) {
+      Properties properties = new Properties();
+      properties.load(inputStream);
 
-      while (enumeration.hasMoreElements()) {
-        final URL url = enumeration.nextElement();
-
-        try (final InputStream inputStream = url.openStream()) {
-          Manifest manifest = new Manifest(inputStream);
-          Attributes attributes = manifest.getMainAttributes();
-
-          if ("sidebar-sdk-java".equals(attributes.getValue("Implementation-Title"))) {
-            return Optional.ofNullable(attributes.getValue("Implementation-Version"));
-          }
-        }
-      }
+      return Optional.ofNullable(properties.getProperty("sidebar-sdk-java-version"));
     } catch (IOException e) {
       logger.error("", e);
     }
