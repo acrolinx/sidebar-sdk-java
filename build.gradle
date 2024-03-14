@@ -103,7 +103,7 @@ processResources {
         File resourcesDir = sourceSets.main.output.resourcesDir
         resourcesDir.mkdirs()
         File versionPropertyFile = new File(resourcesDir, "$VERSION_PROPERTIES_FILE")
-        versionPropertyFile.append("version=$currentVersion")
+        versionPropertyFile.append("sidebar-sdk-java-version=$currentVersion")
     }
 
     from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline/') {
