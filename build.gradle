@@ -57,12 +57,7 @@ jacocoTestReport {
     }
 }
 
-clean {
-    delete "src/main/resources/$VERSION_PROPERTIES_FILE"
-}
-
 jar {
-    dependsOn 'createVersionProperties'
     manifest {
         attributes(
                 "Implementation-Title": rootProject.name,
@@ -74,10 +69,6 @@ jar {
     from(project.projectDir) {
         include 'LICENSE'
     }
-    from("src/main/resources/") {
-        include "$VERSION_PROPERTIES_FILE"
-    }
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 java {
@@ -107,6 +98,13 @@ node {
 
 processResources {
     dependsOn npm_install
+
+    doFirst {
+        File resourcesDir = sourceSets.main.output.resourcesDir
+        resourcesDir.mkdirs()
+        File versionPropertyFile = new File(resourcesDir, "$VERSION_PROPERTIES_FILE")
+        versionPropertyFile.append("version=$currentVersion")
+    }
 
     from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline/') {
         into 'server-selector'
@@ -179,13 +177,6 @@ spotless {
 
 tasks.named('test', Test) {
     useJUnitPlatform()
-}
-
-tasks.register('createVersionProperties') {
-    doLast {
-        File versionPropertyFile = new File(projectDir, "src/main/resources/$VERSION_PROPERTIES_FILE")
-        versionPropertyFile.append("version=$currentVersion")
-    }
 }
 
 tasks.register('incrementSnapshotVersion') {
