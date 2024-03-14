@@ -102,7 +102,7 @@ processResources {
     doFirst {
         File resourcesDir = sourceSets.main.output.resourcesDir
         resourcesDir.mkdirs()
-        File versionPropertyFile = new File(resourcesDir, "$VERSION_PROPERTIES_FILE")
+        File versionPropertyFile = new File(resourcesDir, 'sidebar-sdk-java-version.properties')
         versionPropertyFile.text = "sidebar-sdk-java-version=$currentVersion"
     }
 
@@ -217,8 +217,6 @@ private static final String OSGI_PLATFORM = getOsgiPlatformValue()
 private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT"
 @Field
 private static final String SWT_VERSION = '3.123.0'
-@Field
-private static final String VERSION_PROPERTIES_FILE = 'sidebar-sdk-java-version.properties'
 
 private static String createNewSnapshotVersion(final String versionString) {
     final String[] versionParts = versionString.split("\\.")
