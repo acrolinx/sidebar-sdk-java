@@ -57,7 +57,12 @@ jacocoTestReport {
     }
 }
 
+clean {
+    delete "src/main/resources/$VERSION_PROPERTIES_FILE"
+}
+
 jar {
+    dependsOn 'createVersionProperties'
     manifest {
         attributes(
                 "Implementation-Title": rootProject.name,
@@ -68,6 +73,9 @@ jar {
     }
     from(project.projectDir) {
         include 'LICENSE'
+    }
+    from("src/main/resources/") {
+        include "$VERSION_PROPERTIES_FILE"
     }
 }
 
@@ -172,6 +180,13 @@ tasks.named('test', Test) {
     useJUnitPlatform()
 }
 
+tasks.register('createVersionProperties') {
+    doLast {
+        File versionPropertyFile = new File(projectDir, "src/main/resources/$VERSION_PROPERTIES_FILE")
+        versionPropertyFile.append("version=$currentVersion")
+    }
+}
+
 tasks.register('incrementSnapshotVersion') {
     doLast {
         println("Current version: $currentVersion")
@@ -210,6 +225,8 @@ private static final String OSGI_PLATFORM = getOsgiPlatformValue()
 private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT"
 @Field
 private static final String SWT_VERSION = '3.123.0'
+@Field
+private static final String VERSION_PROPERTIES_FILE = 'sidebar-sdk-java-version.properties'
 
 private static String createNewSnapshotVersion(final String versionString) {
     final String[] versionParts = versionString.split("\\.")

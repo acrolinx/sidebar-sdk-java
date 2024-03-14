@@ -17,3 +17,4 @@ node_modules/
 
 # Other files
 docs/
+/src/main/resources/sidebar-sdk-java-version.properties
