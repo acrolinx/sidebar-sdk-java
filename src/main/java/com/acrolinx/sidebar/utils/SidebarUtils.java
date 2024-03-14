@@ -148,15 +148,12 @@ public final class SidebarUtils {
   private static Optional<String> getJavaSdkVersionFromPropertiesFile() {
     final ClassLoader classLoader = SidebarUtils.class.getClassLoader();
 
-    try {
-      // Load the properties file from the JAR
-      InputStream inputStream =
-          classLoader.getResourceAsStream("sidebar-sdk-java-version.properties");
+    try (InputStream inputStream =
+        classLoader.getResourceAsStream("sidebar-sdk-java-version.properties")) {
       Properties properties = new Properties();
       properties.load(inputStream);
 
-      return Optional.ofNullable(properties.getProperty("version"));
-
+      return Optional.ofNullable(properties.getProperty("sidebar-sdk-java-version"));
     } catch (IOException e) {
       logger.error("", e);
     }
