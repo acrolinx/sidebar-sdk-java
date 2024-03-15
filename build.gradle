@@ -43,11 +43,11 @@ group = 'com.acrolinx.client'
 version = currentVersion
 
 compileJava {
-    options.encoding = "UTF-8"
+    options.encoding = 'UTF-8'
 }
 
 compileTestJava {
-    options.encoding = "UTF-8"
+    options.encoding = 'UTF-8'
 }
 
 jacocoTestReport {
@@ -60,10 +60,10 @@ jacocoTestReport {
 jar {
     manifest {
         attributes(
-                "Implementation-Title": rootProject.name,
-                "Implementation-Version": version,
-                "Specification-Title": rootProject.name,
-                "Specification-Version": version
+                'Implementation-Title': rootProject.name,
+                'Implementation-Version': version,
+                'Specification-Title': rootProject.name,
+                'Specification-Version': version
         )
     }
     from(project.projectDir) {
@@ -117,26 +117,26 @@ publishing {
             from(components.java)
 
             pom {
-                name.set("sidebar-sdk-java")
-                description.set("Acrolinx Sidebar SDK to build Acrolinx integrations for Java FX, Swing or SWT based clients.")
-                url.set("https://github.com/acrolinx/sidebar-sdk-java")
+                name.set('sidebar-sdk-java')
+                description.set('Acrolinx Sidebar SDK to build Acrolinx integrations for Java FX, Swing or SWT based clients.')
+                url.set('https://github.com/acrolinx/sidebar-sdk-java')
                 licenses {
                     license {
-                        name.set("The Apache Software License, Version 2.0")
-                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                        name.set('The Apache Software License, Version 2.0')
+                        url.set('https://www.apache.org/licenses/LICENSE-2.0.txt')
                     }
                 }
                 developers {
                     developer {
-                        id.set("Acrolinx Open Source")
-                        name.set("Acrolinx")
-                        email.set("opensource@acrolinx.com")
+                        id.set('Acrolinx Open Source')
+                        name.set('Acrolinx')
+                        email.set('opensource@acrolinx.com')
                     }
                 }
                 scm {
-                    connection.set("scm:git@github.com:acrolinx/sidebar-sdk-java.git")
-                    developerConnection.set("scm:git@github.com:acrolinx/sidebar-sdk-java.git")
-                    url.set("https://github.com/acrolinx/sidebar-sdk-java")
+                    connection.set('scm:git@github.com:acrolinx/sidebar-sdk-java.git')
+                    developerConnection.set('scm:git@github.com:acrolinx/sidebar-sdk-java.git')
+                    url.set('https://github.com/acrolinx/sidebar-sdk-java')
                 }
             }
         }
@@ -145,17 +145,17 @@ publishing {
 
 signing {
     required = false
-    final String signingKey = findProperty("signingKey")
-    final String signingPassword = findProperty("signingPassword")
+    final String signingKey = findProperty('signingKey')
+    final String signingPassword = findProperty('signingPassword')
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign publishing.publications.mavenJava
 }
 
 sonar {
     properties {
-        property "sonar.organization", "acrolinx"
-        property "sonar.projectKey", "acrolinx_sidebar-sdk-java"
-        property "sonar.host.url", "https://sonarcloud.io"
+        property 'sonar.host.url', 'https://sonarcloud.io'
+        property 'sonar.organization', 'acrolinx'
+        property 'sonar.projectKey', 'acrolinx_sidebar-sdk-java'
     }
 }
 
@@ -188,7 +188,7 @@ tasks.register('incrementSnapshotVersion') {
 
         updateVersionProperty(newSnapshotVersion)
 
-        setGitHubOutput("NEW_SNAPSHOT_VERSION", newSnapshotVersion)
+        setGitHubOutput('NEW_SNAPSHOT_VERSION', newSnapshotVersion)
     }
 }
 
@@ -197,29 +197,29 @@ tasks.register('removeSnapshotSuffix') {
         println("Current version: $currentVersion")
 
         if (!currentVersion.endsWith(SNAPSHOT_SUFFIX)) {
-            throw new IllegalStateException("Current version is not a snapshot: " + currentVersion)
+            throw new IllegalStateException('Current version is not a snapshot: ' + currentVersion)
         }
 
-        final String releaseVersion = currentVersion.replace(SNAPSHOT_SUFFIX, "")
+        final String releaseVersion = currentVersion.replace(SNAPSHOT_SUFFIX, '')
 
         println("Stable version: $releaseVersion")
 
         updateVersionProperty(releaseVersion)
 
-        setGitHubOutput("OLD_SNAPSHOT_VERSION", "$currentVersion")
-        setGitHubOutput("RELEASE_VERSION", "$releaseVersion")
+        setGitHubOutput('OLD_SNAPSHOT_VERSION', "$currentVersion")
+        setGitHubOutput('RELEASE_VERSION', "$releaseVersion")
     }
 }
 
 @Field
 private static final String OSGI_PLATFORM = getOsgiPlatformValue()
 @Field
-private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT"
+private static final String SNAPSHOT_SUFFIX = '-SNAPSHOT'
 @Field
 private static final String SWT_VERSION = '3.123.0'
 
 private static String createNewSnapshotVersion(final String versionString) {
-    final String[] versionParts = versionString.split("\\.")
+    final String[] versionParts = versionString.split('\\.')
     final int incrementedPatchVersion = Integer.parseInt(versionParts[versionParts.length - 1]) + 1
 
     return versionParts[0] + '.' + versionParts[1] + '.' + incrementedPatchVersion + SNAPSHOT_SUFFIX
@@ -248,10 +248,10 @@ private static void setGitHubOutput(final String name, final String value) {
 private static void updateVersionProperty(final String versionString) {
     final String propertyName = 'currentVersion'
 
-    final java.nio.file.Path gradlePropertiesPath = Paths.get("gradle.properties")
+    final java.nio.file.Path gradlePropertiesPath = Paths.get('gradle.properties')
 
     if (!Files.exists(gradlePropertiesPath)) {
-        throw new IllegalStateException("File does not exist: " + gradlePropertiesPath)
+        throw new IllegalStateException('File does not exist: ' + gradlePropertiesPath)
     }
 
     final List<String> propertyFileContent = Files.readAllLines(gradlePropertiesPath)
