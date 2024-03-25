@@ -1,7 +1,7 @@
 /* Copyright (c) 2018 Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.settings;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class AcrolinxSidebarInitParameterTest {
     AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder
         acrolinxSidebarInitParameterBuilder =
             new AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder(
-                "foo", Collections.singletonList(softwareComponent));
+                "foo", List.of(softwareComponent));
 
     return new AcrolinxSidebarInitParameter(acrolinxSidebarInitParameterBuilder);
   }

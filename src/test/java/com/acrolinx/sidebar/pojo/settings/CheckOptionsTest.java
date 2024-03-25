@@ -3,7 +3,7 @@ package com.acrolinx.sidebar.pojo.settings;
 
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
-import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -20,15 +20,10 @@ class CheckOptionsTest {
   private static CheckOptions createCheckOptions() {
     RequestDescription requestDescription = new RequestDescription("foo");
 
-    DocumentSelection documentSelection =
-        new DocumentSelection(Collections.singletonList(new IntRange(0, 1)));
+    DocumentSelection documentSelection = new DocumentSelection(List.of(new IntRange(0, 1)));
 
     ExternalContent externalContent =
-        new ExternalContent(
-            Collections.emptyList(),
-            Collections.emptyList(),
-            Collections.emptyList(),
-            Collections.emptyList());
+        new ExternalContent(List.of(), List.of(), List.of(), List.of());
 
     return new CheckOptions(
         requestDescription, InputFormat.AUTO, documentSelection, externalContent);

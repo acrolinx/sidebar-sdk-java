@@ -482,13 +482,13 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
     final List<AcrolinxMatchFromJSON> match =
         new Gson()
             .fromJson((String) argument, new TypeToken<List<AcrolinxMatchFromJSON>>() {}.getType());
-    final List<AcrolinxMatch> result =
+    final List<AcrolinxMatch> acrolinxMatches =
         match.stream()
             .map(AcrolinxMatchFromJSON::getAsAcrolinxMatch)
             .collect(Collectors.toCollection(ArrayList::new));
     acrolinxIntegration
         .getEditorAdapter()
-        .selectRanges(currentCheckId.get(), Collections.unmodifiableList(result));
+        .selectRanges(currentCheckId.get(), Collections.unmodifiableList(acrolinxMatches));
     return null;
   }
 
