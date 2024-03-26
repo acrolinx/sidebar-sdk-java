@@ -7,7 +7,6 @@ import com.acrolinx.sidebar.pojo.document.AcrolinxMatchWithReplacement;
 import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContent;
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,6 +47,6 @@ public class NullEditorAdapter implements InputAdapterInterface {
 
   @Override
   public List<IntRange> getCurrentSelection() {
-    return Collections.emptyList();
+    return List.of();
   }
 }

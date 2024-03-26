@@ -2,7 +2,6 @@
 package com.acrolinx.sidebar.pojo.settings;
 
 import com.acrolinx.sidebar.pojo.document.IntRange;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,8 +24,7 @@ class DocumentSelectionTest {
 
   @Test
   void toStringTest() {
-    DocumentSelection documentSelection =
-        new DocumentSelection(Collections.singletonList(new IntRange(0, 1)));
+    DocumentSelection documentSelection = new DocumentSelection(List.of(new IntRange(0, 1)));
 
     Assertions.assertEquals("{\"ranges\":[[0,1]]}", documentSelection.toString());
   }

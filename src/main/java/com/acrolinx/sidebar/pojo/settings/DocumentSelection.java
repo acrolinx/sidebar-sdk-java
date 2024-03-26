@@ -16,12 +16,11 @@ public class DocumentSelection {
     if (intRanges != null) {
       int size = intRanges.size();
       int[][] rangesArray = new int[size][2];
-      int index = 0;
 
-      for (IntRange intRange : intRanges) {
-        rangesArray[index][0] = intRanges.get(index).getMinimumInteger();
-        rangesArray[index][1] = intRanges.get(index).getMaximumInteger();
-        index++;
+      for (int index = 0; index < intRanges.size(); ++index) {
+        final IntRange intRange = intRanges.get(index);
+        rangesArray[index][0] = intRange.getMinimumInteger();
+        rangesArray[index][1] = intRange.getMaximumInteger();
       }
 
       return rangesArray;
