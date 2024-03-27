@@ -100,7 +100,7 @@ class XMLLookupUtilsTest {
 
   @Test
   void findXpathByOffsetWithNamespace() throws Exception {
-    final String xPathString = "//proc:procedure[1]/p[1]";
+    final String xPathString = "/proc:procedure[1]/*[name()='p'][1]";
     final String xmlContent = readFileContent("xml-with-namespace.xml");
 
     String xpathByOffset = XMLLookupUtils.findXpathByOffset(xmlContent, 130, 134);
@@ -109,7 +109,7 @@ class XMLLookupUtilsTest {
 
   @Test
   void findXpathByOffsetForXmlWithDefaultNamespace() throws Exception {
-    final String xPathString = "//html[1]/head[1]/title[1]";
+    final String xPathString = "/*[name()='html'][1]/*[name()='head'][1]/*[name()='title'][1]";
     final String xmlContent = readFileContent("xml-with-default-namespace.xml");
 
     String xpathByOffset = XMLLookupUtils.findXpathByOffset(xmlContent, 111, 115);
@@ -122,12 +122,15 @@ class XMLLookupUtilsTest {
     int index = xmlContent.indexOf("Fantastic");
     String xpathByOffset =
         XMLLookupUtils.findXpathByOffset(xmlContent, index, index + "Fantastic".length());
-    assertEquals("//bookstore[1]/book[1]/genre[1]", xpathByOffset);
+    assertEquals(
+        "/*[name()='bookstore'][1]/*[name()='book'][1]/*[name()='genre'][1]", xpathByOffset);
 
     index = xmlContent.indexOf("Some Name");
     xpathByOffset =
         XMLLookupUtils.findXpathByOffset(xmlContent, index, index + "Some Name".length());
-    assertEquals("//bookstore[1]/book[2]/author[1]/last-name[1]", xpathByOffset);
+    assertEquals(
+        "/*[name()='bookstore'][1]/*[name()='book'][2]/*[name()='author'][1]/*[name()='last-name'][1]",
+        xpathByOffset);
   }
 
   @Test
@@ -162,7 +165,7 @@ class XMLLookupUtilsTest {
     int index = XHtmlContent.indexOf("TEST_CONTAINER");
     String xpathByOffset =
         XMLLookupUtils.findXpathByOffset(XHtmlContent, index, index + "TEST_CONTAINER".length());
-    assertEquals("//html[1]/head[1]/title[1]", xpathByOffset);
+    assertEquals("/*[name()='html'][1]/*[name()='head'][1]/*[name()='title'][1]", xpathByOffset);
   }
 
   @Test
