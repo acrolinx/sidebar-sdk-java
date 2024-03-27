@@ -583,21 +583,22 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
     final List<CheckedDocumentPart> invalidDocumentParts =
         matches.stream()
             .map(
-                match -> {
-                  if (((AcrolinxMatchWithReplacement) match).getExternalContentMatches() != null) {
+                abstractMatch -> {
+                  if (((AcrolinxMatchWithReplacement) abstractMatch).getExternalContentMatches()
+                      != null) {
                     return new CheckedDocumentPart(
                         currentCheckId.get(),
                         new IntRange(
-                            match.getRange().getMinimumInteger(),
-                            match.getRange().getMaximumInteger()),
-                        ((AcrolinxMatch) match).getExternalContentMatches());
+                            abstractMatch.getRange().getMinimumInteger(),
+                            abstractMatch.getRange().getMaximumInteger()),
+                        ((AcrolinxMatch) abstractMatch).getExternalContentMatches());
                   }
 
                   return new CheckedDocumentPart(
                       currentCheckId.get(),
                       new IntRange(
-                          match.getRange().getMinimumInteger(),
-                          match.getRange().getMaximumInteger()));
+                          abstractMatch.getRange().getMinimumInteger(),
+                          abstractMatch.getRange().getMaximumInteger()));
                 })
             .collect(Collectors.toList());
     invalidateRanges(invalidDocumentParts);

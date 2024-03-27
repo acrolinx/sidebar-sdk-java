@@ -20,15 +20,15 @@ public final class MatchUtils {
   }
 
   public static List<? extends AbstractMatch> filterDangerousMatches(
-      List<? extends AbstractMatch> list, String lastCheckedContent) {
-    return filterDangerousMatches(list, lastCheckedContent, new ArrayList<>());
+      List<? extends AbstractMatch> abstractMatches, String lastCheckedContent) {
+    return filterDangerousMatches(abstractMatches, lastCheckedContent, new ArrayList<>());
   }
 
   public static List<? extends AbstractMatch> filterDangerousMatches(
-      List<? extends AbstractMatch> list,
+      List<? extends AbstractMatch> abstractMatches,
       String lastCheckedContent,
       List<ExternalContentField> lastCheckedExternalContent) {
-    return list.stream()
+    return abstractMatches.stream()
         .filter(
             abstractMatch -> {
               // todo: does the external content contain tags that are not external content matches?

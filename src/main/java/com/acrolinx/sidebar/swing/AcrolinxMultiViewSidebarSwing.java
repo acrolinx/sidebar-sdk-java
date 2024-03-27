@@ -58,9 +58,9 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing
             for (AcrolinxSidebarJFX acrolinxSidebarJFX : sidebars.values()) {
               logger.debug("Component resized");
               logger.debug("{} width", getWidth());
-              final float i = (float) getWidth() / 300;
-              logger.debug("{} Zoom", i);
-              acrolinxSidebarJFX.setZoom(i);
+              final float zoomFactor = (float) getWidth() / 300;
+              logger.debug("{} Zoom", zoomFactor);
+              acrolinxSidebarJFX.setZoom(zoomFactor);
             }
           }
 
@@ -102,8 +102,8 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing
           GridPane.setHgrow(webview, Priority.ALWAYS);
           GridPane.setVgrow(webview, Priority.ALWAYS);
           webview.setPrefWidth(300);
-          final float i = (float) getWidth() / 300;
-          sidebarJFX.setZoom(i);
+          final float zoomFactor = (float) getWidth() / 300;
+          sidebarJFX.setZoom(zoomFactor);
           Scene scene;
 
           if (getScene() != null) {

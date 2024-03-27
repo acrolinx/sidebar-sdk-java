@@ -56,9 +56,9 @@ public class AcrolinxSidebarPluginWithOptions extends AcrolinxSidebarPlugin {
       final CheckContent checkContent = getCheckContentFromClient();
       logger.debug("Fetched check content including external content");
 
-      if ((acrolinxIntegration.getEditorAdapter() != null)
+      if (acrolinxIntegration.getEditorAdapter() != null
           && !(acrolinxIntegration.getEditorAdapter() instanceof NullEditorAdapter)
-          && (checkContent.getContent() != null)) {
+          && checkContent.getContent() != null) {
         logger.debug("Editor is ready for running a check");
         runCheck(selection, checkContent);
       } else {

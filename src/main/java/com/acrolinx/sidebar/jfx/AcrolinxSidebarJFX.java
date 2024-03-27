@@ -140,18 +140,18 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar {
     final PluginSupportedParameters supported =
         this.acrolinxIntegration.getInitParameters().getSupported();
 
-    if ((supported != null) && (supported.isCheckSelection() || supported.isBatchChecking())) {
+    if (supported != null && (supported.isCheckSelection() || supported.isBatchChecking())) {
       acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithOptions(acrolinxIntegration, webView);
     } else {
       acrolinxSidebarPlugin = new AcrolinxSidebarPluginWithoutOptions(acrolinxIntegration, webView);
     }
   }
 
-  public void setZoom(final float i) {
+  public void setZoom(final float zoomFactor) {
     JFXUtils.invokeInJFXThread(
         () -> {
           try {
-            webView.setZoom(i);
+            webView.setZoom(zoomFactor);
           } catch (final Exception e) {
             logger.error("", e);
           }

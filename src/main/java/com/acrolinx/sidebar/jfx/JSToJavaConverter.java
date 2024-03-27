@@ -123,7 +123,7 @@ final class JSToJavaConverter {
     String inputFormat = null;
     final Object checkError = jsObject.getMember(ERROR);
 
-    if ((checkError != null) && !checkError.toString().equals(UNDEFINED)) {
+    if (checkError != null && !checkError.toString().equals(UNDEFINED)) {
       logger.warn("{}", ((JSObject) checkError).getMember(MESSAGE));
       return null;
     }
@@ -131,13 +131,13 @@ final class JSToJavaConverter {
     Map<String, String> embedCheckInformation = null;
     final Object checkInformation = jsObject.getMember(EMBED_CHECK_INFORMATION);
 
-    if ((checkInformation != null) && !checkInformation.toString().equals(UNDEFINED)) {
+    if (checkInformation != null && !checkInformation.toString().equals(UNDEFINED)) {
       embedCheckInformation = getEmbedCheckInformationFromJSString((JSObject) checkInformation);
     }
 
     final Object inputFormatString = jsObject.getMember(INPUT_FORMAT);
 
-    if ((inputFormatString != null) && !inputFormatString.toString().equals(UNDEFINED)) {
+    if (inputFormatString != null && !inputFormatString.toString().equals(UNDEFINED)) {
       inputFormat = inputFormatString.toString();
     }
 
