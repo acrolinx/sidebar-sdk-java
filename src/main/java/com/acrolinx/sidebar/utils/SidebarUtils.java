@@ -58,11 +58,10 @@ public final class SidebarUtils {
    * @return true if url is valid
    */
   public static boolean isValidUrl(final String urlString) {
-    if ((urlString != null) && (!urlString.isEmpty())) {
-      boolean matches = urlString.matches("^(https?)://.*$");
+    if (urlString != null && !urlString.isEmpty()) {
       try {
         new URL(urlString);
-        return matches;
+        return urlString.matches("^(https?)://.*$");
       } catch (final MalformedURLException e) {
         logger.error("Non valid URL", e);
         return false;
@@ -75,7 +74,7 @@ public final class SidebarUtils {
   private static void openUriInDefaultBrowser(final URI uri) {
     final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 
-    if ((desktop != null) && desktop.isSupported(Desktop.Action.BROWSE)) {
+    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
       new Thread(
               () -> {
                 try {
@@ -116,7 +115,7 @@ public final class SidebarUtils {
       final String folder = new File(logFileLocation).getParent();
       final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 
-      if ((desktop != null) && desktop.isSupported(Desktop.Action.OPEN)) {
+      if (desktop != null && desktop.isSupported(Desktop.Action.OPEN)) {
         new Thread(
                 () -> {
                   try {

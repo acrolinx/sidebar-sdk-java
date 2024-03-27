@@ -124,7 +124,7 @@ public class AcrolinxSidebarInitParameter {
   }
 
   public void setClientLocale(final String clientLocale) {
-    if ((this.clientLocale == null) || !this.clientLocale.equalsIgnoreCase(clientLocale)) {
+    if (this.clientLocale == null || !this.clientLocale.equalsIgnoreCase(clientLocale)) {
       logger.info("Set client locale to: {}", clientLocale);
       this.clientLocale = clientLocale;
     }

@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 
 // TODO: Hide default view on addition of first sidebar.
 public class AcrolinxMultiViewSidebarSWT {
-  private AcrolinxStorage acrolinxStorage;
+  private final AcrolinxStorage acrolinxStorage;
   private final Composite container;
   private final StackLayout stackLayout;
   private CLabel noFileOpenedLabel;

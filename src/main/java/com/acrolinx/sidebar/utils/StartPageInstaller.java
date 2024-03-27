@@ -49,14 +49,14 @@ public final class StartPageInstaller {
         if (assetFile != null) {
           final Path parent = assetFile.getParent();
 
-          if ((parent != null) && !Files.exists(parent)) {
+          if (parent != null && !Files.exists(parent)) {
             Files.createDirectories(parent);
           }
 
           InputStream inputStream =
               StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
 
-          if ((inputStream != null) && !Files.exists(assetFile)) {
+          if (inputStream != null && !Files.exists(assetFile)) {
             Files.copy(inputStream, assetFile, StandardCopyOption.REPLACE_EXISTING);
           }
         }

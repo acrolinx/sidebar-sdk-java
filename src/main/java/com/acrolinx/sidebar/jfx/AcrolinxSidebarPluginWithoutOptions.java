@@ -20,9 +20,9 @@ public class AcrolinxSidebarPluginWithoutOptions extends AcrolinxSidebarPlugin {
     final CheckContent checkContent = getCheckContentFromClient();
     logger.debug("Fetched check content including external content");
 
-    if ((acrolinxIntegration.getEditorAdapter() != null)
+    if (acrolinxIntegration.getEditorAdapter() != null
         && !(acrolinxIntegration.getEditorAdapter() instanceof NullEditorAdapter)
-        && (checkContent.getContent() != null)) {
+        && checkContent.getContent() != null) {
       runCheck(false, checkContent);
     } else {
       logger.warn("Current File Editor not supported for checking or no file present.");

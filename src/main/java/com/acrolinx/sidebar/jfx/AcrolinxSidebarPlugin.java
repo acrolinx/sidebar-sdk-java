@@ -218,21 +218,21 @@ abstract class AcrolinxSidebarPlugin {
     final List<CheckedDocumentPart> invalidDocumentParts =
         matches.stream()
             .map(
-                match -> {
-                  if (((AcrolinxMatch) match).getExternalContentMatches() != null) {
+                abstractMatch -> {
+                  if (((AcrolinxMatch) abstractMatch).getExternalContentMatches() != null) {
                     return new CheckedDocumentPart(
                         currentCheckId.get(),
                         new IntRange(
-                            match.getRange().getMinimumInteger(),
-                            match.getRange().getMaximumInteger()),
-                        ((AcrolinxMatch) match).getExternalContentMatches());
+                            abstractMatch.getRange().getMinimumInteger(),
+                            abstractMatch.getRange().getMaximumInteger()),
+                        ((AcrolinxMatch) abstractMatch).getExternalContentMatches());
                   }
 
                   return new CheckedDocumentPart(
                       currentCheckId.get(),
                       new IntRange(
-                          match.getRange().getMinimumInteger(),
-                          match.getRange().getMaximumInteger()));
+                          abstractMatch.getRange().getMinimumInteger(),
+                          abstractMatch.getRange().getMaximumInteger()));
                 })
             .collect(Collectors.toList());
     invalidateRanges(invalidDocumentParts);
@@ -301,7 +301,7 @@ abstract class AcrolinxSidebarPlugin {
   }
 
   public String getLastCheckedDocumentReference() {
-    if ((this.lastCheckedDocumentReference.get() != null)
+    if (this.lastCheckedDocumentReference.get() != null
         && !"".equals(this.lastCheckedDocumentReference.get())) {
       return this.lastCheckedDocumentReference.get();
     }
@@ -310,7 +310,7 @@ abstract class AcrolinxSidebarPlugin {
   }
 
   public String getLastCheckedDocument() {
-    if ((this.lastCheckedDocument.get() != null) && !"".equals(this.lastCheckedDocument.get())) {
+    if (this.lastCheckedDocument.get() != null && !"".equals(this.lastCheckedDocument.get())) {
       return this.lastCheckedDocument.get();
     }
 

@@ -79,8 +79,8 @@ public class TextAdapter implements InputAdapterInterface {
               int minRange = match.getRange().getMinimumInteger();
               int maxRange = match.getRange().getMaximumInteger();
               String replacement = match.getReplacement();
-              String t = text.get();
-              text.set(t.substring(0, minRange) + replacement + t.substring(maxRange));
+              String string = text.get();
+              text.set(string.substring(0, minRange) + replacement + string.substring(maxRange));
             });
 
     textWidget.clearSelection();
