@@ -135,6 +135,7 @@ public final class XMLLookupUtils {
       saxParserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
       saxParserFactory.setFeature(
           "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+      saxParserFactory.setNamespaceAware(true);
     } catch (ParserConfigurationException | SAXException e) {
       logger.error(
           "Some XXE preventing settings are not supported by the current XML Reader library.", e);

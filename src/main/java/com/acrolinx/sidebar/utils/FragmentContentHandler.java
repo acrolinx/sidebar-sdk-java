@@ -10,13 +10,22 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class FragmentContentHandler extends DefaultHandler {
-  private static String markerXpath;
   private static List<String> documentXpaths = new ArrayList<>();
+  private static String markerXpath;
 
-  private String xPath = "/";
-  private final XMLReader xmlReader;
-  private FragmentContentHandler parent;
+  private static String createXPathForNodeInCustomNamespace(
+      String nodeNameWithNamespacePrefix, int index) {
+    return '/' + nodeNameWithNamespacePrefix + '[' + index + ']';
+  }
+
+  private static String createXPathForNodeInDefaultNamespace(String nodeName, int index) {
+    return "/*[name()='" + nodeName + "'][" + index + ']';
+  }
+
   private final Map<String, Integer> elementNameCount = new HashMap<>();
+  private FragmentContentHandler parent;
+  private String xPath = "";
+  private final XMLReader xmlReader;
 
   public FragmentContentHandler(XMLReader xmlReader) {
     this.xmlReader = xmlReader;
@@ -26,6 +35,24 @@ public class FragmentContentHandler extends DefaultHandler {
     this(xmlReader);
     this.xPath = xPath;
     this.parent = parent;
+  }
+
+  @Override
+  public void characters(char[] ch, int start, int length) {
+    // nothing to do here
+  }
+
+  @Override
+  public void endElement(String uri, String localName, String qName) {
+    xmlReader.setContentHandler(parent);
+  }
+
+  public List<String> getDocumentXpaths() {
+    return documentXpaths;
+  }
+
+  public String getMarkerXpath() {
+    return markerXpath;
   }
 
   @Override
@@ -39,10 +66,10 @@ public class FragmentContentHandler extends DefaultHandler {
       count++;
     }
 
+    String childXPath = createChildXpath(localName, qName, count);
     elementNameCount.put(qName, count);
-    String childXPath = xPath + "/" + qName + "[" + count + "]";
 
-    if (xPath.equals("/")) {
+    if (xPath.isEmpty()) {
       documentXpaths.clear();
     }
 
@@ -57,21 +84,11 @@ public class FragmentContentHandler extends DefaultHandler {
     xmlReader.setContentHandler(child);
   }
 
-  @Override
-  public void endElement(String uri, String localName, String qName) {
-    xmlReader.setContentHandler(parent);
-  }
+  private String createChildXpath(String localName, String qName, Integer count) {
+    if (localName.equals(qName)) {
+      return xPath + createXPathForNodeInDefaultNamespace(qName, count);
+    }
 
-  @Override
-  public void characters(char[] ch, int start, int length) {
-    // nothing to do here
-  }
-
-  public String getMarkerXpath() {
-    return markerXpath;
-  }
-
-  public List<String> getDocumentXpaths() {
-    return documentXpaths;
+    return xPath + createXPathForNodeInCustomNamespace(qName, count);
   }
 }
