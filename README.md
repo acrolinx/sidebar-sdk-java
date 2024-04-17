@@ -1,9 +1,8 @@
 # Acrolinx Sidebar Java SDK
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.acrolinx.client/sidebar-sdk)](https://central.sonatype.com/artifact/com.acrolinx.client/sidebar-sdk)
 [![Build](https://github.com/acrolinx/sidebar-sdk-java/actions/workflows/build.yml/badge.svg)](https://github.com/acrolinx/sidebar-sdk-java/actions/workflows/build.yml)
 
-This is a library for integrating the [Acrolinx](https://www.acrolinx.com/) Sidebar into different Java UI framework-based applications (JFX, Swing, and SWT).
+This is a Java library for integrating the [Acrolinx](https://www.acrolinx.com/) Sidebar into different Java UI framework-based applications (JFX, Swing, and SWT).
 
 You can use the Maven artifact [`com.acrolinx.client:sidebar-sdk`](https://central.sonatype.com/artifact/com.acrolinx.client/sidebar-sdk)
 to integrate Acrolinx in your Java application.
@@ -51,7 +50,7 @@ on a Windows computer.
 
 ### Using the SDK
 
-1. Just reference the Maven artifact `com.acrolinx.client:sidebar-sdk` which is available on
+1. Reference the Maven artifact `com.acrolinx.client:sidebar-sdk` which is available on
 [Maven Central](https://central.sonatype.com/artifact/com.acrolinx.client/sidebar-sdk).
 Have a look at the [`build.gradle`](build.gradle) file if you use Gradle.
 2. Implement:
