@@ -1,9 +1,9 @@
 /* Copyright (c) 2024 Acrolinx GmbH */
 package com.acrolinx.sidebar.lookup;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import com.acrolinx.sidebar.pojo.document.IntRange;
