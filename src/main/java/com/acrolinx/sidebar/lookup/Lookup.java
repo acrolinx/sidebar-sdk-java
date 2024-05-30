@@ -56,17 +56,8 @@ public final class Lookup {
 
     if (first.isPresent()) {
       int index = offsetAligns.indexOf(first.get());
-
-      if (index > 0
-          && offsetAligns.get(index - 1).getOldPosition() <= offsetStart
-          && diffs.get(index).operation == DiffMatchPatch.Operation.EQUAL) {
-        final int diffOffset = offsetAligns.get(index).getDiffOffset();
-        return Optional.of(new IntRange(offsetStart + diffOffset, offsetEnd + diffOffset));
-      }
-
-      if (index == 0 && diffs.get(0).operation == DiffMatchPatch.Operation.EQUAL) {
-        return Optional.of(new IntRange(offsetStart, offsetEnd));
-      }
+      final int diffOffset = offsetAligns.get(index).getDiffOffset();
+      return Optional.of(new IntRange(offsetStart + diffOffset, offsetEnd + diffOffset));
     }
 
     return Optional.empty();

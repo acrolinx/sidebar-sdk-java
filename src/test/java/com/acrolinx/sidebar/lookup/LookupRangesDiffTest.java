@@ -1,8 +1,9 @@
 /* Copyright (c) 2024 Acrolinx GmbH */
 package com.acrolinx.sidebar.lookup;
 
-import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
 import com.acrolinx.sidebar.pojo.document.IntRange;
@@ -15,12 +16,12 @@ class LookupRangesDiffTest {
   private LookupRangesDiff lookupRangesDiff;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     lookupRangesDiff = new LookupRangesDiff();
   }
 
   @Test
-  void whenWordAddedBeforeMatch() {
+  void whenWordInsertedBeforeMatch() {
     String checkedText = "This is a car.";
     String changedText = "This is a yellow car.";
 
@@ -38,7 +39,7 @@ class LookupRangesDiffTest {
   }
 
   @Test
-  void whenChangesInWhiteSpacesScenario1() {
+  void whenWhitespaceIsReduced() {
     String checkedText =
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
             + "<!DOCTYPE topic PUBLIC \"-//OASIS//DTD DITA Topic//EN\" \"topic.dtd\">\n"
@@ -72,7 +73,7 @@ class LookupRangesDiffTest {
   }
 
   @Test
-  void whenChangesInWhiteSpacesScenario2() {
+  void whenChangeInSentenceReducesWhitespace() {
     String checkedText =
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
             + "<!DOCTYPE topic PUBLIC \"-//OASIS//DTD DITA Topic//EN\" \"topic.dtd\">\n"
