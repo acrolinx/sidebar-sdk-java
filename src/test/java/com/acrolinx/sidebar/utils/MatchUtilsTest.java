@@ -56,6 +56,20 @@ class MatchUtilsTest {
         MatchUtils.filterInsignificantWhitespaceMatches(acrolinxMatches, lastCheckedContent));
   }
 
+  @Test
+  void shouldNotRemoveWhiteSpacesIfRepresentedCorrectlyByOffsets() {
+    final List<AcrolinxMatch> acrolinxMatches =
+            List.of(
+                    new AcrolinxMatch(new IntRange(0, 3), "abc"),
+                    new AcrolinxMatch(new IntRange(3, 7), "    "),
+                    new AcrolinxMatch(new IntRange(7, 10), "pqr"));
+    String lastCheckedContent = "abc    pqr";
+
+    verifyMatches(
+            acrolinxMatches,
+            MatchUtils.filterInsignificantWhitespaceMatches(acrolinxMatches, lastCheckedContent));
+  }
+
   private void verifyMatches(
       List<? extends AbstractMatch> expected, List<? extends AbstractMatch> actual) {
     assertEquals(expected.size(), actual.size());
