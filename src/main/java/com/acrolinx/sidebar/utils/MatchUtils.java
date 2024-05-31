@@ -8,6 +8,7 @@ import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,23 @@ public final class MatchUtils {
               boolean isTag = matchContent.matches("</?\\w+.*?>");
               logger.debug("Is match a tag: {}", isTag);
               return !isTag;
+            })
+        .collect(Collectors.toList());
+  }
+
+  public static List<? extends AbstractMatch> filterInsignificantWhitespaceMatches(
+      List<? extends AbstractMatch> abstractMatches, String lastCheckedContent) {
+    return abstractMatches.stream()
+        .filter(
+            match -> {
+              int startOffset = match.getRange().getMinimumInteger();
+              int endOffset = match.getRange().getMaximumInteger();
+              if ((endOffset - startOffset) > match.getContent().length()) {
+                String matchSurface = lastCheckedContent.substring(startOffset, endOffset);
+                final Pattern pattern = Pattern.compile("\\s{2,}", Pattern.DOTALL);
+                return !pattern.matcher(matchSurface).matches();
+              }
+              return true;
             })
         .collect(Collectors.toList());
   }
