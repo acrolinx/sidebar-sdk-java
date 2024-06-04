@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 
 public final class MatchUtils {
   private static final Logger logger = LoggerFactory.getLogger(MatchUtils.class);
+  public static final Pattern multipleWhitespaceMatchPattern =
+      Pattern.compile("\\s{2,}", Pattern.DOTALL);
 
   private MatchUtils() {
     throw new IllegalStateException();
@@ -55,7 +57,7 @@ public final class MatchUtils {
 
   public static List<? extends AbstractMatch> filterInsignificantWhitespaceMatches(
       List<? extends AbstractMatch> abstractMatches, String lastCheckedContent) {
-    final Pattern pattern = Pattern.compile("\\s{2,}", Pattern.DOTALL);
+
     return abstractMatches.stream()
         .filter(
             abstractMatch -> {
@@ -65,7 +67,7 @@ public final class MatchUtils {
               if ((endOffset - startOffset) > abstractMatch.getContent().length()) {
                 String matchSurface = lastCheckedContent.substring(startOffset, endOffset);
 
-                return !pattern.matcher(matchSurface).matches();
+                return !multipleWhitespaceMatchPattern.matcher(matchSurface).matches();
               }
               return true;
             })

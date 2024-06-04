@@ -2,7 +2,6 @@
 package com.acrolinx.sidebar.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.AcrolinxMatch;
@@ -81,7 +80,7 @@ class MatchUtilsTest {
 
   private static void verifyMatch(
       AbstractMatch expectedAbstractMatch, AbstractMatch actualAbstractMatch) {
-    assertTrue(expectedAbstractMatch.getContent().equals(actualAbstractMatch.getContent()));
+    assertEquals(expectedAbstractMatch.getContent(), actualAbstractMatch.getContent());
 
     final IntRange expectedMatchRange = expectedAbstractMatch.getRange();
     final IntRange actualMatchRange = actualAbstractMatch.getRange();
