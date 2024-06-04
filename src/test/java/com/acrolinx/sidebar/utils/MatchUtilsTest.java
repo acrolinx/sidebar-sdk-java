@@ -29,7 +29,7 @@ class MatchUtilsTest {
   }
 
   @Test
-  void shouldRemoveWhiteSpaceMatch() {
+  void testShouldRemoveWhiteSpaceMatch() {
     final List<AcrolinxMatch> acrolinxMatches =
         List.of(
             new AcrolinxMatch(new IntRange(0, 3), "abc"),
@@ -43,7 +43,7 @@ class MatchUtilsTest {
   }
 
   @Test
-  void shouldNotRemoveWhiteSpaceMatch() {
+  void testShouldNotRemoveWhiteSpaceMatch() {
     final List<AcrolinxMatch> acrolinxMatches =
         List.of(
             new AcrolinxMatch(new IntRange(0, 3), "abc"),
@@ -57,7 +57,7 @@ class MatchUtilsTest {
   }
 
   @Test
-  void shouldNotRemoveWhiteSpacesIfRepresentedCorrectlyByOffsets() {
+  void testShouldNotRemoveWhiteSpacesIfRepresentedCorrectlyByOffsets() {
     final List<AcrolinxMatch> acrolinxMatches =
         List.of(
             new AcrolinxMatch(new IntRange(0, 3), "abc"),
@@ -70,20 +70,23 @@ class MatchUtilsTest {
         MatchUtils.filterInsignificantWhitespaceMatches(acrolinxMatches, lastCheckedContent));
   }
 
-  private void verifyMatches(
-      List<? extends AbstractMatch> expected, List<? extends AbstractMatch> actual) {
-    assertEquals(expected.size(), actual.size());
-    for (int i = 0; i < expected.size(); i++) {
-      final AbstractMatch expectedMatch = expected.get(i);
-      final AbstractMatch actualMatch = actual.get(i);
-
-      assertTrue(expectedMatch.getContent().equals(actualMatch.getContent()));
-
-      final IntRange expectedMatchRange = expectedMatch.getRange();
-      final IntRange actualMatchRange = actualMatch.getRange();
-
-      assertEquals(expectedMatchRange.getMinimumInteger(), actualMatchRange.getMinimumInteger());
-      assertEquals(expectedMatchRange.getMaximumInteger(), actualMatchRange.getMaximumInteger());
+  private static void verifyMatches(
+      List<? extends AbstractMatch> expectedAbstractMatches,
+      List<? extends AbstractMatch> actualAbstractMatches) {
+    assertEquals(expectedAbstractMatches.size(), actualAbstractMatches.size());
+    for (int i = 0; i < expectedAbstractMatches.size(); i++) {
+      verifyMatch(expectedAbstractMatches.get(i), actualAbstractMatches.get(i));
     }
+  }
+
+  private static void verifyMatch(
+      AbstractMatch expectedAbstractMatch, AbstractMatch actualAbstractMatch) {
+    assertTrue(expectedAbstractMatch.getContent().equals(actualAbstractMatch.getContent()));
+
+    final IntRange expectedMatchRange = expectedAbstractMatch.getRange();
+    final IntRange actualMatchRange = actualAbstractMatch.getRange();
+
+    assertEquals(expectedMatchRange.getMinimumInteger(), actualMatchRange.getMinimumInteger());
+    assertEquals(expectedMatchRange.getMaximumInteger(), actualMatchRange.getMaximumInteger());
   }
 }

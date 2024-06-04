@@ -3,6 +3,7 @@ package com.acrolinx.sidebar.utils;
 
 import com.acrolinx.sidebar.pojo.document.AbstractMatch;
 import com.acrolinx.sidebar.pojo.document.ExternalAbstractMatch;
+import com.acrolinx.sidebar.pojo.document.IntRange;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentField;
 import com.acrolinx.sidebar.pojo.document.externalcontent.ExternalContentMatch;
 import java.util.ArrayList;
@@ -54,19 +55,21 @@ public final class MatchUtils {
 
   public static List<? extends AbstractMatch> filterInsignificantWhitespaceMatches(
       List<? extends AbstractMatch> abstractMatches, String lastCheckedContent) {
+    final Pattern pattern = Pattern.compile("\\s{2,}", Pattern.DOTALL);
     return abstractMatches.stream()
         .filter(
-            match -> {
-              int startOffset = match.getRange().getMinimumInteger();
-              int endOffset = match.getRange().getMaximumInteger();
-              if ((endOffset - startOffset) > match.getContent().length()) {
+            abstractMatch -> {
+              final IntRange range = abstractMatch.getRange();
+              int startOffset = range.getMinimumInteger();
+              int endOffset = range.getMaximumInteger();
+              if ((endOffset - startOffset) > abstractMatch.getContent().length()) {
                 String matchSurface = lastCheckedContent.substring(startOffset, endOffset);
-                final Pattern pattern = Pattern.compile("\\s{2,}", Pattern.DOTALL);
+
                 return !pattern.matcher(matchSurface).matches();
               }
               return true;
             })
-        .collect(Collectors.toList());
+        .collect(Collectors.toUnmodifiableList());
   }
 
   public static boolean isExternalContentMatchAXMLTag(
