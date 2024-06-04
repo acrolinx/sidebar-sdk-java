@@ -22,12 +22,13 @@ jobs:
           distribution: 'zulu'
           java-package: 'jdk+fx'
 
-      - name: Sonar analysis
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
+
+      - name: Sonar analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
-        with:
-          arguments: jacocoTestReport sonar
+        run: ./gradlew jacocoTestReport sonar
 
   Build:
     runs-on: ubuntu-latest
@@ -45,7 +46,8 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v3
 
-      - name: Gradle build
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: build
+
+      - name: Gradle build
+        run: ./gradlew build
