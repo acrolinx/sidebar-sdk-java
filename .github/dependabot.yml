@@ -18,3 +18,4 @@ updates:
       interval: "daily"
     reviewers:
       - /acrolinx/integrationdevs-java
+    versioning-strategy: increase
