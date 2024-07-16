@@ -70,7 +70,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.CODE_SIGNING_PWD }}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PW }}
-        run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+        run: ./gradlew clean build publishToSonatype closeAndReleaseSonatypeStagingRepository
 
       - name: Deploy Javadoc
         uses: JamesIves/github-pages-deploy-action@v4

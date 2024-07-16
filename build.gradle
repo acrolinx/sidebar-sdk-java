@@ -102,7 +102,7 @@ node {
 processResources {
     dependsOn npm_install
 
-    doFirst {
+    doLast {
         File resourcesDir = sourceSets.main.output.resourcesDir
         resourcesDir.mkdirs()
         File versionPropertyFile = new File(resourcesDir, 'sidebar-sdk-java-version.properties')
