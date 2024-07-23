@@ -45,6 +45,10 @@ public final class XMLLookupUtils {
   private static final String LINE_SEPARATOR = "line.separator";
   private static final Logger logger = LoggerFactory.getLogger(XMLLookupUtils.class);
 
+  static {
+    System.setProperty(LINE_SEPARATOR, "\n");
+  }
+
   public static IntRange findOffsetForNodeInXmlStringByXpath(String xmlContent, String xpath) {
     int startOffset = 0;
     int endOffset = 0;
