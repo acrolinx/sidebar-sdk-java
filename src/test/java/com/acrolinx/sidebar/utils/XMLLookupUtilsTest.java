@@ -21,6 +21,10 @@ class XMLLookupUtilsTest {
     assertEquals(endOffset, intRange.getMaximumInteger());
   }
 
+  static {
+    System.setProperty("line.separator", "\n");
+  }
+
   @Test
   void findOffsetInXmlStringByXpathWithNamespaceAndEmptyTagAndComment() throws IOException {
     final String xPathString = "//proc:procedure[1]/p[4]";
