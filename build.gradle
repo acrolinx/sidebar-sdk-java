@@ -230,13 +230,14 @@ private static String createNewSnapshotVersion(final String versionString) {
 
 private static String getOsgiPlatformValue() {
     String osName = System.getProperty('os.name').toLowerCase()
+    String osArch = System.getProperty('os.arch')
 
     if (osName.contains('windows')) {
         return 'win32.win32.x86_64'
     } else if (osName.contains('linux')) {
         return 'gtk.linux.x86_64'
     } else if (osName.contains('mac')) {
-        return 'cocoa.macosx.x86_64'
+        return 'cocoa.macosx.' + osArch
     }
 
     throw new GradleException('unknown OS name: ' + osName)
