@@ -42,12 +42,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 public final class XMLLookupUtils {
-  private static final String LINE_SEPARATOR = "line.separator";
   private static final Logger logger = LoggerFactory.getLogger(XMLLookupUtils.class);
-
-  static {
-    System.setProperty(LINE_SEPARATOR, "\n");
-  }
 
   public static IntRange findOffsetForNodeInXmlStringByXpath(String xmlContent, String xpath) {
     int startOffset = 0;
@@ -166,11 +161,7 @@ public final class XMLLookupUtils {
   private static String getDocumentXml(Document document) throws IOException {
     TransformerFactory transformerFactory = createTransformerFactory();
 
-    final String originalLineSeparator = System.getProperty(LINE_SEPARATOR);
-
     try {
-      System.setProperty(LINE_SEPARATOR, "\n");
-
       logger.debug("Applying transformation to XML.");
       Transformer transformer = transformerFactory.newTransformer();
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
@@ -192,8 +183,6 @@ public final class XMLLookupUtils {
       }
     } catch (TransformerException e) {
       logger.debug("Creating XML string from document failed", e);
-    } finally {
-      System.setProperty(LINE_SEPARATOR, originalLineSeparator);
     }
 
     return "";
