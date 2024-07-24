@@ -180,6 +180,10 @@ spotless {
 
 tasks.named('test', Test) {
     useJUnitPlatform()
+
+    testLogging {
+        exceptionFormat 'full'
+    }
 }
 
 tasks.register('incrementSnapshotVersion') {

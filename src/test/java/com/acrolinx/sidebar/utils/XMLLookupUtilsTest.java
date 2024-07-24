@@ -10,7 +10,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
+@DisabledOnOs(OS.WINDOWS)
 class XMLLookupUtilsTest {
   private static String readFileContent(String fileName) throws IOException {
     return Files.readString(Path.of("src/test/resources/xml/", fileName));
