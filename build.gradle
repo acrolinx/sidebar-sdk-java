@@ -96,7 +96,7 @@ nexusPublishing {
 }
 
 node {
-    download = true
+    download = false
 }
 
 processResources {
