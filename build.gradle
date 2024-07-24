@@ -95,10 +95,6 @@ nexusPublishing {
     }
 }
 
-node {
-    download = false
-}
-
 processResources {
     dependsOn npm_install
 
