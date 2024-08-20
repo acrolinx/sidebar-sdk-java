@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.slf4j.LoggerFactory;
 
 /** Set up the integration's logging. */
+@Deprecated
 public final class LoggingUtils {
   private LoggingUtils() {
     throw new IllegalStateException();
@@ -94,9 +95,9 @@ public final class LoggingUtils {
       return null;
     }
 
-    LoggerContext lContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+    LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
-    for (ch.qos.logback.classic.Logger logger : lContext.getLoggerList()) {
+    for (ch.qos.logback.classic.Logger logger : loggerContext.getLoggerList()) {
       for (Iterator<Appender<ILoggingEvent>> index = logger.iteratorForAppenders();
           index.hasNext(); ) {
         Object object = index.next();
