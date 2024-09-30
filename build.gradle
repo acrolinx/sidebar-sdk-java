@@ -35,7 +35,7 @@ dependencies {
     api 'org.jsoup:jsoup:1.18.1'
     compileOnly "org.eclipse.platform:org.eclipse.swt.$OSGI_PLATFORM:$SWT_VERSION"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
