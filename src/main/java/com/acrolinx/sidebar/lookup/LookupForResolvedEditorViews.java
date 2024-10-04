@@ -175,7 +175,9 @@ public class LookupForResolvedEditorViews {
           ContentNode contentNode =
               utils.getContentNodeForOffsetInCurrentDocument(match.getRange().getMinimumInteger());
 
-          if (contentNode == null || contentNode.getContent() == null) return;
+          if (contentNode == null || contentNode.getContent() == null) {
+            return;
+          }
 
           int startOffset = contentNode.getStartOffset();
           logger.debug("Lookup in node: {}", contentNode.getContent());
@@ -204,7 +206,10 @@ public class LookupForResolvedEditorViews {
                 || !((ExternalAbstractMatch) match).hasExternalContentMatches()) {
               contentNodeXmlString = contentNode.getAsXMLFragment();
 
-              if (contentNodeXmlString == null || contentNodeXmlString.equals("")) return;
+              if (contentNodeXmlString == null || contentNodeXmlString.equals("")) {
+                return;
+              }
+
               final int fragmentStartOffsetInCurrentDocument =
                   findFragmentStartOffsetInCurrentDocument(contentNodeXmlString, match);
               final int fragmentEndOffsetInCurrentDocument =

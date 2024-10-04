@@ -1,7 +1,7 @@
 /* Copyright (c) 2023 Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
@@ -33,7 +33,7 @@ public final class NamespaceResolver implements NamespaceContext {
   }
 
   @Override
-  public Iterator getPrefixes(String namespaceUri) {
-    return new ArrayList<>().listIterator();
+  public Iterator<String> getPrefixes(String namespaceUri) {
+    return Collections.emptyIterator();
   }
 }
