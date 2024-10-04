@@ -187,8 +187,8 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar {
   }
 
   @Override
-  public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches) {
-    acrolinxSidebarPlugin.invalidateRangesForMatches(matches);
+  public void invalidateRangesForMatches(final List<? extends AbstractMatch> abstractMatches) {
+    acrolinxSidebarPlugin.invalidateRangesForMatches(abstractMatches);
   }
 
   @Override

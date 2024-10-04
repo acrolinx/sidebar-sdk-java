@@ -80,7 +80,7 @@ abstract class AcrolinxSidebarPlugin {
   }
 
   private static String buildStringOfCheckedDocumentRanges(
-      final java.util.List<CheckedDocumentPart> checkedDocumentParts) {
+      final List<CheckedDocumentPart> checkedDocumentParts) {
     return checkedDocumentParts.stream()
         .map(CheckedDocumentPart::getAsJS)
         .collect(Collectors.joining(", "));
@@ -88,15 +88,15 @@ abstract class AcrolinxSidebarPlugin {
 
   JSObject getWindowObject() {
     logger.info("Get window object from webview...");
-    JSObject jsobj = null;
+    JSObject jsObject = null;
     int count = 0;
 
-    while ((count < 6) && (jsobj == null)) {
+    while ((count < 6) && (jsObject == null)) {
       try {
         logger.info("Fetching Window object. Attempt: {}", count);
         count++;
         TimeUnit.MILLISECONDS.sleep(500);
-        jsobj = (JSObject) webView.getEngine().executeScript("window");
+        jsObject = (JSObject) webView.getEngine().executeScript("window");
       } catch (final InterruptedException e) {
         logger.error("", e);
         Thread.currentThread().interrupt();
@@ -108,7 +108,7 @@ abstract class AcrolinxSidebarPlugin {
       }
     }
 
-    return jsobj;
+    return jsObject;
   }
 
   public synchronized void requestInit() {
@@ -239,8 +239,8 @@ abstract class AcrolinxSidebarPlugin {
   }
 
   public synchronized void openWindow(final JSObject jsObject) {
-    final String url = jsObject.getMember("url").toString();
-    SidebarUtils.openWebPageInDefaultBrowser(url);
+    final String urlString = jsObject.getMember("url").toString();
+    SidebarUtils.openWebPageInDefaultBrowser(urlString);
   }
 
   public void openLogFile() {
@@ -362,8 +362,8 @@ abstract class AcrolinxSidebarPlugin {
     JFXUtils.invokeInJFXThread(
         () -> {
           try {
-            final JSObject windowObject = getWindowObject();
-            windowObject.eval(
+            final JSObject jsObject = getWindowObject();
+            jsObject.eval(
                 "acrolinxSidebar.initBatchCheck(" + batchCheckRequestOptions.toString() + ")");
           } catch (final Exception e) {
             logger.error("", e);

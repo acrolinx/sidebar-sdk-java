@@ -98,19 +98,19 @@ public class AcrolinxMultiViewSidebarSwing extends AcrolinxSidebarSwing
     JFXUtils.invokeInJFXThread(
         () -> {
           sidebarJFX = new AcrolinxSidebarJFX(acrolinxIntegration, acrolinxStorage);
-          final WebView webview = sidebarJFX.getWebView();
-          GridPane.setHgrow(webview, Priority.ALWAYS);
-          GridPane.setVgrow(webview, Priority.ALWAYS);
-          webview.setPrefWidth(300);
+          final WebView webView = sidebarJFX.getWebView();
+          GridPane.setHgrow(webView, Priority.ALWAYS);
+          GridPane.setVgrow(webView, Priority.ALWAYS);
+          webView.setPrefWidth(300);
           final float zoomFactor = (float) getWidth() / 300;
           sidebarJFX.setZoom(zoomFactor);
           Scene scene;
 
           if (getScene() != null) {
             scene = getScene();
-            scene.setRoot(webview);
+            scene.setRoot(webView);
           } else {
-            scene = new Scene(webview);
+            scene = new Scene(webView);
           }
 
           if (!sidebars.containsKey(documentId)) {

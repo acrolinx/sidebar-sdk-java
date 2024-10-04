@@ -449,14 +449,14 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
 
   Object getOpenWindowObject(Object argument) {
     final String result = argument.toString();
-    final String url = AcrolinxSidebarSWT.getUrlFromJs(result);
+    final String urlString = AcrolinxSidebarSWT.getUrlFromJs(result);
 
-    if ("".equals(url)) {
+    if ("".equals(urlString)) {
       logger.warn("Called to open URL but no URL to open is present.");
-    } else if (SidebarUtils.isValidUrl(url)) {
-      Program.launch(url);
+    } else if (SidebarUtils.isValidUrl(urlString)) {
+      Program.launch(urlString);
     } else {
-      logger.warn("Attempt to open invalid URL: {}", url);
+      logger.warn("Attempt to open invalid URL: {}", urlString);
     }
 
     return null;

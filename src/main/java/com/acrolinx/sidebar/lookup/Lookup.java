@@ -104,9 +104,10 @@ public final class Lookup {
     Optional<OffsetAlign> first =
         offsetAligns.stream()
             .filter(
-                a ->
-                    a.getOldPosition() <= offset - 1
-                        && offsetAligns.get(offsetAligns.indexOf(a) + 1).getOldPosition() >= offset)
+                offsetAlign ->
+                    offsetAlign.getOldPosition() <= offset - 1
+                        && offsetAligns.get(offsetAligns.indexOf(offsetAlign) + 1).getOldPosition()
+                            >= offset)
             .findFirst();
 
     if (first.isPresent()) {

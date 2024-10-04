@@ -138,9 +138,9 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar {
   }
 
   @Override
-  public void invalidateRangesForMatches(final List<? extends AbstractMatch> matches) {
+  public void invalidateRangesForMatches(final List<? extends AbstractMatch> abstractMatches) {
     if (sidebarJFX != null) {
-      sidebarJFX.invalidateRangesForMatches(matches);
+      sidebarJFX.invalidateRangesForMatches(abstractMatches);
     }
   }
 
