@@ -1472,7 +1472,7 @@ public class DiffMatchPatch {
           diffs.add(new Diff(Operation.INSERT, param));
           break;
         case '-':
-          // Fall through.
+        // Fall through.
         case '=':
           int n;
           try {
