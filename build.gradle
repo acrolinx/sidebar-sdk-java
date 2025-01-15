@@ -168,7 +168,7 @@ spotless {
     format 'misc', {
         target '.gitignore', '*.gradle', '*.md', '*.properties'
 
-        indentWithSpaces()
+        leadingTabsToSpaces()
         trimTrailingWhitespace()
         endWithNewline()
     }
