@@ -1,7 +1,6 @@
 /* Copyright (c) 2018 Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,32 +11,31 @@ import org.junit.jupiter.api.Test;
 
 class SidebarUtilsTest {
   @Test
-  void getCurrentSdkImplementationVersionTest() {
-    String currentSdkImplementationVersion = SidebarUtils.getCurrentSdkImplementationVersion();
-    assertEquals("2.5.12", currentSdkImplementationVersion);
-  }
+  void getSidebarErrorHtml() {
+    final String expectedHtml =
+        "<!DOCTYPE html>\n"
+            + "<html lang=\"en\">\n"
+            + "<head>\n"
+            + "  <meta charset=\"UTF-8\">\n"
+            + "  <title>Error while trying to load sidebar</title>\n"
+            + "</head>\n"
+            + "<body>\n"
+            + "Sidebar start page failed to load. Please check log files: \n"
+            + "logs.xml\n"
+            + "</body>\n"
+            + "</html>";
 
-  @Test
-  void getJavaSdkSoftwareComponentTest() {
-    final SoftwareComponent softwareComponent = SidebarUtils.getJavaSdkSoftwareComponent();
-    Assertions.assertEquals(
-        "{\"id\":\"com.acrolinx.sidebar.java\",\"name\":\"Java SDK\",\"version\":\"2.5.12\",\"category\":\"DETAIL\"}",
-        softwareComponent.toString());
-  }
-
-  @Test
-  void isNotValidUrlTest() {
-    assertFalse(SidebarUtils.isValidUrl("https:/sidebar.acrolinx.com/index.html"));
-  }
-
-  @Test
-  void isValidUrlLocalhostTest() {
-    assertTrue(SidebarUtils.isValidUrl("http://sifnos"));
+    Assertions.assertEquals(expectedHtml, SidebarUtils.getSidebarErrorHtml("logs.xml"));
   }
 
   @Test
   void isValidUrlNullTest() {
     assertFalse(SidebarUtils.isValidUrl(null));
+  }
+
+  @Test
+  void isValidUrlLocalhostTest() {
+    assertTrue(SidebarUtils.isValidUrl("http://sifnos"));
   }
 
   @Test
@@ -47,7 +45,16 @@ class SidebarUtilsTest {
 
   @Test
   void isValidUrlTest2() {
-    assertTrue(SidebarUtils.isValidUrl("https://sidebar.acrolinx.com/index.html"));
+    assertTrue(
+        SidebarUtils.isValidUrl(
+            "https://acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html"));
+  }
+
+  @Test
+  void isNotValidUrlTest() {
+    assertFalse(
+        SidebarUtils.isValidUrl(
+            "https:/acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html"));
   }
 
   @Test
@@ -56,5 +63,13 @@ class SidebarUtilsTest {
     assertTrue(SidebarUtils.getSystemJavaVersion() >= 8);
     assertNotNull(SidebarUtils.getPathOfCurrentJavaJre());
     assertNotNull(SidebarUtils.getFullCurrentJavaVersionString());
+  }
+
+  @Test
+  void getJavaSdkSoftwareComponentTest() {
+    final SoftwareComponent softwareComponent = SidebarUtils.getJavaSdkSoftwareComponent();
+    Assertions.assertEquals(
+        "{\"id\":\"com.acrolinx.sidebar.java\",\"name\":\"Java SDK\",\"version\":\"2.5.12\",\"category\":\"DETAIL\"}",
+        softwareComponent.toString());
   }
 }
