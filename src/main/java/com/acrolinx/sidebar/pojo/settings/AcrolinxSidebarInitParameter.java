@@ -19,6 +19,7 @@ public class AcrolinxSidebarInitParameter {
   private CheckSettings defaultCheckSettings;
   private boolean enableSingleSignOn;
   private boolean enforceHTTPS;
+  private String logFileLocation;
   private String minimumSidebarVersion;
   private Integer minimumJavaVersion;
   private PluginSupportedParameters supported;
@@ -56,6 +57,7 @@ public class AcrolinxSidebarInitParameter {
     this.defaultCheckSettings = acrolinxSidebarInitParameterBuilder.defaultCheckSettings;
     this.enableSingleSignOn = acrolinxSidebarInitParameterBuilder.enableSingleSignOn;
     this.enforceHTTPS = acrolinxSidebarInitParameterBuilder.enforceHttps;
+    this.logFileLocation = acrolinxSidebarInitParameterBuilder.logFileLocation;
     this.minimumSidebarVersion = acrolinxSidebarInitParameterBuilder.minimumSidebarVersion;
     this.minimumJavaVersion = acrolinxSidebarInitParameterBuilder.minimumJavaVersion;
     this.supported = acrolinxSidebarInitParameterBuilder.supported;
@@ -102,6 +104,10 @@ public class AcrolinxSidebarInitParameter {
 
   public String getClientSignature() {
     return clientSignature;
+  }
+
+  public String getLogFileLocation() {
+    return logFileLocation;
   }
 
   public String getSidebarUrl() {
@@ -151,6 +157,7 @@ public class AcrolinxSidebarInitParameter {
     String minimumSidebarVersion;
     PluginSupportedParameters supported;
     int minimumJavaVersion;
+    String logFileLocation;
 
     /**
      * Class to build the parameters to initialize the Acrolinx Sidebar. Two parameters have to be
@@ -292,6 +299,18 @@ public class AcrolinxSidebarInitParameter {
     public AcrolinxSidebarInitParameterBuilder withMinimumJavaVersion(
         final int minimumJavaVersion) {
       this.minimumJavaVersion = minimumJavaVersion;
+      return this;
+    }
+
+    /**
+     * This can be used to provide the log file location if it is known and the sidebar can use the
+     * `OPEN LOG FILE` feature.
+     *
+     * @param logFileLocation a URI where the file is located.
+     * @return Returns the AcrolinxInitParameterBuilder for chaining.
+     */
+    public AcrolinxSidebarInitParameterBuilder withLogFileLocation(String logFileLocation) {
+      this.logFileLocation = logFileLocation;
       return this;
     }
 
