@@ -24,7 +24,6 @@ import com.acrolinx.sidebar.pojo.settings.RequestDescription;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import com.acrolinx.sidebar.utils.LogMessages;
-import com.acrolinx.sidebar.utils.LoggingUtils;
 import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.acrolinx.sidebar.utils.StartPageInstaller;
@@ -138,7 +137,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
       browser.setUrl(sidebarUrl);
     } catch (final Exception e) {
       logger.error("Error while loading sidebar!", e);
-      browser.setText(SidebarUtils.SIDEBAR_ERROR_HTML);
+      browser.setText(
+          SidebarUtils.getSidebarErrorHtml(
+              acrolinxIntegration.getInitParameters().getLogFileLocation()));
     }
 
     browser.addProgressListener(
@@ -438,7 +439,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
   }
 
   Object getOpenLogFileObject() {
-    final String logFileLocation = LoggingUtils.getLogFileLocation();
+    final String logFileLocation = acrolinxIntegration.getInitParameters().getLogFileLocation();
 
     if (logFileLocation != null && !SidebarUtils.openSystemSpecific(logFileLocation)) {
       Program.launch(new File(logFileLocation).getParent());
@@ -618,7 +619,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
         StartPageInstaller.exportStartPageResources();
       } catch (final Exception e) {
         logger.error("Error while exporting start page resources!", e);
-        browser.setText(SidebarUtils.SIDEBAR_ERROR_HTML);
+        browser.setText(
+            SidebarUtils.getSidebarErrorHtml(
+                acrolinxIntegration.getInitParameters().getLogFileLocation()));
       }
     }
 
