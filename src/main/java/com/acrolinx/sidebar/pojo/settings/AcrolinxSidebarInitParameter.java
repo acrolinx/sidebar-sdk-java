@@ -1,7 +1,6 @@
 /* Copyright (c) 2018 Acrolinx GmbH */
 package com.acrolinx.sidebar.pojo.settings;
 
-import com.acrolinx.sidebar.utils.LoggingUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.google.gson.Gson;
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ public class AcrolinxSidebarInitParameter {
   private CheckSettings defaultCheckSettings;
   private boolean enableSingleSignOn;
   private boolean enforceHTTPS;
-  private String logFileLocation;
   private String minimumSidebarVersion;
   private Integer minimumJavaVersion;
   private PluginSupportedParameters supported;
@@ -58,7 +56,6 @@ public class AcrolinxSidebarInitParameter {
     this.defaultCheckSettings = acrolinxSidebarInitParameterBuilder.defaultCheckSettings;
     this.enableSingleSignOn = acrolinxSidebarInitParameterBuilder.enableSingleSignOn;
     this.enforceHTTPS = acrolinxSidebarInitParameterBuilder.enforceHttps;
-    this.logFileLocation = LoggingUtils.getLogFileLocation();
     this.minimumSidebarVersion = acrolinxSidebarInitParameterBuilder.minimumSidebarVersion;
     this.minimumJavaVersion = acrolinxSidebarInitParameterBuilder.minimumJavaVersion;
     this.supported = acrolinxSidebarInitParameterBuilder.supported;
@@ -128,10 +125,6 @@ public class AcrolinxSidebarInitParameter {
       logger.info("Set client locale to: {}", clientLocale);
       this.clientLocale = clientLocale;
     }
-  }
-
-  public String getLogFileLocation() {
-    return this.logFileLocation;
   }
 
   public PluginSupportedParameters getSupported() {

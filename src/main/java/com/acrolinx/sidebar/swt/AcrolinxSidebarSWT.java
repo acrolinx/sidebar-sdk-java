@@ -24,7 +24,6 @@ import com.acrolinx.sidebar.pojo.settings.RequestDescription;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
 import com.acrolinx.sidebar.utils.LogMessages;
-import com.acrolinx.sidebar.utils.LoggingUtils;
 import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.acrolinx.sidebar.utils.StartPageInstaller;
@@ -33,7 +32,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -438,12 +436,6 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
   }
 
   Object getOpenLogFileObject() {
-    final String logFileLocation = LoggingUtils.getLogFileLocation();
-
-    if (logFileLocation != null && !SidebarUtils.openSystemSpecific(logFileLocation)) {
-      Program.launch(new File(logFileLocation).getParent());
-    }
-
     return null;
   }
 

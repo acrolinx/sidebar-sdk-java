@@ -4,7 +4,6 @@ package com.acrolinx.sidebar.utils;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponent;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponentCategory;
 import java.awt.Desktop;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -31,8 +30,7 @@ public final class SidebarUtils {
           + "  <title>Error while trying to load sidebar</title>\n"
           + "</head>\n"
           + "<body>\n"
-          + "Sidebar start page failed to load. Please check log files: \n"
-          + LoggingUtils.getLogFileLocation()
+          + "Sidebar start page failed to load. Please check the logs.\n"
           + "</body>\n"
           + "</html>";
 
@@ -86,48 +84,6 @@ public final class SidebarUtils {
           .start();
     } else {
       logger.error("Desktop is not available to get systems default browser.");
-    }
-  }
-
-  /**
-   * Opens the log file. For internal use. Attempts to open and preselect log file in systems file
-   * manager (only for mac os and windows). If that fails, it just shows the containing folder in
-   * the file manager.
-   */
-  public static void openLogFile() {
-    final String logFileLocation = LoggingUtils.getLogFileLocation();
-
-    if (logFileLocation != null) {
-      final String logFile = new File(logFileLocation).getPath();
-
-      if (openSystemSpecific(logFile)) {
-        return;
-      }
-
-      openLogFileFolderInFileManger();
-    }
-  }
-
-  private static void openLogFileFolderInFileManger() {
-    final String logFileLocation = LoggingUtils.getLogFileLocation();
-
-    if (logFileLocation != null) {
-      final String folder = new File(logFileLocation).getParent();
-      final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-
-      if (desktop != null && desktop.isSupported(Desktop.Action.OPEN)) {
-        new Thread(
-                () -> {
-                  try {
-                    Desktop.getDesktop().open(new File(folder));
-                  } catch (final Exception e) {
-                    logger.error("", e);
-                  }
-                })
-            .start();
-      } else {
-        logger.error("Desktop is not available to get systems default browser.");
-      }
     }
   }
 

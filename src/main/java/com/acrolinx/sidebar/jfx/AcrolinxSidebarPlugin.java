@@ -243,10 +243,6 @@ abstract class AcrolinxSidebarPlugin {
     SidebarUtils.openWebPageInDefaultBrowser(urlString);
   }
 
-  public void openLogFile() {
-    SidebarUtils.openLogFile();
-  }
-
   private CheckOptions getCheckSettingsFromClient(
       final boolean includeCheckSelectionRanges, ExternalContent externalContent) {
     inputFormatRef.set(acrolinxIntegration.getEditorAdapter().getInputFormat());
