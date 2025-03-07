@@ -32,8 +32,8 @@ public final class SidebarUtils {
         + "</head>\n"
         + "<body>\n"
         + "Sidebar start page failed to load. Please check log files: \n"
-        + logFileLocation
-        + "</body>\n"
+        + (logFileLocation == null ? "" : logFileLocation)
+        + "\n</body>\n"
         + "</html>";
   }
 
