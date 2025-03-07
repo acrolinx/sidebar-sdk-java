@@ -32,6 +32,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -136,7 +137,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
       browser.setUrl(sidebarUrl);
     } catch (final Exception e) {
       logger.error("Error while loading sidebar!", e);
-      browser.setText(SidebarUtils.SIDEBAR_ERROR_HTML);
+      browser.setText(
+          SidebarUtils.getSidebarErrorHtml(
+              acrolinxIntegration.getInitParameters().getLogFileLocation()));
     }
 
     browser.addProgressListener(
@@ -436,6 +439,12 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
   }
 
   Object getOpenLogFileObject() {
+    final String logFileLocation = acrolinxIntegration.getInitParameters().getLogFileLocation();
+
+    if (logFileLocation != null && !SidebarUtils.openSystemSpecific(logFileLocation)) {
+      Program.launch(new File(logFileLocation).getParent());
+    }
+
     return null;
   }
 
@@ -610,7 +619,9 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
         StartPageInstaller.exportStartPageResources();
       } catch (final Exception e) {
         logger.error("Error while exporting start page resources!", e);
-        browser.setText(SidebarUtils.SIDEBAR_ERROR_HTML);
+        browser.setText(
+            SidebarUtils.getSidebarErrorHtml(
+                acrolinxIntegration.getInitParameters().getLogFileLocation()));
       }
     }
 

@@ -4,6 +4,7 @@ package com.acrolinx.sidebar.utils;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponent;
 import com.acrolinx.sidebar.pojo.settings.SoftwareComponentCategory;
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -22,17 +23,19 @@ import org.slf4j.LoggerFactory;
 public final class SidebarUtils {
   private static final Logger logger = LoggerFactory.getLogger(SidebarUtils.class);
 
-  public static final String SIDEBAR_ERROR_HTML =
-      "<!DOCTYPE html>\n"
-          + "<html lang=\"en\">\n"
-          + "<head>\n"
-          + "  <meta charset=\"UTF-8\">\n"
-          + "  <title>Error while trying to load sidebar</title>\n"
-          + "</head>\n"
-          + "<body>\n"
-          + "Sidebar start page failed to load. Please check the logs.\n"
-          + "</body>\n"
-          + "</html>";
+  public static String getSidebarErrorHtml(String logFileLocation) {
+    return "<!DOCTYPE html>\n"
+        + "<html lang=\"en\">\n"
+        + "<head>\n"
+        + "  <meta charset=\"UTF-8\">\n"
+        + "  <title>Error while trying to load sidebar</title>\n"
+        + "</head>\n"
+        + "<body>\n"
+        + "Sidebar start page failed to load. Please check log files: \n"
+        + logFileLocation
+        + "</body>\n"
+        + "</html>";
+  }
 
   /**
    * Opens the given URL in the default Browser of the current OS. Note that this method is likely
@@ -84,6 +87,44 @@ public final class SidebarUtils {
           .start();
     } else {
       logger.error("Desktop is not available to get systems default browser.");
+    }
+  }
+
+  /**
+   * Opens the log file. For internal use. Attempts to open and preselect log file in systems file
+   * manager (only for mac os and windows). If that fails, it just shows the containing folder in
+   * the file manager.
+   */
+  public static void openLogFile(String logFileLocation) {
+    if (logFileLocation != null) {
+      final String logFile = new File(logFileLocation).getPath();
+
+      if (openSystemSpecific(logFile)) {
+        return;
+      }
+
+      openLogFileFolderInFileManger(logFileLocation);
+    }
+  }
+
+  private static void openLogFileFolderInFileManger(String logFileLocation) {
+    if (logFileLocation != null) {
+      final String folder = new File(logFileLocation).getParent();
+      final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+
+      if (desktop != null && desktop.isSupported(Desktop.Action.OPEN)) {
+        new Thread(
+                () -> {
+                  try {
+                    Desktop.getDesktop().open(new File(folder));
+                  } catch (final Exception e) {
+                    logger.error("", e);
+                  }
+                })
+            .start();
+      } else {
+        logger.error("Desktop is not available to get systems default browser.");
+      }
     }
   }
 
