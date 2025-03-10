@@ -107,8 +107,7 @@ public class AcrolinxSidebarInitParameter {
   }
 
   /**
-   * Returns the log file location that was provided using the
-   * AcrolinxSidebarInitParameterBuilder.
+   * Returns the log file location that was provided using the AcrolinxSidebarInitParameterBuilder.
    *
    * @return the log file location. Otherwise, null.
    */
