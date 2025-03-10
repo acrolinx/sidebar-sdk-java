@@ -106,6 +106,12 @@ public class AcrolinxSidebarInitParameter {
     return clientSignature;
   }
 
+  /**
+   * Returns the log file location that was provided using the
+   * AcrolinxSidebarInitParameterBuilder.
+   *
+   * @return the log file location. Otherwise, null.
+   */
   public String getLogFileLocation() {
     return logFileLocation;
   }
