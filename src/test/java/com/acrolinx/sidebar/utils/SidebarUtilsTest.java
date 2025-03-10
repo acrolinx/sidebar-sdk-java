@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 class SidebarUtilsTest {
   @Test
-  void getSidebarErrorHtml() {
+  void getSidebarErrorHtmlTest() {
     final String expectedHtml =
         "<!DOCTYPE html>\n"
             + "<html lang=\"en\">\n"
@@ -26,6 +26,23 @@ class SidebarUtilsTest {
             + "</html>";
 
     Assertions.assertEquals(expectedHtml, SidebarUtils.getSidebarErrorHtml("logs.xml"));
+  }
+
+  @Test
+  void getSidebarErrorHtmlWithNoLogFileLocationTest() {
+    final String expectedHtml =
+        "<!DOCTYPE html>\n"
+            + "<html lang=\"en\">\n"
+            + "<head>\n"
+            + "  <meta charset=\"UTF-8\">\n"
+            + "  <title>Error while trying to load sidebar</title>\n"
+            + "</head>\n"
+            + "<body>\n"
+            + "Sidebar start page failed to load."
+            + "\n</body>\n"
+            + "</html>";
+
+    Assertions.assertEquals(expectedHtml, SidebarUtils.getSidebarErrorHtml(null));
   }
 
   @Test
