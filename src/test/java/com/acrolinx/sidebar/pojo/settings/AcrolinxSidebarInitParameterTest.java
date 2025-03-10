@@ -15,6 +15,18 @@ class AcrolinxSidebarInitParameterTest {
   private static final String JAVA_RUNTIME_VERSION = "java.runtime.version";
 
   @Test
+  void buildTest() {
+    AcrolinxSidebarInitParameter acrolinxSidebarInitParameter =
+        new AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder("foo", List.of())
+            .withLogFileLocation("logs.xml")
+            .withSidebarUrl("sidebarUrl")
+            .build();
+
+    Assertions.assertEquals("logs.xml", acrolinxSidebarInitParameter.getLogFileLocation());
+    Assertions.assertEquals("sidebarUrl", acrolinxSidebarInitParameter.getSidebarUrl());
+  }
+
+  @Test
   void toStringTest() {
     final Properties properties = (Properties) System.getProperties().clone();
 
@@ -24,7 +36,7 @@ class AcrolinxSidebarInitParameterTest {
       AcrolinxSidebarInitParameter acrolinxSidebarInitParameter = createAcrolinxInitParameters();
 
       Assertions.assertEquals(
-          "{\"clientSignature\":\"foo\",\"clientComponents\":[{\"id\":\"foo\",\"name\":\"bar\",\"version\":\"buzz\"},{\"id\":\"com.acrolinx.sidebar.java\",\"name\":\"Java SDK\",\"version\":\"2.5.12\",\"category\":\"DETAIL\"},{\"id\":\"os.Win\",\"name\":\"Win\",\"version\":\"13.5.1\",\"category\":\"DETAIL\"},{\"id\":\"java.runtime.Zuul\",\"name\":\"OpenJDK Runtime Environment\",\"version\":\"1.8.0_382-c05\",\"category\":\"DETAIL\"}],\"showServerSelector\":false,\"enableSingleSignOn\":false,\"enforceHTTPS\":false,\"minimumJavaVersion\":0,\"logger\":{\"name\":\"com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter\"}}",
+          "{\"clientSignature\":\"foo\",\"clientComponents\":[{\"id\":\"foo\",\"name\":\"bar\",\"version\":\"buzz\"},{\"id\":\"com.acrolinx.sidebar.java\",\"name\":\"Java SDK\",\"version\":\"2.5.12\",\"category\":\"DETAIL\"},{\"id\":\"os.Win\",\"name\":\"Win\",\"version\":\"13.5.1\",\"category\":\"DETAIL\"},{\"id\":\"java.runtime.Zuul\",\"name\":\"OpenJDK Runtime Environment\",\"version\":\"1.8.0_382-c05\",\"category\":\"DETAIL\"}],\"showServerSelector\":false,\"enableSingleSignOn\":false,\"enforceHTTPS\":false,\"logFileLocation\":\"logs/sidebar-init-parameters.log\",\"minimumJavaVersion\":0,\"logger\":{\"name\":\"com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter\"}}",
           acrolinxSidebarInitParameter.toString());
     } finally {
       System.setProperties(properties);
@@ -36,7 +48,8 @@ class AcrolinxSidebarInitParameterTest {
     AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder
         acrolinxSidebarInitParameterBuilder =
             new AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder(
-                "foo", List.of(softwareComponent));
+                    "foo", List.of(softwareComponent))
+                .withLogFileLocation("logs/sidebar-init-parameters.log");
 
     return new AcrolinxSidebarInitParameter(acrolinxSidebarInitParameterBuilder);
   }
