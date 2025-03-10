@@ -2,7 +2,7 @@
   "name": "",
   "version": "1.1.0",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "dependencies": {
     "@acrolinx/sidebar-startpage": "^4.0.2"
