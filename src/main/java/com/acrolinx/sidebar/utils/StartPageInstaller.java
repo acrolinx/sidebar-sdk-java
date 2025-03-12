@@ -19,7 +19,7 @@ public final class StartPageInstaller {
   private static final String SERVER_SELECTOR_DIR = "acrolinx_start_page";
 
   static String getStartPageVersion() {
-    final String resourceName = "/server-selector/version.properties";
+    final String resourceName = "/sidebar-sdk-java-version.properties";
     final Properties properties = new Properties();
 
     try (InputStream resourceStream = StartPageInstaller.class.getResourceAsStream(resourceName)) {
