@@ -244,7 +244,7 @@ abstract class AcrolinxSidebarPlugin {
   }
 
   public void openLogFile() {
-    SidebarUtils.openLogFile();
+    SidebarUtils.openLogFile(acrolinxIntegration.getInitParameters().getLogFileLocation());
   }
 
   private CheckOptions getCheckSettingsFromClient(
