@@ -9,14 +9,40 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
 import org.opentest4j.AssertionFailedError;
 
 final class ComparingFileVisitor extends SimpleFileVisitor<Path> {
+  private static final int BUFFER_SIZE = 8192;
+
   static FileVisitor<Path> create(Path firstDirectory, Path secondDirectory) {
     Validate.isDirectory(firstDirectory, "firstDirectory");
     Validate.isDirectory(secondDirectory, "secondDirectory");
 
     return new ComparingFileVisitor(firstDirectory, secondDirectory);
+  }
+
+  private static long mismatch(Path path1, Path path2) throws IOException {
+    byte[] buffer1 = new byte[BUFFER_SIZE];
+    byte[] buffer2 = new byte[BUFFER_SIZE];
+    try (InputStream in1 = Files.newInputStream(path1);
+        InputStream in2 = Files.newInputStream(path2); ) {
+      long totalRead = 0;
+      while (true) {
+        int nRead1 = in1.readNBytes(buffer1, 0, BUFFER_SIZE);
+        int nRead2 = in2.readNBytes(buffer2, 0, BUFFER_SIZE);
+
+        int i = Arrays.mismatch(buffer1, 0, nRead1, buffer2, 0, nRead2);
+        if (i > -1) {
+          return totalRead + i;
+        }
+        if (nRead1 < BUFFER_SIZE) {
+          // we've reached the end of the files, but found no mismatch
+          return -1;
+        }
+        totalRead += nRead1;
+      }
+    }
   }
 
   private final Path firstDirectory;
@@ -49,26 +75,5 @@ final class ComparingFileVisitor extends SimpleFileVisitor<Path> {
     }
 
     return FileVisitResult.CONTINUE;
-  }
-
-  private static long mismatch(Path path1, Path path2) throws IOException {
-    long position = 0;
-    try (InputStream is1 = Files.newInputStream(path1);
-        InputStream is2 = Files.newInputStream(path2)) {
-
-      int byte1, byte2;
-      while ((byte1 = is1.read()) != -1 && (byte2 = is2.read()) != -1) {
-        if (byte1 != byte2) {
-          return position;
-        }
-        position++;
-      }
-
-      if (is1.read() == -1 && is2.read() == -1) {
-        return -1;
-      } else {
-        return position;
-      }
-    }
   }
 }
