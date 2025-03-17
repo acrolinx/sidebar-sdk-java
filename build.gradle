@@ -35,6 +35,8 @@ dependencies {
     api 'org.jsoup:jsoup:1.19.1'
     compileOnly "org.eclipse.platform:org.eclipse.swt.$OSGI_PLATFORM:$SWT_VERSION"
 
+    implementation 'net.lingala.zip4j:zip4j:2.11.5'
+
     testImplementation 'org.junit.jupiter:junit-jupiter:5.12.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
@@ -96,17 +98,13 @@ nexusPublishing {
 }
 
 processResources {
-    dependsOn npm_install
+    dependsOn 'zipSidebarStartPage'
 
     doLast {
         File resourcesDir = sourceSets.main.output.resourcesDir
         resourcesDir.mkdirs()
         File versionPropertyFile = new File(resourcesDir, 'sidebar-sdk-java-version.properties')
         versionPropertyFile.text = "sidebar-sdk-java-version=$currentVersion"
-    }
-
-    from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline/') {
-        into 'server-selector'
     }
 }
 
@@ -212,6 +210,16 @@ tasks.register('removeSnapshotSuffix') {
         setGitHubOutput('OLD_SNAPSHOT_VERSION', "$currentVersion")
         setGitHubOutput('RELEASE_VERSION', "$releaseVersion")
     }
+}
+
+tasks.register('zipSidebarStartPage', Zip) {
+    dependsOn npmInstall
+
+    from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline/')
+    include '*/**'
+
+    archiveFileName = "sidebar-startpage.zip"
+    destinationDirectory = file("${rootProject.layout.buildDirectory.get()}/resources/main")
 }
 
 @Field

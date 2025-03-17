@@ -137,7 +137,7 @@ public final class SidebarUtils {
         + (serverAddress.endsWith("/") ? "sidebar/v14/index.html" : "/sidebar/v14/index.html");
   }
 
-  private static String getCurrentSdkImplementationVersion() {
+  public static String getCurrentSdkImplementationVersion() {
     final Optional<String> versionFromManifestFile = getJavaSdkVersionFromPropertiesFile();
 
     return versionFromManifestFile.orElseGet(

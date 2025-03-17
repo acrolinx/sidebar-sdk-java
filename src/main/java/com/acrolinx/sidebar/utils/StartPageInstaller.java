@@ -2,15 +2,10 @@
 package com.acrolinx.sidebar.utils;
 
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,49 +13,20 @@ public final class StartPageInstaller {
   private static final Logger logger = LoggerFactory.getLogger(StartPageInstaller.class);
   private static final String SERVER_SELECTOR_DIR = "acrolinx_start_page";
 
-  static String getStartPageVersion() {
-    final String resourceName = "/server-selector/version.properties";
-    final Properties properties = new Properties();
-
-    try (InputStream resourceStream = StartPageInstaller.class.getResourceAsStream(resourceName)) {
-      properties.load(resourceStream);
-      return properties.getProperty("version");
-    } catch (final IOException e) {
-      logger.error("Could not read server selector version!", e);
-      return null;
-    }
-  }
-
   /** Extracts the Acrolinx start page to file system. Internal use only. */
   public static void exportStartPageResources() throws IOException {
     logger.info("Exporting Server Selector Resources.");
     final Path assetDir = getDefaultStartPageInstallLocation();
 
-    try (BufferedReader bufferedReader =
-        new BufferedReader(
-            new InputStreamReader(
-                StartPageInstaller.class.getResourceAsStream("/server-selector/files.txt"),
-                StandardCharsets.UTF_8))) {
-      String assetResource;
+    try {
+      ClassLoader classLoader = StartPageInstaller.class.getClassLoader();
+      URL sidebarStartPageZipUrl = classLoader.getResource("sidebar-startpage.zip");
 
-      while ((assetResource = bufferedReader.readLine()) != null) {
-        final Path assetFile = assetDir.resolve(assetResource.substring(1, assetResource.length()));
+      Validate.notNull(sidebarStartPageZipUrl, "sidebarStartPageZipUrl");
 
-        if (assetFile != null) {
-          final Path parent = assetFile.getParent();
-
-          if (parent != null && !Files.exists(parent)) {
-            Files.createDirectories(parent);
-          }
-
-          InputStream inputStream =
-              StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
-
-          if (inputStream != null && !Files.exists(assetFile)) {
-            Files.copy(inputStream, assetFile, StandardCopyOption.REPLACE_EXISTING);
-          }
-        }
-      }
+      FileUtils.extractZipFile(Path.of(sidebarStartPageZipUrl.getPath()), assetDir);
+    } catch (IOException e) {
+      logger.error("Failed to extract sidebar start page resources", e);
     }
   }
 
@@ -70,7 +36,8 @@ public final class StartPageInstaller {
     Path acrolinxDir = getAcrolinxDir(userTempDirLocation, osName);
 
     Path serverSelectorDirectory =
-        acrolinxDir.resolve(SERVER_SELECTOR_DIR + "_" + getStartPageVersion());
+        acrolinxDir.resolve(
+            SERVER_SELECTOR_DIR + "_" + SidebarUtils.getCurrentSdkImplementationVersion());
 
     if (!Files.exists(serverSelectorDirectory)) {
       serverSelectorDirectory = Files.createDirectories(serverSelectorDirectory);

@@ -10,12 +10,6 @@ import org.junit.jupiter.api.Test;
 
 class StartPageInstallerTest {
   @Test
-  void getServerSelectorVersion() {
-    final String serverSelectorVersion = StartPageInstaller.getStartPageVersion();
-    assertEquals("3.4.1.327", serverSelectorVersion);
-  }
-
-  @Test
   void prepareSidebarUrlWithStartPage() throws Exception {
     final AcrolinxSidebarInitParameterBuilder builder =
         new AcrolinxSidebarInitParameterBuilder("123", List.of());

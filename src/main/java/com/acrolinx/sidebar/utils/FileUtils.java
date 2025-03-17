@@ -2,8 +2,11 @@
 package com.acrolinx.sidebar.utils;
 
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.lingala.zip4j.ZipFile;
 
 public final class FileUtils {
   private FileUtils() {
@@ -46,5 +49,15 @@ public final class FileUtils {
     }
 
     return false;
+  }
+
+  public static void extractZipFile(Path zipFilePath, Path destinationDirectoryPath)
+      throws IOException {
+    Validate.isRegularFile(zipFilePath, "zipFilePath");
+    Validate.isDirectory(destinationDirectoryPath, "destinationDirectoryPath");
+
+    try (ZipFile zipFile = new ZipFile(zipFilePath.toFile())) {
+      zipFile.extractAll(destinationDirectoryPath.toString());
+    }
   }
 }
