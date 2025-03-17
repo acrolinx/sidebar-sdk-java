@@ -23,7 +23,10 @@ public final class StartPageInstaller {
       ClassLoader classLoader = StartPageInstaller.class.getClassLoader();
       URL sidebarStartPageZipUrl = classLoader.getResource("sidebar-startpage.zip");
 
-      Validate.notNull(sidebarStartPageZipUrl, "sidebarStartPageZipUrl");
+      if (sidebarStartPageZipUrl == null) {
+        logger.error("Sidebar start page zip url not found.");
+        throw new IllegalStateException("Sidebar start page zip not found.");
+      }
 
       FileUtils.extractZipFile(Path.of(sidebarStartPageZipUrl.toURI()), assetDir);
     } catch (IOException | URISyntaxException e) {
