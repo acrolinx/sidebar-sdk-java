@@ -3,6 +3,7 @@ package com.acrolinx.sidebar.utils;
 
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,8 +25,8 @@ public final class StartPageInstaller {
 
       Validate.notNull(sidebarStartPageZipUrl, "sidebarStartPageZipUrl");
 
-      FileUtils.extractZipFile(Path.of(sidebarStartPageZipUrl.getPath()), assetDir);
-    } catch (IOException e) {
+      FileUtils.extractZipFile(Path.of(sidebarStartPageZipUrl.toURI()), assetDir);
+    } catch (IOException | URISyntaxException e) {
       logger.error("Failed to extract sidebar start page resources", e);
     }
   }
