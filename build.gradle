@@ -5,6 +5,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 import java.util.stream.Collectors
+import java.util.zip.ZipFile
 
 plugins {
     id 'java-library'
@@ -220,6 +221,22 @@ tasks.register('zipSidebarStartPage', Zip) {
 
     archiveFileName = "sidebar-startpage.zip"
     destinationDirectory = file("${rootProject.layout.buildDirectory.get()}/resources/main")
+
+    doLast {
+        def zipFilePath = layout.buildDirectory.file("resources/main/sidebar-startpage.zip").get().asFile
+
+        try (ZipFile zip = new ZipFile(zipFilePath)) {
+            def files = zip.entries().findAll { entry ->
+                entry.name == "index.html" || entry.name.endsWith(".js") || entry.name.endsWith(".css")
+            }
+
+            if (files.size() < 3) {
+                throw new GradleException("Expected ZIP folder to have at least 3 files but found ${files.size()}")
+            }
+        } catch (IOException e) {
+            throw new GradleException("Error reading ZIP file ${zipFilePath.name}: ${e.message}")
+        }
+    }
 }
 
 @Field
