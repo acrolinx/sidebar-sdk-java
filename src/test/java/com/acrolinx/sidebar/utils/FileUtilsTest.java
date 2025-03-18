@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class FileUtilsTest {
-
   @Test
   void extractZipFileTest(@TempDir Path temporaryDirectory) throws Exception {
     Path zipFilePath = Path.of("src/test/resources/sidebar-startpage.zip");

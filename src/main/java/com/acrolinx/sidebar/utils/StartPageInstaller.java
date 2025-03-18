@@ -16,7 +16,6 @@ public final class StartPageInstaller {
 
   /** Extracts the Acrolinx start page to file system. Internal use only. */
   public static void exportStartPageResources() throws IOException, URISyntaxException {
-    logger.info("Exporting Server Selector Resources.");
     final Path assetDir = getDefaultStartPageInstallLocation();
 
     URL sidebarStartPageZipUrl = StartPageInstaller.class.getResource("/sidebar-startpage.zip");
@@ -35,7 +34,7 @@ public final class StartPageInstaller {
 
     Path serverSelectorDirectory =
         acrolinxDir.resolve(
-            SERVER_SELECTOR_DIR + "_" + SidebarUtils.getCurrentSdkImplementationVersion());
+            SERVER_SELECTOR_DIR + '_' + SidebarUtils.getCurrentSdkImplementationVersion());
 
     if (!Files.exists(serverSelectorDirectory)) {
       serverSelectorDirectory = Files.createDirectories(serverSelectorDirectory);

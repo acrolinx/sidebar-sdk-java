@@ -27,9 +27,7 @@ class SidebarUtilsTest {
 
   @Test
   void isNotValidUrlTest() {
-    assertFalse(
-        SidebarUtils.isValidUrl(
-            "https:/acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html"));
+    assertFalse(SidebarUtils.isValidUrl("https:/acrolinx.sidebar.com/sidebar-startpage.html"));
   }
 
   @Test

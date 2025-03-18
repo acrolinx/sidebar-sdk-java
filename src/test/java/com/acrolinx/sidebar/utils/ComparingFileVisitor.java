@@ -35,12 +35,12 @@ final class ComparingFileVisitor extends SimpleFileVisitor<Path> {
     final Path fileInSecondDirectory =
         secondDirectory.resolve(firstDirectory.relativize(fileInFirstDirectory));
 
-    byte[] buffer1 = Files.readAllBytes(fileInFirstDirectory);
-    byte[] buffer2 = Files.readAllBytes(fileInSecondDirectory);
+    byte[] firstFileBytes = Files.readAllBytes(fileInFirstDirectory);
+    byte[] secondFileBytes = Files.readAllBytes(fileInSecondDirectory);
 
     Assertions.assertArrayEquals(
-        buffer1,
-        buffer2,
+        firstFileBytes,
+        secondFileBytes,
         "files mismatch: " + fileInFirstDirectory + " != " + fileInSecondDirectory);
 
     return FileVisitResult.CONTINUE;
