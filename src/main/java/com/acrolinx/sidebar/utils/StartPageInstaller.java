@@ -20,8 +20,8 @@ public final class StartPageInstaller {
     final Path assetDir = getDefaultStartPageInstallLocation();
 
     try {
-      ClassLoader classLoader = StartPageInstaller.class.getClassLoader();
-      URL sidebarStartPageZipUrl = classLoader.getResource("sidebar-startpage.zip");
+      URL sidebarStartPageZipUrl =
+          StartPageInstaller.class.getClassLoader().getResource("sidebar-startpage.zip");
 
       if (sidebarStartPageZipUrl == null) {
         logger.error("Sidebar start page zip url not found.");
