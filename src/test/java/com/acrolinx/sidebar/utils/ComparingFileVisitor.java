@@ -8,8 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Arrays;
-import org.opentest4j.AssertionFailedError;
+import org.junit.jupiter.api.Assertions;
 
 final class ComparingFileVisitor extends SimpleFileVisitor<Path> {
   static FileVisitor<Path> create(Path firstDirectory, Path secondDirectory) {
@@ -39,10 +38,10 @@ final class ComparingFileVisitor extends SimpleFileVisitor<Path> {
     byte[] buffer1 = Files.readAllBytes(fileInFirstDirectory);
     byte[] buffer2 = Files.readAllBytes(fileInSecondDirectory);
 
-    if (!Arrays.equals(buffer1, buffer2)) {
-      throw new AssertionFailedError(
-          "files mismatch: " + fileInFirstDirectory + " != " + fileInSecondDirectory);
-    }
+    Assertions.assertArrayEquals(
+        buffer1,
+        buffer2,
+        "files mismatch: " + fileInFirstDirectory + " != " + fileInSecondDirectory);
 
     return FileVisitResult.CONTINUE;
   }
