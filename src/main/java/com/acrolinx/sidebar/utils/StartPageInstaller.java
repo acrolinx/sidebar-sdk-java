@@ -15,22 +15,17 @@ public final class StartPageInstaller {
   private static final String SERVER_SELECTOR_DIR = "acrolinx_start_page";
 
   /** Extracts the Acrolinx start page to file system. Internal use only. */
-  public static void exportStartPageResources() throws IOException {
+  public static void exportStartPageResources() throws IOException, URISyntaxException {
     logger.info("Exporting Server Selector Resources.");
     final Path assetDir = getDefaultStartPageInstallLocation();
 
-    try {
-      URL sidebarStartPageZipUrl = StartPageInstaller.class.getResource("/sidebar-startpage.zip");
+    URL sidebarStartPageZipUrl = StartPageInstaller.class.getResource("/sidebar-startpage.zip");
 
-      if (sidebarStartPageZipUrl == null) {
-        logger.error("Sidebar start page zip url not found.");
-        throw new IllegalStateException("Sidebar start page zip not found.");
-      }
-
-      FileUtils.extractZipFile(Path.of(sidebarStartPageZipUrl.toURI()), assetDir);
-    } catch (IOException | URISyntaxException e) {
-      logger.error("Failed to extract sidebar start page resources", e);
+    if (sidebarStartPageZipUrl == null) {
+      throw new IllegalStateException("Sidebar start page zip not found.");
     }
+
+    FileUtils.extractZipFile(Path.of(sidebarStartPageZipUrl.toURI()), assetDir);
   }
 
   private static Path getDefaultStartPageInstallLocation() throws IOException {
@@ -63,7 +58,7 @@ public final class StartPageInstaller {
    *
    * @return Path to current start page.
    */
-  public static String getStartPageUrl() throws IOException {
+  public static String getStartPageUrl() throws IOException, URISyntaxException {
     final Path assetDir = getDefaultStartPageInstallLocation();
 
     if (!Files.exists(assetDir.resolve("index.html"))) {
