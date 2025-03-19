@@ -61,15 +61,6 @@ public final class FileUtils {
     return null;
   }
 
-  public static boolean hasFileEnding(String fileName, String requiredFileEnding) {
-    if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
-      String fileEnding = fileName.substring(fileName.lastIndexOf(".") + 1);
-      return fileEnding.equalsIgnoreCase(requiredFileEnding);
-    }
-
-    return false;
-  }
-
   private static void extractFile(InputStream inputStream, Path filePath) throws IOException {
     try (OutputStream outputStream = Files.newOutputStream(filePath)) {
       inputStream.transferTo(outputStream);
