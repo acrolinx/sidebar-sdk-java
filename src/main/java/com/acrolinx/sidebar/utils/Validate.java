@@ -3,7 +3,6 @@ package com.acrolinx.sidebar.utils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.regex.Pattern;
 
 /**
  * A utility class containing only static methods to quickly check constructor and method arguments.
@@ -30,19 +29,6 @@ public final class Validate {
 
     if (!Files.isRegularFile(filePath)) {
       throw new IllegalArgumentException(variableName + " is not a regular file: " + filePath);
-    }
-  }
-
-  /**
-   * @throws IllegalArgumentException if {@code string} is {@code null} or does not {@link
-   *     Pattern#matches match} the given {@code pattern}.
-   */
-  public static void matches(String string, Pattern pattern, String variableName) {
-    notNull(string, variableName);
-
-    if (!pattern.matcher(string).matches()) {
-      throw new IllegalArgumentException(
-          variableName + " must match pattern '" + pattern.pattern() + "': " + string);
     }
   }
 
