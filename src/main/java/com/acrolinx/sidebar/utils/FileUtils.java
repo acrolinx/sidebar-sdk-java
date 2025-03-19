@@ -70,7 +70,9 @@ public final class FileUtils {
           extractFile(zipIn, filePath);
         } else {
           File file = new File(filePath);
-          file.mkdirs();
+          if (file.mkdirs()) {
+            throw new IOException("Failed to create directory " + filePath);
+          }
         }
 
         zipIn.closeEntry();
@@ -82,11 +84,7 @@ public final class FileUtils {
   private static void extractFile(ZipInputStream zipInputStream, String filePath)
       throws IOException {
     try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
-      byte[] bytesIn = new byte[1024];
-      int read = 0;
-      while ((read = zipInputStream.read(bytesIn)) != -1) {
-        fileOutputStream.write(bytesIn, 0, read);
-      }
+      zipInputStream.transferTo(fileOutputStream);
     }
   }
 }
