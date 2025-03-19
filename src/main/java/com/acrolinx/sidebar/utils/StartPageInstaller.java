@@ -12,11 +12,10 @@ import org.slf4j.LoggerFactory;
 
 public final class StartPageInstaller {
   private static final Logger logger = LoggerFactory.getLogger(StartPageInstaller.class);
-  private static final String SERVER_SELECTOR_DIR = "acrolinx_start_page";
 
   /** Extracts the Acrolinx start page to file system. Internal use only. */
   public static void exportStartPageResources() throws IOException, URISyntaxException {
-    final Path assetDir = getDefaultStartPageInstallLocation();
+    final Path defaultStartPageInstallLocation = getDefaultStartPageInstallLocation();
 
     URL sidebarStartPageZipUrl = StartPageInstaller.class.getResource("/sidebar-startpage.zip");
 
@@ -24,7 +23,8 @@ public final class StartPageInstaller {
       throw new IllegalStateException("Sidebar start page zip not found.");
     }
 
-    FileUtils.extractZipFile(Path.of(sidebarStartPageZipUrl.toURI()), assetDir);
+    FileUtils.extractZipFile(
+        Path.of(sidebarStartPageZipUrl.toURI()), defaultStartPageInstallLocation);
   }
 
   private static Path getDefaultStartPageInstallLocation() throws IOException {
@@ -32,16 +32,17 @@ public final class StartPageInstaller {
     final String osName = System.getProperty("os.name");
     Path acrolinxDir = getAcrolinxDir(userTempDirLocation, osName);
 
-    Path serverSelectorDirectory =
+    Path defaultStartPageInstallLocation =
         acrolinxDir.resolve(
-            SERVER_SELECTOR_DIR + '_' + SidebarUtils.getCurrentSdkImplementationVersion());
+            "acrolinx_start_page" + '_' + SidebarUtils.getCurrentSdkImplementationVersion());
 
-    if (!Files.exists(serverSelectorDirectory)) {
-      serverSelectorDirectory = Files.createDirectories(serverSelectorDirectory);
-      logger.debug("Creating acrolinx start page directory in: {}", serverSelectorDirectory);
+    if (!Files.exists(defaultStartPageInstallLocation)) {
+      Files.createDirectories(defaultStartPageInstallLocation);
+      logger.debug(
+          "Creating acrolinx start page directory in: {}", defaultStartPageInstallLocation);
     }
 
-    return serverSelectorDirectory;
+    return defaultStartPageInstallLocation;
   }
 
   private static Path getAcrolinxDir(final Path userTempDirLocation, final String osName) {
@@ -65,7 +66,7 @@ public final class StartPageInstaller {
       exportStartPageResources();
     }
 
-    return assetDir.toUri().toString() + "index.html";
+    return assetDir.toUri() + "index.html";
   }
 
   public static String prepareSidebarUrl(
