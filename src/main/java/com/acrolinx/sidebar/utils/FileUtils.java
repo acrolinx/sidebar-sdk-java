@@ -28,10 +28,7 @@ public final class FileUtils {
 
     if (matcher.find()) {
       switch (matcher.group().toLowerCase()) {
-        case ".txt":
-          return InputFormat.TEXT;
         case ".xml":
-          return InputFormat.XML;
         case ".dita":
           return InputFormat.XML;
         case ".html":
