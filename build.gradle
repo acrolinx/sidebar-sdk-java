@@ -228,10 +228,11 @@ tasks.register('zipSidebarStartPage', Zip) {
         try (ZipFile zip = new ZipFile(zipFilePath)) {
             def files = zip.entries().findAll { entry ->
                 entry.name == "index.html" || entry.name.endsWith(".js") || entry.name.endsWith(".css")
+                        || entry.name.endsWith(".woff")
             }
 
-            if (files.size() < 3) {
-                throw new GradleException("Expected ZIP folder to have at least 3 files but found ${files.size()}")
+            if (files.size() < 5) {
+                throw new GradleException("Expected ZIP folder to have at least 5 files but found ${files.size()}")
             }
         } catch (IOException e) {
             throw new GradleException("Error reading ZIP file ${zipFilePath.name}: ${e.message}")
