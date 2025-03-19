@@ -12,6 +12,7 @@ class FileUtilsTest {
 
     FileUtils.extractZipFile(zipFilePath, temporaryDirectory);
 
-    DirectoryComparer.assertEquals(Path.of("src/test/resources/test-folder"), temporaryDirectory);
+    DirectoryComparer.assertEquals(
+        Path.of("src/test/resources/extracted-test-zip"), temporaryDirectory);
   }
 }

@@ -5,6 +5,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 import java.util.stream.Collectors
+import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
 plugins {
@@ -97,7 +98,7 @@ nexusPublishing {
 }
 
 processResources {
-    dependsOn 'zipSidebarStartPage'
+    dependsOn 'zipSidebarStartpage'
 
     doLast {
         File resourcesDir = sourceSets.main.output.resourcesDir
@@ -211,29 +212,22 @@ tasks.register('removeSnapshotSuffix') {
     }
 }
 
-tasks.register('zipSidebarStartPage', Zip) {
+tasks.register('zipSidebarStartpage', Zip) {
     dependsOn npmInstall
 
     from('node_modules/@acrolinx/sidebar-startpage/dist/dist-offline/')
     include '*/**'
 
-    archiveFileName = "sidebar-startpage.zip"
+    archiveFileName = 'sidebar-startpage.zip'
     destinationDirectory = file("${rootProject.layout.buildDirectory.get()}/resources/main")
 
     doLast {
-        def zipFilePath = layout.buildDirectory.file("resources/main/sidebar-startpage.zip").get().asFile
+        RegularFile regularFile = layout.buildDirectory.file('resources/main/sidebar-startpage.zip').get()
 
-        try (ZipFile zip = new ZipFile(zipFilePath)) {
-            def files = zip.entries().findAll { entry ->
-                entry.name == "index.html" || entry.name.endsWith(".js") || entry.name.endsWith(".css")
-                        || entry.name.endsWith(".woff")
+        try (ZipFile zipFile = new ZipFile(regularFile.getAsFile())) {
+            if (zipFile.getEntry('index.html') == null) {
+                throw new GradleException('Zip file does not contain a index.html file')
             }
-
-            if (files.size() < 5) {
-                throw new GradleException("Expected ZIP folder to have at least 5 files but found ${files.size()}")
-            }
-        } catch (IOException e) {
-            throw new GradleException("Error reading ZIP file ${zipFilePath.name}: ${e.message}")
         }
     }
 }

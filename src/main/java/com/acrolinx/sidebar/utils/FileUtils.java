@@ -2,10 +2,11 @@
 package com.acrolinx.sidebar.utils;
 
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,8 +14,25 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public final class FileUtils {
-  private FileUtils() {
-    throw new IllegalStateException();
+  public static void extractZipFile(Path zipFilePath, Path destinationDirectoryPath)
+      throws IOException {
+    Validate.isRegularFile(zipFilePath, "zipFilePath");
+    Validate.isDirectory(destinationDirectoryPath, "destinationDirectoryPath");
+
+    try (ZipInputStream zipInputStream =
+        new ZipInputStream(new FileInputStream(zipFilePath.toFile()))) {
+      ZipEntry zipEntry;
+
+      while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+        final Path filePath = destinationDirectoryPath.resolve(zipEntry.getName());
+
+        if (zipEntry.isDirectory()) {
+          Files.createDirectories(filePath);
+        } else {
+          extractFile(zipInputStream, filePath);
+        }
+      }
+    }
   }
 
   /**
@@ -52,36 +70,13 @@ public final class FileUtils {
     return false;
   }
 
-  public static void extractZipFile(Path zipFilePath, Path destinationDirectoryPath)
-      throws IOException {
-    Validate.isRegularFile(zipFilePath, "zipFilePath");
-    Validate.isDirectory(destinationDirectoryPath, "destinationDirectoryPath");
-
-    try (ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath.toFile()))) {
-      ZipEntry zipEntry = zipIn.getNextEntry();
-
-      while (zipEntry != null) {
-        String filePath = destinationDirectoryPath + File.separator + zipEntry.getName();
-
-        if (!zipEntry.isDirectory()) {
-          extractFile(zipIn, filePath);
-        } else {
-          File file = new File(filePath);
-          if (!file.mkdirs()) {
-            throw new IOException("Failed to create directory " + filePath);
-          }
-        }
-
-        zipIn.closeEntry();
-        zipEntry = zipIn.getNextEntry();
-      }
+  private static void extractFile(InputStream inputStream, Path filePath) throws IOException {
+    try (OutputStream outputStream = Files.newOutputStream(filePath)) {
+      inputStream.transferTo(outputStream);
     }
   }
 
-  private static void extractFile(ZipInputStream zipInputStream, String filePath)
-      throws IOException {
-    try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
-      zipInputStream.transferTo(fileOutputStream);
-    }
+  private FileUtils() {
+    throw new IllegalStateException();
   }
 }
