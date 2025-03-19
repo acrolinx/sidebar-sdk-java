@@ -67,7 +67,7 @@ public final class FileUtils {
           extractFile(zipIn, filePath);
         } else {
           File file = new File(filePath);
-          if (file.mkdirs()) {
+          if (!file.mkdirs()) {
             throw new IOException("Failed to create directory " + filePath);
           }
         }

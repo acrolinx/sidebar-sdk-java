@@ -8,11 +8,10 @@ import org.junit.jupiter.api.io.TempDir;
 class FileUtilsTest {
   @Test
   void extractZipFileTest(@TempDir Path temporaryDirectory) throws Exception {
-    Path zipFilePath = Path.of("src/test/resources/sidebar-startpage.zip");
+    Path zipFilePath = Path.of("src/test/resources/test.zip");
 
     FileUtils.extractZipFile(zipFilePath, temporaryDirectory);
 
-    DirectoryComparer.assertEquals(
-        Path.of("src/test/resources/sidebar-startpage"), temporaryDirectory);
+    DirectoryComparer.assertEquals(Path.of("src/test/resources/test-folder"), temporaryDirectory);
   }
 }
