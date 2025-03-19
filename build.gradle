@@ -36,8 +36,6 @@ dependencies {
     api 'org.jsoup:jsoup:1.19.1'
     compileOnly "org.eclipse.platform:org.eclipse.swt.$OSGI_PLATFORM:$SWT_VERSION"
 
-    implementation 'net.lingala.zip4j:zip4j:2.11.5'
-
     testImplementation 'org.junit.jupiter:junit-jupiter:5.12.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

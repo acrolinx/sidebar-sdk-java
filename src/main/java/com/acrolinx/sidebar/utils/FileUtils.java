@@ -2,11 +2,15 @@
 package com.acrolinx.sidebar.utils;
 
 import com.acrolinx.sidebar.pojo.settings.InputFormat;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.lingala.zip4j.ZipFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public final class FileUtils {
   private FileUtils() {
@@ -56,8 +60,33 @@ public final class FileUtils {
     Validate.isRegularFile(zipFilePath, "zipFilePath");
     Validate.isDirectory(destinationDirectoryPath, "destinationDirectoryPath");
 
-    try (ZipFile zipFile = new ZipFile(zipFilePath.toFile())) {
-      zipFile.extractAll(destinationDirectoryPath.toString());
+    try (ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath.toFile()))) {
+      ZipEntry zipEntry = zipIn.getNextEntry();
+
+      while (zipEntry != null) {
+        String filePath = destinationDirectoryPath + File.separator + zipEntry.getName();
+
+        if (!zipEntry.isDirectory()) {
+          extractFile(zipIn, filePath);
+        } else {
+          File file = new File(filePath);
+          file.mkdirs();
+        }
+
+        zipIn.closeEntry();
+        zipEntry = zipIn.getNextEntry();
+      }
+    }
+  }
+
+  private static void extractFile(ZipInputStream zipInputStream, String filePath)
+      throws IOException {
+    try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
+      byte[] bytesIn = new byte[1024];
+      int read = 0;
+      while ((read = zipInputStream.read(bytesIn)) != -1) {
+        fileOutputStream.write(bytesIn, 0, read);
+      }
     }
   }
 }
