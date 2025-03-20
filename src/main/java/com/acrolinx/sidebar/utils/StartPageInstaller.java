@@ -2,66 +2,29 @@
 package com.acrolinx.sidebar.utils;
 
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class StartPageInstaller {
   private static final Logger logger = LoggerFactory.getLogger(StartPageInstaller.class);
-  private static final String SERVER_SELECTOR_DIR = "acrolinx_start_page";
-
-  static String getStartPageVersion() {
-    final String resourceName = "/server-selector/version.properties";
-    final Properties properties = new Properties();
-
-    try (InputStream resourceStream = StartPageInstaller.class.getResourceAsStream(resourceName)) {
-      properties.load(resourceStream);
-      return properties.getProperty("version");
-    } catch (final IOException e) {
-      logger.error("Could not read server selector version!", e);
-      return null;
-    }
-  }
 
   /** Extracts the Acrolinx start page to file system. Internal use only. */
-  public static void exportStartPageResources() throws IOException {
-    logger.info("Exporting Server Selector Resources.");
-    final Path assetDir = getDefaultStartPageInstallLocation();
+  public static void exportStartPageResources() throws IOException, URISyntaxException {
+    final Path defaultStartPageInstallLocation = getDefaultStartPageInstallLocation();
 
-    try (BufferedReader bufferedReader =
-        new BufferedReader(
-            new InputStreamReader(
-                StartPageInstaller.class.getResourceAsStream("/server-selector/files.txt"),
-                StandardCharsets.UTF_8))) {
-      String assetResource;
+    URL sidebarStartPageZipUrl = StartPageInstaller.class.getResource("/sidebar-startpage.zip");
 
-      while ((assetResource = bufferedReader.readLine()) != null) {
-        final Path assetFile = assetDir.resolve(assetResource.substring(1, assetResource.length()));
-
-        if (assetFile != null) {
-          final Path parent = assetFile.getParent();
-
-          if (parent != null && !Files.exists(parent)) {
-            Files.createDirectories(parent);
-          }
-
-          InputStream inputStream =
-              StartPageInstaller.class.getResourceAsStream("/server-selector" + assetResource);
-
-          if (inputStream != null && !Files.exists(assetFile)) {
-            Files.copy(inputStream, assetFile, StandardCopyOption.REPLACE_EXISTING);
-          }
-        }
-      }
+    if (sidebarStartPageZipUrl == null) {
+      throw new IllegalStateException("Sidebar start page zip not found.");
     }
+
+    FileUtils.extractZipFile(
+        Path.of(sidebarStartPageZipUrl.toURI()), defaultStartPageInstallLocation);
   }
 
   private static Path getDefaultStartPageInstallLocation() throws IOException {
@@ -69,15 +32,17 @@ public final class StartPageInstaller {
     final String osName = System.getProperty("os.name");
     Path acrolinxDir = getAcrolinxDir(userTempDirLocation, osName);
 
-    Path serverSelectorDirectory =
-        acrolinxDir.resolve(SERVER_SELECTOR_DIR + "_" + getStartPageVersion());
+    Path defaultStartPageInstallLocation =
+        acrolinxDir.resolve(
+            "acrolinx_start_page" + '_' + SidebarUtils.getCurrentSdkImplementationVersion());
 
-    if (!Files.exists(serverSelectorDirectory)) {
-      serverSelectorDirectory = Files.createDirectories(serverSelectorDirectory);
-      logger.debug("Creating acrolinx start page directory in: {}", serverSelectorDirectory);
+    if (!Files.exists(defaultStartPageInstallLocation)) {
+      Files.createDirectories(defaultStartPageInstallLocation);
+      logger.debug(
+          "Creating acrolinx start page directory in: {}", defaultStartPageInstallLocation);
     }
 
-    return serverSelectorDirectory;
+    return defaultStartPageInstallLocation;
   }
 
   private static Path getAcrolinxDir(final Path userTempDirLocation, final String osName) {
@@ -93,7 +58,7 @@ public final class StartPageInstaller {
    *
    * @return Path to current start page.
    */
-  public static String getStartPageUrl() throws IOException {
+  public static String getStartPageUrl() throws IOException, URISyntaxException {
     final Path assetDir = getDefaultStartPageInstallLocation();
 
     if (!Files.exists(assetDir.resolve("index.html"))) {
@@ -101,7 +66,7 @@ public final class StartPageInstaller {
       exportStartPageResources();
     }
 
-    return assetDir.toUri().toString() + "index.html";
+    return assetDir.toUri() + "index.html";
   }
 
   public static String prepareSidebarUrl(
