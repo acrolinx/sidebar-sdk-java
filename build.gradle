@@ -226,7 +226,7 @@ tasks.register('zipSidebarStartpage', Zip) {
 
         try (ZipFile zipFile = new ZipFile(regularFile.getAsFile())) {
             if (zipFile.getEntry('index.html') == null) {
-                throw new GradleException('Zip file does not contain a index.html file')
+                throw new GradleException('Zip file does not contain an index.html file')
             }
         }
     }
