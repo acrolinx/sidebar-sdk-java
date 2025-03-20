@@ -12,7 +12,6 @@ import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
-import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.acrolinx.sidebar.utils.StartPageInstaller;
@@ -45,7 +44,8 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar {
 
   public AcrolinxSidebarJFX(
       final AcrolinxIntegration acrolinxIntegration, final AcrolinxStorage acrolinxStorage) {
-    LogMessages.logJavaVersionAndUiFramework(logger, "Java FX");
+    final String javaVersion = System.getProperty("java.version");
+    logger.info("Java Version: {} ; UI Framework: Java FX", javaVersion);
     SecurityUtils.setUpEnvironment();
     this.acrolinxIntegration = acrolinxIntegration;
     final String sidebarUrl =

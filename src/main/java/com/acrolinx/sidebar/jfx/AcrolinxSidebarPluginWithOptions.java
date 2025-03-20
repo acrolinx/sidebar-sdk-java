@@ -5,7 +5,6 @@ import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.document.CheckContent;
 import com.acrolinx.sidebar.pojo.settings.BatchCheckRequestOptions;
-import com.acrolinx.sidebar.utils.LogMessages;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -19,7 +18,7 @@ public class AcrolinxSidebarPluginWithOptions extends AcrolinxSidebarPlugin {
   }
 
   public synchronized void requestGlobalCheck(final JSObject jsObject) {
-    LogMessages.logCheckRequested(logger);
+    logger.info("Check requested.");
     this.checkStartedTime = Instant.now();
     boolean selection = false;
     boolean batchCheck = false;

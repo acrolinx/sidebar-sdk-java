@@ -23,7 +23,6 @@ import com.acrolinx.sidebar.pojo.settings.InputFormat;
 import com.acrolinx.sidebar.pojo.settings.RequestDescription;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
-import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.acrolinx.sidebar.utils.StartPageInstaller;
@@ -99,7 +98,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
         acrolinxIntegration.getEditorAdapter(),
         "EditorAdapter client.getEditorAdapter should return null");
 
-    LogMessages.logJavaVersionAndUiFramework(logger, "Java SWT");
+    final String javaVersion = System.getProperty("java.version");
+    logger.info("Java Version: {} ; UI Framework: Java SWT", javaVersion);
     SecurityUtils.setUpEnvironment();
 
     this.acrolinxStorage = acrolinxStorage;
@@ -322,7 +322,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
     boolean selectionRequested = checkSelection.toString().equals("withCheckSelection");
     logger.info("Check selection requested: {}", selectionRequested);
 
-    LogMessages.logCheckRequested(logger);
+    logger.info("Check requested.");
     checkStartTime.set(Instant.now());
 
     final String requestText = acrolinxIntegration.getEditorAdapter().getContent();
@@ -464,7 +464,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
   }
 
   Object getReplaceRangesObject(Object argument) {
-    LogMessages.logReplacingRange(logger);
+    logger.info("Request replace range.");
     final List<AcrolinxMatchFromJSON> match =
         new Gson()
             .fromJson((String) argument, new TypeToken<List<AcrolinxMatchFromJSON>>() {}.getType());
@@ -479,7 +479,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
   }
 
   Object getSelectRangesObject(Object argument) {
-    LogMessages.logSelectingRange(logger);
+    logger.info("Request select range.");
     final List<AcrolinxMatchFromJSON> match =
         new Gson()
             .fromJson((String) argument, new TypeToken<List<AcrolinxMatchFromJSON>>() {}.getType());
@@ -495,8 +495,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
 
   Object getOnCheckResultObject(Object argument) {
     final Instant checkEndedTime = Instant.now();
-    LogMessages.logCheckFinishedWithDurationTime(
-        logger, Duration.between(checkStartTime.get(), checkEndedTime));
+    logger.info(
+        "Check finished. Check took {}", Duration.between(checkStartTime.get(), checkEndedTime));
     final String checkResultString = argument.toString();
     try {
       final CheckResultFromJSON checkResultObj =
@@ -562,7 +562,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
 
   @Override
   public void onGlobalCheckRejected() {
-    LogMessages.logCheckRejected(logger);
+    logger.info("Check rejected.");
     browser.execute("window.acrolinxSidebar.onGlobalCheckRejected();");
   }
 
