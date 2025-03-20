@@ -3,11 +3,15 @@ package com.acrolinx.sidebar.utils;
 
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 class ValidateTest {
   private static final String VARIABLE_NAME = "extracted-test-zip";
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   void isDirectoryTest() {
     Validate.isDirectory(Path.of("src/test"), VARIABLE_NAME);
 
@@ -18,6 +22,20 @@ class ValidateTest {
             Validate.isDirectory(
                 Path.of("src/test/resources/extracted-test-zip/foo.txt"), VARIABLE_NAME),
         "extracted-test-zip is not a directory: src/test/resources/extracted-test-zip/foo.txt");
+  }
+
+  @Test
+  @EnabledOnOs(OS.WINDOWS)
+  void isDirectoryWindowsTest() {
+    Validate.isDirectory(Path.of("src/test"), VARIABLE_NAME);
+
+    AssertThrows.illegalArgumentException(
+        () -> Validate.isDirectory(null, VARIABLE_NAME), "directoryPath must not be null");
+    AssertThrows.illegalArgumentException(
+        () ->
+            Validate.isDirectory(
+                Path.of("src/test/resources/extracted-test-zip/foo.txt"), VARIABLE_NAME),
+        "extracted-test-zip is not a directory: src\\test\\resources\\extracted-test-zip\\foo.txt");
   }
 
   @Test
