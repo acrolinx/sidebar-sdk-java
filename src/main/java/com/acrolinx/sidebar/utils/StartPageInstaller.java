@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class StartPageInstaller {
-  private static final String SIDEBAR_STARTPAGE_ZIP = "/sidebar-startpage.zip";
+  private static final String SIDEBAR_STARTPAGE_ZIP = "sidebar-startpage.zip";
   private static final Logger logger = LoggerFactory.getLogger(StartPageInstaller.class);
 
   /** Extracts the Acrolinx start page to file system. Internal use only. */
@@ -18,13 +18,13 @@ public final class StartPageInstaller {
     final Path defaultStartPageInstallLocation = getDefaultStartPageInstallLocation();
 
     try (InputStream inputStream =
-        StartPageInstaller.class.getResourceAsStream(SIDEBAR_STARTPAGE_ZIP)) {
+        StartPageInstaller.class.getResourceAsStream('/' + SIDEBAR_STARTPAGE_ZIP)) {
 
       if (inputStream == null) {
         throw new IllegalStateException("Resource not found: " + SIDEBAR_STARTPAGE_ZIP);
       }
 
-      final Path zipFilePath = defaultStartPageInstallLocation.resolve("sidebar-startpage.zip");
+      final Path zipFilePath = defaultStartPageInstallLocation.resolve(SIDEBAR_STARTPAGE_ZIP);
 
       Files.copy(inputStream, zipFilePath);
       FileUtils.extractZipFile(zipFilePath, defaultStartPageInstallLocation);
