@@ -17,16 +17,16 @@ public final class StartPageInstaller {
   public static void exportStartPageResources() throws IOException {
     final Path defaultStartPageInstallLocation = getDefaultStartPageInstallLocation();
 
-    try (InputStream jarZipFileStream =
+    try (InputStream inputStream =
         StartPageInstaller.class.getResourceAsStream(SIDEBAR_STARTPAGE_ZIP)) {
 
-      if (jarZipFileStream == null) {
+      if (inputStream == null) {
         throw new IllegalStateException("Resource not found: " + SIDEBAR_STARTPAGE_ZIP);
       }
 
       final Path zipFilePath = defaultStartPageInstallLocation.resolve("sidebar-startpage.zip");
 
-      Files.copy(jarZipFileStream, zipFilePath);
+      Files.copy(inputStream, zipFilePath);
       FileUtils.extractZipFile(zipFilePath, defaultStartPageInstallLocation);
     }
   }
