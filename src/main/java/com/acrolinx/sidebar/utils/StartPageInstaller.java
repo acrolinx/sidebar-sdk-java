@@ -16,17 +16,19 @@ public final class StartPageInstaller {
   /** Extracts the Acrolinx start page to file system. Internal use only. */
   public static void exportStartPageResources() throws IOException {
     final Path defaultStartPageInstallLocation = getDefaultStartPageInstallLocation();
-    InputStream jarZipFileStream =
-        StartPageInstaller.class.getResourceAsStream(SIDEBAR_STARTPAGE_ZIP);
 
-    if (jarZipFileStream == null) {
-      throw new IllegalStateException("Sidebar start page zip not found.");
+    try (InputStream jarZipFileStream =
+        StartPageInstaller.class.getResourceAsStream(SIDEBAR_STARTPAGE_ZIP)) {
+
+      if (jarZipFileStream == null) {
+        throw new IllegalStateException("Resource not found: " + SIDEBAR_STARTPAGE_ZIP);
+      }
+
+      final Path zipFilePath = defaultStartPageInstallLocation.resolve("sidebar-startpage.zip");
+
+      Files.copy(jarZipFileStream, zipFilePath);
+      FileUtils.extractZipFile(zipFilePath, defaultStartPageInstallLocation);
     }
-
-    Path zipFilePath = defaultStartPageInstallLocation.resolve("sidebar-startpage.zip");
-
-    Files.copy(jarZipFileStream, zipFilePath);
-    FileUtils.extractZipFile(zipFilePath, defaultStartPageInstallLocation);
   }
 
   /**
