@@ -3,28 +3,74 @@ package com.acrolinx.sidebar.utils;
 
 import com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class StartPageInstaller {
+  private static final String SIDEBAR_STARTPAGE_ZIP = "/sidebar-startpage.zip";
   private static final Logger logger = LoggerFactory.getLogger(StartPageInstaller.class);
 
   /** Extracts the Acrolinx start page to file system. Internal use only. */
-  public static void exportStartPageResources() throws IOException, URISyntaxException {
+  public static void exportStartPageResources() throws IOException {
     final Path defaultStartPageInstallLocation = getDefaultStartPageInstallLocation();
+    InputStream jarZipFileStream =
+        StartPageInstaller.class.getResourceAsStream(SIDEBAR_STARTPAGE_ZIP);
 
-    URL sidebarStartPageZipUrl = StartPageInstaller.class.getResource("/sidebar-startpage.zip");
-
-    if (sidebarStartPageZipUrl == null) {
+    if (jarZipFileStream == null) {
       throw new IllegalStateException("Sidebar start page zip not found.");
     }
 
-    FileUtils.extractZipFile(
-        Path.of(sidebarStartPageZipUrl.toURI()), defaultStartPageInstallLocation);
+    Path zipFilePath = defaultStartPageInstallLocation.resolve("sidebar-startpage.zip");
+
+    Files.copy(jarZipFileStream, zipFilePath);
+    FileUtils.extractZipFile(zipFilePath, defaultStartPageInstallLocation);
+  }
+
+  /**
+   * Returns the URI to the extracted start page.
+   *
+   * @return Path to current start page.
+   */
+  public static String getStartPageUrl() throws IOException {
+    final Path assetDir = getDefaultStartPageInstallLocation();
+
+    if (!Files.exists(assetDir.resolve("index.html"))) {
+      logger.debug("Acrolinx start page not present!");
+      exportStartPageResources();
+    }
+
+    return assetDir.toUri() + "index.html";
+  }
+
+  public static boolean isExportRequired(
+      final AcrolinxSidebarInitParameter acrolinxSidebarInitParameter) {
+    return acrolinxSidebarInitParameter.getShowServerSelector()
+        || isNullOrEmpty(acrolinxSidebarInitParameter.getSidebarUrl());
+  }
+
+  public static String prepareSidebarUrl(
+      final AcrolinxSidebarInitParameter acrolinxSidebarInitParameter) {
+    try {
+      if (!isExportRequired(acrolinxSidebarInitParameter)) {
+        return acrolinxSidebarInitParameter.getSidebarUrl();
+      }
+
+      return getStartPageUrl();
+    } catch (final Exception e) {
+      logger.error("Error getting sidebarURL", e);
+      return "";
+    }
+  }
+
+  private static Path getAcrolinxDir(final Path userTempDirLocation, final String osName) {
+    if (osName.toLowerCase().contains("mac") || osName.contains("windows")) {
+      return userTempDirLocation.resolve("Acrolinx");
+    }
+
+    return userTempDirLocation.resolve("acrolinx");
   }
 
   private static Path getDefaultStartPageInstallLocation() throws IOException {
@@ -43,50 +89,6 @@ public final class StartPageInstaller {
     }
 
     return defaultStartPageInstallLocation;
-  }
-
-  private static Path getAcrolinxDir(final Path userTempDirLocation, final String osName) {
-    if (osName.toLowerCase().contains("mac") || osName.contains("windows")) {
-      return userTempDirLocation.resolve("Acrolinx");
-    }
-
-    return userTempDirLocation.resolve("acrolinx");
-  }
-
-  /**
-   * Returns the URI to the extracted start page.
-   *
-   * @return Path to current start page.
-   */
-  public static String getStartPageUrl() throws IOException, URISyntaxException {
-    final Path assetDir = getDefaultStartPageInstallLocation();
-
-    if (!Files.exists(assetDir.resolve("index.html"))) {
-      logger.debug("Acrolinx start page not present!");
-      exportStartPageResources();
-    }
-
-    return assetDir.toUri() + "index.html";
-  }
-
-  public static String prepareSidebarUrl(
-      final AcrolinxSidebarInitParameter acrolinxSidebarInitParameter) {
-    try {
-      if (!isExportRequired(acrolinxSidebarInitParameter)) {
-        return acrolinxSidebarInitParameter.getSidebarUrl();
-      }
-
-      return getStartPageUrl();
-    } catch (final Exception e) {
-      logger.error("Error getting sidebarURL", e);
-      return "";
-    }
-  }
-
-  public static boolean isExportRequired(
-      final AcrolinxSidebarInitParameter acrolinxSidebarInitParameter) {
-    return acrolinxSidebarInitParameter.getShowServerSelector()
-        || isNullOrEmpty(acrolinxSidebarInitParameter.getSidebarUrl());
   }
 
   private static boolean isNullOrEmpty(String string) {
