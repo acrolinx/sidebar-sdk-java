@@ -21,6 +21,10 @@ public final class FileUtils {
   private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
   public static void deleteDirectory(Path directory) throws IOException {
+    if (!Files.exists(directory)) {
+      return;
+    }
+
     Validate.isDirectory(directory, "directory");
 
     try (Stream<Path> stream = Files.walk(directory)) {
