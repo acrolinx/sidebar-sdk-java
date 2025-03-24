@@ -26,8 +26,10 @@ public final class StartPageInstaller {
       final Path defaultStartPageInstallLocation = getDefaultStartPageInstallLocation();
       final Path zipFilePath = defaultStartPageInstallLocation.resolve(SIDEBAR_STARTPAGE_ZIP);
 
-      Files.copy(inputStream, zipFilePath, StandardCopyOption.REPLACE_EXISTING);
-      FileUtils.extractZipFile(zipFilePath, defaultStartPageInstallLocation);
+      if (!Files.exists(zipFilePath)) {
+        Files.copy(inputStream, zipFilePath, StandardCopyOption.REPLACE_EXISTING);
+        FileUtils.extractZipFile(zipFilePath, defaultStartPageInstallLocation);
+      }
     }
   }
 
