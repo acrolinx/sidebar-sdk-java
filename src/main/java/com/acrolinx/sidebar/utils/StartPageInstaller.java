@@ -23,6 +23,14 @@ public final class StartPageInstaller {
       }
 
       final Path defaultStartPageInstallLocation = getDefaultStartPageInstallLocation();
+
+      // Make sure we have a non-corrupted installation folder
+      if (Files.exists(defaultStartPageInstallLocation)) {
+        FileUtils.deleteDirectory(defaultStartPageInstallLocation);
+      }
+
+      createStartPageInstallationDirectory(defaultStartPageInstallLocation);
+
       final Path zipFilePath = defaultStartPageInstallLocation.resolve(SIDEBAR_STARTPAGE_ZIP);
 
       Files.copy(inputStream, zipFilePath);
@@ -74,22 +82,22 @@ public final class StartPageInstaller {
     return userTempDirLocation.resolve("acrolinx");
   }
 
-  private static Path getDefaultStartPageInstallLocation() throws IOException {
+  private static Path getDefaultStartPageInstallLocation() {
     final Path userTempDirLocation = SidebarUtils.getUserTempDirLocation();
     final String osName = System.getProperty("os.name");
-    Path acrolinxDir = getAcrolinxDir(userTempDirLocation, osName);
+    final Path acrolinxDir = getAcrolinxDir(userTempDirLocation, osName);
 
-    Path defaultStartPageInstallLocation =
-        acrolinxDir.resolve(
-            "acrolinx_start_page" + '_' + SidebarUtils.getCurrentSdkImplementationVersion());
+    return acrolinxDir.resolve(
+        "acrolinx_start_page" + '_' + SidebarUtils.getCurrentSdkImplementationVersion());
+  }
 
-    if (!Files.exists(defaultStartPageInstallLocation)) {
-      Files.createDirectories(defaultStartPageInstallLocation);
-      logger.debug(
-          "Creating acrolinx start page directory in: {}", defaultStartPageInstallLocation);
+  private static void createStartPageInstallationDirectory(Path path) throws IOException {
+    if (Files.exists(path)) {
+      throw new IllegalStateException("Start page installation directory already exists");
     }
 
-    return defaultStartPageInstallLocation;
+    Files.createDirectories(path);
+    logger.debug("Creating acrolinx start page directory in: {}", path);
   }
 
   private static boolean isNullOrEmpty(String string) {

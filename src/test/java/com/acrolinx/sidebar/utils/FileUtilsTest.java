@@ -1,11 +1,20 @@
 /* Copyright (c) 2025 Acrolinx GmbH */
 package com.acrolinx.sidebar.utils;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class FileUtilsTest {
+  @Test
+  void deleteDirectoryTest(@TempDir Path temporaryDirectory) throws Exception {
+    FileUtils.deleteDirectory(temporaryDirectory);
+
+    Assertions.assertFalse(Files.exists(temporaryDirectory));
+  }
+
   @Test
   void extractZipFileTest(@TempDir Path temporaryDirectory) throws Exception {
     Path zipFilePath = Path.of("src/test/resources/test.zip");
