@@ -25,7 +25,9 @@ public final class StartPageInstaller {
       final Path defaultStartPageInstallLocation = getDefaultStartPageInstallLocation();
 
       // Make sure we have a non-corrupted installation folder
-      FileUtils.deleteDirectory(defaultStartPageInstallLocation);
+      if (Files.exists(defaultStartPageInstallLocation)) {
+        FileUtils.deleteDirectory(defaultStartPageInstallLocation);
+      }
 
       createStartPageInstallationDirectory(defaultStartPageInstallLocation);
 

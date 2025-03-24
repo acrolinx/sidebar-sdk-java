@@ -6,19 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
-import org.junit.jupiter.api.io.TempDir;
 
 class ValidateTest {
   private static final String VARIABLE_NAME = "extracted-test-zip";
-
-  @Test
-  void fileOrDirectoryExistsTest(@TempDir Path tempDir) {
-    Validate.exists(tempDir, "foo");
-
-    AssertThrows.illegalArgumentException(
-        () -> Validate.exists(Path.of("src/test/resources/foo"), "foo"),
-        "foo does not exist: src/test/resources/foo");
-  }
 
   @Test
   @DisabledOnOs(OS.WINDOWS)

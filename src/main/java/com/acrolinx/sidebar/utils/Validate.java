@@ -2,7 +2,6 @@
 package com.acrolinx.sidebar.utils;
 
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 
 /**
@@ -39,16 +38,6 @@ public final class Validate {
   public static void notNull(Object object, String variableName) {
     if (object == null) {
       throw new IllegalArgumentException(variableName + " must not be null");
-    }
-  }
-
-  /**
-   * @throws IllegalArgumentException if {@code filePath} {@link Files#exists(Path, LinkOption...)
-   *     does not exist}
-   */
-  public static void exists(Path path, String variableName) {
-    if (!Files.exists(path)) {
-      throw new IllegalArgumentException(variableName + " does not exist: " + path);
     }
   }
 
