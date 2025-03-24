@@ -22,10 +22,11 @@ public final class StartPageInstaller {
         throw new IllegalStateException("Resource not found: " + SIDEBAR_STARTPAGE_ZIP);
       }
 
-      // Make sure we have a non-corrupted installation folder
-      FileUtils.deleteDirectory(getDefaultStartPageInstallLocation());
-
       final Path defaultStartPageInstallLocation = getDefaultStartPageInstallLocation();
+
+      // Make sure we have a non-corrupted installation folder
+      FileUtils.deleteDirectory(defaultStartPageInstallLocation);
+
       final Path zipFilePath = defaultStartPageInstallLocation.resolve(SIDEBAR_STARTPAGE_ZIP);
 
       Files.copy(inputStream, zipFilePath);
