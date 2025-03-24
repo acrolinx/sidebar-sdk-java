@@ -83,7 +83,7 @@ public final class StartPageInstaller {
   private static Path getDefaultStartPageInstallLocation() {
     final Path userTempDirLocation = SidebarUtils.getUserTempDirLocation();
     final String osName = System.getProperty("os.name");
-    Path acrolinxDir = getAcrolinxDir(userTempDirLocation, osName);
+    final Path acrolinxDir = getAcrolinxDir(userTempDirLocation, osName);
 
     return acrolinxDir.resolve(
         "acrolinx_start_page" + '_' + SidebarUtils.getCurrentSdkImplementationVersion());

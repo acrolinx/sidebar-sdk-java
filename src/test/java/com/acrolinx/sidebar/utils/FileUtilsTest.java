@@ -9,6 +9,13 @@ import org.junit.jupiter.api.io.TempDir;
 
 class FileUtilsTest {
   @Test
+  void deleteDirectoryTest(@TempDir Path temporaryDirectory) throws Exception {
+    FileUtils.deleteDirectory(temporaryDirectory);
+
+    Assertions.assertFalse(Files.exists(temporaryDirectory));
+  }
+
+  @Test
   void extractZipFileTest(@TempDir Path temporaryDirectory) throws Exception {
     Path zipFilePath = Path.of("src/test/resources/test.zip");
 
@@ -16,9 +23,5 @@ class FileUtilsTest {
 
     DirectoryComparer.assertEquals(
         Path.of("src/test/resources/extracted-test-zip"), temporaryDirectory);
-
-    FileUtils.deleteDirectory(temporaryDirectory);
-
-    Assertions.assertFalse(Files.exists(temporaryDirectory));
   }
 }
