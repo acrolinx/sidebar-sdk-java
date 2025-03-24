@@ -92,10 +92,12 @@ public final class StartPageInstaller {
   }
 
   private static void createStartPageInstallationDirectory(Path path) throws IOException {
-    if (!Files.exists(path)) {
-      Files.createDirectories(path);
-      logger.debug("Creating acrolinx start page directory in: {}", path);
+    if (Files.exists(path)) {
+      throw new IllegalStateException("Start page installation directory already exists");
     }
+
+    Files.createDirectories(path);
+    logger.debug("Creating acrolinx start page directory in: {}", path);
   }
 
   private static boolean isNullOrEmpty(String string) {
