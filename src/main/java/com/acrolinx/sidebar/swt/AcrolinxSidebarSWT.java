@@ -98,8 +98,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
         acrolinxIntegration.getEditorAdapter(),
         "EditorAdapter client.getEditorAdapter should return null");
 
-    final String javaVersion = System.getProperty("java.version");
-    logger.info("Java Version: {} ; UI Framework: Java SWT", javaVersion);
+    logger.atInfo().log(
+        "Java Version: {} ; UI Framework: Java SWT", System.getProperty("java.version"));
     SecurityUtils.setUpEnvironment();
 
     this.acrolinxStorage = acrolinxStorage;
@@ -494,9 +494,8 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
   }
 
   Object getOnCheckResultObject(Object argument) {
-    final Instant checkEndedTime = Instant.now();
     logger.info(
-        "Check finished. Check took {}", Duration.between(checkStartTime.get(), checkEndedTime));
+        "Check finished. Check took {}", Duration.between(checkStartTime.get(), Instant.now()));
     final String checkResultString = argument.toString();
     try {
       final CheckResultFromJSON checkResultObj =

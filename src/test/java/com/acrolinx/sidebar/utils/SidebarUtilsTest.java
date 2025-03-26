@@ -62,16 +62,12 @@ class SidebarUtilsTest {
 
   @Test
   void isValidUrlTest2() {
-    assertTrue(
-        SidebarUtils.isValidUrl(
-            "https://acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html"));
+    assertTrue(SidebarUtils.isValidUrl("https://sidebar.acrolinx.com/index.html"));
   }
 
   @Test
   void isNotValidUrlTest() {
-    assertFalse(
-        SidebarUtils.isValidUrl(
-            "https:/acrolinxiq.wdf.sap.corp/output/en/czv1533128749082_xml_d020143_810d34842a633047_601823388_report.html"));
+    assertFalse(SidebarUtils.isValidUrl("https:/sidebar.acrolinx.com/index.html"));
   }
 
   @Test
