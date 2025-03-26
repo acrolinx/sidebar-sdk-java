@@ -99,7 +99,7 @@ public class AcrolinxSidebarSWT implements AcrolinxSidebar {
         "EditorAdapter client.getEditorAdapter should return null");
 
     logger.atInfo().log(
-        "Java Version: {} ; UI Framework: Java SWT", System.getProperty("java.version"));
+        () -> "Java Version: " + System.getProperty("java.version") + "; UI Framework: Java SWT");
     SecurityUtils.setUpEnvironment();
 
     this.acrolinxStorage = acrolinxStorage;
