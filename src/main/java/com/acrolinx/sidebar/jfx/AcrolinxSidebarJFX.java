@@ -44,8 +44,8 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar {
 
   public AcrolinxSidebarJFX(
       final AcrolinxIntegration acrolinxIntegration, final AcrolinxStorage acrolinxStorage) {
-    final String javaVersion = System.getProperty("java.version");
-    logger.info("Java Version: {} ; UI Framework: Java FX", javaVersion);
+    logger.atInfo().log(
+        "Java Version: {} ; UI Framework: Java FX", System.getProperty("java.version"));
     SecurityUtils.setUpEnvironment();
     this.acrolinxIntegration = acrolinxIntegration;
     final String sidebarUrl =

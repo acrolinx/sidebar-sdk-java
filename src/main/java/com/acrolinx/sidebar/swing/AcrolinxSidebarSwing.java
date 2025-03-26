@@ -46,9 +46,9 @@ public class AcrolinxSidebarSwing extends JFXPanel implements AcrolinxSidebar {
 
   public AcrolinxSidebarSwing(
       final AcrolinxIntegration acrolinxIntegration, final AcrolinxStorage acrolinxStorage) {
-    final String javaVersion = System.getProperty("java.version");
-    logger.info(
-        "Java Version: {} ; UI Framework: Java Swing with Java FX Sidebar component", javaVersion);
+    logger.atInfo().log(
+        "Java Version: {} ; UI Framework: Java Swing with Java FX Sidebar component",
+        System.getProperty("java.version"));
     this.acrolinxStorage = acrolinxStorage;
     this.acrolinxIntegration = acrolinxIntegration;
     Platform.setImplicitExit(false);
