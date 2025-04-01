@@ -109,7 +109,7 @@ public class AcrolinxSidebarInitParameter {
   /**
    * Returns the log file location that was provided using the AcrolinxSidebarInitParameterBuilder.
    *
-   * @return the log file location (maybe {@code null})
+   * @return the log file location (may be {@code null})
    */
   public String getLogFileLocation() {
     return logFileLocation;
@@ -311,7 +311,7 @@ public class AcrolinxSidebarInitParameter {
      * This can be used to provide the log file location if it is known and the sidebar can use the
      * `OPEN LOG FILE` feature.
      *
-     * @param logFileLocation a URI where the file is located.
+     * @param logFileLocation the log file location.
      * @return Returns the AcrolinxInitParameterBuilder for chaining.
      */
     public AcrolinxSidebarInitParameterBuilder withLogFileLocation(String logFileLocation) {

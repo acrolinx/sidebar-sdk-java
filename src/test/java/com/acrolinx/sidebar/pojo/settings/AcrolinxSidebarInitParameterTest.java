@@ -33,7 +33,8 @@ class AcrolinxSidebarInitParameterTest {
     try {
       setSystemProperties();
 
-      AcrolinxSidebarInitParameter acrolinxSidebarInitParameter = createAcrolinxInitParameters();
+      AcrolinxSidebarInitParameter acrolinxSidebarInitParameter =
+          createAcrolinxSidebarInitParameter();
 
       Assertions.assertEquals(
           "{\"clientSignature\":\"foo\",\"clientComponents\":[{\"id\":\"foo\",\"name\":\"bar\",\"version\":\"buzz\"},{\"id\":\"com.acrolinx.sidebar.java\",\"name\":\"Java SDK\",\"version\":\"2.5.12\",\"category\":\"DETAIL\"},{\"id\":\"os.Win\",\"name\":\"Win\",\"version\":\"13.5.1\",\"category\":\"DETAIL\"},{\"id\":\"java.runtime.Zuul\",\"name\":\"OpenJDK Runtime Environment\",\"version\":\"1.8.0_382-c05\",\"category\":\"DETAIL\"}],\"showServerSelector\":false,\"enableSingleSignOn\":false,\"enforceHTTPS\":false,\"logFileLocation\":\"logs/sidebar-init-parameters.log\",\"minimumJavaVersion\":0,\"logger\":{\"name\":\"com.acrolinx.sidebar.pojo.settings.AcrolinxSidebarInitParameter\"}}",
@@ -43,7 +44,7 @@ class AcrolinxSidebarInitParameterTest {
     }
   }
 
-  private static AcrolinxSidebarInitParameter createAcrolinxInitParameters() {
+  private static AcrolinxSidebarInitParameter createAcrolinxSidebarInitParameter() {
     SoftwareComponent softwareComponent = new SoftwareComponent("foo", "bar", "buzz");
     AcrolinxSidebarInitParameter.AcrolinxSidebarInitParameterBuilder
         acrolinxSidebarInitParameterBuilder =
