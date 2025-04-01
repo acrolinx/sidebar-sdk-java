@@ -74,18 +74,9 @@ public final class StartPageInstaller {
     }
   }
 
-  private static Path getAcrolinxDir(final Path userTempDirLocation, final String osName) {
-    if (osName.toLowerCase().contains("mac") || osName.contains("windows")) {
-      return userTempDirLocation.resolve("Acrolinx");
-    }
-
-    return userTempDirLocation.resolve("acrolinx");
-  }
-
   private static Path getDefaultStartPageInstallLocation() {
     final Path userTempDirLocation = SidebarUtils.getUserTempDirLocation();
-    final String osName = System.getProperty("os.name");
-    final Path acrolinxDir = getAcrolinxDir(userTempDirLocation, osName);
+    final Path acrolinxDir = userTempDirLocation.resolve("Acrolinx");
 
     return acrolinxDir.resolve(
         "acrolinx_start_page" + '_' + SidebarUtils.getCurrentSdkImplementationVersion());
