@@ -21,7 +21,6 @@ import com.acrolinx.sidebar.pojo.settings.InputFormat;
 import com.acrolinx.sidebar.pojo.settings.RequestDescription;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
-import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import java.time.Duration;
 import java.time.Instant;
@@ -183,9 +182,7 @@ abstract class AcrolinxSidebarPlugin {
   }
 
   public synchronized void onCheckResult(final JSObject jsObject) {
-    final Instant checkEndedTime = Instant.now();
-    LogMessages.logCheckFinishedWithDurationTime(
-        logger, Duration.between(checkStartedTime, checkEndedTime));
+    logger.info("Check finished. Check took {}", Duration.between(checkStartedTime, Instant.now()));
     final CheckResult checkResult = JSToJavaConverter.getCheckResultFromJSObject(jsObject);
 
     if (checkResult == null) {
@@ -200,7 +197,7 @@ abstract class AcrolinxSidebarPlugin {
   }
 
   public synchronized void selectRanges(final String checkId, final JSObject jsObject) {
-    LogMessages.logSelectingRange(logger);
+    logger.info("Request select range.");
     final List<AcrolinxMatch> acrolinxMatches =
         JSToJavaConverter.getAcrolinxMatchFromJSObject(jsObject);
 
@@ -208,7 +205,7 @@ abstract class AcrolinxSidebarPlugin {
   }
 
   public synchronized void replaceRanges(final String checkId, final JSObject jsObject) {
-    LogMessages.logReplacingRange(logger);
+    logger.info("Request replace range.");
     final List<AcrolinxMatchWithReplacement> matches =
         JSToJavaConverter.getAcrolinxMatchWithReplacementFromJSObject(jsObject);
     acrolinxIntegration.getEditorAdapter().replaceRanges(checkId, matches);
@@ -244,7 +241,7 @@ abstract class AcrolinxSidebarPlugin {
   }
 
   public void openLogFile() {
-    SidebarUtils.openLogFile();
+    SidebarUtils.openLogFile(acrolinxIntegration.getInitParameters().getLogFileLocation());
   }
 
   private CheckOptions getCheckSettingsFromClient(
@@ -277,7 +274,7 @@ abstract class AcrolinxSidebarPlugin {
   }
 
   public void onGlobalCheckRejected() {
-    LogMessages.logCheckRejected(logger);
+    logger.info("Check rejected.");
     JFXUtils.invokeInJFXThread(
         () -> {
           try {

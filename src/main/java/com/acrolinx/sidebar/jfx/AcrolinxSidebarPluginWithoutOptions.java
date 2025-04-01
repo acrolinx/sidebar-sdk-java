@@ -4,7 +4,6 @@ package com.acrolinx.sidebar.jfx;
 import com.acrolinx.sidebar.AcrolinxIntegration;
 import com.acrolinx.sidebar.adapter.NullEditorAdapter;
 import com.acrolinx.sidebar.pojo.document.CheckContent;
-import com.acrolinx.sidebar.utils.LogMessages;
 import java.time.Instant;
 import javafx.scene.web.WebView;
 
@@ -15,7 +14,7 @@ public class AcrolinxSidebarPluginWithoutOptions extends AcrolinxSidebarPlugin {
   }
 
   public synchronized void requestGlobalCheck() {
-    LogMessages.logCheckRequested(logger);
+    logger.info("Check requested.");
     this.checkStartedTime = Instant.now();
     final CheckContent checkContent = getCheckContentFromClient();
     logger.debug("Fetched check content including external content");

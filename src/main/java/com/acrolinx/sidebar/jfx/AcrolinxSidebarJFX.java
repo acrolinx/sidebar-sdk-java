@@ -12,7 +12,6 @@ import com.acrolinx.sidebar.pojo.settings.CheckOptions;
 import com.acrolinx.sidebar.pojo.settings.PluginSupportedParameters;
 import com.acrolinx.sidebar.pojo.settings.SidebarConfiguration;
 import com.acrolinx.sidebar.pojo.settings.SidebarMessage;
-import com.acrolinx.sidebar.utils.LogMessages;
 import com.acrolinx.sidebar.utils.SecurityUtils;
 import com.acrolinx.sidebar.utils.SidebarUtils;
 import com.acrolinx.sidebar.utils.StartPageInstaller;
@@ -45,7 +44,7 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar {
 
   public AcrolinxSidebarJFX(
       final AcrolinxIntegration acrolinxIntegration, final AcrolinxStorage acrolinxStorage) {
-    LogMessages.logJavaVersionAndUiFramework(logger, "Java FX");
+    logger.atInfo().log(() -> "Java Version: " + System.getProperty("java.version"));
     SecurityUtils.setUpEnvironment();
     this.acrolinxIntegration = acrolinxIntegration;
     final String sidebarUrl =
@@ -82,7 +81,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar {
       webEngine.load(sidebarUrl);
     } else {
       // if sidebar url is not available show log file location
-      webEngine.loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
+      webEngine.loadContent(
+          SidebarUtils.getSidebarErrorHtml(
+              acrolinxIntegration.getInitParameters().getLogFileLocation()));
     }
   }
 
@@ -106,7 +107,9 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar {
         logger.error("", webEngine.getLoadWorker().getException());
       }
 
-      webEngine.loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
+      webEngine.loadContent(
+          SidebarUtils.getSidebarErrorHtml(
+              acrolinxIntegration.getInitParameters().getLogFileLocation()));
     }
   }
 
@@ -212,7 +215,11 @@ public class AcrolinxSidebarJFX implements AcrolinxSidebar {
         StartPageInstaller.exportStartPageResources();
       } catch (final Exception e) {
         logger.error("Error while exporting start page resources!", e);
-        webView.getEngine().loadContent(SidebarUtils.SIDEBAR_ERROR_HTML);
+        webView
+            .getEngine()
+            .loadContent(
+                SidebarUtils.getSidebarErrorHtml(
+                    acrolinxIntegration.getInitParameters().getLogFileLocation()));
       }
     }
 
