@@ -32,7 +32,7 @@ repositories {
 
 dependencies {
     api 'com.google.code.gson:gson:2.12.1'
-    api 'org.apache.commons:commons-text:1.13.0'
+    api 'org.apache.commons:commons-text:1.13.1'
     api 'org.jsoup:jsoup:1.19.1'
     api 'org.slf4j:slf4j-api:1.7.36'
     compileOnly "org.eclipse.platform:org.eclipse.swt.$OSGI_PLATFORM:$SWT_VERSION"
