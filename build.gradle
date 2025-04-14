@@ -177,7 +177,7 @@ tasks.named('test', Test) {
     useJUnitPlatform()
 
     testLogging {
-        exceptionFormat 'full'
+        exceptionFormat = 'full'
     }
 }
 
