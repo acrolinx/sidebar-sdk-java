@@ -35,11 +35,14 @@ dependencies {
     api 'org.apache.commons:commons-text:1.13.1'
     api 'org.jsoup:jsoup:1.19.1'
     api 'org.slf4j:slf4j-api:1.7.36'
+
     compileOnly "org.eclipse.platform:org.eclipse.swt.$OSGI_PLATFORM:$SWT_VERSION"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
-    testRuntimeOnly 'ch.qos.logback:logback-classic:1.5.18'
+    testImplementation platform('org.junit:junit-bom:5.12.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'org.slf4j:slf4j-simple:1.7.36'
 }
 
 group = 'com.acrolinx.client'
