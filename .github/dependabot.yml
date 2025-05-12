@@ -4,18 +4,12 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - /acrolinx/integrationdevs-java
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - /acrolinx/integrationdevs-java
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - /acrolinx/integrationdevs-java
     versioning-strategy: increase
