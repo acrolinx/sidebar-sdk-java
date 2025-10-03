@@ -30,7 +30,7 @@ public class CheckResultFromJSON {
     final Map<String, String> map = new LinkedHashMap<>();
 
     if (embedCheckInformation == null) {
-      return null;
+      return new LinkedHashMap<>();
     }
 
     for (final CheckInformationKeyValuePairFromJSON checkInformationKeyValuePairFromJSON :
