@@ -32,7 +32,7 @@ Before you start developing your own integration, you might benefit from looking
 
 ### Build the Project
 
-1. You need Java 11 to build this project.
+1. You need Java 17 to build this project.
 2. This project uses [Gradle](https://gradle.org/).
 To build this project with the [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html#sec:using_wrapper), execute the following command:
 
