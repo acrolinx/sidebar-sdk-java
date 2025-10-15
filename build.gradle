@@ -17,7 +17,7 @@ plugins {
     id 'com.github.node-gradle.node' version '7.1.0'
     id 'org.openjfx.javafxplugin' version '0.1.0'
     id 'org.sonarqube' version '7.0.0.6105'
-    id 'com.diffplug.spotless' version '7.2.1'
+    id 'com.diffplug.spotless' version '8.0.0'
 }
 
 configurations.configureEach {
