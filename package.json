@@ -1,10 +1,10 @@
 {
   "name": "",
-  "version": "1.1.0",
+  "version": "2.8.1",
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "dependencies": {
-    "@acrolinx/sidebar-startpage": "^4.0.5"
+    "@acrolinx/sidebar-startpage": "4.0.5"
   }
 }
